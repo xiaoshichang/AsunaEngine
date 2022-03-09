@@ -1,0 +1,13 @@
+
+bin/
+obj/
+
+
+AsunaUnityDemo/Library
+AsunaUnityDemo/Logs
+AsunaUnityDemo/Temp
+AsunaUnityDemo/UserSettings
+AsunaUnityDemo/.idea
+AsunaUnityDemo/*.sln
+AsunaUnityDemo/*.csproj
+
