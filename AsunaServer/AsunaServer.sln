@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsunaServer", "AsunaServer\AsunaServer.csproj", "{92617946-E191-4BED-9153-2FFDDB176EB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsunaNetwork", "AsunaNetwork\AsunaNetwork.csproj", "{8A6E57CF-8391-42D3-AACC-39281729400C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsunaEntity", "AsunaEntity\AsunaEntity.csproj", "{50970A5A-EBE7-41FE-B86D-1E27AB334D28}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{92617946-E191-4BED-9153-2FFDDB176EB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92617946-E191-4BED-9153-2FFDDB176EB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92617946-E191-4BED-9153-2FFDDB176EB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92617946-E191-4BED-9153-2FFDDB176EB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A6E57CF-8391-42D3-AACC-39281729400C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A6E57CF-8391-42D3-AACC-39281729400C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A6E57CF-8391-42D3-AACC-39281729400C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A6E57CF-8391-42D3-AACC-39281729400C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50970A5A-EBE7-41FE-B86D-1E27AB334D28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50970A5A-EBE7-41FE-B86D-1E27AB334D28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50970A5A-EBE7-41FE-B86D-1E27AB334D28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50970A5A-EBE7-41FE-B86D-1E27AB334D28}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
