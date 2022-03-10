@@ -1,0 +1,43 @@
+{
+  "Common":
+  {
+  },
+  "GMServer":
+  {
+    "Name": "GMServer",
+    "InternalIP": "127.0.0.1",
+    "InternalPort": 40000
+  },
+  "DBServer":
+  {
+    "Name": "DBServer",
+    "InternalIP": "127.0.0.1",
+    "InternalPort": 40001
+  },
+  "GameServers":
+  [
+    {
+      "Name": "Game1",
+      "InternalIP": "127.0.0.1",
+      "InternalPort": 40002
+    },
+    {
+      "Name": "Game2",
+      "InternalIP": "127.0.0.1",
+      "InternalPort": 40003
+    }
+  ],
+  "GateServers":
+  [
+    {
+      "Name": "Gate1",
+      "InternalIP": "127.0.0.1",
+      "InternalPort": 40004
+    },
+    {
+      "Name": "Gate2",
+      "InternalIP": "127.0.0.1",
+      "InternalPort": 40005
+    }
+  ]
+}

@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AsunaServer.Config;
 
@@ -9,9 +13,9 @@ public class CommonConfig
 
 public class ServerConfigBase
 {
-    public string? Name;
-    public string? InternalIP;
-    public int InternalPort;
+    public string? Name { get; set; }
+    public string? InternalIP { get; set; }
+    public int InternalPort { get; set; }
 }
 
 public class GMServerConfig : ServerConfigBase
@@ -32,26 +36,26 @@ public class GateServerConfig : ServerConfigBase
 
 public class ServerGroupConfig
 {
-    public CommonConfig? Common;
-    public GMServerConfig? GMServerConfig;
-    public DBServerConfig? DBServerConfig;
-    public List<GameServerConfig>? GameServerConfigs;
-    public List<GateServerConfig>? GateServerConfigs;
+    public CommonConfig? Common { get; set; }
+    public GMServerConfig? GMServer { get; set; }
+    public DBServerConfig? DBServer { get; set; }
+    public List<GameServerConfig>? GameServers { get; set; }
+    public List<GateServerConfig>? GateServers { get; set; }
 
     
     public ServerConfigBase? GetCurrentServerConfigByName(string servername)
     {
-        if (GMServerConfig?.Name == servername)
+        if (GMServer?.Name == servername)
         {
-            return GMServerConfig;
+            return GMServer;
         }
-        if (DBServerConfig?.Name == servername)
+        if (DBServer?.Name == servername)
         {
-            return DBServerConfig;
+            return DBServer;
         }
-        if (GameServerConfigs != null)
+        if (GameServers != null)
         {
-            foreach (var config in GameServerConfigs)
+            foreach (var config in GameServers)
             {
                 if (config.Name == servername)
                 {
@@ -59,9 +63,9 @@ public class ServerGroupConfig
                 }
             }
         }
-        if (GateServerConfigs != null)
+        if (GateServers != null)
         {
-            foreach (var config in GateServerConfigs)
+            foreach (var config in GateServers)
             {
                 if (config.Name == servername)
                 {
@@ -71,13 +75,11 @@ public class ServerGroupConfig
         }
         return null;
     }
-    
     
     public static ServerGroupConfig? LoadConfig(string configPath)
     {
-        return null;
+        string context = File.ReadAllText(configPath);
+        var groupConfig = JsonSerializer.Deserialize<ServerGroupConfig>(context);
+        return groupConfig;
     }
-    
-    
-    
 }

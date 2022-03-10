@@ -13,12 +13,22 @@ namespace AsunaServer
         static void Main(string[] args)
         {
             // load and setup server group config
-            var groupConfig = ServerGroupConfig.LoadConfig("");
+            var configPath = Environment.GetEnvironmentVariable("ConfigPath");
+            if (configPath == null)
+            {
+                return;
+            }
+            var groupConfig = ServerGroupConfig.LoadConfig(configPath);
             if (groupConfig == null)
             {
                 return;
             }
-            var serverConfig = groupConfig.GetCurrentServerConfigByName("");
+            var serverName = Environment.GetEnvironmentVariable("ServerName");
+            if (serverName == null)
+            {
+                return;
+            }
+            var serverConfig = groupConfig.GetCurrentServerConfigByName(serverName);
             if (serverConfig == null)
             {
                 return;
