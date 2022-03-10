@@ -7,14 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="..\..\AsunaUnityDemo\Assets\Scripts\Entity\Common\**\*.*" Exclude="..\..\AsunaUnityDemo\Assets\Scripts\Entity\Common\**\*.meta">
+        <Compile Include="..\..\AsunaUnityDemo\Assets\Scripts\Foundation\Common\**\*.*" Exclude="..\..\AsunaUnityDemo\Assets\Scripts\Foundation\Common\**\*.meta">
             <Link>Common\%(RecursiveDir)%(Filename)%(Extension)</Link>
         </Compile>
     </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\AsunaFoundation\AsunaFoundation.csproj" />
-    </ItemGroup>
-    
 
 </Project>
