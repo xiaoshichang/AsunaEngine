@@ -7,10 +7,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    
 
     <ItemGroup>
-      <ProjectReference Include="..\AsunaEntity\AsunaEntity.csproj" />
       <ProjectReference Include="..\AsunaGamePlay\AsunaGamePlay.csproj" />
       <ProjectReference Include="..\AsunaNetwork\AsunaNetwork.csproj" />
     </ItemGroup>

@@ -16,7 +16,7 @@ public class NetworkEvent
 
 public abstract class NetworkMgrBase
 {
-    public abstract void Init(string address, int port);
+    public abstract void Init(string? address, int port);
     public abstract void StartListen();
     public abstract void Disconnect();
     public abstract void ProcessNetworkEvent(NetworkEvent evt);
@@ -24,7 +24,7 @@ public abstract class NetworkMgrBase
 
 public class NetworkMgrTcp : NetworkMgrBase
 {
-    public override void Init(string address, int port)
+    public override void Init(string? address, int port)
     {
         throw new NotImplementedException();
     }
