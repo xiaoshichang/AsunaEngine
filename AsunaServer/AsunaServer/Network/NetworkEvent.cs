@@ -1,4 +1,6 @@
-﻿namespace AsunaServer.Network;
+﻿using System.Net.Sockets;
+
+namespace AsunaServer.Network;
 
 
 public enum NetworkEventType
@@ -13,6 +15,7 @@ public enum NetworkEventType
 public class NetworkEvent
 {
     public NetworkEventType EventType;
+    public Socket? AcceptSocket;
 }
 
 public delegate void NetworkEventHandler(NetworkEvent evt);
