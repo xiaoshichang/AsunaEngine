@@ -26,22 +26,19 @@ public class NetworkMgrTcp : NetworkMgrBase
 {
     public override void Init(string? address, int port)
     {
-        throw new NotImplementedException();
     }
 
     public override void StartListen()
     {
-        throw new NotImplementedException();
+        Console.Out.WriteLine("StartListen");
     }
 
     public override void Disconnect()
     {
-        throw new NotImplementedException();
     }
 
     public override void ProcessNetworkEvent(NetworkEvent evt)
     {
-        throw new NotImplementedException();
     }
     
     

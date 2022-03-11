@@ -17,12 +17,12 @@
   "GameServers":
   [
     {
-      "Name": "Game1",
+      "Name": "GameServer1",
       "InternalIP": "127.0.0.1",
       "InternalPort": 40002
     },
     {
-      "Name": "Game2",
+      "Name": "GameServer2",
       "InternalIP": "127.0.0.1",
       "InternalPort": 40003
     }
@@ -30,12 +30,12 @@
   "GateServers":
   [
     {
-      "Name": "Gate1",
+      "Name": "GateServer1",
       "InternalIP": "127.0.0.1",
       "InternalPort": 40004
     },
     {
-      "Name": "Gate2",
+      "Name": "GateServer2",
       "InternalIP": "127.0.0.1",
       "InternalPort": 40005
     }

@@ -35,11 +35,13 @@ def adjust_console_window():
 
 
 def run_server_process_nt(args, name):
-    cmd = [args.exe, args.config, name]
+    cmd = [args.exe]
     flag = 0
-    # create server program in new console, or it will exit when the console run python.exe exit
-    flag |= subprocess.CREATE_NEW_CONSOLE
-    p = subprocess.Popen(cmd, creationflags=flag)
+    flag |= subprocess.CREATE_NEW_CONSOLE   # create server program in new console, or it will exit when the console run python.exe exit
+    env = os.environ.copy()
+    env["ConfigPath"] = args.config
+    env["ServerName"] = name
+    p = subprocess.Popen(cmd, creationflags=flag, env=env)
     all_pid.append(p.pid)
 
 
@@ -48,12 +50,14 @@ def start_server_group(args):
     stop_server_group(args)
     server_group_config = json.load(open(args.config))
     if os.name == "nt":
-        run_server_process_nt(args, "gm")
-        run_server_process_nt(args, "db")
-        for i in range(server_group_config.get("common").get("game_server_count")):
-            run_server_process_nt(args, "game%d" % (i + 1))
-        for i in range(server_group_config.get("common").get("gate_server_count")):
-            run_server_process_nt(args, "gate%d" % (i + 1))
+        run_server_process_nt(args, "GMServer")
+        run_server_process_nt(args, "DBServer")
+        game_server_configs = server_group_config.get("GameServers", [])
+        for i, config in enumerate(game_server_configs):
+            run_server_process_nt(args, "GameServer%d" % (i + 1))
+        gate_server_configs = server_group_config.get("GateServers", [])
+        for i, config in enumerate(gate_server_configs):
+            run_server_process_nt(args, "GateServer%d" % (i + 1))
 
         # sleep a small interval, or we can not find these windows use above api
         time.sleep(1)
