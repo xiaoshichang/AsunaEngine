@@ -10,7 +10,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\AsunaGamePlay\AsunaGamePlay.csproj" />
-      <ProjectReference Include="..\AsunaNetwork\AsunaNetwork.csproj" />
     </ItemGroup>
 
 </Project>

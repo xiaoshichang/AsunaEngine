@@ -1,6 +1,6 @@
 ﻿using System;
-using AsunaNetwork;
 using AsunaServer.Config;
+using AsunaServer.Network;
 
 namespace AsunaServer.Servers;
 
@@ -16,6 +16,9 @@ public abstract class ServerBase
     {
         Console.Out.WriteLine($"Server {_ServerConfig.Name} Init!");
         _InternalNetwork.Init(_ServerConfig.InternalIP, _ServerConfig.InternalPort);
+        _InternalNetwork.OnAccepConnectionCallback = OnAcceptConnection;
+        _InternalNetwork.OnDisconnectCallback = OnDisconnect;
+        _InternalNetwork.OnReceiveMessageCallback = OnReceiveMessage;
     }
 
     public virtual void Uninit()
@@ -24,9 +27,22 @@ public abstract class ServerBase
 
     protected virtual void ProcessNetworkEvents()
     {
+        _InternalNetwork.ProcessNetworkEvents();
     }
 
     protected virtual void ProcessTimerEvents()
+    {
+    }
+
+    protected virtual void OnAcceptConnection(NetworkEvent evt)
+    {
+    }
+
+    protected virtual void OnDisconnect(NetworkEvent evt)
+    {
+    }
+    
+    protected virtual void OnReceiveMessage(NetworkEvent evt)
     {
     }
     
