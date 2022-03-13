@@ -1,4 +1,4 @@
-﻿using System;
+﻿using AsunaFoundation;
 using AsunaServer.Config;
 using AsunaServer.Network;
 
@@ -14,7 +14,7 @@ public abstract class ServerBase
     
     public virtual void Init()
     {
-        Console.Out.WriteLine($"Server {_ServerConfig.Name} Init!");
+        Logger.LogInfo($"Server {_ServerConfig.Name} Init!");
         _InternalNetwork.Init(_ServerConfig.InternalIP, _ServerConfig.InternalPort);
         _InternalNetwork.OnAccepConnectionCallback = OnAcceptConnection;
         _InternalNetwork.OnDisconnectCallback = OnDisconnect;

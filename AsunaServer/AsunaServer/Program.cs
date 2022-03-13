@@ -2,6 +2,7 @@
 
 using AsunaServer.Config;
 using AsunaServer.Servers;
+using AsunaFoundation;
 
 namespace AsunaServer
 {
@@ -13,23 +14,37 @@ namespace AsunaServer
             var configPath = Environment.GetEnvironmentVariable("ConfigPath");
             if (configPath == null)
             {
+                Console.Out.WriteLine($"ConfigPath not found in EnvironmentVariable!");
                 return;
             }
             var groupConfig = ServerGroupConfig.LoadConfig(configPath);
             if (groupConfig == null)
             {
+                Console.Out.WriteLine($"Load group config fail!");
                 return;
             }
             var serverName = Environment.GetEnvironmentVariable("ServerName");
             if (serverName == null)
             {
+                Console.Out.WriteLine($"ServerName not found in EnvironmentVariable!");
                 return;
             }
             var serverConfig = groupConfig.GetCurrentServerConfigByName(serverName);
             if (serverConfig == null)
             {
+                Console.Out.WriteLine($"{serverName} config not found in group config!");
                 return;
             }
+            
+            // init logger
+            var config = new LogConfig
+            {
+                ConsoleLogEnable = true,
+                FileLogEnable = true,
+                FileLogDir = groupConfig.Common.LogPath,
+                FileLogName = serverName
+            };
+            Logger.InitLogger(config);
             
             // create server and run it
             ServerBase server;

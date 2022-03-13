@@ -6,9 +6,11 @@ using System.Text.Json.Serialization;
 
 namespace AsunaServer.Config;
 
+#pragma warning disable CS8618
 
 public class CommonConfig
 {
+    public string LogPath { get; set; }
 }
 
 public class ServerConfigBase
@@ -36,11 +38,11 @@ public class GateServerConfig : ServerConfigBase
 
 public class ServerGroupConfig
 {
-    public CommonConfig? Common { get; set; }
-    public GMServerConfig? GMServer { get; set; }
-    public DBServerConfig? DBServer { get; set; }
-    public List<GameServerConfig>? GameServers { get; set; }
-    public List<GateServerConfig>? GateServers { get; set; }
+    public CommonConfig Common { get; set; }
+    public GMServerConfig GMServer { get; set; }
+    public DBServerConfig DBServer { get; set; }
+    public List<GameServerConfig> GameServers { get; set; }
+    public List<GateServerConfig> GateServers { get; set; }
 
     
     public ServerConfigBase? GetCurrentServerConfigByName(string servername)
@@ -53,24 +55,18 @@ public class ServerGroupConfig
         {
             return DBServer;
         }
-        if (GameServers != null)
+        foreach (var config in GameServers)
         {
-            foreach (var config in GameServers)
+            if (config.Name == servername)
             {
-                if (config.Name == servername)
-                {
-                    return config;
-                }
+                return config;
             }
         }
-        if (GateServers != null)
+        foreach (var config in GateServers)
         {
-            foreach (var config in GateServers)
+            if (config.Name == servername)
             {
-                if (config.Name == servername)
-                {
-                    return config;
-                }
+                return config;
             }
         }
         return null;

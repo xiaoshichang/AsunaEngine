@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using AsunaFoundation;
 
 namespace AsunaServer.Network;
 
@@ -14,7 +15,7 @@ public class NetworkMgrTcp : NetworkMgrBase
 
     public override void StartListen()
     {
-        Console.Out.WriteLine("StartListen");
+        Logger.LogInfo("Start listening...");
     }
 
     private TcpSession CreateSession(Socket socket)
