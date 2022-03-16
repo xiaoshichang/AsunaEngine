@@ -1,39 +1,72 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using AsunaFoundation;
 
-namespace AsunaServer.Network;
+#pragma warning disable CS8600
+#pragma warning disable CS8604
+
+namespace AsunaFoundation;
 
 
 public class NetworkMgrTcp : NetworkMgrBase
 {
-    public override void Init(string? address, int port)
+    public override void Init(string address, int port)
     {
+        try
+        {
+            _ListenEndPoint = new IPEndPoint(IPAddress.Parse(address), port);
+        }
+        catch (Exception e)
+        {
+            Logger.LogError($"Parse IP Address fail: {e.Message}!");
+            throw;
+        }
     }
 
     public override void StartListen()
     {
-        Logger.LogInfo("Start listening...");
+        Logger.LogInfo($"Start listening at {_ListenEndPoint}...");
+        _ListenSocket.Bind(_ListenEndPoint);
+        _ListenSocket.Listen(10);
+        _ListenSocket.BeginAccept(OnAsyncAccept, null);
+    }
+
+    /// <summary>
+    /// note that is callback is called by other thread than main thread
+    /// </summary>
+    private void OnAsyncAccept(IAsyncResult ar)
+    {
+        var handler = _ListenSocket.EndAccept(ar);
+        var acceptEvent = new NetworkEvent()
+        {
+            AcceptSocket = handler,
+            EventType = NetworkEventType.Accept
+        };
+        lock (_EventQueue)
+        {
+            _EventQueue.Enqueue(acceptEvent);
+        }
+        _ListenSocket.BeginAccept(OnAsyncAccept, null);
     }
 
     private TcpSession CreateSession(Socket socket)
     {
-        TcpSession session = new TcpSession(socket)
+        var session = new TcpSession(socket)
         {
             OnEventCallback = AddEvent
         };
         return session;
     }
 
+    /// <summary>
+    /// this callback is called by main thread
+    /// </summary>
     private void OnAcceptConnection(NetworkEvent evt)
     {
-        if (evt.AcceptSocket == null)
-        {
-            // warning
-            return;
-        }
+        Logger.LogInfo($"accept new connection {evt.AcceptSocket.RemoteEndPoint}");
         var session = CreateSession(evt.AcceptSocket);
         _AllSessions.Add(session.SessionID, session);
         OnAccepConnectionCallback?.Invoke(evt);
@@ -96,7 +129,8 @@ public class NetworkMgrTcp : NetworkMgrBase
         }
     }
 
-    
+    private IPEndPoint? _ListenEndPoint;
+    private readonly Socket _ListenSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
     private readonly Queue<NetworkEvent> _EventQueue = new Queue<NetworkEvent>();
     private readonly Dictionary<uint, TcpSession> _AllSessions = new Dictionary<uint, TcpSession>();
 

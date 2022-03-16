@@ -1,6 +1,7 @@
 ﻿using AsunaFoundation;
 using AsunaServer.Config;
-using AsunaServer.Network;
+
+#pragma warning disable CS8604
 
 namespace AsunaServer.Servers;
 

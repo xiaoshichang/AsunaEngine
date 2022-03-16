@@ -1,6 +1,6 @@
 ﻿using System.Net.Sockets;
 
-namespace AsunaServer.Network;
+namespace AsunaFoundation;
 
 public class TcpSession
 {
