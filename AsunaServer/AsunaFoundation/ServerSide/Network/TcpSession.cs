@@ -1,4 +1,5 @@
 ﻿using System.Net.Sockets;
+using Newtonsoft.Json;
 
 namespace AsunaFoundation;
 
@@ -24,6 +25,7 @@ public class TcpSession
 
     public void StartReceiving()
     {
+        Logger.LogInfo("StartReceiving...");
         StartReceiveHeader();
     }
 
@@ -32,24 +34,102 @@ public class TcpSession
         _Socket.BeginReceive(_HeaderBuffer, _HeaderOffset, MsgHeader.MsgHeaderSize, SocketFlags.None, OnReceiveHeader, null);
     }
 
+    /// <summary>
+    /// callback when receive some bytes of message header.
+    /// note that this is called by other thread than main thread.
+    /// </summary>
     private void OnReceiveHeader(IAsyncResult ar)
     {
         var receiveSize = _Socket.EndReceive(ar);
         if (receiveSize == MsgHeader.MsgHeaderSize)
         {
-            
+            MsgHeader.ParseHeader(_HeaderBuffer, out MsgHeader header);
+            _HeaderOffset = 0;
+            StartReceiveBody(header);
         }
-        else
+        else if (receiveSize < MsgHeader.MsgHeaderSize)
         {
             _HeaderOffset += receiveSize;
             StartReceiveHeader();
         }
-        
+        else
+        {
+            DisconnectFromSession(DisconnectReason.UnknownError);
+        }
     }
 
-    private void StartReceiveBody()
+    private void StartReceiveJsonMsg(MsgJson msg)
     {
-        
+        _Socket.BeginReceive(msg.Buffer, msg.BufferOffset, (int)msg.Header.MsgSize - msg.BufferOffset, SocketFlags.None, OnReceiveJsonMsg, msg);
+    }
+    
+    /// <summary>
+    /// callback when receive some bytes of json body.
+    /// note that this is called by other thread than main thread.
+    /// </summary>
+    private void OnReceiveJsonMsg(IAsyncResult ar)
+    {
+        var receiveSize = _Socket.EndReceive(ar);
+        if (receiveSize == 0)
+        {
+            DisconnectFromSession(DisconnectReason.CloseByRemote);
+            return;
+        }
+        var msg = ar.AsyncState as MsgJson;
+        if (msg == null)
+        {
+            DisconnectFromSession(DisconnectReason.UnknownError);
+            return;
+        }
+        msg.BufferOffset += receiveSize;
+        if (msg.BufferOffset == msg.Header.MsgSize)
+        {
+            var evt = new NetworkEvent()
+            {
+                Session = this,
+                EventType = NetworkEventType.OnReceive,
+                ReceiveMsg = msg
+            };
+            _OnEventCallback?.Invoke(evt);
+            StartReceiveHeader();
+        }
+        else if (msg.BufferOffset < msg.Header.MsgSize)
+        {
+            StartReceiveJsonMsg(msg);
+        }
+        else
+        {
+            DisconnectFromSession(DisconnectReason.UnknownError);
+        }
+    }
+    
+    private void StartReceiveBody(MsgHeader header)
+    {
+        if (header.MsgType == MsgType.Json)
+        {
+            var jsonMsg = new MsgJson
+            {
+                Header = header,
+                Buffer = new byte[header.MsgSize],
+                BufferOffset = 0
+            };
+            StartReceiveJsonMsg(jsonMsg);
+        }
+        else
+        {
+            DisconnectFromSession(DisconnectReason.UnknownError);
+        }
+    }
+
+    private void DisconnectFromSession(DisconnectReason reason)
+    {
+        var evt = new NetworkEvent
+        {
+            Session = this,
+            EventType = NetworkEventType.Disconnect,
+            DisconnectReason = reason
+        };
+        _OnEventCallback?.Invoke(evt);
     }
 
 

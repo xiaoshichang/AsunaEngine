@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using AsunaFoundation;
 using UnityEngine;
 
@@ -20,6 +22,20 @@ namespace AsunaGamePlay
                 return;
             }
             Debug.Log("Connect to server ok!");
+            StartCoroutine(SendHello());
+        }
+
+        private IEnumerator SendHello()
+        {
+            Debug.Log("Send ping");
+            yield return new WaitForSeconds(1);
+            var msg = new MsgJson();
+            var data = new Dictionary<string, string>
+            {
+                ["request"] = "ping"
+            };
+            msg.obj = data;
+            NetworkMgr.Instance.Send(msg);
         }
     }
 }

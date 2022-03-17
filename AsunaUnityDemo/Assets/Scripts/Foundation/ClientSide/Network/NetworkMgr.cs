@@ -125,23 +125,27 @@ namespace AsunaFoundation
 
         private MsgJson ReceiveJson(int dataSize)
         {
-            MsgJson msg = new MsgJson() {buffer = new byte[dataSize]};
-            int bytesReceived = 0;
+            MsgJson msg = new MsgJson()
+            {
+                Buffer = new byte[dataSize],
+                BufferOffset = 0
+            };
             
-            while (bytesReceived != dataSize)
+            while (msg.BufferOffset != dataSize)
             {
                 try
                 {
-                    bytesReceived += _Socket.Receive(msg.buffer, bytesReceived, dataSize - bytesReceived, SocketFlags.None);
+                    var bytesReceived = _Socket.Receive(msg.Buffer, msg.BufferOffset, dataSize - msg.BufferOffset, SocketFlags.None);
                     if (bytesReceived == 0)
                     {
                         DisconnectByException(new EndOfStreamException());
                         break;
                     }
+                    msg.BufferOffset += bytesReceived;
                 }
-                catch(Exception excetion)
+                catch(Exception exception)
                 {
-                    DisconnectByException(excetion);
+                    DisconnectByException(exception);
                     break;
                 }
             }

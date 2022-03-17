@@ -1,7 +1,13 @@
-﻿using AsunaFoundation;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using AsunaFoundation;
 using AsunaServer.Config;
+using Newtonsoft.Json;
 
 #pragma warning disable CS8604
+#pragma warning disable CS8602
 
 namespace AsunaServer.Servers;
 
@@ -17,9 +23,9 @@ public abstract class ServerBase
     {
         Logger.LogInfo($"Server {_ServerConfig.Name} Init!");
         _InternalNetwork.Init(_ServerConfig.InternalIP, _ServerConfig.InternalPort);
-        _InternalNetwork.OnAcceptConnectionCallback = OnAcceptConnection;
-        _InternalNetwork.OnDisconnectCallback = OnDisconnect;
-        _InternalNetwork.OnReceiveMessageCallback = OnReceiveMessage;
+        _InternalNetwork.OnAcceptConnectionCallback = OnInternalAcceptConnection;
+        _InternalNetwork.OnDisconnectCallback = OnInternalDisconnect;
+        _InternalNetwork.OnReceiveMessageCallback = OnInternalReceiveMessage;
     }
 
     public virtual void Uninit()
@@ -35,16 +41,29 @@ public abstract class ServerBase
     {
     }
 
-    protected virtual void OnAcceptConnection(NetworkEvent evt)
+    /// <summary>
+    /// callback when a internal node accepted
+    /// </summary>
+    protected virtual void OnInternalAcceptConnection(NetworkEvent evt)
     {
     }
 
-    protected virtual void OnDisconnect(NetworkEvent evt)
+    /// <summary>
+    /// callback when a internal node disconnected
+    /// </summary>
+    protected virtual void OnInternalDisconnect(NetworkEvent evt)
     {
     }
     
-    protected virtual void OnReceiveMessage(NetworkEvent evt)
+    /// <summary>
+    /// callback when receive a network message from internal network
+    /// </summary>
+    protected virtual void OnInternalReceiveMessage(NetworkEvent evt)
     {
+        var msg = evt.ReceiveMsg as MsgJson;
+        var str = Encoding.Default.GetString(msg.Buffer);
+        var body = JsonConvert.DeserializeObject<Dictionary<string, string>>(str);
+        Logger.LogInfo($"OnInternalReceiveMessage - {str}");
     }
     
     public virtual void Run()

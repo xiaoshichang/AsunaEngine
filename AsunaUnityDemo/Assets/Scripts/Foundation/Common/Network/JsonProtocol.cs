@@ -10,7 +10,7 @@ namespace AsunaFoundation
         {
             Header = new MsgHeader(){MsgType = MsgType.Json};
         }
-        public byte[] buffer;
         public object obj;
     }
+
 }

@@ -47,6 +47,8 @@ namespace AsunaFoundation
     public class MsgBase
     {
         public MsgHeader Header;
+        public byte[] Buffer;
+        public int BufferOffset;
     }
     
     
