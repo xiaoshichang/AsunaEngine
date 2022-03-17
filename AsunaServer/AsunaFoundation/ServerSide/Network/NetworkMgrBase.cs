@@ -8,6 +8,6 @@ public abstract class NetworkMgrBase
     public abstract void AddEvent(NetworkEvent evt);
     
     public NetworkEventHandler? OnReceiveMessageCallback;
-    public NetworkEventHandler? OnAccepConnectionCallback;
+    public NetworkEventHandler? OnAcceptConnectionCallback;
     public NetworkEventHandler? OnDisconnectCallback;
 }

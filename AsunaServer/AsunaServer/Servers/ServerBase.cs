@@ -17,7 +17,7 @@ public abstract class ServerBase
     {
         Logger.LogInfo($"Server {_ServerConfig.Name} Init!");
         _InternalNetwork.Init(_ServerConfig.InternalIP, _ServerConfig.InternalPort);
-        _InternalNetwork.OnAccepConnectionCallback = OnAcceptConnection;
+        _InternalNetwork.OnAcceptConnectionCallback = OnAcceptConnection;
         _InternalNetwork.OnDisconnectCallback = OnDisconnect;
         _InternalNetwork.OnReceiveMessageCallback = OnReceiveMessage;
     }

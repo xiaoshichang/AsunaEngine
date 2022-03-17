@@ -31,13 +31,13 @@ namespace AsunaFoundation
     {
         public NetworkEventType EventType;
         public Exception OnConnectException;
-        public MsgHeader RecvMsg;
+        public MsgBase RecvMsg;
         public Exception OnDisconnectByRemoteException;
     }
 
     public class NetworkMgr
     {
-        public static NetworkMgr Instance = new NetworkMgr();
+        public static readonly NetworkMgr Instance = new NetworkMgr();
 
         public void Init()
         {
@@ -95,8 +95,8 @@ namespace AsunaFoundation
 
         private bool ReceiveHeader(out int dataSize, out MsgType msgType)
         {
-            byte[] header = new byte[8];
-            int bytesReceived = 0;
+            var header = new byte[8];
+            var bytesReceived = 0;
             dataSize = 0;
             msgType = MsgType.Json;
             
@@ -111,9 +111,9 @@ namespace AsunaFoundation
                         return false;
                     }
                 }
-                catch(Exception excetion)
+                catch(Exception exception)
                 {
-                    DisconnectByException(excetion);
+                    DisconnectByException(exception);
                     return false;
                 }
             }
@@ -148,7 +148,7 @@ namespace AsunaFoundation
             return msg;
         }
 
-        private bool ReceiveBody(int dataSize, MsgType msgType, out MsgHeader msg)
+        private bool ReceiveBody(int dataSize, MsgType msgType, out MsgBase msg)
         {
             msg = null;
             if (msgType == MsgType.Json)
@@ -174,7 +174,7 @@ namespace AsunaFoundation
                 {
                     break;
                 }
-                if (!ReceiveBody(dataSize, msgType, out MsgHeader msg))
+                if (!ReceiveBody(dataSize, msgType, out MsgBase msg))
                 {
                     break;
                 }
@@ -191,7 +191,7 @@ namespace AsunaFoundation
             }
         }
 
-        public void Send(MsgHeader msg)
+        public void Send(MsgBase msg)
         {
             lock(_SendQueue)
             {
@@ -200,24 +200,27 @@ namespace AsunaFoundation
             _SendEvent.Set();
         }
 
-        private void SendJson(MsgHeader msg)
+        private void SendJson(MsgBase msg)
         {
             // prepare
             var json = msg as MsgJson;
-            string str = JsonConvert.SerializeObject(json.obj);
-            var data = Encoding.UTF8.GetBytes(str);
-            var jsonSize = data.Length;
-            var msgSize = jsonSize + 8;
+            var str = JsonConvert.SerializeObject(json.obj);
+            var dataBuffer = Encoding.UTF8.GetBytes(str);
+            var jsonSize = dataBuffer.Length;
+            msg.Header.MsgSize = (uint)jsonSize;
+            var headerBuffer = MsgHeader.DumpHeader(msg.Header);
+            var bufferSize = jsonSize + MsgHeader.MsgHeaderSize;
+            
             // copy to buffer
-            var buffer = new byte[msgSize];
-            BitConverter.GetBytes(jsonSize).CopyTo(buffer, 0);
-            BitConverter.GetBytes((int)msg.MsgType).CopyTo(buffer, 4);
-            data.CopyTo(buffer, 8);
+            var buffer = new byte[bufferSize];
+            headerBuffer.CopyTo(buffer, 0);
+            dataBuffer.CopyTo(buffer, MsgHeader.MsgHeaderSize);
+            
             // send buffer
             int bytesSent = 0;
-            while (bytesSent != msgSize)
+            while (bytesSent != bufferSize)
             {
-                bytesSent += _Socket.Send(buffer, bytesSent, msgSize - bytesSent, SocketFlags.None);
+                bytesSent += _Socket.Send(buffer, bytesSent, bufferSize - bytesSent, SocketFlags.None);
             }
         }
 
@@ -230,13 +233,13 @@ namespace AsunaFoundation
                     _SendEvent.WaitOne();
                     continue;
                 }
-                MsgHeader msg;
+                MsgBase msg;
                 lock(_SendQueue)
                 {
                     msg = _SendQueue.Dequeue();
                 }
                 
-                if (msg.MsgType == MsgType.Json)
+                if (msg.Header.MsgType == MsgType.Json)
                 {
                     SendJson(msg);
                 }
@@ -260,7 +263,7 @@ namespace AsunaFoundation
         }
 
 
-        private void ProcessRecvMsg(MsgHeader msg)
+        private void ProcessRecvMsg(MsgBase msg)
         {
             Debug.Log($"ProcessRecvMsg {msg}");
         }
@@ -269,13 +272,13 @@ namespace AsunaFoundation
         {
             while(true)
             {
-                if (_Events.Count == 0)
-                {
-                    break;
-                }
                 NetworkEvent e;
                 lock(_Events)
                 {
+                    if (_Events.Count == 0)
+                    {
+                        break;
+                    }
                     e = _Events.Dequeue();
                 }
                 switch(e.EventType)
@@ -311,9 +314,9 @@ namespace AsunaFoundation
         private Socket _Socket;
         private Thread _ReceiveThread;
         private Thread _SendThread;
-        private Queue<NetworkEvent> _Events = new Queue<NetworkEvent>();
-        private Queue<MsgHeader> _SendQueue = new Queue<MsgHeader>();
-        private ManualResetEvent _SendEvent = new ManualResetEvent(false);
+        private readonly Queue<NetworkEvent> _Events = new Queue<NetworkEvent>();
+        private readonly Queue<MsgBase> _SendQueue = new Queue<MsgBase>();
+        private readonly ManualResetEvent _SendEvent = new ManualResetEvent(false);
 
     }
 }

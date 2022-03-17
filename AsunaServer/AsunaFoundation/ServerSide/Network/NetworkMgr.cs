@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using AsunaFoundation;
 
 #pragma warning disable CS8600
 #pragma warning disable CS8604
@@ -52,24 +51,15 @@ public class NetworkMgrTcp : NetworkMgrBase
         _ListenSocket.BeginAccept(OnAsyncAccept, null);
     }
 
-    private TcpSession CreateSession(Socket socket)
-    {
-        var session = new TcpSession(socket)
-        {
-            OnEventCallback = AddEvent
-        };
-        return session;
-    }
-
     /// <summary>
     /// this callback is called by main thread
     /// </summary>
     private void OnAcceptConnection(NetworkEvent evt)
     {
         Logger.LogInfo($"accept new connection {evt.AcceptSocket.RemoteEndPoint}");
-        var session = CreateSession(evt.AcceptSocket);
+        var session = new TcpSession(evt.AcceptSocket, AddEvent);
         _AllSessions.Add(session.SessionID, session);
-        OnAccepConnectionCallback?.Invoke(evt);
+        OnAcceptConnectionCallback?.Invoke(evt);
         session.StartReceiving();
     }
 

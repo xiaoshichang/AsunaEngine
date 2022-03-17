@@ -1,15 +1,16 @@
 
+#pragma warning disable CS8618
+
 namespace AsunaFoundation
 {
 
-    /// <summary>
-    /// 
-    ///     +-------------------------------------------------------------------------------------------+
-    ///     +   data_size(4 bytes)     |   msgType(4 bytes)     |   data (data_size bytes)          +
-    ///     +-------------------------------------------------------------------------------------------+
-    /// 
-    /// </summary>
-    public static class JsonProtocol
+    public class MsgJson : MsgBase
     {
+        public MsgJson()
+        {
+            Header = new MsgHeader(){MsgType = MsgType.Json};
+        }
+        public byte[] buffer;
+        public object obj;
     }
 }
