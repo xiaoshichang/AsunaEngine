@@ -127,6 +127,8 @@ public class NetworkMgrTcp : NetworkMgrBase
         {
             _EventQueue.Enqueue(evt);
         }
+        // after adding a net event, notify main thread immediately
+        LoopEvent.Set();
     }
 
     private IPEndPoint? _ListenEndPoint;

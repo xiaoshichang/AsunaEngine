@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using AsunaFoundation;
+﻿using AsunaFoundation;
+using AsunaGamePlay;
 using AsunaServer.Config;
-using Newtonsoft.Json;
 
 #pragma warning disable CS8604
 #pragma warning disable CS8602
@@ -63,13 +59,13 @@ public abstract class ServerBase
     protected virtual void OnInternalReceiveMessage(NetworkEvent evt)
     {
         var msg = evt.ReceiveMsg as MsgJson;
-        var str = Encoding.Default.GetString(msg.Buffer);
-        var body = JsonConvert.DeserializeObject<Dictionary<string, string>>(str);
-        Logger.LogInfo($"OnInternalReceiveMessage - {str}");
-        body["message"] = "pong";
+        var ping = Serializer.DeserializeFromJson<MsgCSPing>(msg.Buffer);
         var rsp = new MsgJson
         {
-            obj = body
+            obj = new MsgSCPong()
+            {
+                Timestamp = ping.Timestamp
+            }
         };
         evt.Session.SendMsg(rsp);
     }
@@ -81,6 +77,8 @@ public abstract class ServerBase
         {
             ProcessNetworkEvents();
             ProcessTimerEvents();
+            _InternalNetwork.LoopEvent.Reset();
+            _InternalNetwork.LoopEvent.WaitOne(10);
         }
     }
 

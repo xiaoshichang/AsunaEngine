@@ -1,6 +1,4 @@
 
-using System.Text;
-using Newtonsoft.Json;
 
 #pragma warning disable CS8618
 
@@ -17,8 +15,7 @@ namespace AsunaFoundation
         
         public override void DumpToBuffer()
         {
-            var json = JsonConvert.SerializeObject(obj);
-            var bodyBuffer = Encoding.Default.GetBytes(json);
+            var bodyBuffer = Serializer.SerializeToJson(obj);
             Header.MsgSize = (uint)bodyBuffer.Length;
             Buffer = new byte[Header.MsgSize + MsgHeader.MsgHeaderSize];
             BufferOffset = 0;

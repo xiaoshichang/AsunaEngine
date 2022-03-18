@@ -7,7 +7,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using Newtonsoft.Json;
 using UnityEngine;
 
 namespace AsunaFoundation
@@ -204,8 +203,7 @@ namespace AsunaFoundation
         {
             // prepare
             var json = msg as MsgJson;
-            var str = JsonConvert.SerializeObject(json.obj);
-            var dataBuffer = Encoding.UTF8.GetBytes(str);
+            var dataBuffer = Serializer.SerializeToJson(json.obj);
             var jsonSize = dataBuffer.Length;
             msg.Header.MsgSize = (uint)jsonSize;
             var headerBuffer = MsgHeader.DumpHeader(msg.Header);
@@ -228,33 +226,34 @@ namespace AsunaFoundation
         {
             while(true)
             {
-                if (_SendQueue.Count == 0)
-                {
-                    _SendEvent.WaitOne();
-                    continue;
-                }
                 MsgBase msg;
                 lock(_SendQueue)
                 {
-                    msg = _SendQueue.Dequeue();
+                    msg = _SendQueue.Count == 0 ? null : _SendQueue.Dequeue();
                 }
-                
-                if (msg.Header.MsgType == MsgType.Json)
+
+                if (msg == null)
                 {
-                    SendJson(msg);
+                    _SendEvent.Reset();
+                    _SendEvent.WaitOne();
                 }
                 else
                 {
-                    Debug.LogError("unknown msg type");
+                    if (msg.Header.MsgType == MsgType.Json)
+                    {
+                        SendJson(msg);
+                    }
+                    else
+                    {
+                        Debug.LogError("unknown msg type");
+                    }
                 }
-                _SendEvent.Reset();
             }
         }
 
         public void Update()
         {
             ProcessNetworkEvents();
-            _SendEvent.Set();
         }
 
         public void Disconnect()
@@ -265,7 +264,7 @@ namespace AsunaFoundation
 
         private void ProcessRecvMsg(MsgBase msg)
         {
-            Debug.Log($"ProcessRecvMsg {msg}");
+            OnReceiveMsg?.Invoke(msg);
         }
 
         private void ProcessNetworkEvents()
@@ -317,6 +316,8 @@ namespace AsunaFoundation
         private readonly Queue<NetworkEvent> _Events = new Queue<NetworkEvent>();
         private readonly Queue<MsgBase> _SendQueue = new Queue<MsgBase>();
         private readonly ManualResetEvent _SendEvent = new ManualResetEvent(false);
+        public Action<MsgBase> OnReceiveMsg;
+
 
     }
 }

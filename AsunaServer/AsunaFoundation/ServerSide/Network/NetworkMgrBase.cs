@@ -10,4 +10,5 @@ public abstract class NetworkMgrBase
     public NetworkEventHandler? OnReceiveMessageCallback;
     public NetworkEventHandler? OnAcceptConnectionCallback;
     public NetworkEventHandler? OnDisconnectCallback;
+    public ManualResetEvent LoopEvent = new ManualResetEvent(false);
 }

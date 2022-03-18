@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using AsunaFoundation;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace AsunaGamePlay
         {
             NetworkMgr.Instance.Init();
             NetworkMgr.Instance.ConnectToServer("127.0.0.1", 40001, ConnectCallback);
+            NetworkMgr.Instance.OnReceiveMsg = OnReceiveMsg;
         }
 
         private void ConnectCallback(Exception e)
@@ -27,20 +29,35 @@ namespace AsunaGamePlay
 
         private IEnumerator SendHello()
         {
-            yield return new WaitForSeconds(1);
-            Debug.Log("Send ping");
-            var msg = new MsgJson();
-            var data = new Dictionary<string, string>
+            while (true)
             {
-                ["request"] = "ping"
-            };
-            msg.obj = data;
-            NetworkMgr.Instance.Send(msg);
+                yield return new WaitForSeconds(1);
+                Debug.Log("Send ping");
+                var msg = new MsgJson()
+                {
+                    obj = new MsgCSPing()
+                    {
+                        Timestamp = TimeStamp.GetTimeStampInMilliseconds()
+                    }
+                };
+                NetworkMgr.Instance.Send(msg);
+            }
+        }
+
+        private void OnReceiveMsg(MsgBase msg)
+        {
+            var pong = Serializer.DeserializeFromJson<MsgSCPong>(msg.Buffer);
+            var diff = TimeStamp.GetTimeStampInMilliseconds() - pong.Timestamp;
+            Debug.Log($"ping - pong {diff}");
         }
 
         private void Update()
         {
             NetworkMgr.Instance.Update();
+        }
+
+        private void OnApplicationQuit()
+        {
         }
     }
 }
