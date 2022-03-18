@@ -27,8 +27,8 @@ namespace AsunaGamePlay
 
         private IEnumerator SendHello()
         {
-            Debug.Log("Send ping");
             yield return new WaitForSeconds(1);
+            Debug.Log("Send ping");
             var msg = new MsgJson();
             var data = new Dictionary<string, string>
             {
@@ -36,6 +36,11 @@ namespace AsunaGamePlay
             };
             msg.obj = data;
             NetworkMgr.Instance.Send(msg);
+        }
+
+        private void Update()
+        {
+            NetworkMgr.Instance.Update();
         }
     }
 }

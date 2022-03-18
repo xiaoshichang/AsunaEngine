@@ -65,6 +65,8 @@ public class NetworkMgrTcp : NetworkMgrBase
 
     private void OnDisconnect(NetworkEvent evt)
     {
+        evt.Session.DoDisconnect();
+        _AllSessions.Remove(evt.Session.SessionID);
         OnDisconnectCallback?.Invoke(evt);
     }
 
@@ -83,30 +85,38 @@ public class NetworkMgrTcp : NetworkMgrBase
         {
             while (_EventQueue.Count > 0)
             {
-                var evt = _EventQueue.Dequeue();
-                switch (evt.EventType)
+                try
                 {
-                    case NetworkEventType.Accept:
+                    var evt = _EventQueue.Dequeue();
+                    switch (evt.EventType)
                     {
-                        OnAcceptConnection(evt);
-                        break;
-                    }
-                    case NetworkEventType.Disconnect:
-                    {
-                        OnDisconnect(evt);
-                        break;
-                    }
-                    case NetworkEventType.OnReceive:
-                    {
-                        OnReceiveMessage(evt);
-                        break;
-                    }
-                    case NetworkEventType.OnSend:
-                    {
-                        OnSendMessage(evt);
-                        break;
+                        case NetworkEventType.Accept:
+                        {
+                            OnAcceptConnection(evt);
+                            break;
+                        }
+                        case NetworkEventType.Disconnect:
+                        {
+                            OnDisconnect(evt);
+                            break;
+                        }
+                        case NetworkEventType.OnReceive:
+                        {
+                            OnReceiveMessage(evt);
+                            break;
+                        }
+                        case NetworkEventType.OnSend:
+                        {
+                            OnSendMessage(evt);
+                            break;
+                        }
                     }
                 }
+                catch (Exception e)
+                {
+                    Logger.LogError($"Exception when ProcessNetworkEvents {e.StackTrace}");
+                }
+                
             }
         }
     }

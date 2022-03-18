@@ -46,6 +46,7 @@ public abstract class ServerBase
     /// </summary>
     protected virtual void OnInternalAcceptConnection(NetworkEvent evt)
     {
+        Logger.LogInfo($"OnInternalAcceptConnection");
     }
 
     /// <summary>
@@ -53,6 +54,7 @@ public abstract class ServerBase
     /// </summary>
     protected virtual void OnInternalDisconnect(NetworkEvent evt)
     {
+        Logger.LogInfo($"OnInternalDisconnect {evt.Session.SessionID}");
     }
     
     /// <summary>
@@ -64,6 +66,12 @@ public abstract class ServerBase
         var str = Encoding.Default.GetString(msg.Buffer);
         var body = JsonConvert.DeserializeObject<Dictionary<string, string>>(str);
         Logger.LogInfo($"OnInternalReceiveMessage - {str}");
+        body["message"] = "pong";
+        var rsp = new MsgJson
+        {
+            obj = body
+        };
+        evt.Session.SendMsg(rsp);
     }
     
     public virtual void Run()
@@ -79,6 +87,5 @@ public abstract class ServerBase
     protected bool _QuitFlag = false;
     protected readonly ServerGroupConfig _ServerGroupConfig;
     protected readonly ServerConfigBase _ServerConfig;
-    
     protected readonly NetworkMgrBase _InternalNetwork = new NetworkMgrTcp();
 }

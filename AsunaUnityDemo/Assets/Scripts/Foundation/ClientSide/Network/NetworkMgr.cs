@@ -93,18 +93,16 @@ namespace AsunaFoundation
             }
         }
 
-        private bool ReceiveHeader(out int dataSize, out MsgType msgType)
+        private bool ReceiveHeader(out MsgHeader header)
         {
-            var header = new byte[8];
+            header = null;
+            var headerBuffer = new byte[MsgHeader.MsgHeaderSize];
             var bytesReceived = 0;
-            dataSize = 0;
-            msgType = MsgType.Json;
-            
-            while (bytesReceived != 8)
+            while (bytesReceived != MsgHeader.MsgHeaderSize)
             {
                 try
                 {
-                    bytesReceived += _Socket.Receive(header, bytesReceived, 8 - bytesReceived, SocketFlags.None);
+                    bytesReceived += _Socket.Receive(headerBuffer, bytesReceived, MsgHeader.MsgHeaderSize - bytesReceived, SocketFlags.None);
                     if (bytesReceived == 0)
                     {
                         DisconnectByException(new EndOfStreamException());
@@ -117,9 +115,7 @@ namespace AsunaFoundation
                     return false;
                 }
             }
-            
-            dataSize = BitConverter.ToInt32(header, 0);
-            msgType = (MsgType)BitConverter.ToInt32(header, 4);
+            MsgHeader.ParseHeader(headerBuffer, out header);
             return true;
         }
 
@@ -152,16 +148,16 @@ namespace AsunaFoundation
             return msg;
         }
 
-        private bool ReceiveBody(int dataSize, MsgType msgType, out MsgBase msg)
+        private bool ReceiveBody(MsgHeader header, out MsgBase msg)
         {
             msg = null;
-            if (msgType == MsgType.Json)
+            if (header.MsgType == MsgType.Json)
             {
-                msg = ReceiveJson(dataSize);
+                msg = ReceiveJson((int)header.MsgSize);
             }
             else
             {
-                Debug.Log("unknown msg type");
+                Debug.Log($"unknown msg type {header.MsgType}");
                 _Socket.Close();
                 return false;
             }
@@ -174,11 +170,11 @@ namespace AsunaFoundation
                 
             while(true)
             {
-                if (!ReceiveHeader(out int dataSize, out MsgType msgType))
+                if (!ReceiveHeader(out MsgHeader header))
                 {
                     break;
                 }
-                if (!ReceiveBody(dataSize, msgType, out MsgBase msg))
+                if (!ReceiveBody(header, out MsgBase msg))
                 {
                     break;
                 }

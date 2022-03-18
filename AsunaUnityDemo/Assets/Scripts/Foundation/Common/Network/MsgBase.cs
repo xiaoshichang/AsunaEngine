@@ -44,11 +44,13 @@ namespace AsunaFoundation
         public const int MsgHeaderSize = 8;
     }
 
-    public class MsgBase
+    public abstract class MsgBase
     {
         public MsgHeader Header;
         public byte[] Buffer;
         public int BufferOffset;
+
+        public abstract void DumpToBuffer();
     }
     
     
