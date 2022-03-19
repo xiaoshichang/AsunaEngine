@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AsunaEditor
+namespace AsunaEditor.Editors.MainEditor
 {
     /// <summary>
-    /// MainWindow.xaml 的交互逻辑
+    /// AssetBrowserPanel.xaml 的交互逻辑
     /// </summary>
-    public partial class AsunaEditorMainWindow : Window
+    public partial class AssetBrowserPanel : Canvas
     {
-        public AsunaEditorMainWindow()
+        public AssetBrowserPanel()
         {
             InitializeComponent();
         }
