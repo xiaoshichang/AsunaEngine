@@ -35,6 +35,7 @@ public abstract class ServerBase
 
     protected virtual void ProcessTimerEvents()
     {
+        TimerMgr.Tick();
     }
 
     /// <summary>

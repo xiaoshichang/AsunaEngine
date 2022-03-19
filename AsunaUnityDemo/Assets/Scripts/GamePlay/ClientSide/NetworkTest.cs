@@ -14,6 +14,8 @@ namespace AsunaGamePlay
             NetworkMgr.Instance.Init();
             NetworkMgr.Instance.ConnectToServer("127.0.0.1", 40001, ConnectCallback);
             NetworkMgr.Instance.OnReceiveMsg = OnReceiveMsg;
+
+            TimerMgr.RegisterTimer(true,2000, TimeoutTest);
         }
 
         private void ConnectCallback(Exception e)
@@ -54,10 +56,14 @@ namespace AsunaGamePlay
         private void Update()
         {
             NetworkMgr.Instance.Update();
+            TimerMgr.Tick();
         }
 
-        private void OnApplicationQuit()
+        private void TimeoutTest()
         {
+            Debug.Log("TimeoutTest");
         }
+
+
     }
 }
