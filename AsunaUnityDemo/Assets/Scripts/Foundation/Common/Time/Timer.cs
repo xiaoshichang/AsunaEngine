@@ -104,37 +104,38 @@ namespace AsunaFoundation
                     break;
                 }
                 timer.OnTimeout();
+                _ToRemove.Add(timer);
                 if (timer.Repeat)
                 {
                     _ToAdd.Add(timer);
                 }
-                else
-                {
-                    _ToRemove.Add(timer);
-                }
             }
         }
 
-        private static void ReBuildTimers()
+        private static void RemoveTimeoutTimers()
         {
             foreach (var timer in _ToRemove)
             {
                 _Timers.Remove(timer);
             }
+        }
+
+        private static void ReinsertRepeatTimers()
+        {
             foreach (var timer in _ToAdd)
             {
-                _Timers.Remove(timer);
                 timer.NextTimeout += timer.Delay;
                 _Timers.Add(timer);
             }
-            _ToAdd.Clear();
-            _ToRemove.Clear();
         }
         
         public static void Tick()
         {
             CheckTimeoutTimers();
-            ReBuildTimers();
+            RemoveTimeoutTimers();
+            ReinsertRepeatTimers();
+            _ToAdd.Clear();
+            _ToRemove.Clear();
         }
         
 
