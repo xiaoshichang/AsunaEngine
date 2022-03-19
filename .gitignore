@@ -12,3 +12,8 @@ AsunaUnityDemo/UserSettings
 AsunaUnityDemo/*.sln
 AsunaUnityDemo/*.csproj
 
+AsunaEngine/AsunaEngine/.vs
+AsunaEngine/AsunaEngine/x64
+AsunaEngine/AsunaEngine/out
+
+AsunaEngine/AsunaEngine/AsunaEngine/x64
