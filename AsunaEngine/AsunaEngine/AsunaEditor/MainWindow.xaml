@@ -26,33 +26,60 @@
             </StatusBarItem>
         </StatusBar>
 
-        <me:HierarcyPanel
-            x:Name="HierarcyPanel"
-            DockPanel.Dock="Left"      
-            MinWidth="300"     
-            Background="LightPink"
-            >
-        </me:HierarcyPanel>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="5" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="300" />
+            </Grid.ColumnDefinitions>
 
-        <me:InspectorPanel    
-            x:Name="InspectorPanel"
-            DockPanel.Dock="Right"
-            MinWidth="300"
-            Background="LightGray"
-            >
-        </me:InspectorPanel>
+            <me:HierarcyPanel
+                Grid.Row="0"    Grid.RowSpan="4"
+                Grid.Column="0" Grid.ColumnSpan="1"
+                x:Name="HierarcyPanel"
+                Background="LightPink">
+            </me:HierarcyPanel>
 
-        <me:AssetBrowserPanel
-            x:Name="AssetBrowserPanel"
-            DockPanel.Dock="Bottom"
-            MinHeight="300"
-            Background="LightCyan">
-        </me:AssetBrowserPanel>
+            <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="4" Width="5" HorizontalAlignment="Stretch" Background="Gray"/>
+            
+            <me:RenderPanel   
+                Grid.Row="0"    Grid.RowSpan="2"
+                Grid.Column="2" Grid.ColumnSpan="2"
+                x:Name="RenderPanel"
+                Background="LightSkyBlue">
+            </me:RenderPanel>
 
-        <me:RenderPanel   
-            x:Name="RenderPanel"
-            Background="LightSkyBlue">
-        </me:RenderPanel>
+            <GridSplitter Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2" Height="5" HorizontalAlignment="Stretch" Background="Gray" />
+
+            <me:AssetBrowserPanel
+                Grid.Row="3"    Grid.RowSpan="1"
+                Grid.Column="2" Grid.ColumnSpan="2"
+                x:Name="AssetBrowserPanel"
+                Background="LightCyan">
+            </me:AssetBrowserPanel>
+
+            <GridSplitter Grid.Column="4" Grid.Row="0" Grid.RowSpan="4" Width="5" HorizontalAlignment="Stretch" Background="Gray"/>
+            
+            <me:InspectorPanel    
+                Grid.Row="0"    Grid.RowSpan="4"
+                Grid.Column="5" Grid.ColumnSpan="1"
+                x:Name="InspectorPanel"
+                Background="LightGray">
+            </me:InspectorPanel>
+
+            
+
+            
+        </Grid>
 
     </DockPanel>
 </Window>
