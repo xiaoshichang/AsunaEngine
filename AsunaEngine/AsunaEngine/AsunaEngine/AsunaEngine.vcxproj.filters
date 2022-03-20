@@ -13,30 +13,42 @@
     <Filter Include="Foundation">
       <UniqueIdentifier>{01e07b5d-f0c3-44bf-b735-6dadc68adecf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Foundation\Module">
-      <UniqueIdentifier>{7e6f1101-20dd-4975-8307-3dd61f8ab7b6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Foundation\Math">
       <UniqueIdentifier>{29f1f190-030d-41c7-9b7c-b1cc9f2be19a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DLLExport">
+      <UniqueIdentifier>{ac19c426-fad5-4891-9981-b57a4f9895eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Foundation\Interface">
+      <UniqueIdentifier>{7e6f1101-20dd-4975-8307-3dd61f8ab7b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="IRender.cpp">
+    <ClCompile Include="Renderer.cpp">
       <Filter>Graphics\Render</Filter>
     </ClCompile>
     <ClCompile Include="Vector.cpp">
       <Filter>Foundation\Math</Filter>
     </ClCompile>
+    <ClCompile Include="DirectX12Renderer.cpp">
+      <Filter>Graphics\Render\DirectX12</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IRender.h">
+    <ClInclude Include="Renderer.h">
       <Filter>Graphics\Render</Filter>
     </ClInclude>
     <ClInclude Include="IModule.h">
-      <Filter>Foundation\Module</Filter>
+      <Filter>Foundation\Interface</Filter>
     </ClInclude>
     <ClInclude Include="Vector.h">
       <Filter>Foundation\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX12Renderer.h">
+      <Filter>Graphics\Render\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="DLLExport.h">
+      <Filter>DLLExport</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

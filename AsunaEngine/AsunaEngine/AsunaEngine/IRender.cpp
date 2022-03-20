@@ -1,4 +1,0 @@
-
-
-#include "IRender.h"
-

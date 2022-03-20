@@ -1,5 +1,11 @@
 #pragma once
-class Vector
+
+
+namespace Asuna
 {
-};
+	class Vector
+	{
+	};
+}
+
 
