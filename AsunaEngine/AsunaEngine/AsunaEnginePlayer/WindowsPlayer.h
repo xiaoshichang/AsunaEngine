@@ -1,4 +1,5 @@
 #pragma once
+#include <Windows.h>
 #include "Application.h"
 
 namespace Asuna
@@ -11,6 +12,16 @@ namespace Asuna
 		virtual void Finialize() override;
 		virtual void Tick() override;
 		virtual void Render() override;
+
+	public:
+		HWND GetWindowsHandler() noexcept;
+
+	private:
+		static LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+		void CreateMainWindow();
+
+	private:
+		HWND HWND_;
 	};
 }
 
