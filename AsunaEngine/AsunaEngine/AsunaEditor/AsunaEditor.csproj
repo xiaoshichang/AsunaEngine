@@ -61,6 +61,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Editors\MainEditor\LogPanel.xaml.cs">
+      <DependentUpon>LogPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Structures\LogRecord.cs" />
     <Compile Include="Utils\ErrorMsg.cs" />
     <Page Include="Editors\MainEditor\AssetBrowserPanel.xaml">
       <SubType>Designer</SubType>
@@ -75,6 +79,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Editors\MainEditor\InspectorPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Editors\MainEditor\LogPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
