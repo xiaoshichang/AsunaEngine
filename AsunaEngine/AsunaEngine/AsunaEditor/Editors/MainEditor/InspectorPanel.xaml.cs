@@ -24,5 +24,11 @@ namespace AsunaEditor.Editors.MainEditor
         {
             InitializeComponent();
         }
+
+        public void OnInspectNewObject(object entity)
+        {
+            TargetName.Text = entity as string;
+        }
+
     }
 }

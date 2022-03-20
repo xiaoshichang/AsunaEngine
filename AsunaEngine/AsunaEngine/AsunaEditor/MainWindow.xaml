@@ -26,14 +26,16 @@
             </StatusBarItem>
         </StatusBar>
 
-        <me:HierarcyPanel       
+        <me:HierarcyPanel
+            x:Name="HierarcyPanel"
             DockPanel.Dock="Left"      
             MinWidth="300"     
             Background="LightPink"
             >
         </me:HierarcyPanel>
 
-        <me:InspectorPanel      
+        <me:InspectorPanel    
+            x:Name="InspectorPanel"
             DockPanel.Dock="Right"
             MinWidth="300"
             Background="LightGray"
@@ -41,12 +43,14 @@
         </me:InspectorPanel>
 
         <me:AssetBrowserPanel
+            x:Name="AssetBrowserPanel"
             DockPanel.Dock="Bottom"
             MinHeight="300"
             Background="LightCyan">
         </me:AssetBrowserPanel>
 
-        <me:RenderPanel         
+        <me:RenderPanel   
+            x:Name="RenderPanel"
             Background="LightSkyBlue">
         </me:RenderPanel>
 

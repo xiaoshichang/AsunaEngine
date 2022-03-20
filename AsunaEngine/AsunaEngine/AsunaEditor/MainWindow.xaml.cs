@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using AsunaEditor.Structures;
+using AsunaEditor.Utils;
 using Microsoft.Win32;
 
 namespace AsunaEditor
@@ -24,6 +25,7 @@ namespace AsunaEditor
     {
         public AsunaEditorMainWindow()
         {
+            Current = this;
             InitializeComponent();
         }
 
@@ -32,11 +34,10 @@ namespace AsunaEditor
             var result = AsunaProject.Create("C:\\Users\\xiao\\Desktop\\AsunaClientProjectDemo", "0.0.1");
             if (result != AsunaProjectCreateResult.Success)
             {
-                string messageBoxText = $"{result}!";
-                string caption = "Create Project Error";
-                MessageBox.Show(messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"{result}", ErrorMsg.ErrorMsg_CreateProject_Caption, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+            AssetBrowserPanel.OnProjectLoaded();
         }
 
         private void MenuItem_Click_OpenProject(object sender, RoutedEventArgs e)
@@ -50,23 +51,21 @@ namespace AsunaEditor
                 var result = AsunaProject.Load(projectFile);
                 if (result != AsunaProjectLoadResult.Success)
                 {
-                    string messageBoxText = $"{result}";
-                    string caption = "Open Project Error";
-                    MessageBox.Show(messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"{result}", ErrorMsg.ErrorMsg_LoadProject_Caption, MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
+                AssetBrowserPanel.OnProjectLoaded();
                 ActionResult.Text = "Open Project OK!";
                 Title = $"AsunaEditor - {projectFile}";
             }
+
         }
 
         private void MenuItem_Click_SaveProject(object sender, RoutedEventArgs e)
         {
             if (AsunaProject.Current == null)
             {
-                string messageBoxText = "No Project opened!";
-                string caption = "Save Project Error";
-                MessageBox.Show(messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ErrorMsg.ErrorMsg_SaveProject_Content_Empty, ErrorMsg.ErrorMsg_SaveProject_Caption, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
         }
@@ -75,5 +74,7 @@ namespace AsunaEditor
         {
             Application.Current.Shutdown();
         }
+
+        public static AsunaEditorMainWindow Current;
     }
 }

@@ -19,14 +19,16 @@ namespace AsunaEditor.Structures
     [DataContract]
     public class AsunaProject
     {
-        public FileStream ProjectFile;
-        public string ProjectPath { get; set; }
+        [DataMember]
+        public string ProjectRootPath { get; set; }
 
         [DataMember]
         public string ProjectVersion { get; set; }
 
         public void Save()
         {
+            var projectFilePath = Path.Combine(ProjectRootPath, ProjectFileName);
+            var ProjectFile = File.Open(projectFilePath, FileMode.OpenOrCreate);
             ProjectFile.Seek(0, SeekOrigin.Begin);
             var content = JsonConvert.SerializeObject(this, Formatting.Indented);
             var data = Encoding.Default.GetBytes(content);
@@ -41,19 +43,20 @@ namespace AsunaEditor.Structures
             return AsunaProjectLoadResult.Success;
         }
 
-        public static AsunaProjectCreateResult Create(string projectRoot, string projectVersion)
+        public static AsunaProjectCreateResult Create(string projectRootPath, string projectVersion)
         {
             var project = new AsunaProject();
-            var projectFilePath = Path.Combine(projectRoot, ProjectFileName);
+            var projectFilePath = Path.Combine(projectRootPath, ProjectFileName);
 
             if (File.Exists(projectFilePath))
             {
                 return AsunaProjectCreateResult.AllreadyExist;
             }
 
-            project.ProjectFile = File.Open(projectFilePath, FileMode.CreateNew);
-            project.ProjectPath = projectRoot;
+            project.ProjectRootPath = projectRootPath;
             project.ProjectVersion = projectVersion;
+            Current = project;
+
             project.Save();
             return AsunaProjectCreateResult.Success;
         }
