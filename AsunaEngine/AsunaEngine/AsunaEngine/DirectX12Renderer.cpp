@@ -2,20 +2,20 @@
 #include <iostream>
 using namespace std;
 
-void Asuna::DirectX12Renderer::Initialize()
+void asuna::DirectX12Renderer::Initialize()
 {
 	cout << "DirectX12 Initialize" << endl;
 }
 
-void Asuna::DirectX12Renderer::Finalize()
+void asuna::DirectX12Renderer::Finalize()
 {
 	cout << "DirectX12 Finalize" << endl;
 }
 
-void Asuna::DirectX12Renderer::Tick()
+void asuna::DirectX12Renderer::Tick()
 {
 }
 
-void Asuna::DirectX12Renderer::Render()
+void asuna::DirectX12Renderer::Render()
 {
 }

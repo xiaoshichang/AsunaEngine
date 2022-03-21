@@ -4,8 +4,7 @@
 
 namespace asuna
 {
-
-	class ASUNAENGINE_API DirectX12Renderer : public Renderer
+	class ASUNAENGINE_API DirectX11Renderer : public Renderer
 	{
 	public:
 		virtual void Initialize();
@@ -15,5 +14,4 @@ namespace asuna
 
 	};
 }
-
 

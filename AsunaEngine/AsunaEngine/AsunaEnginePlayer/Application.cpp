@@ -1,6 +1,6 @@
 #include "Application.h"
 
-void Asuna::Application::Run()
+void asuna::Application::Run()
 {
 	while (true)
 	{

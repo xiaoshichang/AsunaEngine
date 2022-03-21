@@ -22,6 +22,12 @@
     <Filter Include="Foundation\Interface">
       <UniqueIdentifier>{7e6f1101-20dd-4975-8307-3dd61f8ab7b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics\Render\DirectX11">
+      <UniqueIdentifier>{906425c4-451b-45a5-98b5-f961f5839823}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Foundation\Platform">
+      <UniqueIdentifier>{99e1fd19-8f8a-4a83-b76f-107ba7b10249}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Renderer.cpp">
@@ -32,6 +38,9 @@
     </ClCompile>
     <ClCompile Include="DirectX12Renderer.cpp">
       <Filter>Graphics\Render\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX11Renderer.cpp">
+      <Filter>Graphics\Render\DirectX11</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -49,6 +58,24 @@
     </ClInclude>
     <ClInclude Include="DLLExport.h">
       <Filter>DLLExport</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX11Renderer.h">
+      <Filter>Graphics\Render\DirectX11</Filter>
+    </ClInclude>
+    <ClInclude Include="Assert.h">
+      <Filter>Foundation\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform.h">
+      <Filter>Foundation\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowsOnly.h">
+      <Filter>Foundation\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="MacosOnly.h">
+      <Filter>Foundation\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="BuildType.h">
+      <Filter>Foundation\Platform</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

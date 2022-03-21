@@ -1,5 +1,7 @@
+#include "../AsunaEngine/Assert.h"
 #include "WindowsPlayer.h"
-using namespace Asuna;
+
+using namespace asuna;
 
 
 void WindowsPlayer::Initialize()
@@ -25,7 +27,7 @@ void WindowsPlayer::Render()
 {
 }
 
-HWND Asuna::WindowsPlayer::GetWindowsHandler() noexcept
+HWND WindowsPlayer::GetWindowsHandler() noexcept
 {
 	return HWND_;
 }

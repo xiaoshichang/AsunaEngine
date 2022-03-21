@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Asuna
+namespace asuna
 {
 	class Application
 	{

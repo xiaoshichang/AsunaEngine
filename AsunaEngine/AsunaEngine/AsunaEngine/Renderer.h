@@ -2,7 +2,7 @@
 
 #include "IModule.h"
 
-namespace Asuna
+namespace asuna
 {
 	class Renderer : public ITickableModule
 	{

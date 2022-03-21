@@ -19,13 +19,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Assert.h" />
+    <ClInclude Include="BuildType.h" />
+    <ClInclude Include="MacosOnly.h" />
+    <ClInclude Include="WindowsOnly.h" />
+    <ClInclude Include="DirectX11Renderer.h" />
     <ClInclude Include="DirectX12Renderer.h" />
     <ClInclude Include="DLLExport.h" />
     <ClInclude Include="IModule.h" />
+    <ClInclude Include="Platform.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DirectX11Renderer.cpp" />
     <ClCompile Include="DirectX12Renderer.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Vector.cpp" />
@@ -126,7 +133,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;ASUNAENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;ASUNAENGINE_EXPORTS;_DEBUG_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -141,7 +148,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;ASUNAENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;ASUNAENGINE_EXPORTS;_RELEASE_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>

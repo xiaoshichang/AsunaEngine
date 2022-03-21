@@ -3,7 +3,7 @@
 #include "../AsunaEnginePlayer/WindowsPlayer.h"
 
 using namespace std;
-using namespace Asuna;
+using namespace asuna;
 
 int main()
 {

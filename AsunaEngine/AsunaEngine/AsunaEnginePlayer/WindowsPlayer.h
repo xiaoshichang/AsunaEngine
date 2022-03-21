@@ -2,7 +2,7 @@
 #include <Windows.h>
 #include "Application.h"
 
-namespace Asuna
+namespace asuna
 {
 	class WindowsPlayer : public Application
 	{
