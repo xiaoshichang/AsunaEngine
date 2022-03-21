@@ -30,52 +30,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Graphics\Render</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector.cpp">
-      <Filter>Foundation\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectX12Renderer.cpp">
-      <Filter>Graphics\Render\DirectX12</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectX11Renderer.cpp">
-      <Filter>Graphics\Render\DirectX11</Filter>
-    </ClCompile>
+    <ClCompile Include="Graphics\DirectX11\DirectX11Renderer.cpp" />
+    <ClCompile Include="Graphics\DirectX12\DirectX12Renderer.cpp" />
+    <ClCompile Include="Graphics\Renderer.cpp" />
+    <ClCompile Include="Foundation\Math\Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Renderer.h">
-      <Filter>Graphics\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="IModule.h">
-      <Filter>Foundation\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector.h">
-      <Filter>Foundation\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectX12Renderer.h">
-      <Filter>Graphics\Render\DirectX12</Filter>
-    </ClInclude>
-    <ClInclude Include="DLLExport.h">
-      <Filter>DLLExport</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectX11Renderer.h">
-      <Filter>Graphics\Render\DirectX11</Filter>
-    </ClInclude>
-    <ClInclude Include="Assert.h">
-      <Filter>Foundation\Platform</Filter>
-    </ClInclude>
-    <ClInclude Include="Platform.h">
-      <Filter>Foundation\Platform</Filter>
-    </ClInclude>
-    <ClInclude Include="WindowsOnly.h">
-      <Filter>Foundation\Platform</Filter>
-    </ClInclude>
-    <ClInclude Include="MacosOnly.h">
-      <Filter>Foundation\Platform</Filter>
-    </ClInclude>
-    <ClInclude Include="BuildType.h">
-      <Filter>Foundation\Platform</Filter>
-    </ClInclude>
+    <ClInclude Include="Graphics\DirectX11\DirectX11Renderer.h" />
+    <ClInclude Include="Graphics\DirectX12\DirectX12Renderer.h" />
+    <ClInclude Include="Graphics\Renderer.h" />
+    <ClInclude Include="DLLExport\DLLExport.h" />
+    <ClInclude Include="Foundation\Interface\IModule.h" />
+    <ClInclude Include="Foundation\Math\Vector.h" />
+    <ClInclude Include="Foundation\Platform\Assert.h" />
+    <ClInclude Include="Foundation\Platform\BuildType.h" />
+    <ClInclude Include="Foundation\Platform\MacosOnly.h" />
+    <ClInclude Include="Foundation\Platform\Platform.h" />
+    <ClInclude Include="Foundation\Platform\WindowsOnly.h" />
   </ItemGroup>
 </Project>

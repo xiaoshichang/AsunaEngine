@@ -117,6 +117,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;_DEBUG_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\xiao\Documents\GitHub\Asuna\AsunaEngine\AsunaEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,12 +142,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
-    <ClInclude Include="WindowsPlayer.h" />
+    <ClInclude Include="Player\Windows\WindowsPlayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="WindowsPlayer.cpp" />
+    <ClCompile Include="Player\Windows\WindowsPlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AsunaEngine\AsunaEngine.vcxproj">

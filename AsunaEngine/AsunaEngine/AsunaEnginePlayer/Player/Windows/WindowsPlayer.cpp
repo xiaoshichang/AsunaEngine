@@ -1,4 +1,4 @@
-#include "../AsunaEngine/Assert.h"
+#include "AsunaEngine/Foundation/Platform/Assert.h"
 #include "WindowsPlayer.h"
 
 using namespace asuna;

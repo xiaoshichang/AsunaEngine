@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IModule.h"
+#include "../Foundation/Interface/IModule.h"
 
 namespace asuna
 {

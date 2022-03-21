@@ -19,23 +19,23 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Assert.h" />
-    <ClInclude Include="BuildType.h" />
-    <ClInclude Include="MacosOnly.h" />
-    <ClInclude Include="WindowsOnly.h" />
-    <ClInclude Include="DirectX11Renderer.h" />
-    <ClInclude Include="DirectX12Renderer.h" />
-    <ClInclude Include="DLLExport.h" />
-    <ClInclude Include="IModule.h" />
-    <ClInclude Include="Platform.h" />
-    <ClInclude Include="Renderer.h" />
-    <ClInclude Include="Vector.h" />
+    <ClCompile Include="Foundation\Math\Vector.cpp" />
+    <ClCompile Include="Graphics\DirectX11\DirectX11Renderer.cpp" />
+    <ClCompile Include="Graphics\DirectX12\DirectX12Renderer.cpp" />
+    <ClCompile Include="Graphics\Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DirectX11Renderer.cpp" />
-    <ClCompile Include="DirectX12Renderer.cpp" />
-    <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="Vector.cpp" />
+    <ClInclude Include="DLLExport\DLLExport.h" />
+    <ClInclude Include="Foundation\Interface\IModule.h" />
+    <ClInclude Include="Foundation\Math\Vector.h" />
+    <ClInclude Include="Foundation\Platform\Assert.h" />
+    <ClInclude Include="Foundation\Platform\BuildType.h" />
+    <ClInclude Include="Foundation\Platform\MacosOnly.h" />
+    <ClInclude Include="Foundation\Platform\Platform.h" />
+    <ClInclude Include="Foundation\Platform\WindowsOnly.h" />
+    <ClInclude Include="Graphics\DirectX11\DirectX11Renderer.h" />
+    <ClInclude Include="Graphics\DirectX12\DirectX12Renderer.h" />
+    <ClInclude Include="Graphics\Renderer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

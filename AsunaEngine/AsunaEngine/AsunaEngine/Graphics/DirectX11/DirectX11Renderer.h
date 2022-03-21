@@ -1,6 +1,6 @@
 #pragma once
-#include "Renderer.h"
-#include "DLLExport.h"
+#include "../Renderer.h"
+#include "../../DLLExport/DLLExport.h"
 
 namespace asuna
 {
