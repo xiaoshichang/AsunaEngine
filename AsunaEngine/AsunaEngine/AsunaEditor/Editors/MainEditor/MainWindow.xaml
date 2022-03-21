@@ -12,8 +12,6 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Project">
-                <MenuItem Header="New"  Click="MenuItem_Click_NewProject"   />
-                <MenuItem Header="Open" Click="MenuItem_Click_OpenProject"  />
                 <MenuItem Header="Save" Click="MenuItem_Click_SaveProject"  />
                 <Separator />
                 <MenuItem Header="Exit" Click="MenuItem_Click_ExitEditor"   />
