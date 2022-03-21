@@ -4,6 +4,7 @@ obj/
 Logs/
 
 .idea
+.vs
 
 AsunaUnityDemo/Library
 AsunaUnityDemo/Logs
@@ -18,3 +19,4 @@ AsunaEngine/AsunaEngine/out
 
 AsunaEngine/AsunaEngine/AsunaEngine/x64
 AsunaEngine/AsunaEngine/AsunaEnginePlayer/x64
+AsunaEngine/AsunaEngine/AsunaEngineUnitTest/x64

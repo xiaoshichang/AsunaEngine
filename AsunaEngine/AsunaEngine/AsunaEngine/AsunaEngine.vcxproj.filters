@@ -33,7 +33,6 @@
     <ClCompile Include="Graphics\DirectX11\DirectX11Renderer.cpp" />
     <ClCompile Include="Graphics\DirectX12\DirectX12Renderer.cpp" />
     <ClCompile Include="Graphics\Renderer.cpp" />
-    <ClCompile Include="Foundation\Math\Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics\DirectX11\DirectX11Renderer.h" />
@@ -41,11 +40,14 @@
     <ClInclude Include="Graphics\Renderer.h" />
     <ClInclude Include="DLLExport\DLLExport.h" />
     <ClInclude Include="Foundation\Interface\IModule.h" />
-    <ClInclude Include="Foundation\Math\Vector.h" />
     <ClInclude Include="Foundation\Platform\Assert.h" />
     <ClInclude Include="Foundation\Platform\BuildType.h" />
     <ClInclude Include="Foundation\Platform\MacosOnly.h" />
     <ClInclude Include="Foundation\Platform\Platform.h" />
     <ClInclude Include="Foundation\Platform\WindowsOnly.h" />
+    <ClInclude Include="Foundation\Math\MathCommon.h" />
+    <ClInclude Include="Foundation\Math\Matrix.h" />
+    <ClInclude Include="Foundation\Math\AMath.h" />
+    <ClInclude Include="Foundation\Math\Vector.h" />
   </ItemGroup>
 </Project>
