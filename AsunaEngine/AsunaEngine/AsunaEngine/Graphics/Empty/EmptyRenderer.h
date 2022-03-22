@@ -1,11 +1,10 @@
 #pragma once
 #include "../Renderer.h"
-#include "../../DLLExport/DLLExport.h"
 
 namespace asuna
 {
 
-	class ASUNAENGINE_API DirectX12Renderer : public Renderer
+	class ASUNAENGINE_API EmptyRenderer : public Renderer
 	{
 	public:
 		virtual void Initialize();
@@ -14,5 +13,4 @@ namespace asuna
 
 	};
 }
-
 

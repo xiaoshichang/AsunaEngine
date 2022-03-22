@@ -33,6 +33,7 @@
     <ClCompile Include="Graphics\DirectX11\DirectX11Renderer.cpp" />
     <ClCompile Include="Graphics\DirectX12\DirectX12Renderer.cpp" />
     <ClCompile Include="Graphics\Renderer.cpp" />
+    <ClCompile Include="Graphics\Empty\EmptyRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics\DirectX11\DirectX11Renderer.h" />
@@ -49,5 +50,8 @@
     <ClInclude Include="Foundation\Math\Matrix.h" />
     <ClInclude Include="Foundation\Math\AMath.h" />
     <ClInclude Include="Foundation\Math\Vector.h" />
+    <ClInclude Include="Graphics\RenderAPIType.h" />
+    <ClInclude Include="Graphics\Empty\EmptyRenderer.h" />
+    <ClInclude Include="Graphics\RenderSurface.h" />
   </ItemGroup>
 </Project>

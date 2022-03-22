@@ -19,12 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Graphics\Empty\EmptyRenderer.cpp" />
     <ClCompile Include="Graphics\DirectX11\DirectX11Renderer.cpp" />
     <ClCompile Include="Graphics\DirectX12\DirectX12Renderer.cpp" />
     <ClCompile Include="Graphics\Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DLLExport\DLLExport.h" />
+    <ClInclude Include="Graphics\Empty\EmptyRenderer.h" />
     <ClInclude Include="Foundation\Interface\IModule.h" />
     <ClInclude Include="Foundation\Math\MathCommon.h" />
     <ClInclude Include="Foundation\Math\Matrix.h" />
@@ -37,7 +39,9 @@
     <ClInclude Include="Foundation\Platform\WindowsOnly.h" />
     <ClInclude Include="Graphics\DirectX11\DirectX11Renderer.h" />
     <ClInclude Include="Graphics\DirectX12\DirectX12Renderer.h" />
+    <ClInclude Include="Graphics\RenderAPIType.h" />
     <ClInclude Include="Graphics\Renderer.h" />
+    <ClInclude Include="Graphics\RenderSurface.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -158,6 +162,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

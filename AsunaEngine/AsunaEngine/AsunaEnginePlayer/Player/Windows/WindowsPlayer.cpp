@@ -1,17 +1,25 @@
 #include "AsunaEngine/Foundation/Platform/Assert.h"
 #include "WindowsPlayer.h"
 #include "AsunaEngine/Foundation/Math/AMath.h"
+#include "AsunaEngine/Graphics/Renderer.h"
+
+#include "AsunaEngine/Graphics/Empty/EmptyRenderer.h"
+#include "AsunaEngine/Graphics/DirectX12/DirectX12Renderer.h"
+#include "AsunaEngine/Graphics/DirectX11/DirectX11Renderer.h"
 
 using namespace asuna;
 
 
 void WindowsPlayer::Initialize()
 {
-	CreateMainWindow();
+	InitMainWindow();
+	InitRenderer(RenderAPIType::Directx11);
+
 }
 
 void WindowsPlayer::Finialize()
 {
+	Renderer::Current->Finalize();
 }
 
 
@@ -26,11 +34,12 @@ void WindowsPlayer::Tick()
 
 void WindowsPlayer::Render()
 {
+	Renderer::Current->Render();
 }
 
 HWND WindowsPlayer::GetWindowsHandler() noexcept
 {
-	return HWND_;
+	return m_HWND;
 }
 
 LRESULT WindowsPlayer::WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -38,7 +47,7 @@ LRESULT WindowsPlayer::WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
-void WindowsPlayer::CreateMainWindow()
+void WindowsPlayer::InitMainWindow()
 {
 	HINSTANCE hInstance = GetModuleHandle(NULL);
 	WNDCLASSEX windowClass = { 0 };
@@ -54,7 +63,7 @@ void WindowsPlayer::CreateMainWindow()
 	AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, FALSE);
 
 	// Create the window and store a handle to it.
-	HWND_ = CreateWindowEx(
+	m_HWND = CreateWindowEx(
 		NULL,
 		windowClass.lpszClassName,
 		L"AsunaEngine",
@@ -69,5 +78,33 @@ void WindowsPlayer::CreateMainWindow()
 		this);
 
 	// Initialize the sample. OnInit is defined in each child-implementation of DXSample.
-	ShowWindow(HWND_, 5);
+	ShowWindow(m_HWND, 5);
 }
+
+void WindowsPlayer::InitRenderer(RenderAPIType api)
+{
+	ASUNA_ASSERT(Renderer::Current == nullptr);
+	if (api == RenderAPIType::None)
+	{
+		Renderer::Current = new EmptyRenderer();
+	}
+	if (api == RenderAPIType::Directx11)
+	{
+		RenderSurface surface;
+		surface.Type = RenderSurfaceType::WindowsApplication;
+		Renderer::Current = new DirectX11Renderer();
+	}
+	else if (api == RenderAPIType::Directx12)
+	{
+		Renderer::Current = new DirectX12Renderer();
+	}
+	else
+	{
+		ASUNA_ASSERT(false);
+	}
+	RenderSurfaceWindowsApplication* surface = new RenderSurfaceWindowsApplication(m_HWND);
+	Renderer::Current->SetRenderSurface(surface);
+	Renderer::Current->Initialize();
+}
+
+

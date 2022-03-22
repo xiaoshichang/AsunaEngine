@@ -9,4 +9,8 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Player\Windows\WindowsPlayer.h" />
   </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="Assets\Shaders\triangle.vs" />
+    <CopyFileToFolders Include="Assets\Shaders\triangle.ps" />
+  </ItemGroup>
 </Project>

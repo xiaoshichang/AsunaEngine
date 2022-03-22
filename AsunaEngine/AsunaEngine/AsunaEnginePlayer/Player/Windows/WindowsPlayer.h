@@ -1,6 +1,8 @@
 #pragma once
 #include <Windows.h>
 #include "../../Application.h"
+#include "AsunaEngine/Graphics/RenderAPIType.h"
+
 
 namespace asuna
 {
@@ -18,10 +20,11 @@ namespace asuna
 
 	private:
 		static LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-		void CreateMainWindow();
+		void InitMainWindow();
+		void InitRenderer(RenderAPIType api);
 
 	private:
-		HWND HWND_;
+		HWND m_HWND;
 	};
 }
 

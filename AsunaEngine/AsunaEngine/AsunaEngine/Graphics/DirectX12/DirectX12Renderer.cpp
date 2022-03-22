@@ -12,10 +12,6 @@ void asuna::DirectX12Renderer::Finalize()
 	cout << "DirectX12 Finalize" << endl;
 }
 
-void asuna::DirectX12Renderer::Tick()
-{
-}
-
 void asuna::DirectX12Renderer::Render()
 {
 }
