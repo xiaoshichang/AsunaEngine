@@ -9,14 +9,12 @@ namespace asuna
 	class ASUNAENGINE_API DirectX11Renderer : public Renderer
 	{
 	public:
-		virtual void Initialize();
-		virtual void Finalize();
-		virtual void Render();
-
-	private:
-		void CreateDeviceContext();
-		void ReleaseDeviceContext();
-		void ClearRenderTarget(float r, float g, float b, float a);
+		virtual void Initialize() override;
+		virtual void Finalize() override;
+		virtual void Render() override;
+		virtual void ClearRenderTarget(float r, float g, float b, float a) override;
+		virtual void CreateDeviceContext() override;
+		virtual void ReleaseDeviceContext() override;
 
 		// test
 		void InitPipeline();

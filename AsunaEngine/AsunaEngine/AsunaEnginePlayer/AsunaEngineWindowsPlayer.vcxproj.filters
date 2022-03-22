@@ -12,5 +12,7 @@
   <ItemGroup>
     <CopyFileToFolders Include="Assets\Shaders\triangle.vs" />
     <CopyFileToFolders Include="Assets\Shaders\triangle.ps" />
+    <CopyFileToFolders Include="Assets\Shaders\color.vs" />
+    <CopyFileToFolders Include="Assets\Shaders\color.ps" />
   </ItemGroup>
 </Project>

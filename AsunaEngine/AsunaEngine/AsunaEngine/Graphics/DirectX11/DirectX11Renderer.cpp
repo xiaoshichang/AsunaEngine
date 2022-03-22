@@ -62,8 +62,18 @@ void DirectX11Renderer::Render()
 	}
 }
 
+void DirectX11Renderer::ClearRenderTarget(float r, float g, float b, float a)
+{
+	float color[4] = { r, g, b, a };
+	// Clear the back buffer.
+	m_deviceContext->ClearRenderTargetView(m_renderTargetView, color);
 
-void asuna::DirectX11Renderer::CreateDeviceContext()
+	// Clear the depth buffer.
+	m_deviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+}
+
+
+void DirectX11Renderer::CreateDeviceContext()
 {
 	HRESULT result;
 	IDXGIFactory* factory;
@@ -292,21 +302,11 @@ void asuna::DirectX11Renderer::CreateDeviceContext()
 
 }
 
-void asuna::DirectX11Renderer::ReleaseDeviceContext()
+void DirectX11Renderer::ReleaseDeviceContext()
 {
 }
 
-void asuna::DirectX11Renderer::ClearRenderTarget(float r, float g, float b, float a)
-{
-	float color[4] = { r, g, b, a };
-	// Clear the back buffer.
-	m_deviceContext->ClearRenderTargetView(m_renderTargetView, color);
-
-	// Clear the depth buffer.
-	m_deviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
-}
-
-void asuna::DirectX11Renderer::InitPipeline()
+void DirectX11Renderer::InitPipeline()
 {
 	HRESULT result;
 	ID3D10Blob* errorMessage;
@@ -345,7 +345,7 @@ void asuna::DirectX11Renderer::InitPipeline()
 	m_deviceContext->IASetInputLayout(g_pLayout);
 }
 
-void asuna::DirectX11Renderer::InitTriangle()
+void DirectX11Renderer::InitTriangle()
 {
 	// create a triangle using the VERTEX struct
 	VERTEX OurVertices[] =

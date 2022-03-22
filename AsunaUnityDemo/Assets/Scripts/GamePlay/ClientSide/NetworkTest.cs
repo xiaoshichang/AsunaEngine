@@ -16,6 +16,8 @@ namespace AsunaGamePlay
             NetworkMgr.Instance.OnReceiveMsg = OnReceiveMsg;
 
             TimerMgr.RegisterTimer(true,2000, TimeoutTest);
+            Camera.main.transform.LookAt(new Vector3(0, 0, 0));
+            Debug.Log(Camera.main.projectionMatrix);
         }
 
         private void ConnectCallback(Exception e)

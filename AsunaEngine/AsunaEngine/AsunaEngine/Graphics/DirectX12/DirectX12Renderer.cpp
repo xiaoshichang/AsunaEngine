@@ -15,3 +15,15 @@ void asuna::DirectX12Renderer::Finalize()
 void asuna::DirectX12Renderer::Render()
 {
 }
+
+void asuna::DirectX12Renderer::ClearRenderTarget(float r, float g, float b, float a)
+{
+}
+
+void asuna::DirectX12Renderer::CreateDeviceContext()
+{
+}
+
+void asuna::DirectX12Renderer::ReleaseDeviceContext()
+{
+}

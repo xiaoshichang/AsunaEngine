@@ -6,6 +6,7 @@
 #include "AsunaEngine/Graphics/Empty/EmptyRenderer.h"
 #include "AsunaEngine/Graphics/DirectX12/DirectX12Renderer.h"
 #include "AsunaEngine/Graphics/DirectX11/DirectX11Renderer.h"
+#include "AsunaEngine/Graphics/Opengl/OpenGLRenderer.h"
 
 using namespace asuna;
 
@@ -13,7 +14,7 @@ using namespace asuna;
 void WindowsPlayer::Initialize()
 {
 	InitMainWindow();
-	InitRenderer(RenderAPIType::Directx11);
+	InitRenderer(RenderAPIType::Opengl);
 
 }
 
@@ -90,13 +91,15 @@ void WindowsPlayer::InitRenderer(RenderAPIType api)
 	}
 	if (api == RenderAPIType::Directx11)
 	{
-		RenderSurface surface;
-		surface.Type = RenderSurfaceType::WindowsApplication;
 		Renderer::Current = new DirectX11Renderer();
 	}
 	else if (api == RenderAPIType::Directx12)
 	{
 		Renderer::Current = new DirectX12Renderer();
+	}
+	else if (api == RenderAPIType::Opengl)
+	{
+		Renderer::Current = new OpenGLRenderer();
 	}
 	else
 	{

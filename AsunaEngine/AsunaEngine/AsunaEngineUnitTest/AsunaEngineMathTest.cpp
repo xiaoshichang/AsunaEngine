@@ -1,7 +1,12 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 #include "AsunaEngine/Foundation/Math/AMath.h"
+#include <DirectXMath.h>
+#include <DirectXPackedVector.h>
+#include <DirectXColors.h>
 
+
+using namespace DirectX;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace asuna;
 
@@ -165,18 +170,103 @@ namespace AsunaEngineUnitTest
 			Assert::IsTrue(e == d);
 		}
 
-		TEST_METHOD(TestMatrixCameraViewLookat)
+		TEST_METHOD(TestMatrixCameraViewLookatRH)
 		{
+			auto eye = XMVectorSet(1, 2, 3, 0);
+			auto up = XMVectorSet(0, 1, 0, 0);
+			auto at = XMVectorSet(0, 10, 0, 0);
+			auto view1 = XMMatrixLookAtRH(eye, at, up);
+			Vector3f eye2(1, 2, 3);
+			Vector3f up2(0, 1, 0);
+			Vector3f at2(0, 10, 0);
+			auto view2 = BuildMatrixViewLookatRH(eye2, at2, up2);
+
+			for (int i = 0; i < 4; i++)
+			{
+				for (int j = 0; j < 4; j++)
+				{
+					Assert::IsTrue(comparison_traits<float>::equal(view1.r[j].m128_f32[i], view2[i][j]));
+				}
+			}
+		}
+
+		TEST_METHOD(TestMatrixCameraViewLookatLH)
+		{
+			auto eye = XMVectorSet(1, 2, 3, 0);
+			auto up = XMVectorSet(0, 1, 0, 0);
+			auto at = XMVectorSet(0, 10, 0, 0);
+			auto view1 = XMMatrixLookAtLH(eye, at, up);
+			Vector3f eye2(1, 2, 3);
+			Vector3f up2(0, 1, 0);
+			Vector3f at2(0, 10, 0);
+			auto view2 = BuildMatrixViewLookatLH(eye2, at2, up2);
+
+			for (int i = 0; i < 4; i++)
+			{
+				for (int j = 0; j < 4; j++)
+				{
+					Assert::IsTrue(comparison_traits<float>::equal(view1.r[j].m128_f32[i], view2[i][j]));
+				}
+			}
+		}
+
+		TEST_METHOD(TestMatrixCameraPerspectiveFovRH)
+		{
+			auto angle = PI / 2;
+			auto aspect = 1024.0f / 768;
+			auto p1 = XMMatrixPerspectiveFovRH(angle, aspect, 0.1f, 1000.0f);
+			auto p2 = BuildMatrixPerspectiveFovRH(angle, aspect, 0.1f, 1000.0f);
+			for (int i = 0; i < 4; i++)
+			{
+				for (int j = 0; j < 4; j++)
+				{
+					Assert::IsTrue(comparison_traits<float>::equal(p1.r[j].m128_f32[i], p2[i][j]));
+				}
+			}
 			Assert::IsTrue(true);
 		}
 
-		TEST_METHOD(TestMatrixCameraPerspectiveFov)
+		TEST_METHOD(TestMatrixCameraPerspectiveFovLH)
 		{
+			auto angle = PI / 2;
+			auto aspect = 1024.0f / 768;
+			auto p1 = XMMatrixPerspectiveFovLH(angle, aspect, 0.1f, 1000.0f);
+			auto p2 = BuildMatrixPerspectiveFovLH(angle, aspect, 0.1f, 1000.0f);
+			for (int i = 0; i < 4; i++)
+			{
+				for (int j = 0; j < 4; j++)
+				{
+					Assert::IsTrue(comparison_traits<float>::equal(p1.r[j].m128_f32[i], p2[i][j]));
+				}
+			}
 			Assert::IsTrue(true);
 		}
 		
-		TEST_METHOD(TestMatrixCameraOrthographic)
+		TEST_METHOD(TestMatrixCameraOrthographicRH)
 		{
+			auto p1 = XMMatrixOrthographicRH(1024.0f, 768.0f, 0.1f, 1000.0f);
+			auto p2 = BuildMatrixOrthographicRH(1024.0f, 768.0f, 0.1f, 1000.0f);
+			for (int i = 0; i < 4; i++)
+			{
+				for (int j = 0; j < 4; j++)
+				{
+					Assert::IsTrue(comparison_traits<float>::equal(p1.r[j].m128_f32[i], p2[i][j]));
+				}
+			}
+			Assert::IsTrue(true);
+		}
+
+		TEST_METHOD(TestMatrixCameraOrthographicLH)
+		{
+			auto p1 = XMMatrixOrthographicLH(1024.0f, 768.0f, 0.1f, 1000.0f);
+			auto p2 = BuildMatrixOrthographicLH(1024.0f, 768.0f, 0.1f, 1000.0f);
+			for (int i = 0; i < 4; i++)
+			{
+				for (int j = 0; j < 4; j++)
+				{
+					Assert::IsTrue(comparison_traits<float>::equal(p1.r[j].m128_f32[i], p2[i][j]));
+				}
+			}
 			Assert::IsTrue(true);
 		}
 

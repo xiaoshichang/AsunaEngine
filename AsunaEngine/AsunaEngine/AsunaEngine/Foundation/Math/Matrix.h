@@ -24,6 +24,10 @@ namespace asuna {
 			T data[ROWS][COLS];
 		};
 
+		operator T* () {
+			return &data[0][0];
+		}
+
 		T* operator[](int rowIndex) 
 		{
 			return data[rowIndex];
@@ -92,6 +96,7 @@ namespace asuna {
 			{
 				ret[r][r] = 1;
 			}
+			return ret;
 		}
 
 
@@ -450,9 +455,8 @@ namespace asuna {
 	}
 
 	inline Matrix4x4f BuildMatrixViewLookatRH(const Vector3f& EyePosition, const Vector3f& FocusPosition, const Vector3f& UpDirection) {
-		
-		auto EyeDirection = FocusPosition - EyePosition;
-		return __BuildMatrixViewLookatLH(EyePosition, EyeDirection, UpDirection);
+		auto NegEyeDirection = EyePosition - FocusPosition;
+		return __BuildMatrixViewLookatLH(EyePosition, NegEyeDirection, UpDirection);
 	}
 
 	/// <summary>
@@ -461,11 +465,10 @@ namespace asuna {
 	/// <param name="EyePosition"> Position of the camera. </param>
 	/// <param name="FocusPosition"> Position of the focal point. </param>
 	/// <param name="UpDirection"> Up direction of the camera, typically < 0.0f, 1.0f, 0.0f >. </param>
-	/// <returns></returns>
+	/// https://blog.csdn.net/silangquan/article/details/50987196
 	inline Matrix4x4f BuildMatrixViewLookatLH(const Vector3f& EyePosition, const Vector3f& FocusPosition, const Vector3f& UpDirection) {
-		
-		auto NegEyeDirection = EyePosition - FocusPosition;
-		return __BuildMatrixViewLookatLH(EyePosition, NegEyeDirection, UpDirection);
+		auto EyeDirection = FocusPosition - EyePosition;
+		return __BuildMatrixViewLookatLH(EyePosition, EyeDirection, UpDirection);
 	}
 
 
@@ -508,7 +511,7 @@ namespace asuna {
 		{ Width,		0.0f,				0.0f,				0.0f },
 		{ 0.0f,			Height,				0.0f,				0.0f },
 		{ 0.0f,			0.0f,				fRange,				fRange * NearZ},
-		{ 0.0f,			0.0f,				1.0f,				0.0f }
+		{ 0.0f,			0.0f,				-1.0f,				0.0f }
 		}} };
 		return matrix;
 	}
@@ -526,7 +529,7 @@ namespace asuna {
 		return matrix;
 	}
 
-	inline Matrix4x4f BuildMatrixOrthoRH(const float ViewWidth, const float ViewHeight, const float NearZ, const float FarZ) {
+	inline Matrix4x4f BuildMatrixOrthographicRH(const float ViewWidth, const float ViewHeight, const float NearZ, const float FarZ) {
 		float fRange = 1.0f / (NearZ - FarZ);
 		Matrix4x4f matrix = { {{
 		{ 2.0f / ViewWidth,	0.0f,				0.0f,				0.0f },
