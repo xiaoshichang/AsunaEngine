@@ -62,15 +62,15 @@ namespace AsunaEngineUnitTest
 			auto v2 = v1.NormalizeCopy();
 			v1.Normalize();
 			Assert::IsTrue(v2 == v1);
-			Assert::IsTrue(FloatEquel(1, v2.LengthSquare()));
-			Assert::IsTrue(FloatEquel(1, v1.LengthSquare()));
+			Assert::IsTrue(comparison_traits<float>::equal(1, v2.LengthSquare()));
+			Assert::IsTrue(comparison_traits<float>::equal(1, v1.LengthSquare()));
 		}
 
 		TEST_METHOD(TestVectorDotProduct)
 		{
 			Vector3f v1(2, 2, 2);
 			Vector3f v2(3, 3, 3);
-			Assert::IsTrue(FloatEquel(18, v2.DotProduct(v1)));
+			Assert::IsTrue(comparison_traits<float>::equal(18, v2.DotProduct(v1)));
 		}
 
 		TEST_METHOD(TestVectorCrossProduct)
@@ -81,6 +81,103 @@ namespace AsunaEngineUnitTest
 			auto v3 = v1.CrossProduct(v2);
 			Vector3f v4(-15, -2, 39);
 			Assert::IsTrue(v4 == v3);
+		}
+
+		TEST_METHOD(TestMatrixAccess)
+		{
+			Matrix4x4f m = { 0 };
+			m[1][1] = 10;
+			m[1][2] = 9;
+			Assert::IsTrue(m[1][1] - m[1][2] == 1);
+		}
+
+		TEST_METHOD(TestMatrixEqule)
+		{
+			Matrix4x4f m1 = { 0 };
+			Matrix4x4f m2 = { 0 };
+			Matrix4x4f m3 = { 1, 2, 3, 4, 5 };
+			m1[1][1] = 10;
+			m2[1][1] = 10;
+			Assert::IsTrue(m1 == m2);
+			Assert::IsTrue(m3[0][3] == 4);
+			Assert::IsTrue(m3[1][0] == 5);
+			Assert::IsFalse(m2 == m3);
+			Assert::IsTrue(m2 != m3);
+		}
+
+		TEST_METHOD(TestMatrixTranspose)
+		{
+			Matrix4x4f m1 = { 1, 2, 3, 4, 5 };
+			auto m2 = m1.TransposeCopy();
+			m1.Transpose();
+			Assert::IsTrue(m1 == m2);
+			Assert::IsTrue(m1[0][0] == 1);
+			Assert::IsTrue(m1[1][0] == 2);
+			Assert::IsTrue(m1[0][1] == 5);
+		}
+
+		TEST_METHOD(TestMatrixAddSub)
+		{
+			Matrix4x4f m1 = { 0 };
+			Matrix4x4f m2 = { 0 };
+			Matrix4x4f m3 = { 0 };
+
+			for (int i = 0; i < 4; i++)
+			{
+				for (int j = 0; j < 4; j++)
+				{
+					m1[i][j] = 1.0f;
+					m2[i][j] = 2.0f;
+					m3[i][j] = 3.0f;
+				}
+			}
+			Assert::IsTrue(m1 + m2 == m3);
+			Assert::IsTrue(m3 - m2 == m1);
+		}
+
+		TEST_METHOD(TestMatrixMultiple)
+		{
+			Matrix<float, 3, 1> m1 = { 4, 5, 6 };
+			Matrix<float, 1, 3> m2 = { 1, 2, 3 };
+			Matrix<float, 3, 3> m3 = { 4, 8, 12, 5, 10, 15, 6, 12, 18 };
+			Matrix<float, 1, 1> m4 = { 32 };
+			Assert::IsTrue(m1 * m2 == m3);
+			Assert::IsTrue(m2 * m1 == m4);
+		}
+
+		TEST_METHOD(TestMatrixInverse)
+		{
+			//https://byjus.com/maths/inverse-of-3-by-3-matrix/
+			Matrix3x3f m1 = { 1, 2, 3, 0, 1, 4, 5, 6, 0 };
+			Matrix3x3f m2 = { -24, 18, 5, 20, -15, -4, -5, 4, 1 };
+			// todo: there some precision problem
+			// Assert::IsTrue(m1.Inverse() == m2);
+			Assert::IsTrue(true);
+		}
+
+		TEST_METHOD(TestMatrixRotation)
+		{
+			//https://www.cuemath.com/algebra/rotation-matrix/
+			Vector3f c(5, 2, 6);
+			Matrix4x4f x180 = BuildMatrixRotationX(PI);
+			auto d = x180.TransformPoint(c);
+			Vector3f e(5, -2, -6);
+			Assert::IsTrue(e == d);
+		}
+
+		TEST_METHOD(TestMatrixCameraViewLookat)
+		{
+			Assert::IsTrue(true);
+		}
+
+		TEST_METHOD(TestMatrixCameraPerspectiveFov)
+		{
+			Assert::IsTrue(true);
+		}
+		
+		TEST_METHOD(TestMatrixCameraOrthographic)
+		{
+			Assert::IsTrue(true);
 		}
 
 

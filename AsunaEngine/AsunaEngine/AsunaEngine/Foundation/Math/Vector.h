@@ -5,6 +5,8 @@
 #include <limits>
 #include <math.h>
 #include <algorithm>
+#include "../Platform/Assert.h"
+#include "MathCommon.h"
 
 
 namespace asuna {
@@ -25,19 +27,17 @@ namespace asuna {
 		Vector2Type<T>(const T& _v) : x(_v), y(_v) {};
 		Vector2Type<T>(const T& _x, const T& _y) : x(_x), y(_y) {};
 
-		operator T*() 
-		{ 
-			return data; 
-		}
-
-		operator const T*() const 
-		{ 
-			return static_cast<const T*>(data); 
+		T& operator[](int rowIndex)
+		{
+			ASUNA_ASSERT(rowIndex < 2);
+			return data[rowIndex];
 		}
 
 		bool operator==(const Vector2Type<T>& rhs) const
 		{
-			return x == rhs.x && y == rhs.y;
+			auto c1 = comparison_traits<T>::equal(x, rhs.x);
+			auto c2 = comparison_traits<T>::equal(y, rhs.y);
+			return c1 && c2;
 		}
 
 		Vector2Type<T> operator+(const Vector2Type<T>& rhs) const
@@ -58,7 +58,7 @@ namespace asuna {
 
 		Vector2Type<T> operator*(T scale)  const
 		{
-			Vector3Type<T> ret;
+			Vector2Type<T> ret;
 			ret.x = x * scale;
 			ret.y = y * scale;
 			return ret;
@@ -122,16 +122,11 @@ namespace asuna {
 		Vector3Type<T>(const T& _v) : x(_v), y(_v), z(_v) {};
 		Vector3Type<T>(const T& _x, const T& _y, const T& _z) : x(_x), y(_y), z(_z) {};
 
-		operator T*() 
-		{ 
-			return data; 
+		T& operator[](int rowIndex)
+		{
+			ASUNA_ASSERT(rowIndex < 3);
+			return data[rowIndex];
 		}
-
-		operator const T*() const 
-		{ 
-			return static_cast<const T*>(data); 
-		}
-
 
 		Vector3Type<T> operator+(const Vector3Type<T>& rhs)	const
 		{
@@ -171,7 +166,10 @@ namespace asuna {
 
 		bool operator==(const Vector3Type<T>& rhs) const
 		{
-			return x == rhs.x && y == rhs.y && z == rhs.z;
+			auto c1 = comparison_traits<T>::equal(x, rhs.x);
+			auto c2 = comparison_traits<T>::equal(y, rhs.y);
+			auto c3 = comparison_traits<T>::equal(z, rhs.z);
+			return c1 && c2 && c3;
 		}
 
 		T LengthSquare() const
@@ -242,9 +240,11 @@ namespace asuna {
 		Vector4Type<T>(const Vector3Type<T>& v3) : x(v3.x), y(v3.y), z(v3.z), w(1.0f) {};
 		Vector4Type<T>(const Vector3Type<T>& v3, const T& _w) : x(v3.x), y(v3.y), z(v3.z), w(_w) {};
 
-		operator T*() { return data; };
-		operator const T*() const { return static_cast<const T*>(data); };
-
+		T& operator[](int rowIndex)
+		{
+			ASUNA_ASSERT(rowIndex < 4);
+			return data[rowIndex];
+		}
 
 		Vector4Type<T> operator+(const Vector4Type<T>& rhs) const
 		{
@@ -288,7 +288,11 @@ namespace asuna {
 
 		bool operator==(const Vector4Type<T>& rhs) const
 		{
-			return x == rhs.x && y == rhs.y && z == rhs.z && w == rhs.w;
+			auto c1 = comparison_traits<T>::equal(x, rhs.x);
+			auto c2 = comparison_traits<T>::equal(y, rhs.y);
+			auto c3 = comparison_traits<T>::equal(z, rhs.z);
+			auto c4 = comparison_traits<T>::equal(w, rhs.w);
+			return c1 && c2 && c3 && c4;
 		}
 
 		T LengthSquare() const

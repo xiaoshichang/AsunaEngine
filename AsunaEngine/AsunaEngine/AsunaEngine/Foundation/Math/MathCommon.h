@@ -14,7 +14,35 @@
 #define TWO_PI 3.14159265358979323846f * 2.0f
 #endif
 
+
 namespace asuna {
+
+	//https://stackoverflow.com/questions/27228813/comparing-in-templates
+	template <typename T> 
+	struct comparison_traits 
+	{
+		static bool equal(const T& a, const T& b) 
+		{
+			return a == b;
+		}
+	};
+
+	template<> struct comparison_traits<float> 
+	{
+		static bool equal(const float& a, const float& b) 
+		{
+			return fabs(a - b) < 1e-6; 
+		}
+	};
+
+	template<> struct comparison_traits<double> 
+	{
+		static bool equal(const double& a, const double& b) 
+		{
+			return fabs(a - b) < 1e-15;
+		}
+	};
+
 
 	inline float sat(float a) {
 		if (a < 0.0f)
@@ -45,9 +73,5 @@ namespace asuna {
 		return v;
 	}
 
-	inline bool FloatEquel(float a, float b)
-	{
-		return abs(a - b) < 0.000001;
-	}
 
 }

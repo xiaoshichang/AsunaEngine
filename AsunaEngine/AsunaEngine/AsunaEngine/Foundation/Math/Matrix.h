@@ -6,6 +6,9 @@
 #include <math.h>
 #include <algorithm>
 #include "Vector.h"
+#include "../Platform/Assert.h"
+#include "MathCommon.h"
+#include "Vector.h"
 
 
 namespace asuna {
@@ -14,437 +17,287 @@ namespace asuna {
 	constexpr size_t ElementCount(T(&)[RowSize][ColSize]) { return RowSize * ColSize; }
 
 	template <typename T, int ROWS, int COLS>
-	struct Matrix {
-		union {
+	struct Matrix 
+	{
+		union
+		{
 			T data[ROWS][COLS];
 		};
 
-		T* operator[](int rowIndex) {
+		T* operator[](int rowIndex) 
+		{
 			return data[rowIndex];
 		}
 
-		const T* operator[](int rowIndex) const {
+		const T* operator[](int rowIndex) const 
+		{
 			return data[rowIndex];
 		}
 
-		operator T*() {
-			return &data[0][0];
-		}
 
-		operator const T*() const {
-			return static_cast<const T*>(&data[0][0]);
-		};
-
-		Matrix& operator=(const T* _data) {
+		Matrix<T, ROWS, COLS>& operator=(const T* _data)
+		{
 			memcpy(data, _data, ROWS * COLS * sizeof(T));
 			return *this;
 		}
 
-		bool operator==(const Matrix& m) {
-			for (int r = 0; r < ROWS; ++r) {
-				for (int c = 0; c < COLS; ++c) {
-					if (data[r][c] != m[r][c])
+		bool operator==(const Matrix<T, ROWS, COLS>& m) const
+		{
+			for (int r = 0; r < ROWS; ++r) 
+			{
+				for (int c = 0; c < COLS; ++c) 
+				{
+					if (!comparison_traits<T>::equal(data[r][c], m[r][c]))
+					{
 						return false;
+					}
 				}
 			}
 			return true;
 		}
 
-		template <int _ROWS, int _COLS>
-		bool operator!=(const Matrix<T, _ROWS, _COLS>& m) {
-			if ((_ROWS != ROWS) || (_COLS != COLS)) {
-				return true;
-			}
-			for (int r = 0; r < ROWS; ++r) {
-				for (int c = 0; c < COLS; ++c) {
+		bool operator!=(const Matrix<T, ROWS, COLS>& m) 
+		{
+			for (int r = 0; r < ROWS; ++r) 
+			{
+				for (int c = 0; c < COLS; ++c) 
+				{
 					if (data[r][c] != m[r][c])
+					{
 						return true;
+					}
 				}
 			}
 			return false;
 		}
+
+		void Transpose() 
+		{
+			ASUNA_ASSERT(ROWS == COLS);
+			Matrix<T, ROWS, COLS> temp = *this;
+			for (int r = 0; r < ROWS; ++r) 
+			{
+				for (int c = 0; c < COLS; ++c) 
+				{
+					data[c][r] = temp[r][c];
+				}
+			}
+		}
+
+		Matrix<T, ROWS, COLS> Identity()
+		{
+			ASUNA_ASSERT(ROWS == COLS);
+			Matrix<T, ROWS, COLS> ret = { 0 };
+			for (int r = 0; r < ROWS; ++r)
+			{
+				ret[r][r] = 1;
+			}
+		}
+
+
+		Matrix<T, ROWS, COLS> TransposeCopy() const
+		{
+			ASUNA_ASSERT(ROWS == COLS);
+			Matrix<T, ROWS, COLS> ret;
+			for (int r = 0; r < ROWS; ++r) 
+			{
+				for (int c = 0; c < COLS; ++c) 
+				{
+					ret[c][r] = data[r][c];
+				}
+			}
+			return ret;
+		}
+
+		Matrix<T, ROWS, COLS> operator+(const Matrix<T, ROWS, COLS>& rhs) const
+		{
+			Matrix<T, ROWS, COLS> ret;
+			for (int r = 0; r < ROWS; ++r) 
+			{
+				for (int c = 0; c < COLS; ++c) 
+				{
+					ret[r][c] = data[r][c] + rhs[r][c];
+				}
+			}
+			return ret;
+		}
+
+		Matrix<T, ROWS, COLS> operator-(const Matrix<T, ROWS, COLS>& rhs) const
+		{
+			Matrix<T, ROWS, COLS> ret;
+			for (int r = 0; r < ROWS; ++r)
+			{
+				for (int c = 0; c < COLS; ++c)
+				{
+					ret[r][c] = data[r][c] - rhs[r][c];
+				}
+			}
+			return ret;
+		}
+
+		template <int NEWCOLS>
+		Matrix<T, ROWS, NEWCOLS>  operator*(const Matrix<T, COLS, NEWCOLS>& rhs) const
+		{
+			Matrix<T, ROWS, NEWCOLS> tmp;
+			for (int a = 0; a < ROWS; ++a) 
+			{
+				for (int c = 0; c < NEWCOLS; ++c)
+				{
+					T sum = 0;
+					for (int b = 0; b < COLS; ++b)
+					{
+						sum += data[a][b] * rhs[b][c];
+					}
+					tmp[a][c] = sum;
+				}
+			}
+			return tmp;
+		}
+
+
+		Matrix<T, ROWS, COLS> Inverse()
+		{
+			ASUNA_ASSERT(ROWS == COLS);
+			Matrix<T, ROWS, COLS> out;
+			Matrix<T, ROWS, COLS> in = *this;
+			float fDet = 1.0f;
+			int f = 1;
+			int is[ROWS];
+			int js[ROWS];
+			int k, i, j, l;
+
+			for (k = 0; k < ROWS; k++)
+			{
+				float fMax = 0.0f;
+				for (i = k; i < ROWS; i++)
+				{
+					for (j = k; j < ROWS; j++)
+					{
+						const float f = abs(in[i][j]);
+						if (f > fMax)
+						{
+							fMax = f;
+							is[k] = i;
+							js[k] = j;
+						}
+					}
+				}
+				if (abs(fMax) < 0.00000001f)
+				{
+					ASUNA_ASSERT(false);
+				}
+				if (is[k] != k)
+				{
+					f = -f;
+					for (l = 0; l < ROWS; ++l) {
+						T temp = in[k][l];
+						in[k][l] = in[is[k]][l];
+						in[is[k]][l] = temp;
+					}
+				}
+				if (js[k] != k)
+				{
+					f = -f;
+					for (l = 0; l < ROWS; ++l) {
+						T temp = in[l][k];
+						in[l][k] = in[l][js[k]];
+						in[l][js[k]] = temp;
+					}
+				}
+				fDet *= in[k][k];
+				in[k][k] = 1.0f / in[k][k];
+
+				for (j = 0; j < ROWS; j++)
+				{
+					if (j != k)
+						in[k][j] *= in[k][k];
+				}
+
+				for (i = 0; i < ROWS; i++)
+				{
+					if (i != k)
+					{
+						for (j = 0; j < ROWS; j++)
+						{
+							if (j != k)
+								in[i][j] = in[i][j] - in[i][k] * in[k][j];
+						}
+					}
+				}
+				for (i = 0; i < ROWS; i++)
+				{
+					if (i != k)
+						in[i][k] *= -in[k][k];
+				}
+			}
+			for (k = ROWS - 1; k >= 0; k--)
+			{
+				if (js[k] != k)
+				{
+					for (l = 0; l < ROWS; ++l) {
+						T temp = in[k][l];
+						in[k][l] = in[js[k]][l];
+						in[js[k]][l] = temp;
+					}
+				}
+				if (is[k] != k)
+				{
+					for (l = 0; l < ROWS; ++l) {
+						T temp = in[l][k];
+						in[l][k] = in[l][is[k]];
+						in[l][is[k]] = temp;
+					}
+				}
+			}
+			out = in;
+			return out;
+		}
+
+
+		inline Vector3f TransformPoint(const Vector3f& point) const
+		{
+			ASUNA_ASSERT(COLS == 4);
+			ASUNA_ASSERT(ROWS == 4);
+
+			Vector4f hSpace = Vector4f(point.x, point.y, point.z, 1);
+			Vector4f tmp = Vector4f(0, 0, 0, 0);
+
+			for (int r = 0; r < 4; ++r)
+			{
+				for (int c = 0; c < 4; ++c)
+				{
+					tmp[r] += hSpace[c] * data[r][c];
+				}
+			}
+			return Vector3f(tmp.x, tmp.y, tmp.z);
+		}
+
+		inline Vector3f TransformVector(const Vector3f& vector) const
+		{
+			ASUNA_ASSERT(COLS == 4);
+			ASUNA_ASSERT(ROWS == 4);
+
+			Vector4f hSpace = Vector4f(vector.x, vector.y, vector.z, 0);
+			Vector4f tmp = Vector4f(0, 0, 0, 0);
+
+			for (int r = 0; r < 4; ++r)
+			{
+				for (int c = 0; c < 4; ++c)
+				{
+					tmp[r] += hSpace[c] * data[r][c];
+				}
+			}
+			return Vector3f(tmp.x, tmp.y, tmp.z);
+		}
+
 	};
 
 	typedef Matrix<float, 4, 4> Matrix4x4f;
 	typedef Matrix<float, 3, 3> Matrix3x3f;
 
-	template <typename T, int ROWS, int COLS>
-	inline void Transpose(Matrix<T, COLS, ROWS>& result, const Matrix<T, ROWS, COLS>& m) {
-		for (int r = 0; r < ROWS; ++r) {
-			for (int c = 0; c < COLS; ++c) {
-				result[c][r] = m[r][c];
-			}
-		}
-	}
 
-	template <typename T, int ROWS, int COLS>
-	inline void TransposeInPlace(Matrix<T, ROWS, COLS>& m) {
-		Matrix<T, ROWS, COLS> result;
-		for (int r = 0; r < ROWS; ++r) {
-			for (int c = 0; c < COLS; ++c) {
-				result[c][r] = m[r][c];
-			}
-		}
-		m = result;
-	}
-
-	template <typename T, int ROWS, int COLS>
-	inline void MatrixAdd(Matrix<T, ROWS, COLS>& result, const Matrix<T, ROWS, COLS>& m1, const Matrix<T, ROWS, COLS>& m2) {
-		for (int r = 0; r < ROWS; ++r) {
-			for (int c = 0; c < COLS; ++c) {
-				result[r][c] = m1[r][c] + m2[r][c];
-			}
-		}
-	}
-
-	template <typename T, int ROWS, int COLS>
-	inline void MatrixSub(Matrix<T, ROWS, COLS>& result, const Matrix<T, ROWS, COLS>& m1, const Matrix<T, ROWS, COLS>& m2) {
-		for (int r = 0; r < ROWS; ++r) {
-			for (int c = 0; c < COLS; ++c) {
-				result[r][c] = m1[r][c] - m2[r][c];
-			}
-		}
-	}
-
-
-	template <typename T, int Da, int Db, int Dc>
-	inline void MatrixMultiBy(Matrix<T, Da, Dc>& result, const Matrix<T, Da, Db>& m1, const Matrix<T, Db, Dc>& m2) {
-		Matrix<float, Da, Dc> tmp;
-		for (int a = 0; a < Da; ++a) {
-			for (int c = 0; c < Dc; ++c) {
-				T sum = 0;
-				for (int b = 0; b < Db; ++b) {
-					sum += m1[a][b] * m2[b][c];
-				}
-				tmp[a][c] = sum;
-			}
-		}
-		for (int a = 0; a < Da; ++a) {
-			for (int c = 0; c < Dc; ++c) {
-				result[a][c] = tmp[a][c];
-			}
-		}
-	}
-
-	template <typename T, int Da, int Db, int Dc>
-	Matrix<float, Da, Dc> operator *(const Matrix<T, Da, Db>& m1, const Matrix<T, Db, Dc>& m2) {
-		Matrix<float, Da, Dc> tmp;
-		MatrixMultiBy(tmp, m1, m2);
-		return tmp;
-	}
-
-	template <typename T, int d>
-	inline void MatrixSwapCols(Matrix<T, d, d> m, int col1, int col2)
+	inline Matrix4x4f BuildMatrixTranslation(const float x, const float y, const float z)
 	{
-		for (int row = 0; row <= d - 1; row++) {
-			T t = m[row][col1];
-			m[row][col1] = m[row][col2];
-			m[row][col2] = t;
-		}
-	}
-
-	template <typename T, int d>
-	inline void MatrixSwapRows(Matrix<T, d, d> m, int row1, int row2)
-	{
-		for (int col = 0; col <= d - 1; col++) {
-			T t = m[row1][col];
-			m[row1][col] = m[row2][col];
-			m[row2][col] = t;
-		}
-	}
-
-	template <typename T, int d>
-	inline float MatrixInverse(Matrix<T, d, d>& out, const Matrix<T, d, d>& in) {
-		Matrix<T, d, d> m = in;
-		float fDet = 1.0f;
-		int f = 1;
-		int is[d];
-		int js[d];
-		int k, i, j, l;
-		int dd = d;
-
-		for (k = 0; k < d; k++)
-		{
-			float fMax = 0.0f;
-			for (i = k; i < d; i++)
-			{
-				for (j = k; j < d; j++)
-				{
-					const float f = abs(m[i][j]);
-					if (f > fMax)
-					{
-						fMax = f;
-						is[k] = i;
-						js[k] = j;
-					}
-				}
-			}
-			if (abs(fMax) < 0.00000001f)
-				return 0;
-			if (is[k] != k)
-			{
-				f = -f;
-				for (l = 0; l < d; ++l) {
-					T temp = m[k][l];
-					m[k][l] = m[is[k]][l];
-					m[is[k]][l] = temp;
-				}
-			}
-			if (js[k] != k)
-			{
-				f = -f;
-				for (l = 0; l < d; ++l) {
-					T temp = m[l][k];
-					m[l][k] = m[l][js[k]];
-					m[l][js[k]] = temp;
-				}
-			}
-			fDet *= m[k][k];
-			m[k][k] = 1.0f / m[k][k];
-
-			for (j = 0; j < d; j++)
-			{
-				if (j != k)
-					m[k][j] *= m[k][k];
-			}
-
-			for (i = 0; i < d; i++)
-			{
-				if (i != k)
-				{
-					for (j = 0; j < d; j++)
-					{
-						if (j != k)
-							m[i][j] = m[i][j] - m[i][k] * m[k][j];
-					}
-				}
-			}
-			for (i = 0; i < d; i++)
-			{
-				if (i != k)
-					m[i][k] *= -m[k][k];
-			}
-		}
-		for (k = d - 1; k >= 0; k--)
-		{
-			if (js[k] != k)
-			{
-				for (l = 0; l < d; ++l) {
-					T temp = m[k][l];
-					m[k][l] = m[js[k]][l];
-					m[js[k]][l] = temp;
-				}
-			}
-			if (is[k] != k)
-			{
-				for (l = 0; l < d; ++l) {
-					T temp = m[l][k];
-					m[l][k] = m[l][is[k]];
-					m[l][is[k]] = temp;
-				}
-			}
-		}
-		out = m;
-		return fDet * f;
-	}
-
-	inline Vector3f TransformPoint(const Matrix4x4f& matrix, Vector3f& point)
-	{
-		Vector4f hSpace = Vector4f(point.x, point.y, point.z, 1);
-		Vector4f tmp = Vector4f(0, 0, 0, 0);
-
-		for (int r = 0; r < 4; ++r) {
-			for (int c = 0; c < 4; ++c) {
-				tmp[r] += hSpace[c] * matrix[r][c];
-			}
-		}
-		return Vector3f(tmp.x, tmp.y, tmp.z);
-	}
-
-	inline Vector3f TransformVector(const Matrix4x4f& matrix, Vector3f& vector)
-	{
-		Vector4f hSpace = Vector4f(vector.x, vector.y, vector.z, 0);
-		Vector4f tmp = Vector4f(0, 0, 0, 0);
-
-		for (int r = 0; r < 4; ++r) {
-			for (int c = 0; c < 4; ++c) {
-				tmp[r] += hSpace[c] * matrix[r][c];
-			}
-		}
-		return Vector3f(tmp.x, tmp.y, tmp.z);
-	}
-
-	inline Vector3f TransformVector(const Matrix3x3f& matrix, Vector3f& vector)
-	{
-		Vector3f tmp = Vector3f(0, 0, 0);
-		for (int r = 0; r < 3; ++r) {
-			for (int c = 0; c < 3; ++c) 
-			{
-				tmp[r] += vector[c] * matrix[r][c];
-			}
-		}
-		return tmp;
-	}
-
-	inline void BuildMatrixRotationX(Matrix4x4f& matrix, const float radio) {
-		float c = cosf(radio), s = sinf(radio);
-		Matrix4x4f tmp = { { {
-			{ 1.0f,	0.0f, 0.0f, 0.0f },
-			{ 0.0f,	   c,   -s, 0.0f },
-			{ 0.0f,    s,    c, 0.0f },
-			{ 0.0f, 0.0f, 0.0f, 1.0f }
-			} } };
-		matrix = tmp;
-	}
-
-	inline void BuildMatrixRotationY(Matrix4x4f& matrix, const float radio) {
-		float c = cosf(radio), s = sinf(radio);
-		Matrix4x4f tmp = { { {
-			{	 c,	0.0f,    s, 0.0f },
-			{ 0.0f,	1.0f, 0.0f, 0.0f },
-			{	-s, 0.0f,    c, 0.0f },
-			{ 0.0f, 0.0f, 0.0f, 1.0f }
-			} } };
-		matrix = tmp;
-	}
-
-	inline void BuildMatrixRotationZ(Matrix4x4f& matrix, const float radio) {
-		float c = cosf(radio), s = sinf(radio);
-		Matrix4x4f tmp = { { {
-			{	 c,	  -s, 0.0f, 0.0f },
-			{	 s,	   c, 0.0f, 0.0f },
-			{ 0.0f, 0.0f, 1.0f, 0.0f },
-			{ 0.0f, 0.0f, 0.0f, 1.0f }
-			} } };
-		matrix = tmp;
-	}
-
-	inline void BuildMatrixYawPitchRoll(Matrix4x4f& matrix, const float yaw, const float pitch, const float roll) {
-		float cYaw, cPitch, cRoll, sYaw, sPitch, sRoll;
-		// Get the cosine and sin of the yaw, pitch, and roll.
-		cYaw = cosf(yaw);
-		cPitch = cosf(pitch);
-		cRoll = cosf(roll);
-
-		sYaw = sinf(yaw);
-		sPitch = sinf(pitch);
-		sRoll = sinf(roll);
-
-		Matrix4x4f tmp = { { {
-			{ (cRoll * cYaw) + (sRoll * sPitch * sYaw),		(-sRoll * cYaw) + (cRoll * sPitch * sYaw),	(cPitch * sYaw),		0.0f},
-			{ (sRoll * cPitch), 							(cRoll * cPitch),							-sPitch,				0.0f},
-			{ (cRoll * -sYaw) + (sRoll * sPitch * cYaw),	(sRoll * sYaw) + (cRoll * sPitch * cYaw),	(cPitch * cYaw),		0.0f},
-			{ 0.0f,											0.0f,										0.0f,					1.0f}
-			} } };
-		matrix = tmp;
-	}
-
-	inline void BuildMatrixViewLookatRH(Matrix4x4f& matrix, const Vector3f& position, const Vector3f& lookAt, const Vector3f& up) {
-		Vector3f xaxis, yaxis, zaxis;
-		float tmp1, tmp2, tmp3;
-
-		zaxis = position - lookAt;
-		zaxis.Normalize();
-		xaxis = up.CrossProduct(zaxis);
-		xaxis.Normalize();
-
-		yaxis = zaxis.CrossProduct(xaxis);
-
-		tmp1 = -1 * xaxis.DotProduct(position);
-		tmp2 = -1 * yaxis.DotProduct(position);
-		tmp3 = -1 * zaxis.DotProduct(position);
-
-		Matrix4x4f tmp = { {{
-			{ xaxis.x, xaxis.y, xaxis.z, tmp1},
-			{ yaxis.x, yaxis.y, yaxis.z, tmp2},
-			{ zaxis.x, zaxis.y, zaxis.z, tmp3},
-			{ 0,	   0,		0,		 1.0f}
-			}} };
-		matrix = tmp;
-	}
-
-	inline void BuildMatrixViewLookatLH(Matrix4x4f& matrix, const Vector3f& position, const Vector3f& lookAt, const Vector3f& up) {
-		Vector3f xaxis, yaxis, zaxis;
-		float tmp1, tmp2, tmp3;
-
-		zaxis = lookAt - position;
-		zaxis.Normalize();
-
-		xaxis = up.CrossProduct(zaxis);
-		xaxis.Normalize();
-
-		yaxis = zaxis.CrossProduct(xaxis);
-
-		tmp1 = -1 * xaxis.DotProduct(position);
-		tmp2 = -1 * yaxis.DotProduct(position);
-		tmp3 = -1 * zaxis.DotProduct(position);
-
-		Matrix4x4f tmp = { {{
-			{ xaxis.x, xaxis.y, xaxis.z, tmp1},
-			{ yaxis.x, yaxis.y, yaxis.z, tmp2},
-			{ zaxis.x, zaxis.y, zaxis.z, tmp3},
-			{ 0,	   0,		0,		 1.0f}
-			}} };
-		matrix = tmp;
-	}
-
-	inline void BuildMatrixPerspectiveFovLH(Matrix4x4f& matrix, const float fov, const float aspect, const float zn, const float zf) {
-		auto yscale = 1.0f / tanf(fov * 0.5f);
-		auto xscale = yscale / aspect;
-
-		Matrix4x4f tmp = { {{
-		{ xscale,		0.0f,				0.0f,									  0.0f },
-		{ 0.0f,			yscale,				0.0f,									  0.0f },
-		{ 0.0f,			0.0f,				zf / (zf - zn),			(-zn * zf) / (zf - zn) },
-		{ 0.0f,			0.0f,				1.0f,									  0.0f }
-		}} };
-		matrix = tmp;
-	}
-
-	inline void BuildMatrixPerspectiveFovRH(Matrix4x4f& matrix, const float fov, const float aspect, const float zn, const float zf) {
-		auto yscale = 1.0f / tanf(fov * 0.5f);
-		auto xscale = yscale / aspect;
-
-		Matrix4x4f tmp = { {{
-		{ xscale,		0.0f,				0.0f,									  0.0f },
-		{ 0.0f,			yscale,				0.0f,									  0.0f },
-		{ 0.0f,			0.0f,				zf / (zn - zf),			(zn * zf) / (zn - zf) },
-		{ 0.0f,			0.0f,				-1.0f,									  0.0f }
-		}} };
-		matrix = tmp;
-	}
-
-	inline void BuildMatrixOrthoLH(Matrix4x4f& matrix, const float width, const float height, const float zn, const float zf) {
-		Matrix4x4f tmp = { {{
-		{ 2 / width,		0.0f,				0.0f,									  0.0f },
-		{ 0.0f,			2 / height,			0.0f,									  0.0f },
-		{ 0.0f,			0.0f,				1.0f / (zf - zn),				-zn / (zf - zn)},
-		{ 0.0f,			0.0f,				0.0f,									  1.0f }
-		}} };
-		matrix = tmp;
-	}
-
-	inline void BuildMatrixOrthoRH(Matrix4x4f& matrix, const float width, const float height, const float zn, const float zf) {
-		Matrix4x4f tmp = { {{
-		{ 2 / width,	0.0f,				0.0f,									  0.0f },
-		{ 0.0f,			2 / height,			0.0f,									  0.0f },
-		{ 0.0f,			0.0f,				1.0f / (zn - zf),				 zn / (zn - zf)},
-		{ 0.0f,			0.0f,				0.0f,									  1.0f }
-		}} };
-		matrix = tmp;
-	}
-
-	inline void BuildMatrixTranslation(Matrix4x4f& matrix, const float x, const float y, const float z) {
-		Matrix4x4f translation = { { {
-			{ 1.0f, 0.0f, 0.0f,    x },
-			{ 0.0f, 1.0f, 0.0f,    y },
-			{ 0.0f, 0.0f, 1.0f,    z },
-			{ 0.0f, 0.0f, 0.0f, 1.0f }
-			} } };
-		matrix = translation;
-	}
-
-	inline Matrix4x4f BuildMatrixTranslation(const float x, const float y, const float z) {
 		Matrix4x4f translation = { { {
 			{ 1.0f, 0.0f, 0.0f,    x },
 			{ 0.0f, 1.0f, 0.0f,    y },
@@ -454,63 +307,236 @@ namespace asuna {
 		return translation;
 	}
 
-	inline void BuildMatrixScale(Matrix4x4f& matrix, const float x, const float y, const float z) {
+	inline Matrix4x4f BuildMatrixScale(const float x, const float y, const float z)
+	{
 		Matrix4x4f scale = { { {
 			{    x, 0.0f, 0.0f, 0.0f },
 			{ 0.0f,    y, 0.0f, 0.0f },
 			{ 0.0f, 0.0f,    z, 0.0f },
 			{ 0.0f, 0.0f, 0.0f, 1.0f },
 			} } };
-		matrix = scale;
+		return scale;
 	}
 
-	inline void BuildMatrixRotationAxis(Matrix4x4f& matrix, const Vector3f& axis, const float radio) {
-		float c = cosf(radio), s = sinf(radio), one_minus_c = 1.0f - c;
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////  Rotation ////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// https://docs.microsoft.com/en-us/windows/win32/api/_dxmath/
 
-		Matrix4x4f tmp = { {{
-			{ c + axis.x * axis.x * one_minus_c,			axis.x * axis.y * one_minus_c - axis.z * s,		axis.x * axis.z * one_minus_c + axis.y * s,		0.0f },
-			{ axis.x * axis.y * one_minus_c + axis.z * s,	c + axis.y * axis.y * one_minus_c,				axis.y * axis.z * one_minus_c - axis.x * s,		0.0f },
-			{ axis.x * axis.z * one_minus_c - axis.y * s,   axis.y * axis.z * one_minus_c + axis.x * s,		c + axis.z * axis.z * one_minus_c,				0.0f },
-			{ 0.0f,											0.0f,											0.0f,											1.0f }
-		}} };
-		matrix = tmp;
-	}
+	/// <summary>
+	/// Builds a matrix that rotates around the x-axis.
+	/// </summary>
+	/// <param name="radio">Angle of rotation around the x-axis, in radians. Angles are measured clockwise when looking along the rotation axis toward the origin.</param>
+	inline Matrix4x4f BuildMatrixRotationX(const float radio) 
+	{
+		float c = cosf(radio), s = sinf(radio);
 
-	// https://krasjet.github.io/quaternion/quaternion.pdf
-	// page 33
-	inline void MatrixRotationQuaternion(Matrix4x4f& matrix, Quaternion q) {
-		Matrix4x4f tmp = { {{
-			{ 1.0f - 2.0f * q.y * q.y - 2.0f * q.z * q.z,	2.0f * q.x * q.y - 2.0f * q.w * q.z,		2.0f * q.x * q.z + 2.0f * q.w * q.y,						0.0f},
-			{ 2.0f * q.x * q.y + 2.0f * q.w * q.z,			1.0f - 2.0f * q.x * q.x - 2.0f * q.z * q.z, 2.0f * q.y * q.z - 2.0f * q.y * q.z - 2.0f * q.w * q.x,		0.0f},
-			{ 2.0f * q.x * q.z - 2.0f * q.w * q.y,			2.0f * q.y * q.z + 2.0f * q.w * q.x,		1.0f - 2.0f * q.x * q.x - 2.0f * q.y * q.y,					0.0f},
-			{ 0.0f,											0.0f,										0.0f,														1.0f}
-		}} };
-		matrix = tmp;
-	}
-
-	inline Matrix4x4f MatrixRotationQuaternion(Quaternion q) {
-		Matrix4x4f tmp;
-		MatrixRotationQuaternion(tmp, q);
+		Matrix4x4f tmp = { { {
+			{ 1.0f,	0.0f, 0.0f, 0.0f },
+			{ 0.0f,	  c,   -s, 0.0f },
+			{ 0.0f,   s,   c, 0.0f },
+			{ 0.0f, 0.0f, 0.0f, 1.0f }
+			} } };
 		return tmp;
 	}
 
-	inline void BuildMatrixIdentity(Matrix4x4f& matrix) {
-		Matrix4x4f identity = { { {
-			{ 1.0f, 0.0f, 0.0f, 0.0f },
-			{ 0.0f, 1.0f, 0.0f, 0.0f },
-			{ 0.0f, 0.0f, 1.0f, 0.0f },
+	/// <summary>
+	/// Builds a matrix that rotates around the y-axis.
+	/// </summary>
+	/// <param name="radio">Angle of rotation around the x-axis, in radians. Angles are measured clockwise when looking along the rotation axis toward the origin.</param>
+	inline Matrix4x4f BuildMatrixRotationY(const float radio)
+	{
+		float c = cosf(radio), s = sinf(radio);
+		Matrix4x4f tmp = { { {
+			{	 c,	0.0f,    s, 0.0f },
+			{ 0.0f,	1.0f, 0.0f, 0.0f },
+			{	-s, 0.0f,    c, 0.0f },
 			{ 0.0f, 0.0f, 0.0f, 1.0f }
 			} } };
-		matrix = identity;
+		return tmp;
 	}
 
-	inline Matrix4x4f BuildMatrixIdentity() {
-		Matrix4x4f identity = { { {
-			{ 1.0f, 0.0f, 0.0f, 0.0f },
-			{ 0.0f, 1.0f, 0.0f, 0.0f },
+	/// <summary>
+	/// Builds a matrix that rotates around the z-axis.
+	/// </summary>
+	/// <param name="radio">Angle of rotation around the x-axis, in radians. Angles are measured clockwise when looking along the rotation axis toward the origin.</param>
+	inline Matrix4x4f BuildMatrixRotationZ(const float radio) 
+	{
+		float c = cosf(radio), s = sinf(radio);
+		Matrix4x4f tmp = { { {
+			{	 c,	  -s, 0.0f, 0.0f },
+			{	s,	  c, 0.0f, 0.0f },
 			{ 0.0f, 0.0f, 1.0f, 0.0f },
 			{ 0.0f, 0.0f, 0.0f, 1.0f }
 			} } };
-		return identity;
+		return tmp;
 	}
+
+	/// <summary>
+	/// The assignment of the labels pitch to the x-axis, yaw to the y-axis, and roll to the z-axis 
+	/// is a common one for computer graphics and games, since it matches typical 'view' coordinate systems. 
+	/// </summary>
+	/// <param name="pitch"></param>
+	/// <param name="yaw"></param>
+	/// <param name="roll"></param>
+	inline Matrix4x4f BuildMatrixYawPitchRollLH(const float pitch, const float yaw, const float roll)
+	{
+		float cp = cosf(pitch);
+		float sp = sinf(pitch);
+		float cy = cosf(yaw);
+		float sy = sinf(yaw);
+		float cr = cosf(roll);
+		float sr = sinf(roll);
+
+		Matrix4x4f M;
+		M.data[0][0] = cr * cy + sr * sp * sy;
+		M.data[0][1] = sr * cp;
+		M.data[0][2] = sr * sp * cy - cr * sy;
+		M.data[0][3] = 0.0f;
+
+		M.data[1][0] = cr * sp * sy - sr * cy;
+		M.data[1][1] = cr * cp;
+		M.data[1][2] = sr * sy + cr * sp * cy;
+		M.data[1][3] = 0.0f;
+
+		M.data[2][0] = cp * sy;
+		M.data[2][1] = -sp;
+		M.data[2][2] = cp * cy;
+		M.data[2][3] = 0.0f;
+
+		M.data[3][0] = 0.0f;
+		M.data[3][1] = 0.0f;
+		M.data[3][2] = 0.0f;
+		M.data[3][3] = 1.0f;
+		M.Transpose();
+		return M;
+	}
+	
+	
+	/// <summary>
+	/// Right hand version of BuildMatrixYawPitchRoll
+	/// </summary>
+	/// <param name="pitch"></param>
+	/// <param name="yaw"></param>
+	/// <param name="roll"></param>
+	inline Matrix4x4f BuildMatrixYawPitchRollRH(const float pitch, const float yaw, const float roll)
+	{
+		auto m = BuildMatrixYawPitchRollLH(-pitch, -yaw, -roll);
+		return m;
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	//////////////////// Camera Matrix ///////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
+	inline Matrix4x4f __BuildMatrixViewLookatLH(const Vector3f& EyePosition, const Vector3f& EyeDirection, const Vector3f& UpDirection)
+	{
+		auto R2 = EyeDirection.NormalizeCopy();
+		auto R0 = UpDirection.CrossProduct(R2);
+		R0.Normalize();
+		auto R1 = R2.CrossProduct(R0);
+		auto NegEyePosition = EyePosition * -1;
+		auto D0 = R0.DotProduct(NegEyePosition);
+		auto D1 = R1.DotProduct(NegEyePosition);
+		auto D2 = R2.DotProduct(NegEyePosition);
+
+		Matrix4x4f M = { {{
+			{R0.x,	R0.y, R0.z, D0},
+			{R1.x,	R1.y, R1.z, D1},
+			{R2.x,	R2.y, R2.z, D2},
+			{ 0,	0,	  0,  1.0f}
+		}} };
+		return M;
+
+	}
+
+	inline Matrix4x4f BuildMatrixViewLookatRH(const Vector3f& EyePosition, const Vector3f& FocusPosition, const Vector3f& UpDirection) {
+		
+		auto EyeDirection = FocusPosition - EyePosition;
+		return __BuildMatrixViewLookatLH(EyePosition, EyeDirection, UpDirection);
+	}
+
+	/// <summary>
+	/// Builds a view matrix for a left-handed coordinate system using a camera position, an up direction, and a focal point.
+	/// </summary>
+	/// <param name="EyePosition"> Position of the camera. </param>
+	/// <param name="FocusPosition"> Position of the focal point. </param>
+	/// <param name="UpDirection"> Up direction of the camera, typically < 0.0f, 1.0f, 0.0f >. </param>
+	/// <returns></returns>
+	inline Matrix4x4f BuildMatrixViewLookatLH(const Vector3f& EyePosition, const Vector3f& FocusPosition, const Vector3f& UpDirection) {
+		
+		auto NegEyeDirection = EyePosition - FocusPosition;
+		return __BuildMatrixViewLookatLH(EyePosition, NegEyeDirection, UpDirection);
+	}
+
+
+	/// <summary>
+	/// Builds a left-handed perspective projection matrix based on a field of view.
+	/// </summary>
+	/// <param name="FovAngleY"> Top-down field-of-view angle in radians. </param>
+	/// <param name="AspectRatio"> Aspect ratio of view-space X:Y. </param>
+	/// <param name="NearZ"> Distance to the near clipping plane. Must be greater than zero. </param>
+	/// <param name="FarZ"> Distance to the far clipping plane. Must be greater than zero. </param>
+	inline Matrix4x4f BuildMatrixPerspectiveFovLH(const float FovAngleY, const float AspectRatio, const float NearZ, const float FarZ) {
+		float    SinFov = sinf(FovAngleY * 0.5f);
+		float    CosFov = cosf(FovAngleY * 0.5f);
+		
+		float Height = CosFov / SinFov;
+		float Width = Height / AspectRatio;
+		float fRange = FarZ / (FarZ - NearZ);
+
+		Matrix4x4f matrix = { {{
+		{ Width,		0.0f,				0.0f,				0.0f },
+		{ 0.0f,			Height,				0.0f,				0.0f },
+		{ 0.0f,			0.0f,				fRange,				-fRange * NearZ},
+		{ 0.0f,			0.0f,				1.0f,				0.0f }
+		}} };
+		return matrix;
+	}
+
+	/// <summary>
+	/// Right hand version
+	/// </summary>
+	inline Matrix4x4f BuildMatrixPerspectiveFovRH(const float FovAngleY, const float AspectRatio, const float NearZ, const float FarZ) {
+		float    SinFov = sinf(FovAngleY * 0.5f);
+		float    CosFov = cosf(FovAngleY * 0.5f);
+
+		float Height = CosFov / SinFov;
+		float Width = Height / AspectRatio;
+		float fRange = FarZ / (NearZ - FarZ);
+
+		Matrix4x4f matrix = { {{
+		{ Width,		0.0f,				0.0f,				0.0f },
+		{ 0.0f,			Height,				0.0f,				0.0f },
+		{ 0.0f,			0.0f,				fRange,				fRange * NearZ},
+		{ 0.0f,			0.0f,				1.0f,				0.0f }
+		}} };
+		return matrix;
+	}
+
+
+	
+	inline Matrix4x4f BuildMatrixOrthographicLH(const float ViewWidth, const float ViewHeight, const float NearZ, const float FarZ) {
+		float fRange = 1.0f / (FarZ - NearZ);
+		Matrix4x4f matrix = { {{
+		{ 2.0f / ViewWidth,	0.0f,				0.0f,				0.0f },
+		{ 0.0f,				2.0f / ViewHeight,	0.0f,				0.0f },
+		{ 0.0f,				0.0f,				fRange,				-fRange * NearZ},
+		{ 0.0f,				0.0f,				0.0f,				1.0f }
+		}} };
+		return matrix;
+	}
+
+	inline Matrix4x4f BuildMatrixOrthoRH(const float ViewWidth, const float ViewHeight, const float NearZ, const float FarZ) {
+		float fRange = 1.0f / (NearZ - FarZ);
+		Matrix4x4f matrix = { {{
+		{ 2.0f / ViewWidth,	0.0f,				0.0f,				0.0f },
+		{ 0.0f,				2.0f / ViewHeight,	0.0f,				0.0f },
+		{ 0.0f,				0.0f,				fRange,				fRange * NearZ},
+		{ 0.0f,				0.0f,				0.0f,				1.0f }
+		}} };
+		return matrix;
+	}
+
+	
+	
 }

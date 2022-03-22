@@ -1,5 +1,6 @@
 #include "AsunaEngine/Foundation/Platform/Assert.h"
 #include "WindowsPlayer.h"
+#include "AsunaEngine/Foundation/Math/AMath.h"
 
 using namespace asuna;
 
