@@ -13,8 +13,10 @@ namespace asuna
 	public:
 		virtual void Initialize();
 		virtual void Finalize();
-		virtual void Render();
+
+	private:
 		virtual void ClearRenderTarget(float r, float g, float b, float a) override;
+		virtual void Present() override;
 		virtual void CreateDeviceContext() override;
 		virtual void ReleaseDeviceContext() override;
 
@@ -24,11 +26,8 @@ namespace asuna
 
 	private:
 		bool InitializeBuffers();
-		bool InitializeShader();
 		bool SetShaderParameters(float* worldMatrix, float* viewMatrix, float* projectionMatrix);
-		char* LoadShaderSourceFile(const char* filename);
 		void CalculateCameraPosition();
-		void RenderBuffers();
 
 
 

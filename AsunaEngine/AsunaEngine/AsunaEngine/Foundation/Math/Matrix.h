@@ -540,6 +540,13 @@ namespace asuna {
 		return matrix;
 	}
 
+
+	inline Matrix4x4f BuildMatrixIndentity()
+	{
+		Matrix4x4f matrix = { 0 };
+		matrix[0][0] = matrix[1][1] = matrix[2][2] = matrix[3][3] = 1;
+		return matrix;
+	}
 	
 	
 }

@@ -170,6 +170,19 @@ namespace AsunaEngineUnitTest
 			Assert::IsTrue(e == d);
 		}
 
+		TEST_METHOD(TestMatrixRotationPYR)
+		{
+			auto m1 = XMMatrixRotationRollPitchYaw(1, 2, 1);
+			auto m2 = BuildMatrixYawPitchRollLH(1, 2, 1);
+			for (int i = 0; i < 4; i++)
+			{
+				for (int j = 0; j < 4; j++)
+				{
+					Assert::IsTrue(comparison_traits<float>::equal(m1.r[j].m128_f32[i], m2[i][j]));
+				}
+			}
+		}
+
 		TEST_METHOD(TestMatrixCameraViewLookatRH)
 		{
 			auto eye = XMVectorSet(1, 2, 3, 0);

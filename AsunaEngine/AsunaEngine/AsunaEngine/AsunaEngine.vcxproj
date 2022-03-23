@@ -21,16 +21,40 @@
   <ItemGroup>
     <ClCompile Include="3rd\Glad\src\glad.c" />
     <ClCompile Include="3rd\Glad\src\glad_wgl.c" />
+    <ClCompile Include="Foundation\Utils\FileHelper.cpp" />
+    <ClCompile Include="Graphics\DirectX11\DirectX11RenderContext.cpp" />
+    <ClCompile Include="Graphics\DirectX11\DirectX11Shader.cpp" />
+    <ClCompile Include="Graphics\DirectX11\DirectX11IndexBuffer.cpp" />
+    <ClCompile Include="Graphics\DirectX11\DirectX11VertexBuffer.cpp" />
+    <ClCompile Include="Graphics\DirectX11\DirectX11RenderItem.cpp" />
     <ClCompile Include="Graphics\Empty\EmptyRenderer.cpp" />
     <ClCompile Include="Graphics\DirectX11\DirectX11Renderer.cpp" />
     <ClCompile Include="Graphics\DirectX12\DirectX12Renderer.cpp" />
     <ClCompile Include="Graphics\Renderer.cpp" />
     <ClCompile Include="Graphics\Opengl\OpenGLRenderer.cpp" />
+    <ClCompile Include="Graphics\RenderItem.cpp" />
+    <ClCompile Include="Graphics\RenderBuffer.cpp" />
+    <ClCompile Include="Graphics\VertexBuffer.cpp" />
+    <ClCompile Include="Graphics\IndexBuffer.cpp" />
+    <ClCompile Include="Graphics\Shader.cpp" />
+    <ClCompile Include="Graphics\Opengl\OpenglIndexBuffer.cpp" />
+    <ClCompile Include="Graphics\Opengl\OpenglRenderItem.cpp" />
+    <ClCompile Include="Graphics\Opengl\OpenglShader.cpp" />
+    <ClCompile Include="Graphics\Opengl\OpenglVertexBuffer.cpp" />
+    <ClCompile Include="Graphics\RenderContext.cpp" />
+    <ClCompile Include="Graphics\Opengl\OpenglVertexArray.cpp" />
+    <ClCompile Include="Graphics\RenderItemQueue.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rd\Glad\include\glad\glad.h" />
     <ClInclude Include="3rd\Glad\include\glad\glad_wgl.h" />
     <ClInclude Include="3rd\Glad\include\KHR\khrplatform.h" />
+    <ClInclude Include="Foundation\Utils\FileHelper.h" />
+    <ClInclude Include="Graphics\DirectX11\DirectX11RenderContext.h" />
+    <ClInclude Include="Graphics\DirectX11\DirectX11Shader.h" />
+    <ClInclude Include="Graphics\DirectX11\DirectX11IndexBuffer.h" />
+    <ClInclude Include="Graphics\DirectX11\DirectX11VertexBuffer.h" />
+    <ClInclude Include="Graphics\DirectX11\DirectX11RenderItem.h" />
     <ClInclude Include="DLLExport\DLLExport.h" />
     <ClInclude Include="Graphics\Empty\EmptyRenderer.h" />
     <ClInclude Include="Foundation\Interface\IModule.h" />
@@ -49,6 +73,18 @@
     <ClInclude Include="Graphics\Renderer.h" />
     <ClInclude Include="Graphics\RenderSurface.h" />
     <ClInclude Include="Graphics\Opengl\OpenGLRenderer.h" />
+    <ClInclude Include="Graphics\RenderItem.h" />
+    <ClInclude Include="Graphics\RenderBuffer.h" />
+    <ClInclude Include="Graphics\VertexBuffer.h" />
+    <ClInclude Include="Graphics\IndexBuffer.h" />
+    <ClInclude Include="Graphics\Shader.h" />
+    <ClInclude Include="Graphics\Opengl\OpenglIndexBuffer.h" />
+    <ClInclude Include="Graphics\Opengl\OpenglRenderItem.h" />
+    <ClInclude Include="Graphics\Opengl\OpenglShader.h" />
+    <ClInclude Include="Graphics\Opengl\OpenglVertexBuffer.h" />
+    <ClInclude Include="Graphics\RenderContext.h" />
+    <ClInclude Include="Graphics\Opengl\OpenglVertexArray.h" />
+    <ClInclude Include="Graphics\RenderItemQueue.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="3rd\Glad\GladGenerate.sh" />
