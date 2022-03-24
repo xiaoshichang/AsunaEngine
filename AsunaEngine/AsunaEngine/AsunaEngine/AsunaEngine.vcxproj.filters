@@ -53,8 +53,11 @@
     <ClCompile Include="Graphics\RenderContext.cpp" />
     <ClCompile Include="Graphics\DirectX11\DirectX11RenderContext.cpp" />
     <ClCompile Include="Foundation\Utils\FileHelper.cpp" />
-    <ClCompile Include="Graphics\Opengl\OpenglVertexArray.cpp" />
+    <ClCompile Include="Graphics\Opengl\OpenglMesh.cpp" />
     <ClCompile Include="Graphics\RenderItemQueue.cpp" />
+    <ClCompile Include="Graphics\Mesh.cpp" />
+    <ClCompile Include="Graphics\DirectX11\DirectX11Mesh.cpp" />
+    <ClCompile Include="Graphics\DirectX11\DirectX11ConstantBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics\DirectX11\DirectX11Renderer.h" />
@@ -94,8 +97,11 @@
     <ClInclude Include="Graphics\RenderContext.h" />
     <ClInclude Include="Graphics\DirectX11\DirectX11RenderContext.h" />
     <ClInclude Include="Foundation\Utils\FileHelper.h" />
-    <ClInclude Include="Graphics\Opengl\OpenglVertexArray.h" />
+    <ClInclude Include="Graphics\Opengl\OpenglMesh.h" />
     <ClInclude Include="Graphics\RenderItemQueue.h" />
+    <ClInclude Include="Graphics\Mesh.h" />
+    <ClInclude Include="Graphics\DirectX11\DirectX11Mesh.h" />
+    <ClInclude Include="Graphics\DirectX11\DirectX11ConstantBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="3rd\Glad\GladGenerate.sh" />

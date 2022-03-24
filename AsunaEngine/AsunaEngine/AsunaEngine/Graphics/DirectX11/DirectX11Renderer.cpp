@@ -292,15 +292,32 @@ void DirectX11Renderer::ReleaseDeviceContext()
 void DirectX11Renderer::InitTriangle()
 {
 	// create a triangle using the VERTEX struct
-	float data[] =
-	{
-		0.0f, 0.5f, 0.0f,		1.0f, 0.0f, 0.0f, 1.0f,
-		0.45f, -0.5, 0.0f,		0.0f, 1.0f, 0.0f, 1.0f,
-		-0.45f, -0.5f, 0.0f,	0.0f, 0.0f, 1.0f, 1.0f
+	float vertices[] = {
+		 1.0f,   1.0f,  1.0f,   1.0f, 0.0f, 0.0f, 1.0f,
+		 1.0f,   1.0f, -1.0f,   0.0f, 1.0f, 0.0f, 1.0f,
+		 -1.0f,  1.0f, -1.0f,   0.0f, 0.0f, 1.0f, 1.0f,
+		 -1.0f,  1.0f,  1.0f,   1.0f, 1.0f, 0.0f, 1.0f,
+		 1.0f,  -1.0f,  1.0f,   1.0f, 0.0f, 1.0f, 1.0f,
+		 1.0f,  -1.0f, -1.0f,   0.0f, 1.0f, 1.0f, 1.0f,
+		 -1.0f, -1.0f, -1.0f,   0.5f, 1.0f, 0.5f, 1.0f,
+		 -1.0f, -1.0f,  1.0f,   1.0f, 0.5f, 1.0f, 1.0f,
 	};
-	auto vertexBuffer = DirectX11VertexBuffer::Create(data, sizeof(data));
+
+	uint16_t indices[] = { 1, 2, 3, 3, 2, 6, 6, 7, 3, 3, 0, 1, 0, 3, 7, 7, 6, 4, 4, 6, 5, 0, 7, 4, 1, 0, 4, 1, 4, 5, 2, 1, 5, 2, 5, 6 };
+	// Set the number of indices in the index array.
+
+	MeshCreateParam param;
+	param.m_VertexBufferCreateParam.m_VertexData = vertices;
+	param.m_VertexBufferCreateParam.m_ElementCount = 8;
+	param.m_VertexBufferCreateParam.m_Format = VertexBufferFormat::P3F_C4F;
+	param.m_IndexBufferCreateParam.m_IndexData = indices;
+	param.m_IndexBufferCreateParam.m_ElementCount = sizeof(indices) / sizeof(uint16_t);
+	param.m_IndexBufferCreateParam.m_Format = IndexBufferFormat::UINT16;
+
+	auto mesh = DirectX11Mesh::Create(param);
 	auto vertexShader = DirectX11VextexShader::Create("Assets\\Shaders\\triangle.vs");
 	auto pixelShader = DirectX11PixelShader::Create("Assets\\Shaders\\triangle.ps");
-	auto renderItem = new DirectX11RenderItem(vertexBuffer, nullptr, vertexShader, pixelShader);
+	auto constantBuffer = DirectX11ConstantBuffer::Create();
+	auto renderItem = new DirectX11RenderItem(mesh, vertexShader, pixelShader, constantBuffer);
 	AddRenderItem(renderItem);
 }

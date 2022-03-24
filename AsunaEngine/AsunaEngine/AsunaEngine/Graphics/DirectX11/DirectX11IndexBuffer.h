@@ -8,9 +8,9 @@ namespace asuna
 	protected:
 		DirectX11IndexBuffer(){}
 	public:
-		ID3D11Buffer* mIndexBuffer = nullptr;
+		ID3D11Buffer* m_IndexBuffer = nullptr;
 	public:
-		static DirectX11IndexBuffer* Create(void* data, size_t elementCount);
+		static DirectX11IndexBuffer* Create(IndexBufferCreateParam param);
 	};
 }
 

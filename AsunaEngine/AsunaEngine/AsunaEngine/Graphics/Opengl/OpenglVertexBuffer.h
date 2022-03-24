@@ -6,8 +6,15 @@ namespace asuna
 
 	class OpenglVertexBuffer : public VertexBuffer
 	{
+	protected:
+		OpenglVertexBuffer() {}
 	public:
-		unsigned int m_VertexBuffer;
+		void Bind();
+	public:
+		unsigned int m_VertexBuffer = 0;
+	public:
+		static OpenglVertexBuffer* Create(VertexBufferCreateParam param);
+
 	};
 
 

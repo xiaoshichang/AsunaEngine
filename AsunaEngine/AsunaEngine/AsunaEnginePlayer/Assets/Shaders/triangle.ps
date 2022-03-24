@@ -6,6 +6,12 @@ struct v2p
 	float4 color	: COLOR;
 };
 
+cbuffer MatrixBuffer
+{
+    matrix worldMatrix;
+    matrix viewMatrix;
+    matrix projectionMatrix;
+};
 
 float4 main(v2p input) : SV_TARGET
 {

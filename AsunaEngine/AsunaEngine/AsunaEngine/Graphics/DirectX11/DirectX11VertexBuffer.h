@@ -9,9 +9,11 @@ namespace asuna
 	public:
 
 		ID3D11Buffer* m_Buffer;
+		int m_Stride = 0;
+		int m_Offset = 0;
 
 	public:
-		static DirectX11VertexBuffer* Create(void* data, int sizeInBytes);
+		static DirectX11VertexBuffer* Create(VertexBufferCreateParam param);
 	};
 
 }

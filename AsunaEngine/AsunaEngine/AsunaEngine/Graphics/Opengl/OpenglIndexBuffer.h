@@ -1,12 +1,19 @@
 #pragma once
 #include "../IndexBuffer.h"
+
 namespace asuna
 {
 	class OpenglIndexBuffer : public IndexBuffer
 	{
+	protected:
+		OpenglIndexBuffer() {}
 	public:
-		int m_IndexCount;
-		unsigned int m_IndexBuffer;
+		void Bind();
+	public:
+		unsigned int m_IndexBuffer = 0;
+
+	public:
+		static OpenglIndexBuffer* Create(IndexBufferCreateParam param);
 	};
 }
 

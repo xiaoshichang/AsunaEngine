@@ -9,10 +9,20 @@ struct v2p {
 	float4 color	: COLOR;
 };
 
+cbuffer MatrixBuffer
+{
+    matrix worldMatrix;
+    matrix viewMatrix;
+    matrix projectionMatrix;
+};
+
 v2p main(a2v input) 
 {
 	v2p output;
-	output.position = float4(input.position, 1.0);
+	float4 HPos = float4(input.position, 1.0);
+	output.position = mul(HPos, worldMatrix);
+    output.position = mul(output.position, viewMatrix);
+    output.position = mul(output.position, projectionMatrix);
 	output.color = input.color;
 
 	return output;

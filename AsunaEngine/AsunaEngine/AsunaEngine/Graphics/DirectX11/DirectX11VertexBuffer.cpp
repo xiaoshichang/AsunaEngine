@@ -5,11 +5,15 @@
 using namespace asuna;
 
 
-DirectX11VertexBuffer* DirectX11VertexBuffer::Create(void* data, int sizeInBytes)
+DirectX11VertexBuffer* DirectX11VertexBuffer::Create(VertexBufferCreateParam param)
 {
 	HRESULT result;
 	auto vertexBuffer = new DirectX11VertexBuffer();
+	vertexBuffer->m_Stride = param.GetFormatSize();
+	vertexBuffer->m_Offset = 0;
+
 	auto context = (DirectX11RenderContext*)Renderer::Current->GetContext();
+	auto sizeInBytes = param.m_ElementCount * param.GetFormatSize();
 
 	// create the vertex buffer
 	{
@@ -33,7 +37,7 @@ DirectX11VertexBuffer* DirectX11VertexBuffer::Create(void* data, int sizeInBytes
 		D3D11_MAPPED_SUBRESOURCE ms;
 		result = context->m_DeviceContext->Map(vertexBuffer->m_Buffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);    // map the buffer
 		ASUNA_ASSERT(SUCCEEDED(result));
-		memcpy(ms.pData, data, sizeInBytes);                       // copy the data
+		memcpy(ms.pData, param.m_VertexData, sizeInBytes);                       // copy the data
 		context->m_DeviceContext->Unmap(vertexBuffer->m_Buffer, NULL);
 	}
 	return vertexBuffer;

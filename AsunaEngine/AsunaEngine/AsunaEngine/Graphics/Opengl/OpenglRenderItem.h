@@ -1,6 +1,6 @@
 #pragma once
 #include "../RenderItem.h"
-#include "OpenglVertexArray.h"
+#include "OpenglMesh.h"
 #include "OpenglVertexBuffer.h"
 #include "OpenglIndexBuffer.h"
 #include "OpenglShader.h"
@@ -10,8 +10,8 @@ namespace asuna
 	class OpenglRenderItem : public RenderItem
 	{
 	public:
-		OpenglRenderItem(OpenglVertexArray* va,  OpenglShaderProgram* sp) :
-			m_VertexArray(va),
+		OpenglRenderItem(OpenglMesh* mesh,  OpenglShaderProgram* sp) :
+			m_Mesh(mesh),
 			m_ShaderProgram(sp)
 		{}
 
@@ -19,7 +19,7 @@ namespace asuna
 
 	private:
 		OpenglShaderProgram* m_ShaderProgram;
-		OpenglVertexArray* m_VertexArray;
+		OpenglMesh* m_Mesh;
 
 
 	};

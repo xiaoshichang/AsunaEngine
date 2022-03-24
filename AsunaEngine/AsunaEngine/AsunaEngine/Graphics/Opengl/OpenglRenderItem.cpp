@@ -25,7 +25,7 @@ void OpenglRenderItem::Render()
 		lookAt.x = 0.0f;
 		lookAt.y = 0.0f;
 		lookAt.z = 0.0f;
-		// Finally create the view matrix from the three updated vectors.
+		// open use col major matrix, so transpose matrix here.
 		Matrix4x4f viewMatrix = BuildMatrixViewLookatRH(position, lookAt, up).TransposeCopy();
 		// Set the field of view and screen aspect ratio.
 		float fieldOfView, screenAspect;
@@ -62,8 +62,8 @@ void OpenglRenderItem::Render()
 	}
 	
 	// Bind the vertex array object that stored all the information about the vertex and index buffers.
-	glBindVertexArray(m_VertexArray->m_VertexArray);
+	glBindVertexArray(m_Mesh->m_VertexArray);
 
 	// Render the vertex buffer using the index buffer.
-	glDrawElements(GL_TRIANGLES, m_VertexArray->m_IndexBuffer->m_IndexCount, GL_UNSIGNED_SHORT, 0);
+	glDrawElements(GL_TRIANGLES, m_Mesh->m_IndexBuffer->m_ElementCount, GL_UNSIGNED_SHORT, 0);
 }

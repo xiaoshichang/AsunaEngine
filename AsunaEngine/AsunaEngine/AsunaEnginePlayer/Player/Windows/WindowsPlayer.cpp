@@ -14,7 +14,7 @@ using namespace asuna;
 void WindowsPlayer::Initialize()
 {
 	InitMainWindow();
-	InitRenderer(RenderAPIType::Directx11);
+	InitRenderer(RenderAPIType::Opengl);
 
 }
 

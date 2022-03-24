@@ -1,11 +1,12 @@
 #include <cstdint>
 #include <fstream>
 #include "OpenGLRenderer.h"
-#include "OpenglVertexArray.h"
+#include "OpenglMesh.h"
 #include "OpenglRenderItem.h"
 #include "../../Foundation/Platform/Assert.h"
 #include "../../Foundation/Math/AMath.h"
 using namespace std;
+using namespace asuna;
 
 #pragma comment(lib, "opengl32.lib")
 
@@ -223,7 +224,7 @@ void asuna::OpenGLRenderer::CreateGLContext()
 	}
 }
 
-bool asuna::OpenGLRenderer::InitializeBuffers()
+bool OpenGLRenderer::InitializeBuffers()
 {
 	float vertices[] = {
 		 1.0f,   1.0f,  1.0f,   1.0f, 0.0f, 0.0f,
@@ -237,13 +238,21 @@ bool asuna::OpenGLRenderer::InitializeBuffers()
 	};
 	uint16_t indices[] = { 1, 2, 3, 3, 2, 6, 6, 7, 3, 3, 0, 1, 0, 3, 7, 7, 6, 4, 4, 6, 5, 0, 7, 4, 1, 0, 4, 1, 4, 5, 2, 1, 5, 2, 5, 6 };
 	// Set the number of indices in the index array.
-	g_indexCount = sizeof(indices) / sizeof(uint16_t);
+	int elementCount = sizeof(indices) / sizeof(uint16_t);
 
-	auto va = OpenglVertexArray::Create(vertices, 8, indices, g_indexCount);
+	MeshCreateParam param;
+	param.m_VertexBufferCreateParam.m_VertexData = vertices;
+	param.m_VertexBufferCreateParam.m_ElementCount = 8;
+	param.m_VertexBufferCreateParam.m_Format = VertexBufferFormat::P3F_C3F;
+	param.m_IndexBufferCreateParam.m_IndexData = indices;
+	param.m_IndexBufferCreateParam.m_ElementCount = elementCount;
+	param.m_IndexBufferCreateParam.m_Format = IndexBufferFormat::UINT16;
+
+	auto mesh = OpenglMesh::Create(param);
 	auto vs = OpenglVertexShader::Create("Assets\\Shaders\\color.vs");
 	auto ps = OpenglPixelShader::Create("Assets\\Shaders\\color.ps");
 	auto sp = OpenglShaderProgram::Create(vs, ps);
-	auto renderItem = new OpenglRenderItem(va, sp);
+	auto renderItem = new OpenglRenderItem(mesh, sp);
 	Renderer::Current->AddRenderItem(renderItem);
 	return true;
 }

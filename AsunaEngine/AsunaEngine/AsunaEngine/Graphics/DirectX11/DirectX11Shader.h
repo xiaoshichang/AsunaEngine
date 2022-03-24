@@ -23,7 +23,6 @@ namespace asuna
 		}
 	public:
 		ID3D11VertexShader* m_VS = nullptr;
-		ID3DBlob* m_VSByteCode = nullptr;
 		ID3D11InputLayout* m_Layout = nullptr;              
 
 	public:
