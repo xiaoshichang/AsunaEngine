@@ -8,12 +8,13 @@ namespace asuna
 	protected:
 		OpenglIndexBuffer() {}
 	public:
+		unsigned short GetGLIndexType();
 		void Bind();
 	public:
 		unsigned int m_IndexBuffer = 0;
 
 	public:
-		static OpenglIndexBuffer* Create(IndexBufferCreateParam param);
+		static OpenglIndexBuffer* Create(IndexBufferCreateParam* param);
 	};
 }
 

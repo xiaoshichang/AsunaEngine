@@ -1,10 +1,7 @@
 #pragma once
+
 #include "../Renderer.h"
 #include "../../DLLExport/DLLExport.h"
-
-#include "../../3rd/Glad/include/glad/glad.h"
-#include "../../3rd/Glad/include/glad/glad_wgl.h"
-
 
 namespace asuna
 {

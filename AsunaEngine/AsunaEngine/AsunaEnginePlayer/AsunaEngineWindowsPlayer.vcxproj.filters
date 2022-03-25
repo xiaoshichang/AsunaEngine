@@ -14,5 +14,6 @@
     <CopyFileToFolders Include="Assets\Shaders\triangle.ps" />
     <CopyFileToFolders Include="Assets\Shaders\color.vs" />
     <CopyFileToFolders Include="Assets\Shaders\color.ps" />
+    <CopyFileToFolders Include="Assets\Models\keqin.fbx" />
   </ItemGroup>
 </Project>

@@ -1,10 +1,14 @@
 #include <cstdint>
 #include <fstream>
+#include "glad/glad.h"
+#include "glad/glad_wgl.h"
 #include "OpenGLRenderer.h"
 #include "OpenglMesh.h"
 #include "OpenglRenderItem.h"
 #include "../../Foundation/Platform/Assert.h"
 #include "../../Foundation/Math/AMath.h"
+#include "../../AssetLoader/AssetLoader.h"
+
 using namespace std;
 using namespace asuna;
 
@@ -83,7 +87,7 @@ void asuna::OpenGLRenderer::CreateDeviceContext()
 	glEnable(GL_DEPTH_TEST);
 
 	// Set the polygon winding to front facing for the left handed system.
-	glFrontFace(GL_CW);
+	glFrontFace(GL_CCW);
 
 	// Enable back face culling.
 	glEnable(GL_CULL_FACE);
@@ -240,13 +244,7 @@ bool OpenGLRenderer::InitializeBuffers()
 	// Set the number of indices in the index array.
 	int elementCount = sizeof(indices) / sizeof(uint16_t);
 
-	MeshCreateParam param;
-	param.m_VertexBufferCreateParam.m_VertexData = vertices;
-	param.m_VertexBufferCreateParam.m_ElementCount = 8;
-	param.m_VertexBufferCreateParam.m_Format = VertexBufferFormat::P3F_C3F;
-	param.m_IndexBufferCreateParam.m_IndexData = indices;
-	param.m_IndexBufferCreateParam.m_ElementCount = elementCount;
-	param.m_IndexBufferCreateParam.m_Format = IndexBufferFormat::UINT16;
+	MeshCreateParam* param = AssetLoader::LoadMesh("Assets\\Models\\keqin.fbx");
 
 	auto mesh = OpenglMesh::Create(param);
 	auto vs = OpenglVertexShader::Create("Assets\\Shaders\\color.vs");

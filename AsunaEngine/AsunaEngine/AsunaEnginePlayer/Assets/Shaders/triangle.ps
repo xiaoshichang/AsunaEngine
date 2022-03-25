@@ -3,7 +3,6 @@
 struct v2p 
 {
 	float4 position : SV_POSITION;
-	float4 color	: COLOR;
 };
 
 cbuffer MatrixBuffer
@@ -15,6 +14,6 @@ cbuffer MatrixBuffer
 
 float4 main(v2p input) : SV_TARGET
 {
-    return input.color;
+    return float4(frac(input.position.x), frac(input.position.y), frac(input.position.z), 1);
 }
 

@@ -18,9 +18,9 @@ void OpenglRenderItem::Render()
 		up.y = 1.0f;
 		up.z = 0.0f;
 		// Setup the position of the camera in the world.
-		position.x = 10;
-		position.y = 10;
-		position.z = 10;
+		position.x = 0;
+		position.y = 30;
+		position.z = 60;
 		// Setup where the camera is looking by default.
 		lookAt.x = 0.0f;
 		lookAt.y = 0.0f;
@@ -34,7 +34,8 @@ void OpenglRenderItem::Render()
 
 		// Build the perspective projection matrix.
 		Matrix4x4f projectionMatrix = BuildMatrixPerspectiveFovRH(fieldOfView, screenAspect, 0.1f, 1000.0f).TransposeCopy();
-		Matrix4x4f worldMatrix = BuildMatrixIndentity();
+		// blender use z-axis as up-axis, so 
+		Matrix4x4f worldMatrix = BuildMatrixRotationX(PI / 2);
 		unsigned int location;
 		// Set the world matrix in the vertex shader.
 		location = glGetUniformLocation(m_ShaderProgram->m_Program, "worldMatrix");
@@ -60,10 +61,15 @@ void OpenglRenderItem::Render()
 		}
 		glUniformMatrix4fv(location, 1, false, projectionMatrix);
 	}
-	
-	// Bind the vertex array object that stored all the information about the vertex and index buffers.
-	glBindVertexArray(m_Mesh->m_VertexArray);
 
-	// Render the vertex buffer using the index buffer.
-	glDrawElements(GL_TRIANGLES, m_Mesh->m_IndexBuffer->m_ElementCount, GL_UNSIGNED_SHORT, 0);
+	for (size_t i = 0; i < m_Mesh->m_SubMeshes.size(); i++)
+	{
+		auto submesh = (OpengSubMesh*)m_Mesh->m_SubMeshes[i];
+		glBindVertexArray(submesh->m_VertexArray);
+		auto indexBuffer = (OpenglIndexBuffer*)submesh->m_IndexBuffer;
+		indexBuffer->Bind();
+		glDrawElements(submesh->GetGLPrimitive(), indexBuffer->m_ElementCount, indexBuffer->GetGLIndexType(), 0);
+
+	}
+	
 }

@@ -8,9 +8,11 @@ namespace asuna
 	protected:
 		DirectX11IndexBuffer(){}
 	public:
+		DXGI_FORMAT GetDXGIFormat();
+	public:
 		ID3D11Buffer* m_IndexBuffer = nullptr;
 	public:
-		static DirectX11IndexBuffer* Create(IndexBufferCreateParam param);
+		static DirectX11IndexBuffer* Create(IndexBufferCreateParam* param);
 	};
 }
 

@@ -35,8 +35,6 @@
     <ClCompile Include="Graphics\Renderer.cpp" />
     <ClCompile Include="Graphics\Empty\EmptyRenderer.cpp" />
     <ClCompile Include="Graphics\Opengl\OpenGLRenderer.cpp" />
-    <ClCompile Include="3rd\Glad\src\glad.c" />
-    <ClCompile Include="3rd\Glad\src\glad_wgl.c" />
     <ClCompile Include="Graphics\RenderItem.cpp" />
     <ClCompile Include="Graphics\RenderBuffer.cpp" />
     <ClCompile Include="Graphics\VertexBuffer.cpp" />
@@ -58,6 +56,9 @@
     <ClCompile Include="Graphics\Mesh.cpp" />
     <ClCompile Include="Graphics\DirectX11\DirectX11Mesh.cpp" />
     <ClCompile Include="Graphics\DirectX11\DirectX11ConstantBuffer.cpp" />
+    <ClCompile Include="AssetLoader\AssetLoader.cpp" />
+    <ClCompile Include="3rd\Glad\src\glad.c" />
+    <ClCompile Include="3rd\Glad\src\glad_wgl.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics\DirectX11\DirectX11Renderer.h" />
@@ -78,9 +79,6 @@
     <ClInclude Include="Graphics\Empty\EmptyRenderer.h" />
     <ClInclude Include="Graphics\RenderSurface.h" />
     <ClInclude Include="Graphics\Opengl\OpenGLRenderer.h" />
-    <ClInclude Include="3rd\Glad\include\glad\glad.h" />
-    <ClInclude Include="3rd\Glad\include\glad\glad_wgl.h" />
-    <ClInclude Include="3rd\Glad\include\KHR\khrplatform.h" />
     <ClInclude Include="Graphics\RenderItem.h" />
     <ClInclude Include="Graphics\RenderBuffer.h" />
     <ClInclude Include="Graphics\VertexBuffer.h" />
@@ -102,6 +100,10 @@
     <ClInclude Include="Graphics\Mesh.h" />
     <ClInclude Include="Graphics\DirectX11\DirectX11Mesh.h" />
     <ClInclude Include="Graphics\DirectX11\DirectX11ConstantBuffer.h" />
+    <ClInclude Include="AssetLoader\AssetLoader.h" />
+    <ClInclude Include="3rd\Glad\include\glad\glad.h" />
+    <ClInclude Include="3rd\Glad\include\glad\glad_wgl.h" />
+    <ClInclude Include="3rd\Glad\include\KHR\khrplatform.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="3rd\Glad\GladGenerate.sh" />

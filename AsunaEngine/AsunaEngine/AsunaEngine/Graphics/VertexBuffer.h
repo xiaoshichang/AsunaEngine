@@ -6,13 +6,9 @@ namespace asuna
 {
 	enum class VertexBufferFormat
 	{
-		// P - position
-		// C - color
-		// F - float
-		P3F,				
-		P4F,
-		P3F_C3F,
-		P3F_C4F
+		Known = 0,
+		F3,
+		F4,
 	};
 
 	struct VertexBufferCreateParam
@@ -21,16 +17,15 @@ namespace asuna
 		int m_ElementCount;
 		VertexBufferFormat m_Format;
 
-		int GetFormatSize()
+		int GetFormatStride()
 		{
 			switch (m_Format)
 			{
-			case VertexBufferFormat::P3F:			return sizeof(float) * 3;
-			case VertexBufferFormat::P4F:			return sizeof(float) * 4;
-			case VertexBufferFormat::P3F_C3F:		return sizeof(float) * 6;
-			case VertexBufferFormat::P3F_C4F:		return sizeof(float) * 7;
+			case VertexBufferFormat::F3:			return sizeof(float) * 3;
+			case VertexBufferFormat::F4:			return sizeof(float) * 4;
 			default:
 				ASUNA_ASSERT(false);
+				return -1;
 			}
 		}
 	};
@@ -38,6 +33,12 @@ namespace asuna
 
 	class VertexBuffer : public RenderBuffer
 	{
+	public:
+		int m_ElementCount = 0;
+		VertexBufferFormat m_Format = VertexBufferFormat::Known;
+		int m_Stride = 0;
+		int m_Offset = 0;
+
 		
 	};
 }

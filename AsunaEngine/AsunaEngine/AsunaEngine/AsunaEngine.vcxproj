@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="3rd\Glad\src\glad.c" />
     <ClCompile Include="3rd\Glad\src\glad_wgl.c" />
+    <ClCompile Include="AssetLoader\AssetLoader.cpp" />
     <ClCompile Include="Graphics\DirectX11\DirectX11ConstantBuffer.cpp" />
     <ClCompile Include="Graphics\DirectX11\DirectX11Mesh.cpp" />
     <ClCompile Include="Foundation\Utils\FileHelper.cpp" />
@@ -52,6 +53,7 @@
     <ClInclude Include="3rd\Glad\include\glad\glad.h" />
     <ClInclude Include="3rd\Glad\include\glad\glad_wgl.h" />
     <ClInclude Include="3rd\Glad\include\KHR\khrplatform.h" />
+    <ClInclude Include="AssetLoader\AssetLoader.h" />
     <ClInclude Include="Graphics\DirectX11\DirectX11ConstantBuffer.h" />
     <ClInclude Include="Graphics\DirectX11\DirectX11Mesh.h" />
     <ClInclude Include="Foundation\Utils\FileHelper.h" />
@@ -199,6 +201,9 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

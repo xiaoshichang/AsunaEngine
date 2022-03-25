@@ -7,6 +7,7 @@
 #include "AsunaEngine/Graphics/DirectX12/DirectX12Renderer.h"
 #include "AsunaEngine/Graphics/DirectX11/DirectX11Renderer.h"
 #include "AsunaEngine/Graphics/Opengl/OpenGLRenderer.h"
+#include "AsunaEngine/AssetLoader/AssetLoader.h"
 
 using namespace asuna;
 
@@ -15,7 +16,6 @@ void WindowsPlayer::Initialize()
 {
 	InitMainWindow();
 	InitRenderer(RenderAPIType::Opengl);
-
 }
 
 void WindowsPlayer::Finialize()

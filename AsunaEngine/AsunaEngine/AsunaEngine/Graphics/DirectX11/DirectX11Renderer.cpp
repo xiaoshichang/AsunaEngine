@@ -12,6 +12,8 @@
 #include "DirectX11Shader.h"
 #include "DirectX11RenderItem.h"
 
+#include "../../AssetLoader/AssetLoader.h"
+
 using namespace DirectX;
 using namespace asuna;
 using namespace DirectX::PackedVector;
@@ -215,7 +217,7 @@ void DirectX11Renderer::CreateDeviceContext()
 	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
 
-	depthStencilDesc.StencilEnable = true;
+	depthStencilDesc.StencilEnable = true;;
 	depthStencilDesc.StencilReadMask = 0xFF;
 	depthStencilDesc.StencilWriteMask = 0xFF;
 
@@ -259,7 +261,7 @@ void DirectX11Renderer::CreateDeviceContext()
 	rasterDesc.DepthBiasClamp = 0.0f;
 	rasterDesc.DepthClipEnable = true;
 	rasterDesc.FillMode = D3D11_FILL_SOLID;
-	rasterDesc.FrontCounterClockwise = false;
+	rasterDesc.FrontCounterClockwise = true;
 	rasterDesc.MultisampleEnable = false;
 	rasterDesc.ScissorEnable = false;
 	rasterDesc.SlopeScaledDepthBias = 0.0f;
@@ -291,29 +293,8 @@ void DirectX11Renderer::ReleaseDeviceContext()
 
 void DirectX11Renderer::InitTriangle()
 {
-	// create a triangle using the VERTEX struct
-	float vertices[] = {
-		 1.0f,   1.0f,  1.0f,   1.0f, 0.0f, 0.0f, 1.0f,
-		 1.0f,   1.0f, -1.0f,   0.0f, 1.0f, 0.0f, 1.0f,
-		 -1.0f,  1.0f, -1.0f,   0.0f, 0.0f, 1.0f, 1.0f,
-		 -1.0f,  1.0f,  1.0f,   1.0f, 1.0f, 0.0f, 1.0f,
-		 1.0f,  -1.0f,  1.0f,   1.0f, 0.0f, 1.0f, 1.0f,
-		 1.0f,  -1.0f, -1.0f,   0.0f, 1.0f, 1.0f, 1.0f,
-		 -1.0f, -1.0f, -1.0f,   0.5f, 1.0f, 0.5f, 1.0f,
-		 -1.0f, -1.0f,  1.0f,   1.0f, 0.5f, 1.0f, 1.0f,
-	};
 
-	uint16_t indices[] = { 1, 2, 3, 3, 2, 6, 6, 7, 3, 3, 0, 1, 0, 3, 7, 7, 6, 4, 4, 6, 5, 0, 7, 4, 1, 0, 4, 1, 4, 5, 2, 1, 5, 2, 5, 6 };
-	// Set the number of indices in the index array.
-
-	MeshCreateParam param;
-	param.m_VertexBufferCreateParam.m_VertexData = vertices;
-	param.m_VertexBufferCreateParam.m_ElementCount = 8;
-	param.m_VertexBufferCreateParam.m_Format = VertexBufferFormat::P3F_C4F;
-	param.m_IndexBufferCreateParam.m_IndexData = indices;
-	param.m_IndexBufferCreateParam.m_ElementCount = sizeof(indices) / sizeof(uint16_t);
-	param.m_IndexBufferCreateParam.m_Format = IndexBufferFormat::UINT16;
-
+	MeshCreateParam* param = AssetLoader::LoadMesh("Assets\\Models\\keqin.fbx");
 	auto mesh = DirectX11Mesh::Create(param);
 	auto vertexShader = DirectX11VextexShader::Create("Assets\\Shaders\\triangle.vs");
 	auto pixelShader = DirectX11PixelShader::Create("Assets\\Shaders\\triangle.ps");

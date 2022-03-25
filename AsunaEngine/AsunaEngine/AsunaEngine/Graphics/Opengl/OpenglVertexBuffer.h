@@ -9,11 +9,11 @@ namespace asuna
 	protected:
 		OpenglVertexBuffer() {}
 	public:
-		void Bind();
+		void Bind(int index);
 	public:
 		unsigned int m_VertexBuffer = 0;
 	public:
-		static OpenglVertexBuffer* Create(VertexBufferCreateParam param);
+		static OpenglVertexBuffer* Create(VertexBufferCreateParam* param);
 
 	};
 

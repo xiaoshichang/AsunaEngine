@@ -23,6 +23,7 @@ namespace asuna
 				case IndexBufferFormat::UINT32:			return 4;
 				default:
 					ASUNA_ASSERT(false);
+					return -1;
 			}
 		}
 	};
@@ -31,6 +32,7 @@ namespace asuna
 	{
 	public:
 		int m_ElementCount = 0;
+		IndexBufferFormat m_Format;
 	};
 }
 

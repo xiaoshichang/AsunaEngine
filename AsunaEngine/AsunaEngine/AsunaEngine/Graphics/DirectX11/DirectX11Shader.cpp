@@ -37,10 +37,9 @@ DirectX11VextexShader* DirectX11VextexShader::Create(const std::string& path)
 	D3D11_INPUT_ELEMENT_DESC ied[] =
 	{
 			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-			{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
 	};
 
-	context->m_Device->CreateInputLayout(ied, 2, byteCode->GetBufferPointer(), byteCode->GetBufferSize(), &shader->m_Layout);
+	context->m_Device->CreateInputLayout(ied, 1, byteCode->GetBufferPointer(), byteCode->GetBufferSize(), &shader->m_Layout);
 	byteCode->Release();
 	return shader;
 }
