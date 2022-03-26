@@ -12,6 +12,11 @@ namespace asuna
 		DirectX11Shader(ShaderType shaderType) : Shader(shaderType)
 		{
 		}
+
+		virtual ~DirectX11Shader()
+		{
+		}
+
 	};
 
 
@@ -22,6 +27,11 @@ namespace asuna
 			: DirectX11Shader(ShaderType::VertexShader)
 		{
 		}
+
+		virtual ~DirectX11VextexShader()
+		{
+		}
+
 	public:
 		ID3D11VertexShader* m_VS = nullptr;
 		ID3D11InputLayout* m_Layout = nullptr;              
@@ -36,6 +46,10 @@ namespace asuna
 	public:
 		DirectX11PixelShader()
 			: DirectX11Shader(ShaderType::PixelShader)
+		{
+		}
+
+		virtual ~DirectX11PixelShader()
 		{
 		}
 

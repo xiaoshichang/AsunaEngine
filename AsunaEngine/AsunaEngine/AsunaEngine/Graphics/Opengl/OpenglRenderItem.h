@@ -13,7 +13,12 @@ namespace asuna
 		OpenglRenderItem(std::shared_ptr<OpenglMesh> mesh, std::shared_ptr<OpenglShaderProgram> sp) :
 			m_Mesh(mesh),
 			m_ShaderProgram(sp)
-		{}
+		{
+		}
+
+		virtual ~OpenglRenderItem()
+		{
+		}
 
 		virtual void Render() override;
 

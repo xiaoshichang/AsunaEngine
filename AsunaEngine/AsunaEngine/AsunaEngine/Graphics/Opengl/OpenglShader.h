@@ -40,7 +40,12 @@ namespace asuna
 	{
 	public:
 		OpenglPixelShader() : OpenglShader(ShaderType::PixelShader)
-		{}
+		{
+		}
+
+		virtual ~OpenglPixelShader()
+		{
+		}
 
 	public:
 		static std::shared_ptr<OpenglPixelShader> Create(const std::string& path);
@@ -53,7 +58,14 @@ namespace asuna
 	class OpenglShaderProgram
 	{
 	public:
-		OpenglShaderProgram(){}
+		OpenglShaderProgram()
+		{
+		}
+
+		virtual ~OpenglShaderProgram()
+		{
+		}
+
 	public:
 		unsigned int m_Program = 0;
 	public:

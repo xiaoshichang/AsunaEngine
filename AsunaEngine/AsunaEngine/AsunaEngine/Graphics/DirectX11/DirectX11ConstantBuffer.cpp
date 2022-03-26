@@ -18,7 +18,7 @@ shared_ptr<DirectX11ConstantBuffer> DirectX11ConstantBuffer::Create()
 	matrixBufferDesc.MiscFlags = 0;
 	matrixBufferDesc.StructureByteStride = 0;
 
-	auto context = static_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
+	auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
 	auto result = context->m_Device->CreateBuffer(&matrixBufferDesc, NULL, &constantBuffer->m_ConstantBuffer);
 	ASUNA_ASSERT(SUCCEEDED(result));
 

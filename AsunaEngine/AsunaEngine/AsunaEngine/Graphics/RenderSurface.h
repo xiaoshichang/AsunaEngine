@@ -6,6 +6,7 @@ namespace asuna
 {
 	enum class RenderSurfaceType
 	{
+		Unknown,
 		WindowsApplication,
 		WPFImage,
 	};
@@ -13,6 +14,15 @@ namespace asuna
 
 	class RenderSurface
 	{
+	public:
+		RenderSurface() :
+			Type(RenderSurfaceType::Unknown)
+		{}
+
+		virtual ~RenderSurface()
+		{
+		}
+
 	public:
 		RenderSurfaceType Type;
 	};
@@ -26,6 +36,11 @@ namespace asuna
 			Type = RenderSurfaceType::WindowsApplication;
 			HWND = hwnd;
 		}
+
+		virtual ~RenderSurfaceWindowsApplication()
+		{
+		}
+
 	public:
 		HWND HWND;
 	};

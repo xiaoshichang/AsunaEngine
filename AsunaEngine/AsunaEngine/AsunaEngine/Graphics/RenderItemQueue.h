@@ -9,6 +9,11 @@ namespace asuna
 	class RenderItemQueue
 	{
 	public:
+		virtual ~RenderItemQueue()
+		{
+		}
+
+	public:
 		void Render();
 		void AddRenderItem(std::shared_ptr<RenderItem>);
 		void RemoveRenderItem(std::shared_ptr<RenderItem>);

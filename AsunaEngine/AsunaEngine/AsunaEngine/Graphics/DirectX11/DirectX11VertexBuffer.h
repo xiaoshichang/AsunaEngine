@@ -8,6 +8,15 @@ namespace asuna
 	class DirectX11VertexBuffer : public VertexBuffer
 	{
 	public:
+		DirectX11VertexBuffer()
+		{
+		}
+
+		virtual ~DirectX11VertexBuffer()
+		{
+		}
+
+	public:
 		ID3D11Buffer* m_Buffer;
 
 	public:

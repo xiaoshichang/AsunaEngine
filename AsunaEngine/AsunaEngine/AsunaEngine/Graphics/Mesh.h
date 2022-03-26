@@ -40,8 +40,11 @@ namespace asuna
 		int m_SubMeshCount;
 		std::vector<std::shared_ptr<SubMeshCreateParam>> m_SubMeshCreateParam;
 
-		MeshCreateParam() :
-			m_SubMeshCount(0)
+		MeshCreateParam() : m_SubMeshCount(0)
+		{
+		}
+
+		~MeshCreateParam()
 		{
 		}
 	};
@@ -49,6 +52,11 @@ namespace asuna
 
 	class SubMesh
 	{
+	public:
+		virtual ~SubMesh()
+		{
+		}
+
 	public:
 		std::shared_ptr<VertexBuffer> m_PositionBuffer = nullptr;
 		std::shared_ptr<VertexBuffer> m_NormalBuffer = nullptr;
@@ -59,6 +67,10 @@ namespace asuna
 
 	class Mesh
 	{
+	public:
+		virtual ~Mesh()
+		{
+		}
 	public:
 		std::vector<std::shared_ptr<SubMesh>> m_SubMeshes;
 	};

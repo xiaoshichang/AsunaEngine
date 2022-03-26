@@ -33,7 +33,7 @@ void DirectX11Renderer::Finalize()
 
 void DirectX11Renderer::ClearRenderTarget(float r, float g, float b, float a)
 {
-	auto context = static_pointer_cast<DirectX11RenderContext>(m_Context);
+	auto context = dynamic_pointer_cast<DirectX11RenderContext>(m_Context);
 	float color[4] = { r, g, b, a };
 	// Clear the back buffer.
 	context->m_DeviceContext->ClearRenderTargetView(m_renderTargetView, color);
@@ -140,7 +140,7 @@ void DirectX11Renderer::CreateDeviceContext()
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 
 	// Set the handle for the window to render to.
-	auto surface = static_pointer_cast<RenderSurfaceWindowsApplication>(m_Surface);
+	auto surface = dynamic_pointer_cast<RenderSurfaceWindowsApplication>(m_Surface);
 	swapChainDesc.OutputWindow = surface->HWND;
 
 	// Turn multisampling off.

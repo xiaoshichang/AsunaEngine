@@ -7,7 +7,15 @@ namespace asuna
 	class DirectX11IndexBuffer : public IndexBuffer
 	{
 	public:
-		DirectX11IndexBuffer(){}
+		DirectX11IndexBuffer()
+		{
+		}
+
+		virtual ~DirectX11IndexBuffer()
+		{
+		}
+
+
 	public:
 		DXGI_FORMAT GetDXGIFormat();
 	public:

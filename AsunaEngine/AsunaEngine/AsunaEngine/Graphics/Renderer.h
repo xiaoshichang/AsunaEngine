@@ -29,6 +29,10 @@ namespace asuna
 			m_RenderItemQueue = std::make_shared<RenderItemQueue>();
 		}
 
+		virtual ~Renderer()
+		{
+		}
+
 		virtual void Render();
 		virtual void SetRenderSurface(std::shared_ptr<RenderSurface> surface);
 		virtual std::shared_ptr<RenderContext> GetContext();

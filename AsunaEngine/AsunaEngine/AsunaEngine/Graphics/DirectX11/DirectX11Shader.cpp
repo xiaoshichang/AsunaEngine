@@ -27,7 +27,7 @@ shared_ptr<DirectX11VextexShader> DirectX11VextexShader::Create(const std::strin
 		OutputDebugStringA(reinterpret_cast<const char*>(errorMessage->GetBufferPointer()));
 		std::cout << reinterpret_cast<const char*>(errorMessage->GetBufferPointer()) << std::endl;
 	}
-	auto context = static_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
+	auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
 	context->m_Device->CreateVertexShader(byteCode->GetBufferPointer(), byteCode->GetBufferSize(), nullptr, &shader->m_VS);
 
 	ASUNA_ASSERT(SUCCEEDED(result));
@@ -62,7 +62,7 @@ shared_ptr<DirectX11PixelShader> DirectX11PixelShader::Create(const std::string&
 		OutputDebugStringA(reinterpret_cast<const char*>(errorMessage->GetBufferPointer()));
 		std::cout << reinterpret_cast<const char*>(errorMessage->GetBufferPointer()) << std::endl;
 	}
-	auto context = static_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
+	auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
 	context->m_Device->CreatePixelShader(byteCode->GetBufferPointer(), byteCode->GetBufferSize(), nullptr, &shader->m_PS);
 
 	ASUNA_ASSERT(SUCCEEDED(result));

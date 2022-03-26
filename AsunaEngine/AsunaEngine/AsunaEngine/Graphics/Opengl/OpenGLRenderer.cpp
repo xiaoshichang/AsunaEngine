@@ -167,7 +167,7 @@ void asuna::OpenGLRenderer::CreateGLContext()
 	PIXELFORMATDESCRIPTOR pfd;
 	int result;
 
-	auto windowsSurface = static_pointer_cast<RenderSurfaceWindowsApplication>(m_Surface);
+	auto windowsSurface = dynamic_pointer_cast<RenderSurfaceWindowsApplication>(m_Surface);
 	m_hDC = GetDC(windowsSurface->HWND);
 
 	if (GLAD_WGL_ARB_pixel_format && GLAD_WGL_ARB_multisample && GLAD_WGL_ARB_create_context)

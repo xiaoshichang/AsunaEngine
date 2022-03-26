@@ -59,22 +59,22 @@ std::shared_ptr<OpengSubMesh> OpengSubMesh::Create(std::shared_ptr<SubMeshCreate
 		glBindVertexArray(mesh->m_VertexArray);
 		if (mesh->m_PositionBuffer != nullptr)
 		{
-			auto vb = static_pointer_cast<OpenglVertexBuffer>(mesh->m_PositionBuffer);
+			auto vb = dynamic_pointer_cast<OpenglVertexBuffer>(mesh->m_PositionBuffer);
 			vb->Bind(0);
 		}
 		if (mesh->m_NormalBuffer != nullptr)
 		{
-			auto vb = static_pointer_cast<OpenglVertexBuffer>(mesh->m_NormalBuffer);
+			auto vb = dynamic_pointer_cast<OpenglVertexBuffer>(mesh->m_NormalBuffer);
 			vb->Bind(1);
 		}
 		if (mesh->m_TexCoordBuffer != nullptr)
 		{
-			auto vb = static_pointer_cast<OpenglVertexBuffer>(mesh->m_TexCoordBuffer);
+			auto vb = dynamic_pointer_cast<OpenglVertexBuffer>(mesh->m_TexCoordBuffer);
 			vb->Bind(2);
 		}
 		if (mesh->m_IndexBuffer != nullptr)
 		{
-			auto ib = static_pointer_cast<OpenglIndexBuffer>(mesh->m_IndexBuffer);
+			auto ib = dynamic_pointer_cast<OpenglIndexBuffer>(mesh->m_IndexBuffer);
 			ib->Bind();
 		}
 		glBindVertexArray(0);

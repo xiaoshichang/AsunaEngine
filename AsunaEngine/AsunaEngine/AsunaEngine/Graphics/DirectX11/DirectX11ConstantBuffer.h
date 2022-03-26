@@ -17,7 +17,13 @@ namespace asuna
 	public:
 		DirectX11ConstantBuffer() :
 			m_Data()
-		{}
+		{
+		}
+
+		virtual ~DirectX11ConstantBuffer()
+		{
+		}
+
 	public:
 		ConstantBufferData m_Data;
 		ID3D11Buffer* m_ConstantBuffer = nullptr;

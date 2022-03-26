@@ -23,6 +23,11 @@ namespace asuna
 		{
 		}
 
+		virtual ~DirectX11RenderItem()
+		{
+		}
+
+
 		virtual void Render() override;
 
 	private:

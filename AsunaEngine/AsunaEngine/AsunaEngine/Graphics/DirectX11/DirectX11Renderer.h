@@ -9,6 +9,23 @@ namespace asuna
 	class ASUNAENGINE_API DirectX11Renderer : public Renderer
 	{
 	public:
+		DirectX11Renderer():
+			m_hwnd(0),
+			m_swapChain(nullptr),
+			m_renderTargetView(nullptr),
+			m_depthStencilBuffer(nullptr),
+			m_depthStencilState(nullptr),
+			m_depthStencilView(nullptr),
+			m_rasterState(nullptr),
+			m_videoCardMemory(0)
+		{
+		}
+
+		virtual ~DirectX11Renderer()
+		{
+		}
+
+	public:
 		virtual void Initialize() override;
 		virtual void Finalize() override;
 

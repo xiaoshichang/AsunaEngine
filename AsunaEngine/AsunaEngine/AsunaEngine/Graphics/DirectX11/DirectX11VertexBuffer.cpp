@@ -14,7 +14,7 @@ shared_ptr<DirectX11VertexBuffer> DirectX11VertexBuffer::Create(shared_ptr<Verte
 	vertexBuffer->m_Stride = param->GetFormatStride();
 	vertexBuffer->m_Offset = 0;
 
-	auto context = static_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
+	auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
 	auto sizeInBytes = param->m_ElementCount * param->GetFormatStride();
 
 	// create the vertex buffer

@@ -7,6 +7,14 @@ namespace asuna
 {
 	class ASUNAENGINE_API OpenGLRenderer : public Renderer
 	{
+	public:
+		OpenGLRenderer()
+		{
+		}
+
+		virtual ~OpenGLRenderer()
+		{
+		}
 
 	public:
 		virtual void Initialize();

@@ -11,11 +11,14 @@ namespace asuna
 
 	class Shader
 	{
-	protected:
+	public:
 		Shader(ShaderType shaderType) : 
 			m_ShaderType(shaderType)
 		{
+		}
 
+		virtual ~Shader()
+		{
 		}
 
 	public:

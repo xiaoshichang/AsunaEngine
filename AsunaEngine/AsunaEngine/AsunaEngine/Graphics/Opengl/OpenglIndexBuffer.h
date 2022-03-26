@@ -7,7 +7,14 @@ namespace asuna
 	class OpenglIndexBuffer : public IndexBuffer
 	{
 	public:
-		OpenglIndexBuffer() {}
+		OpenglIndexBuffer() 
+		{
+		}
+
+		virtual ~OpenglIndexBuffer()
+		{
+		}
+
 	public:
 		unsigned short GetGLIndexType();
 		void Bind();

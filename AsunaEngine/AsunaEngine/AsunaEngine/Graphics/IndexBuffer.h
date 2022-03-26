@@ -31,6 +31,11 @@ namespace asuna
 	class IndexBuffer : public RenderBuffer
 	{
 	public:
+		virtual ~IndexBuffer()
+		{
+		}
+
+	public:
 		int m_ElementCount = 0;
 		IndexBufferFormat m_Format;
 	};

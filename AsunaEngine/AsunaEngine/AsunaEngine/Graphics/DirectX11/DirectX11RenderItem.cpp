@@ -8,7 +8,7 @@ using namespace std;
 
 void DirectX11RenderItem::Render()
 {
-	auto context = static_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
+	auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
 	Vector3f up, position, lookAt;
 	// Setup the vector that points upwards.
 	up.x = 0.0f;
@@ -56,7 +56,7 @@ void DirectX11RenderItem::Render()
 		{
 			UINT stride = subMesh->m_PositionBuffer->m_Stride;
 			UINT offset = subMesh->m_PositionBuffer->m_Offset;
-			auto vb = static_pointer_cast<DirectX11VertexBuffer>(subMesh->m_PositionBuffer);
+			auto vb = dynamic_pointer_cast<DirectX11VertexBuffer>(subMesh->m_PositionBuffer);
 			// https://docs.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-iasetvertexbuffers
 			context->m_DeviceContext->IASetVertexBuffers(0, 1, &vb->m_Buffer, &stride, &offset);
 		}
@@ -65,7 +65,7 @@ void DirectX11RenderItem::Render()
 		{
 			UINT stride = subMesh->m_NormalBuffer->m_Stride;
 			UINT offset = subMesh->m_NormalBuffer->m_Offset;
-			auto vb = static_pointer_cast<DirectX11VertexBuffer>(subMesh->m_NormalBuffer);
+			auto vb = dynamic_pointer_cast<DirectX11VertexBuffer>(subMesh->m_NormalBuffer);
 			context->m_DeviceContext->IASetVertexBuffers(1, 1, &vb->m_Buffer, &stride, &offset);
 		}
 
@@ -73,14 +73,14 @@ void DirectX11RenderItem::Render()
 		{
 			UINT stride = subMesh->m_TexCoordBuffer->m_Stride;
 			UINT offset = subMesh->m_TexCoordBuffer->m_Offset;
-			auto vb = static_pointer_cast<DirectX11VertexBuffer>(subMesh->m_TexCoordBuffer);
+			auto vb = dynamic_pointer_cast<DirectX11VertexBuffer>(subMesh->m_TexCoordBuffer);
 			context->m_DeviceContext->IASetVertexBuffers(2, 1, &vb->m_Buffer, &stride, &offset);
 		}
 
 		// https://docs.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-iasetprimitivetopology
 		context->m_DeviceContext->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-		auto indexBuffer = static_pointer_cast<DirectX11IndexBuffer>(subMesh->m_IndexBuffer);
+		auto indexBuffer = dynamic_pointer_cast<DirectX11IndexBuffer>(subMesh->m_IndexBuffer);
 		// https://docs.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-iasetindexbuffer
 		context->m_DeviceContext->IASetIndexBuffer(indexBuffer->m_IndexBuffer, indexBuffer->GetDXGIFormat(), 0);
 

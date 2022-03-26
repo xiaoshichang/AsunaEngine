@@ -8,7 +8,14 @@ namespace asuna
 	class OpenglVertexBuffer : public VertexBuffer
 	{
 	public:
-		OpenglVertexBuffer() {}
+		OpenglVertexBuffer() 
+		{
+		}
+
+		virtual ~OpenglVertexBuffer() 
+		{
+		}
+
 	public:
 		void Bind(int index);
 	public:

@@ -4,6 +4,11 @@ namespace asuna
 {
 	class RenderBuffer
 	{
+	public:
+		virtual ~RenderBuffer()
+		{
+		}
+
 	};
 }
 

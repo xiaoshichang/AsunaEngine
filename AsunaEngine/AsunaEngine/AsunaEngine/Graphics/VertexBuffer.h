@@ -35,6 +35,11 @@ namespace asuna
 	class VertexBuffer : public RenderBuffer
 	{
 	public:
+		virtual ~VertexBuffer()
+		{
+		}
+
+	public:
 		int m_ElementCount = 0;
 		VertexBufferFormat m_Format = VertexBufferFormat::Known;
 		int m_Stride = 0;

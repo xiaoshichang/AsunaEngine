@@ -10,7 +10,13 @@ namespace asuna
 	class OpengSubMesh : public SubMesh
 	{
 	public:
-		OpengSubMesh() {}
+		OpengSubMesh() 
+		{
+		}
+
+		virtual ~OpengSubMesh()
+		{
+		}
 
 	public:
 		unsigned int GetGLPrimitive();

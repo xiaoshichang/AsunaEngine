@@ -64,9 +64,9 @@ void OpenglRenderItem::Render()
 
 	for (size_t i = 0; i < m_Mesh->m_SubMeshes.size(); i++)
 	{
-		auto submesh = static_pointer_cast<OpengSubMesh>(m_Mesh->m_SubMeshes[i]);
+		auto submesh = dynamic_pointer_cast<OpengSubMesh>(m_Mesh->m_SubMeshes[i]);
 		glBindVertexArray(submesh->m_VertexArray);
-		auto indexBuffer = static_pointer_cast<OpenglIndexBuffer>(submesh->m_IndexBuffer);
+		auto indexBuffer = dynamic_pointer_cast<OpenglIndexBuffer>(submesh->m_IndexBuffer);
 		indexBuffer->Bind();
 		glDrawElements(submesh->GetGLPrimitive(), indexBuffer->m_ElementCount, indexBuffer->GetGLIndexType(), 0);
 

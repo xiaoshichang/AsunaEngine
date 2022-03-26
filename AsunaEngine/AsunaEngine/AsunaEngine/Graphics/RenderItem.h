@@ -8,6 +8,11 @@ namespace asuna
 	class RenderItem
 	{
 	public:
+		virtual ~RenderItem()
+		{
+		}
+
+	public:
 		virtual void Render() = 0;
 	};
 }
