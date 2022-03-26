@@ -1,5 +1,6 @@
 #include "OpenglVertexBuffer.h"
 #include "glad/glad.h"
+using namespace std;
 using namespace asuna;
 
 void OpenglVertexBuffer::Bind(int index)
@@ -12,9 +13,9 @@ void OpenglVertexBuffer::Bind(int index)
 	glVertexAttribPointer(index, 3, GL_FLOAT, false, m_Stride, 0);
 }
 
-OpenglVertexBuffer* OpenglVertexBuffer::Create(VertexBufferCreateParam* param)
+shared_ptr<OpenglVertexBuffer> OpenglVertexBuffer::Create(shared_ptr<VertexBufferCreateParam> param)
 {
-	auto vertexBuffer = new OpenglVertexBuffer();
+	auto vertexBuffer = make_shared<OpenglVertexBuffer>();
 	vertexBuffer->m_Format = param->m_Format;
 	vertexBuffer->m_ElementCount = param->m_ElementCount;
 	vertexBuffer->m_Offset = 0;

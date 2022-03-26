@@ -3,12 +3,12 @@
 #include "../../Foundation/Utils/FileHelper.h"
 #include "../../Foundation/Platform/Assert.h"
 using namespace asuna;
+using namespace std;
 
 
-
-OpenglVertexShader* OpenglVertexShader::Create(const std::string& path)
+shared_ptr<OpenglVertexShader> OpenglVertexShader::Create(const std::string& path)
 {
-	OpenglVertexShader* shader = new OpenglVertexShader();
+	auto shader = make_shared<OpenglVertexShader>();
 	auto source = FileHelper::ReadText(path.c_str());
 	auto sourceString = source.c_str();
 	shader->m_Shader = glCreateShader(GL_VERTEX_SHADER);
@@ -29,9 +29,9 @@ OpenglVertexShader* OpenglVertexShader::Create(const std::string& path)
 	return shader;
 }
 
-OpenglPixelShader* OpenglPixelShader::Create(const std::string& path)
+shared_ptr<OpenglPixelShader> OpenglPixelShader::Create(const std::string& path)
 {
-	OpenglPixelShader* shader = new OpenglPixelShader();
+	auto shader = make_shared<OpenglPixelShader>();
 	auto source = FileHelper::ReadText(path.c_str());
 	auto sourceString = source.c_str();
 	shader->m_Shader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -52,9 +52,9 @@ OpenglPixelShader* OpenglPixelShader::Create(const std::string& path)
 	return shader;
 }
 
-OpenglShaderProgram* OpenglShaderProgram::Create(OpenglVertexShader* vs, OpenglPixelShader* ps)
+shared_ptr<OpenglShaderProgram> OpenglShaderProgram::Create(shared_ptr<OpenglVertexShader> vs, shared_ptr<OpenglPixelShader> ps)
 {
-	OpenglShaderProgram* shaderProgram = new OpenglShaderProgram();
+	auto shaderProgram = make_shared<OpenglShaderProgram>();
 	// Create a shader program object.
 	shaderProgram->m_Program = glCreateProgram();
 

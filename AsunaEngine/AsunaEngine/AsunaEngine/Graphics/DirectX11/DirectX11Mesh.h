@@ -8,21 +8,21 @@ namespace asuna
 {
 	class DirectX11SubMesh : public SubMesh
 	{
-	protected:
+	public:
 		DirectX11SubMesh() {};
 
 	public:
-		static DirectX11SubMesh* Create(SubMeshCreateParam* param);
+		static std::shared_ptr<DirectX11SubMesh> Create(std::shared_ptr<SubMeshCreateParam> param);
 	};
 
 
 
 	class DirectX11Mesh : public Mesh
 	{
-	protected:
+	public:
 		DirectX11Mesh() {}
 	public:
-		static DirectX11Mesh* Create(MeshCreateParam* param);
+		static std::shared_ptr<DirectX11Mesh> Create(std::shared_ptr<MeshCreateParam> param);
 	};
 
 }

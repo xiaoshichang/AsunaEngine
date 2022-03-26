@@ -1,5 +1,6 @@
 #pragma once
 #include <d3d11.h>
+#include <memory>
 #include <iostream>
 #include "../Shader.h"
 
@@ -16,7 +17,7 @@ namespace asuna
 
 	class DirectX11VextexShader : public DirectX11Shader
 	{
-	protected:
+	public:
 		DirectX11VextexShader()
 			: DirectX11Shader(ShaderType::VertexShader)
 		{
@@ -26,13 +27,13 @@ namespace asuna
 		ID3D11InputLayout* m_Layout = nullptr;              
 
 	public:
-		static DirectX11VextexShader* Create(const std::string& path);
+		static std::shared_ptr<DirectX11VextexShader> Create(const std::string& path);
 	};
 
 
 	class DirectX11PixelShader : public DirectX11Shader
 	{
-	protected:
+	public:
 		DirectX11PixelShader()
 			: DirectX11Shader(ShaderType::PixelShader)
 		{
@@ -42,7 +43,7 @@ namespace asuna
 		ID3D11PixelShader* m_PS = nullptr;
 
 	public:
-		static DirectX11PixelShader* Create(const std::string& path);
+		static std::shared_ptr<DirectX11PixelShader> Create(const std::string& path);
 
 	};
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <iostream>
 #include "../Shader.h"
 namespace asuna
@@ -8,7 +9,7 @@ namespace asuna
 	////////////////////////////////////////////////////////////////////
 	class OpenglShader : public Shader
 	{
-	protected:
+	public:
 		OpenglShader(ShaderType shaderType) : Shader(shaderType)
 		{
 		}
@@ -24,12 +25,12 @@ namespace asuna
 
 	class OpenglVertexShader : public OpenglShader
 	{
-	protected:
+	public:
 		OpenglVertexShader() : OpenglShader(ShaderType::VertexShader)
 		{}
 
 	public:
-		static OpenglVertexShader* Create(const std::string& path);
+		static std::shared_ptr<OpenglVertexShader> Create(const std::string& path);
 	};
 
 	////////////////////////////////////////////////////////////////////
@@ -37,12 +38,12 @@ namespace asuna
 	////////////////////////////////////////////////////////////////////
 	class OpenglPixelShader : public OpenglShader
 	{
-	protected:
+	public:
 		OpenglPixelShader() : OpenglShader(ShaderType::PixelShader)
 		{}
 
 	public:
-		static OpenglPixelShader* Create(const std::string& path);
+		static std::shared_ptr<OpenglPixelShader> Create(const std::string& path);
 	};
 
 
@@ -51,12 +52,12 @@ namespace asuna
 	////////////////////////////////////////////////////////////////////
 	class OpenglShaderProgram
 	{
-	protected:
+	public:
 		OpenglShaderProgram(){}
 	public:
 		unsigned int m_Program = 0;
 	public:
-		static OpenglShaderProgram* Create(OpenglVertexShader* vs, OpenglPixelShader* ps);
+		static std::shared_ptr<OpenglShaderProgram> Create(std::shared_ptr<OpenglVertexShader> vs, std::shared_ptr<OpenglPixelShader> ps);
 	};
 
 }

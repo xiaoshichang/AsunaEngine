@@ -4,8 +4,9 @@
 #include "../../Foundation/Platform/Assert.h"
 #include "glad/glad.h"
 #include "OpenglMesh.h"
-using namespace asuna;
 
+using namespace asuna;
+using namespace std;
 
 unsigned int OpengSubMesh::GetGLPrimitive()
 {
@@ -28,9 +29,9 @@ unsigned int OpengSubMesh::GetGLPrimitive()
 	}
 }
 
-OpengSubMesh* OpengSubMesh::Create(SubMeshCreateParam* param)
+std::shared_ptr<OpengSubMesh> OpengSubMesh::Create(std::shared_ptr<SubMeshCreateParam> param)
 {
-	auto mesh = new OpengSubMesh();
+	auto mesh = make_shared<OpengSubMesh>();
 	mesh->m_PrimitiveType = param->m_PrimitiveType;
 
 	if (param->m_PositionCreateParam != nullptr)
@@ -58,22 +59,22 @@ OpengSubMesh* OpengSubMesh::Create(SubMeshCreateParam* param)
 		glBindVertexArray(mesh->m_VertexArray);
 		if (mesh->m_PositionBuffer != nullptr)
 		{
-			auto vb = (OpenglVertexBuffer*)mesh->m_PositionBuffer;
+			auto vb = static_pointer_cast<OpenglVertexBuffer>(mesh->m_PositionBuffer);
 			vb->Bind(0);
 		}
 		if (mesh->m_NormalBuffer != nullptr)
 		{
-			auto vb = (OpenglVertexBuffer*)mesh->m_NormalBuffer;
+			auto vb = static_pointer_cast<OpenglVertexBuffer>(mesh->m_NormalBuffer);
 			vb->Bind(1);
 		}
 		if (mesh->m_TexCoordBuffer != nullptr)
 		{
-			auto vb = (OpenglVertexBuffer*)mesh->m_TexCoordBuffer;
+			auto vb = static_pointer_cast<OpenglVertexBuffer>(mesh->m_TexCoordBuffer);
 			vb->Bind(2);
 		}
 		if (mesh->m_IndexBuffer != nullptr)
 		{
-			auto ib = (OpenglIndexBuffer*)mesh->m_IndexBuffer;
+			auto ib = static_pointer_cast<OpenglIndexBuffer>(mesh->m_IndexBuffer);
 			ib->Bind();
 		}
 		glBindVertexArray(0);
@@ -82,13 +83,13 @@ OpengSubMesh* OpengSubMesh::Create(SubMeshCreateParam* param)
 }
 
 
-OpenglMesh* OpenglMesh::Create(MeshCreateParam* param)
+shared_ptr<OpenglMesh> OpenglMesh::Create(shared_ptr<MeshCreateParam> param)
 {
-	auto mesh = new OpenglMesh();
+	auto mesh = make_shared<OpenglMesh>();
 	for (size_t i = 0; i < param->m_SubMeshCount; i++)
 	{
 		auto subPram = param->m_SubMeshCreateParam[i];
-		auto subMesh = OpengSubMesh::Create(&subPram);
+		auto subMesh = OpengSubMesh::Create(subPram);
 		mesh->m_SubMeshes.push_back(subMesh);
 	}
 	return mesh;

@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "../RenderItem.h"
 #include "DirectX11Mesh.h"
 #include "DirectX11Shader.h"
@@ -10,10 +11,10 @@ namespace asuna
 	class DirectX11RenderItem : public RenderItem
 	{
 	public:
-		DirectX11RenderItem(DirectX11Mesh* mesh, 
-			DirectX11VextexShader* vs, 
-			DirectX11PixelShader* ps, 
-			DirectX11ConstantBuffer* constant
+		DirectX11RenderItem(std::shared_ptr<DirectX11Mesh> mesh,
+			std::shared_ptr<DirectX11VextexShader> vs,
+			std::shared_ptr<DirectX11PixelShader> ps,
+			std::shared_ptr<DirectX11ConstantBuffer> constant
 		) :
 			m_Mesh(mesh),
 			m_VertexShader(vs),
@@ -25,10 +26,10 @@ namespace asuna
 		virtual void Render() override;
 
 	private:
-		DirectX11Mesh* m_Mesh;
-		DirectX11VextexShader* m_VertexShader;
-		DirectX11PixelShader* m_PixelShader;
-		DirectX11ConstantBuffer* m_ConstantBuffer;
+		std::shared_ptr<DirectX11Mesh> m_Mesh;
+		std::shared_ptr<DirectX11VextexShader> m_VertexShader;
+		std::shared_ptr<DirectX11PixelShader> m_PixelShader;
+		std::shared_ptr<DirectX11ConstantBuffer> m_ConstantBuffer;
 	};
 }
 

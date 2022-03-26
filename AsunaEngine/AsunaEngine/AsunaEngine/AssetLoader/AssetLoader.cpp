@@ -1,5 +1,4 @@
 #include <iostream>
-
 #include "AssetLoader.h"
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -8,6 +7,7 @@
 
 using namespace asuna;
 using namespace Assimp;
+using namespace std;
 
 Assimp::Importer* AssetLoader::MeshImporter = new Assimp::Importer();
 
@@ -16,9 +16,9 @@ Assimp::Importer* AssetLoader::MeshImporter = new Assimp::Importer();
 /// By default, all 3D data is provided in a right-handed coordinate system such as OpenGL uses. 
 /// In this coordinate system, +X points to the right, -Z points away from the viewer into the screen and +Y points upwards.
 /// </summary>
-MeshCreateParam* AssetLoader::LoadMesh(const std::string& scenePath)
+shared_ptr<MeshCreateParam> AssetLoader::LoadMesh(const std::string& scenePath)
 {
-	MeshCreateParam* param = new MeshCreateParam();
+	auto param = make_shared<MeshCreateParam>();
 
 	auto readFlag = aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_SortByPType;
 	if (CheckLeftHandRenderAPI())
@@ -30,14 +30,13 @@ MeshCreateParam* AssetLoader::LoadMesh(const std::string& scenePath)
 	ASUNA_ASSERT(sceneRoot);
 
 	param->m_SubMeshCount = sceneRoot->mNumMeshes;
-	param->m_SubMeshCreateParam = new SubMeshCreateParam[param->m_SubMeshCount];
 	for (size_t i = 0; i < sceneRoot->mNumMeshes; i++)
 	{
 		auto meshNode = sceneRoot->mMeshes[i];
-		auto subParam = &(param->m_SubMeshCreateParam[i]);
+		auto subParam = make_shared<SubMeshCreateParam>();
 		if (meshNode->HasPositions())
 		{
-			subParam->m_PositionCreateParam = new VertexBufferCreateParam();
+			subParam->m_PositionCreateParam = make_shared<VertexBufferCreateParam>();
 			subParam->m_PositionCreateParam->m_Format = VertexBufferFormat::F3;
 			subParam->m_PositionCreateParam->m_ElementCount = meshNode->mNumVertices;
 			subParam->m_PositionCreateParam->m_VertexData = meshNode->mVertices;
@@ -45,7 +44,7 @@ MeshCreateParam* AssetLoader::LoadMesh(const std::string& scenePath)
 
 		if (meshNode->HasNormals())
 		{
-			subParam->m_NormalCreateParam = new VertexBufferCreateParam();
+			subParam->m_NormalCreateParam = make_shared<VertexBufferCreateParam>();
 			subParam->m_NormalCreateParam->m_Format = VertexBufferFormat::F3;
 			subParam->m_NormalCreateParam->m_ElementCount = meshNode->mNumVertices;
 			subParam->m_NormalCreateParam->m_VertexData = meshNode->mNormals;
@@ -53,13 +52,13 @@ MeshCreateParam* AssetLoader::LoadMesh(const std::string& scenePath)
 
 		if (meshNode->HasTextureCoords(0))
 		{
-			subParam->m_TexcoordCreateParam = new VertexBufferCreateParam();
+			subParam->m_TexcoordCreateParam = make_shared<VertexBufferCreateParam>();
 			subParam->m_TexcoordCreateParam->m_Format = VertexBufferFormat::F3;
 			subParam->m_TexcoordCreateParam->m_ElementCount = meshNode->mNumVertices;
 			subParam->m_TexcoordCreateParam->m_VertexData = meshNode->mTextureCoords[0];
 		}
 		subParam->m_PrimitiveType = ConvertPrimitiveType(meshNode->mPrimitiveTypes);
-		subParam->m_IndexCreateParam = new IndexBufferCreateParam();
+		subParam->m_IndexCreateParam = make_shared<IndexBufferCreateParam>();
 		subParam->m_IndexCreateParam->m_Format = IndexBufferFormat::UINT32;
 
 		if (meshNode->mPrimitiveTypes == aiPrimitiveType::aiPrimitiveType_TRIANGLE)
@@ -76,6 +75,7 @@ MeshCreateParam* AssetLoader::LoadMesh(const std::string& scenePath)
 				ptr[j * 3 + 2] = face.mIndices[2];
 			}
 		}
+		param->m_SubMeshCreateParam.push_back(subParam);
 	}
 
 	return param;

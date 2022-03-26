@@ -7,10 +7,11 @@
 #include "DirectX11RenderContext.h"
 
 using namespace asuna;
+using namespace std;
 
-DirectX11VextexShader* DirectX11VextexShader::Create(const std::string& path)
+shared_ptr<DirectX11VextexShader> DirectX11VextexShader::Create(const std::string& path)
 {
-	auto shader = new DirectX11VextexShader();
+	auto shader = make_shared<DirectX11VextexShader> ();
 
 	HRESULT result;
 	ID3D10Blob* errorMessage;
@@ -26,7 +27,7 @@ DirectX11VextexShader* DirectX11VextexShader::Create(const std::string& path)
 		OutputDebugStringA(reinterpret_cast<const char*>(errorMessage->GetBufferPointer()));
 		std::cout << reinterpret_cast<const char*>(errorMessage->GetBufferPointer()) << std::endl;
 	}
-	auto context = (DirectX11RenderContext*)Renderer::Current->GetContext();
+	auto context = static_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
 	context->m_Device->CreateVertexShader(byteCode->GetBufferPointer(), byteCode->GetBufferSize(), nullptr, &shader->m_VS);
 
 	ASUNA_ASSERT(SUCCEEDED(result));
@@ -44,9 +45,9 @@ DirectX11VextexShader* DirectX11VextexShader::Create(const std::string& path)
 	return shader;
 }
 
-DirectX11PixelShader* DirectX11PixelShader::Create(const std::string& path)
+shared_ptr<DirectX11PixelShader> DirectX11PixelShader::Create(const std::string& path)
 {
-	auto shader = new DirectX11PixelShader();
+	auto shader = make_shared<DirectX11PixelShader>();
 	HRESULT result;
 	ID3D10Blob* errorMessage;
 	ID3DBlob* byteCode = nullptr;
@@ -61,7 +62,7 @@ DirectX11PixelShader* DirectX11PixelShader::Create(const std::string& path)
 		OutputDebugStringA(reinterpret_cast<const char*>(errorMessage->GetBufferPointer()));
 		std::cout << reinterpret_cast<const char*>(errorMessage->GetBufferPointer()) << std::endl;
 	}
-	auto context = (DirectX11RenderContext*)Renderer::Current->GetContext();
+	auto context = static_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
 	context->m_Device->CreatePixelShader(byteCode->GetBufferPointer(), byteCode->GetBufferSize(), nullptr, &shader->m_PS);
 
 	ASUNA_ASSERT(SUCCEEDED(result));

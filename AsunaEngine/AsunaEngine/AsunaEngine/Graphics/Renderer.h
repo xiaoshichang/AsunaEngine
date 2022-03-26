@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "../Foundation/Interface/IModule.h"
 #include "RenderAPIType.h"
 #include "RenderSurface.h"
@@ -11,28 +12,31 @@
 
 namespace asuna
 {
+	// explicit export template class
+	template  class __declspec(dllexport) std::shared_ptr<RenderSurface>;
+	template  class __declspec(dllexport) std::shared_ptr<RenderContext>;
+	template  class __declspec(dllexport) std::shared_ptr<RenderItemQueue>;
+
 
 	class ASUNAENGINE_API Renderer : public IModule
 	{
 	public:
-		Renderer()
+		Renderer() :
+			m_Surface(nullptr),
+			m_Context(nullptr)
 		{
 			m_APIType = RenderAPIType::None;
-			m_Surface = 0;
-			m_Context = 0;
-			m_RenderItemQueue = new RenderItemQueue();
-		}
-		~Renderer()
-		{
-			delete m_RenderItemQueue;
+			m_RenderItemQueue = std::make_shared<RenderItemQueue>();
 		}
 
 		virtual void Render();
-		virtual void SetRenderSurface(RenderSurface* surface);
-		virtual RenderContext* GetContext();
-		virtual void AddRenderItem(RenderItem* item);
-		virtual void RemoveRenderItem(RenderItem* item);
+		virtual void SetRenderSurface(std::shared_ptr<RenderSurface> surface);
+		virtual std::shared_ptr<RenderContext> GetContext();
+		virtual void AddRenderItem(std::shared_ptr<RenderItem> item);
+		virtual void RemoveRenderItem(std::shared_ptr<RenderItem> item);
 		RenderAPIType GetRenderAPIType();
+
+	
 
 	protected:
 		virtual void ClearRenderTarget(float r, float g, float b, float a) = 0;
@@ -42,9 +46,9 @@ namespace asuna
 
 	protected:
 		RenderAPIType m_APIType;
-		RenderSurface* m_Surface;
-		RenderContext* m_Context;
-		RenderItemQueue* m_RenderItemQueue;
+		std::shared_ptr<RenderSurface> m_Surface;
+		std::shared_ptr<RenderContext> m_Context;
+		std::shared_ptr<RenderItemQueue> m_RenderItemQueue;
 
 	public:
 		static Renderer* Current;

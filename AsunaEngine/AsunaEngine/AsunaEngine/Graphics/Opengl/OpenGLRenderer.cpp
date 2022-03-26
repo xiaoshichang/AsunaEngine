@@ -167,7 +167,7 @@ void asuna::OpenGLRenderer::CreateGLContext()
 	PIXELFORMATDESCRIPTOR pfd;
 	int result;
 
-	auto windowsSurface = (RenderSurfaceWindowsApplication*)m_Surface;
+	auto windowsSurface = static_pointer_cast<RenderSurfaceWindowsApplication>(m_Surface);
 	m_hDC = GetDC(windowsSurface->HWND);
 
 	if (GLAD_WGL_ARB_pixel_format && GLAD_WGL_ARB_multisample && GLAD_WGL_ARB_create_context)
@@ -245,13 +245,13 @@ bool OpenGLRenderer::InitializeBuffers()
 	// Set the number of indices in the index array.
 	int elementCount = sizeof(indices) / sizeof(uint16_t);
 
-	MeshCreateParam* param = AssetLoader::LoadMesh("Assets\\Models\\keqin.fbx");
+	auto param = AssetLoader::LoadMesh("Assets\\Models\\keqin.fbx");
 
 	auto mesh = OpenglMesh::Create(param);
 	auto vs = OpenglVertexShader::Create("Assets\\Shaders\\color.vs");
 	auto ps = OpenglPixelShader::Create("Assets\\Shaders\\color.ps");
 	auto sp = OpenglShaderProgram::Create(vs, ps);
-	auto renderItem = new OpenglRenderItem(mesh, sp);
+	auto renderItem = make_shared<OpenglRenderItem>(mesh, sp);
 	Renderer::Current->AddRenderItem(renderItem);
 	return true;
 }

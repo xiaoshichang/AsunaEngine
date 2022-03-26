@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <d3d11.h>
 #include "../../Foundation/Math/AMath.h"
 
@@ -13,7 +14,7 @@ namespace asuna
 
 	class DirectX11ConstantBuffer
 	{
-	protected:
+	public:
 		DirectX11ConstantBuffer() :
 			m_Data()
 		{}
@@ -22,7 +23,7 @@ namespace asuna
 		ID3D11Buffer* m_ConstantBuffer = nullptr;
 
 	public:
-		static DirectX11ConstantBuffer* Create();
+		static std::shared_ptr<DirectX11ConstantBuffer> Create();
 
 	};
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "../Foundation/Platform/Assert.h"
+#include <memory>
 #include "RenderBuffer.h"
 
 namespace asuna

@@ -8,12 +8,12 @@ void asuna::RenderItemQueue::Render()
 	}
 }
 
-void asuna::RenderItemQueue::AddRenderItem(RenderItem* item)
+void asuna::RenderItemQueue::AddRenderItem(std::shared_ptr<RenderItem> item)
 {
 	m_RenderItems.push_back(item);
 }
 
-void asuna::RenderItemQueue::RemoveRenderItem(RenderItem* item)
+void asuna::RenderItemQueue::RemoveRenderItem(std::shared_ptr<RenderItem> item)
 {
 	m_RenderItems.remove(item);
 }

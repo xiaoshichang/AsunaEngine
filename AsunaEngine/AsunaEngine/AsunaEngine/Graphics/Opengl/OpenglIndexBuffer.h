@@ -1,11 +1,12 @@
 #pragma once
+#include <memory>
 #include "../IndexBuffer.h"
 
 namespace asuna
 {
 	class OpenglIndexBuffer : public IndexBuffer
 	{
-	protected:
+	public:
 		OpenglIndexBuffer() {}
 	public:
 		unsigned short GetGLIndexType();
@@ -14,7 +15,7 @@ namespace asuna
 		unsigned int m_IndexBuffer = 0;
 
 	public:
-		static OpenglIndexBuffer* Create(IndexBufferCreateParam* param);
+		static std::shared_ptr<OpenglIndexBuffer> Create(std::shared_ptr<IndexBufferCreateParam> param);
 	};
 }
 

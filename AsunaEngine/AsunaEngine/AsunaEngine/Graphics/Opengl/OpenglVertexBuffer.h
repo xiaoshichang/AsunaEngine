@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "../VertexBuffer.h"
 
 namespace asuna
@@ -6,14 +7,14 @@ namespace asuna
 
 	class OpenglVertexBuffer : public VertexBuffer
 	{
-	protected:
+	public:
 		OpenglVertexBuffer() {}
 	public:
 		void Bind(int index);
 	public:
 		unsigned int m_VertexBuffer = 0;
 	public:
-		static OpenglVertexBuffer* Create(VertexBufferCreateParam* param);
+		static std::shared_ptr<OpenglVertexBuffer> Create(std::shared_ptr<VertexBufferCreateParam> param);
 
 	};
 

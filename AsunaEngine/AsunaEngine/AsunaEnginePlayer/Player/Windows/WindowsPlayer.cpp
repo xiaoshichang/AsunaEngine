@@ -10,12 +10,12 @@
 #include "AsunaEngine/AssetLoader/AssetLoader.h"
 
 using namespace asuna;
-
+using namespace std;
 
 void WindowsPlayer::Initialize()
 {
 	InitMainWindow();
-	InitRenderer(RenderAPIType::Opengl);
+	InitRenderer(RenderAPIType::Directx11);
 }
 
 void WindowsPlayer::Finialize()
@@ -105,7 +105,7 @@ void WindowsPlayer::InitRenderer(RenderAPIType api)
 	{
 		ASUNA_ASSERT(false);
 	}
-	RenderSurfaceWindowsApplication* surface = new RenderSurfaceWindowsApplication(m_HWND);
+	auto surface = make_shared<RenderSurfaceWindowsApplication>(m_HWND);
 	Renderer::Current->SetRenderSurface(surface);
 	Renderer::Current->Initialize();
 }

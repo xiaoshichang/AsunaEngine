@@ -10,7 +10,7 @@ namespace asuna
 	class OpenglRenderItem : public RenderItem
 	{
 	public:
-		OpenglRenderItem(OpenglMesh* mesh,  OpenglShaderProgram* sp) :
+		OpenglRenderItem(std::shared_ptr<OpenglMesh> mesh, std::shared_ptr<OpenglShaderProgram> sp) :
 			m_Mesh(mesh),
 			m_ShaderProgram(sp)
 		{}
@@ -18,8 +18,8 @@ namespace asuna
 		virtual void Render() override;
 
 	private:
-		OpenglShaderProgram* m_ShaderProgram;
-		OpenglMesh* m_Mesh;
+		std::shared_ptr<OpenglShaderProgram> m_ShaderProgram;
+		std::shared_ptr<OpenglMesh> m_Mesh;
 
 
 	};

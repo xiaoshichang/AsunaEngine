@@ -3,6 +3,7 @@
 #include "Renderer.h"
 
 using namespace asuna;
+using namespace std;
 
 Renderer* Renderer::Current = nullptr;
 
@@ -13,22 +14,22 @@ void Renderer::Render()
 	Present();
 }
 
-void Renderer::SetRenderSurface(RenderSurface* surface)
+void Renderer::SetRenderSurface(shared_ptr<RenderSurface> surface)
 {
 	m_Surface = surface;
 }
 
-RenderContext* asuna::Renderer::GetContext()
+shared_ptr<RenderContext> asuna::Renderer::GetContext()
 {
 	return m_Context;
 }
 
-void Renderer::AddRenderItem(RenderItem* item)
+void Renderer::AddRenderItem(shared_ptr<RenderItem> item)
 {
 	m_RenderItemQueue->AddRenderItem(item);
 }
 
-void Renderer::RemoveRenderItem(RenderItem* item)
+void Renderer::RemoveRenderItem(shared_ptr<RenderItem> item)
 {
 	m_RenderItemQueue->RemoveRenderItem(item);
 }

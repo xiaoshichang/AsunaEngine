@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <vector>
 #include "../Mesh.h"
 #include "OpenglVertexBuffer.h"
@@ -8,7 +9,7 @@ namespace asuna
 {
 	class OpengSubMesh : public SubMesh
 	{
-	protected:
+	public:
 		OpengSubMesh() {}
 
 	public:
@@ -17,18 +18,18 @@ namespace asuna
 		unsigned int m_VertexArray = 0;
 
 	public:
-		static OpengSubMesh* Create(SubMeshCreateParam* param);
+		static std::shared_ptr<OpengSubMesh> Create(std::shared_ptr<SubMeshCreateParam> param);
 	};
 
 
 
 	class OpenglMesh : public Mesh
 	{
-	protected:
+	public:
 		OpenglMesh() {}
 	public:
 		
 	public:
-		static OpenglMesh* Create(MeshCreateParam* param);
+		static std::shared_ptr<OpenglMesh> Create(std::shared_ptr<MeshCreateParam> param);
 	};
 }

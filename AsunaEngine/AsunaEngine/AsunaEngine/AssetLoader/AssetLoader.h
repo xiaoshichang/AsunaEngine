@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <assimp/Importer.hpp>
 #include "../Graphics/Mesh.h"
 #include "../DLLExport/DLLExport.h"
@@ -9,7 +10,7 @@ namespace asuna
 	class ASUNAENGINE_API AssetLoader
 	{
 	public:
-		static MeshCreateParam* LoadMesh(const std::string& scenePath);
+		static std::shared_ptr<MeshCreateParam> LoadMesh(const std::string& scenePath);
 	private:
 		static bool CheckLeftHandRenderAPI();
 		static PrimitiveType ConvertPrimitiveType(unsigned int pt);

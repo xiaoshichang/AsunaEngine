@@ -1,7 +1,3 @@
-
-#include <DirectXMath.h>
-#include <DirectXPackedVector.h>
-#include <DirectXColors.h>
 #include <d3dcompiler.h>
 #include <iostream>
 
@@ -14,9 +10,8 @@
 
 #include "../../AssetLoader/AssetLoader.h"
 
-using namespace DirectX;
 using namespace asuna;
-using namespace DirectX::PackedVector;
+using namespace std;
 
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3d11.lib")
@@ -38,7 +33,7 @@ void DirectX11Renderer::Finalize()
 
 void DirectX11Renderer::ClearRenderTarget(float r, float g, float b, float a)
 {
-	auto context = (DirectX11RenderContext*)m_Context;
+	auto context = static_pointer_cast<DirectX11RenderContext>(m_Context);
 	float color[4] = { r, g, b, a };
 	// Clear the back buffer.
 	context->m_DeviceContext->ClearRenderTargetView(m_renderTargetView, color);
@@ -57,7 +52,7 @@ void asuna::DirectX11Renderer::Present()
 
 void DirectX11Renderer::CreateDeviceContext()
 {
-	auto context = new DirectX11RenderContext();
+	auto context = make_shared<DirectX11RenderContext>();
 
 	HRESULT result;
 	IDXGIFactory* factory;
@@ -145,7 +140,7 @@ void DirectX11Renderer::CreateDeviceContext()
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 
 	// Set the handle for the window to render to.
-	auto surface = (RenderSurfaceWindowsApplication*)m_Surface;
+	auto surface = static_pointer_cast<RenderSurfaceWindowsApplication>(m_Surface);
 	swapChainDesc.OutputWindow = surface->HWND;
 
 	// Turn multisampling off.
@@ -295,11 +290,11 @@ void DirectX11Renderer::ReleaseDeviceContext()
 void DirectX11Renderer::InitTriangle()
 {
 
-	MeshCreateParam* param = AssetLoader::LoadMesh("Assets\\Models\\keqin.fbx");
+	auto param = AssetLoader::LoadMesh("Assets\\Models\\keqin.fbx");
 	auto mesh = DirectX11Mesh::Create(param);
 	auto vertexShader = DirectX11VextexShader::Create("Assets\\Shaders\\triangle.vs");
 	auto pixelShader = DirectX11PixelShader::Create("Assets\\Shaders\\triangle.ps");
 	auto constantBuffer = DirectX11ConstantBuffer::Create();
-	auto renderItem = new DirectX11RenderItem(mesh, vertexShader, pixelShader, constantBuffer);
+	auto renderItem = make_shared<DirectX11RenderItem>(mesh, vertexShader, pixelShader, constantBuffer);
 	AddRenderItem(renderItem);
 }

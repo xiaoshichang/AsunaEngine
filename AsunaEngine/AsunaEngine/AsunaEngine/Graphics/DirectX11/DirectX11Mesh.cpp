@@ -1,10 +1,10 @@
 #include "DirectX11Mesh.h"
 using namespace asuna;
+using namespace std;
 
-
-DirectX11SubMesh* DirectX11SubMesh::Create(SubMeshCreateParam* param)
+ shared_ptr<DirectX11SubMesh> DirectX11SubMesh::Create(shared_ptr<SubMeshCreateParam> param)
 {
-	auto submesh = new DirectX11SubMesh();
+	auto submesh = make_shared<DirectX11SubMesh>();
 	submesh->m_PrimitiveType = param->m_PrimitiveType;
 	if (param->m_PositionCreateParam != nullptr)
 	{
@@ -28,12 +28,12 @@ DirectX11SubMesh* DirectX11SubMesh::Create(SubMeshCreateParam* param)
 	return submesh;
 }
 
-DirectX11Mesh* DirectX11Mesh::Create(MeshCreateParam* param)
+shared_ptr<DirectX11Mesh> DirectX11Mesh::Create(shared_ptr<MeshCreateParam> param)
 {
-	auto mesh = new DirectX11Mesh();
+	auto mesh = make_shared<DirectX11Mesh>();
 	for (size_t i = 0; i < param->m_SubMeshCount; i++)
 	{
-		auto submesh = DirectX11SubMesh::Create(&param->m_SubMeshCreateParam[i]);
+		auto submesh = DirectX11SubMesh::Create(param->m_SubMeshCreateParam[i]);
 		mesh->m_SubMeshes.push_back(submesh);
 	}
 	return mesh;

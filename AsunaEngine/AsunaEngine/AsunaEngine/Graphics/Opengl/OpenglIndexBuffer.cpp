@@ -3,6 +3,7 @@
 #include "OpenglIndexBuffer.h"
 
 using namespace asuna;
+using namespace std;
 
 unsigned short asuna::OpenglIndexBuffer::GetGLIndexType()
 {
@@ -26,9 +27,9 @@ void OpenglIndexBuffer::Bind()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
 }
 
-OpenglIndexBuffer* OpenglIndexBuffer::Create(IndexBufferCreateParam* param)
+ shared_ptr<OpenglIndexBuffer> OpenglIndexBuffer::Create(shared_ptr<IndexBufferCreateParam> param)
 {
-	auto indexBuffer = new OpenglIndexBuffer();
+	auto indexBuffer = make_shared<OpenglIndexBuffer>();
 	indexBuffer->m_Format = param->m_Format;
 	indexBuffer->m_ElementCount = param->m_ElementCount;
 

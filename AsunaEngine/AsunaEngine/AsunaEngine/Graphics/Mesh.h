@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <vector>
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
@@ -17,10 +18,10 @@ namespace asuna
 
 	struct SubMeshCreateParam
 	{
-		VertexBufferCreateParam* m_PositionCreateParam;
-		VertexBufferCreateParam* m_NormalCreateParam;
-		VertexBufferCreateParam* m_TexcoordCreateParam;
-		IndexBufferCreateParam* m_IndexCreateParam;
+		std::shared_ptr<VertexBufferCreateParam> m_PositionCreateParam;
+		std::shared_ptr<VertexBufferCreateParam> m_NormalCreateParam;
+		std::shared_ptr<VertexBufferCreateParam> m_TexcoordCreateParam;
+		std::shared_ptr<IndexBufferCreateParam> m_IndexCreateParam;
 		PrimitiveType m_PrimitiveType;
 
 		SubMeshCreateParam() : 
@@ -32,44 +33,16 @@ namespace asuna
 		{
 
 		}
-		~SubMeshCreateParam()
-		{
-			if (m_PositionCreateParam != nullptr)
-			{
-				delete m_PositionCreateParam;
-			}
-			if (m_NormalCreateParam != nullptr)
-			{
-				delete m_NormalCreateParam;
-			}
-			if (m_TexcoordCreateParam != nullptr)
-			{
-				delete m_TexcoordCreateParam;
-			}
-			if (m_IndexCreateParam != nullptr)
-			{
-				delete m_IndexCreateParam;
-			}
-		}
 	};
 
 	struct MeshCreateParam
 	{
 		int m_SubMeshCount;
-		SubMeshCreateParam* m_SubMeshCreateParam;
+		std::vector<std::shared_ptr<SubMeshCreateParam>> m_SubMeshCreateParam;
 
 		MeshCreateParam() :
-			m_SubMeshCount(0),
-			m_SubMeshCreateParam(nullptr)
+			m_SubMeshCount(0)
 		{
-		}
-
-		~MeshCreateParam()
-		{
-			if (m_SubMeshCreateParam != nullptr)
-			{
-				delete[] m_SubMeshCreateParam;
-			}
 		}
 	};
 
@@ -77,17 +50,17 @@ namespace asuna
 	class SubMesh
 	{
 	public:
-		VertexBuffer* m_PositionBuffer = nullptr;
-		VertexBuffer* m_NormalBuffer = nullptr;
-		VertexBuffer* m_TexCoordBuffer = nullptr;
-		IndexBuffer* m_IndexBuffer = nullptr;
+		std::shared_ptr<VertexBuffer> m_PositionBuffer = nullptr;
+		std::shared_ptr<VertexBuffer> m_NormalBuffer = nullptr;
+		std::shared_ptr<VertexBuffer> m_TexCoordBuffer = nullptr;
+		std::shared_ptr<IndexBuffer> m_IndexBuffer = nullptr;
 		PrimitiveType m_PrimitiveType = PrimitiveType::Unknown;
 	};
 
 	class Mesh
 	{
 	public:
-		std::vector<SubMesh*> m_SubMeshes;
+		std::vector<std::shared_ptr<SubMesh>> m_SubMeshes;
 	};
 
 

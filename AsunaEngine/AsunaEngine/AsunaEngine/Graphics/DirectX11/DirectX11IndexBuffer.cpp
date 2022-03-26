@@ -3,7 +3,7 @@
 #include "DirectX11IndexBuffer.h"
 #include "DirectX11RenderContext.h"
 using namespace asuna;
-
+using namespace std;
 
 DXGI_FORMAT asuna::DirectX11IndexBuffer::GetDXGIFormat()
 {
@@ -22,9 +22,9 @@ DXGI_FORMAT asuna::DirectX11IndexBuffer::GetDXGIFormat()
 	}
 }
 
-DirectX11IndexBuffer* DirectX11IndexBuffer::Create(IndexBufferCreateParam* param)
+shared_ptr<DirectX11IndexBuffer> DirectX11IndexBuffer::Create(shared_ptr<IndexBufferCreateParam> param)
 {
-	auto indexBuffer = new DirectX11IndexBuffer();
+	auto indexBuffer = make_shared<DirectX11IndexBuffer>();
 	indexBuffer->m_ElementCount = param->m_ElementCount;
 	indexBuffer->m_Format = param->m_Format;
 	D3D11_BUFFER_DESC indexBufferDesc;
@@ -44,7 +44,7 @@ DirectX11IndexBuffer* DirectX11IndexBuffer::Create(IndexBufferCreateParam* param
 
 	// Create the index buffer.
 	HRESULT result;
-	auto context = (DirectX11RenderContext*)Renderer::Current->GetContext();
+	auto context = static_pointer_cast<DirectX11RenderContext>( Renderer::Current->GetContext());
 	result = context->m_Device->CreateBuffer(&indexBufferDesc, &indexData, &indexBuffer->m_IndexBuffer);
 	ASUNA_ASSERT(SUCCEEDED(result));
 	return indexBuffer;

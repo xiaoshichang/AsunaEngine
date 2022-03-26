@@ -1,17 +1,19 @@
 #pragma once
 #include <list>
 
+#include <memory>
 #include "RenderItem.h"
+
 namespace asuna
 {
 	class RenderItemQueue
 	{
 	public:
 		void Render();
-		void AddRenderItem(RenderItem* item);
-		void RemoveRenderItem(RenderItem* item);
+		void AddRenderItem(std::shared_ptr<RenderItem>);
+		void RemoveRenderItem(std::shared_ptr<RenderItem>);
 	private:
-		std::list<RenderItem*> m_RenderItems;
+		std::list<std::shared_ptr<RenderItem>> m_RenderItems;
 	};
 }
 

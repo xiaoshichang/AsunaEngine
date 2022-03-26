@@ -3,18 +3,18 @@
 #include "DirectX11VertexBuffer.h"
 #include "DirectX11RenderContext.h"
 using namespace asuna;
+using namespace std;
 
-
-DirectX11VertexBuffer* DirectX11VertexBuffer::Create(VertexBufferCreateParam* param)
+shared_ptr<DirectX11VertexBuffer> DirectX11VertexBuffer::Create(shared_ptr<VertexBufferCreateParam> param)
 {
 	HRESULT result;
-	auto vertexBuffer = new DirectX11VertexBuffer();
+	auto vertexBuffer = make_shared<DirectX11VertexBuffer>();
 	vertexBuffer->m_ElementCount = param->m_ElementCount;
 	vertexBuffer->m_Format = param->m_Format;
 	vertexBuffer->m_Stride = param->GetFormatStride();
 	vertexBuffer->m_Offset = 0;
 
-	auto context = (DirectX11RenderContext*)Renderer::Current->GetContext();
+	auto context = static_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
 	auto sizeInBytes = param->m_ElementCount * param->GetFormatStride();
 
 	// create the vertex buffer
