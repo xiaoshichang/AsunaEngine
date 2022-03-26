@@ -6,6 +6,21 @@ using namespace asuna;
 using namespace std;
 
 
+OpenglShader::~OpenglShader()
+{
+	if (m_Shader != 0)
+	{
+		glDeleteShader(m_Shader);
+		m_Shader = 0;
+	}
+}
+
+
+OpenglVertexShader::~OpenglVertexShader()
+{
+	
+}
+
 shared_ptr<OpenglVertexShader> OpenglVertexShader::Create(const std::string& path)
 {
 	auto shader = make_shared<OpenglVertexShader>();
@@ -29,6 +44,10 @@ shared_ptr<OpenglVertexShader> OpenglVertexShader::Create(const std::string& pat
 	return shader;
 }
 
+OpenglPixelShader::~OpenglPixelShader()
+{
+}
+
 shared_ptr<OpenglPixelShader> OpenglPixelShader::Create(const std::string& path)
 {
 	auto shader = make_shared<OpenglPixelShader>();
@@ -50,6 +69,15 @@ shared_ptr<OpenglPixelShader> OpenglPixelShader::Create(const std::string& path)
 		}
 	}
 	return shader;
+}
+
+OpenglShaderProgram::~OpenglShaderProgram()
+{
+	if (m_Program != 0)
+	{
+		glDeleteProgram(m_Program);
+		m_Program = 0;
+	}
 }
 
 shared_ptr<OpenglShaderProgram> OpenglShaderProgram::Create(shared_ptr<OpenglVertexShader> vs, shared_ptr<OpenglPixelShader> ps)
@@ -79,3 +107,4 @@ shared_ptr<OpenglShaderProgram> OpenglShaderProgram::Create(shared_ptr<OpenglVer
 	}
 	return shaderProgram;
 }
+

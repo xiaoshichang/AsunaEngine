@@ -3,13 +3,22 @@
 using namespace std;
 using namespace asuna;
 
+asuna::OpenglVertexBuffer::~OpenglVertexBuffer()
+{
+	if (m_VBO != 0)
+	{
+		glDeleteBuffers(1, &m_VBO);
+		m_VBO = 0;
+	}
+}
+
 void OpenglVertexBuffer::Bind(int index)
 {
 	// Enable the two vertex array attributes.
 	glEnableVertexAttribArray(index);
 
 	// Specify the location and format of the position portion of the vertex buffer.
-	glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 	glVertexAttribPointer(index, 3, GL_FLOAT, false, m_Stride, 0);
 }
 
@@ -22,9 +31,9 @@ shared_ptr<OpenglVertexBuffer> OpenglVertexBuffer::Create(shared_ptr<VertexBuffe
 	vertexBuffer->m_Stride = param->GetFormatStride();
 
 	// Generate an ID for the vertex buffer.
-	glGenBuffers(1, &vertexBuffer->m_VertexBuffer);
+	glGenBuffers(1, &vertexBuffer->m_VBO);
 	// Bind the vertex buffer and load the vertex (position and color) data into the vertex buffer.
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer->m_VertexBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer->m_VBO);
 	auto dataSize = vertexBuffer->m_Stride * vertexBuffer->m_ElementCount;
 	glBufferData(GL_ARRAY_BUFFER, dataSize, param->m_VertexData, GL_STATIC_DRAW);
 

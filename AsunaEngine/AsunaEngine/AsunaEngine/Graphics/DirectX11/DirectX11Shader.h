@@ -30,6 +30,17 @@ namespace asuna
 
 		virtual ~DirectX11VextexShader()
 		{
+			if (m_VS != nullptr)
+			{
+				m_VS->Release();
+				m_VS = nullptr;
+			}
+
+			if (m_Layout != nullptr)
+			{
+				m_Layout->Release();
+				m_Layout = nullptr;
+			}
 		}
 
 	public:
@@ -51,6 +62,11 @@ namespace asuna
 
 		virtual ~DirectX11PixelShader()
 		{
+			if (m_PS != nullptr)
+			{
+				m_PS->Release();
+				m_PS = nullptr;
+			}
 		}
 
 	public:

@@ -12,14 +12,12 @@ namespace asuna
 		{
 		}
 
-		virtual ~OpenglVertexBuffer() 
-		{
-		}
+		virtual ~OpenglVertexBuffer();
 
 	public:
 		void Bind(int index);
 	public:
-		unsigned int m_VertexBuffer = 0;
+		unsigned int m_VBO = 0;
 	public:
 		static std::shared_ptr<OpenglVertexBuffer> Create(std::shared_ptr<VertexBufferCreateParam> param);
 

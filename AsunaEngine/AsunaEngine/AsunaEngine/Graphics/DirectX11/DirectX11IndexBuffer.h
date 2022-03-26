@@ -13,6 +13,11 @@ namespace asuna
 
 		virtual ~DirectX11IndexBuffer()
 		{
+			if (m_IndexBuffer != nullptr)
+			{
+				m_IndexBuffer->Release();
+				m_IndexBuffer = nullptr;
+			}
 		}
 
 

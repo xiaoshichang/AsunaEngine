@@ -34,12 +34,12 @@ namespace asuna
 		bool InitializeBuffers();
 
 	private:
-		HGLRC m_RenderContext;
-		HDC     m_hDC = 0;
+		HGLRC m_RenderContext = 0;
+		HDC   m_hDC = 0;
 
-		unsigned int g_vertexShader;
-		unsigned int g_fragmentShader;
-		unsigned int g_shaderProgram;
+		unsigned int g_vertexShader = 0;
+		unsigned int g_fragmentShader = 0;
+		unsigned int g_shaderProgram = 0;
 	};
 
 }

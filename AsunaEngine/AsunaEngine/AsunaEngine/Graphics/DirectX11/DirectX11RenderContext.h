@@ -14,6 +14,16 @@ namespace asuna
 
 		virtual ~DirectX11RenderContext()
 		{
+			if (m_Device != nullptr)
+			{
+				m_Device->Release();
+				m_Device = nullptr;
+			}
+			if (m_DeviceContext != nullptr)
+			{
+				m_DeviceContext->Release();
+				m_DeviceContext = nullptr;
+			}
 		}
 
 	public:

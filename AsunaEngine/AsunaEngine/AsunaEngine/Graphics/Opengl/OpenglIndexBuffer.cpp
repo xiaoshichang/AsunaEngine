@@ -5,7 +5,16 @@
 using namespace asuna;
 using namespace std;
 
-unsigned short asuna::OpenglIndexBuffer::GetGLIndexType()
+OpenglIndexBuffer::~OpenglIndexBuffer()
+{
+	if (m_VEO != 0)
+	{
+		glDeleteBuffers(1, &m_VEO);
+		m_VEO = 0;
+	}
+}
+
+unsigned short OpenglIndexBuffer::GetGLIndexType()
 {
 	if (m_Format == IndexBufferFormat::UINT16)
 	{
@@ -24,7 +33,7 @@ unsigned short asuna::OpenglIndexBuffer::GetGLIndexType()
 
 void OpenglIndexBuffer::Bind()
 {
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_VEO);
 }
 
  shared_ptr<OpenglIndexBuffer> OpenglIndexBuffer::Create(shared_ptr<IndexBufferCreateParam> param)
@@ -34,10 +43,10 @@ void OpenglIndexBuffer::Bind()
 	indexBuffer->m_ElementCount = param->m_ElementCount;
 
 	// Generate an ID for the index buffer.
-	glGenBuffers(1, &indexBuffer->m_IndexBuffer);
+	glGenBuffers(1, &indexBuffer->m_VEO);
 
 	// Bind the index buffer and load the index data into it.
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer->m_IndexBuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer->m_VEO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, param->m_ElementCount * param->GetFormatSize(), param->m_IndexData, GL_STATIC_DRAW);
 	return indexBuffer;
 }

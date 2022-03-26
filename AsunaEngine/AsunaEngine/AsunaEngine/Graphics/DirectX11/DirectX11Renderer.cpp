@@ -61,7 +61,7 @@ void DirectX11Renderer::CreateDeviceContext()
 	unsigned int numModes;
 	size_t stringLength;
 	DXGI_MODE_DESC* displayModeList;
-	DXGI_ADAPTER_DESC adapterDesc;
+	
 	int error;
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;
 	D3D_FEATURE_LEVEL featureLevel;
@@ -95,14 +95,16 @@ void DirectX11Renderer::CreateDeviceContext()
 	result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, displayModeList);
 	ASUNA_ASSERT(result >= 0);
 
-	result = adapter->GetDesc(&adapterDesc);
-	ASUNA_ASSERT(result >= 0);
-
-	m_videoCardMemory = (int)(adapterDesc.DedicatedVideoMemory / 1024 / 1024);
-
-	// Convert the name of the video card to a character array and store it.
-	error = wcstombs_s(&stringLength, m_videoCardDescription, 128, adapterDesc.Description, 128);
-	ASUNA_ASSERT(error == 0);
+	{
+		DXGI_ADAPTER_DESC adapterDesc;
+		result = adapter->GetDesc(&adapterDesc);
+		ASUNA_ASSERT(result >= 0);
+		auto videoCardMemory = (int)(adapterDesc.DedicatedVideoMemory / 1024 / 1024);
+		// Convert the name of the video card to a character array and store it.
+		char videoCardDescription[128];
+		error = wcstombs_s(&stringLength, videoCardDescription, 128, adapterDesc.Description, 128);
+		ASUNA_ASSERT(error == 0);
+	}
 
 	delete[] displayModeList;
 	displayModeList = 0;
@@ -283,6 +285,42 @@ void DirectX11Renderer::CreateDeviceContext()
 
 void DirectX11Renderer::ReleaseDeviceContext()
 {
+	if (m_swapChain != nullptr)
+	{
+		m_swapChain->Release();
+		m_swapChain = nullptr;
+	}
+
+	if (m_renderTargetView != nullptr)
+	{
+		m_renderTargetView->Release();
+		m_renderTargetView = nullptr;
+	}
+
+	if (m_depthStencilBuffer != nullptr)
+	{
+		m_depthStencilBuffer->Release();
+		m_depthStencilBuffer = nullptr;
+	}
+
+	if (m_depthStencilState != nullptr)
+	{
+		m_depthStencilState->Release();
+		m_depthStencilState = nullptr;
+	}
+
+	if (m_depthStencilView != nullptr)
+	{
+		m_depthStencilView->Release();
+		m_depthStencilView = nullptr;
+	}
+
+	if (m_rasterState != nullptr)
+	{
+		m_rasterState->Release();
+		m_rasterState = nullptr;
+	}
+
 }
 
 

@@ -15,7 +15,7 @@ using namespace std;
 void WindowsPlayer::Initialize()
 {
 	InitMainWindow();
-	InitRenderer(RenderAPIType::Directx11);
+	InitRenderer(RenderAPIType::Opengl);
 }
 
 void WindowsPlayer::Finialize()
@@ -45,6 +45,20 @@ HWND WindowsPlayer::GetWindowsHandler() noexcept
 
 LRESULT WindowsPlayer::WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	auto app = reinterpret_cast<WindowsPlayer*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
+	switch (message)
+	{
+		case WM_CREATE: {
+			LPCREATESTRUCT pCreateStruct = reinterpret_cast<LPCREATESTRUCT>(lParam);
+			SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pCreateStruct->lpCreateParams));
+			return 0;
+		}
+		case WM_DESTROY:
+		{
+			app->m_Quit = true;
+			return 0;
+		}
+	}
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 

@@ -14,14 +14,11 @@ namespace asuna
 		{
 		}
 
-		virtual ~OpengSubMesh()
-		{
-		}
+		virtual ~OpengSubMesh();
 
 	public:
 		unsigned int GetGLPrimitive();
-
-		unsigned int m_VertexArray = 0;
+		unsigned int m_VAO = 0;
 
 	public:
 		static std::shared_ptr<OpengSubMesh> Create(std::shared_ptr<SubMeshCreateParam> param);

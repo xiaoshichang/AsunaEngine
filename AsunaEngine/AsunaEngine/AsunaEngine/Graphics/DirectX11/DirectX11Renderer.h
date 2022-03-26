@@ -40,7 +40,6 @@ namespace asuna
 
 	private:
 		HWND m_hwnd;
-		char m_videoCardDescription[128];
 		IDXGISwapChain* m_swapChain;
 		ID3D11RenderTargetView* m_renderTargetView;
 		ID3D11Texture2D* m_depthStencilBuffer;

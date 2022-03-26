@@ -8,6 +8,15 @@
 using namespace asuna;
 using namespace std;
 
+asuna::OpengSubMesh::~OpengSubMesh()
+{
+	if (m_VAO != 0)
+	{
+		glDeleteVertexArrays(1, &m_VAO);
+		m_VAO = 0;
+	}
+}
+
 unsigned int OpengSubMesh::GetGLPrimitive()
 {
 	if (m_PrimitiveType == PrimitiveType::Triangle)
@@ -54,9 +63,9 @@ std::shared_ptr<OpengSubMesh> OpengSubMesh::Create(std::shared_ptr<SubMeshCreate
 	// bind vao
 	{
 		// Allocate an OpenGL vertex array object.
-		glGenVertexArrays(1, &mesh->m_VertexArray);
+		glGenVertexArrays(1, &mesh->m_VAO);
 		// Bind the vertex array object to store all the buffers and vertex attributes we create here.
-		glBindVertexArray(mesh->m_VertexArray);
+		glBindVertexArray(mesh->m_VAO);
 		if (mesh->m_PositionBuffer != nullptr)
 		{
 			auto vb = dynamic_pointer_cast<OpenglVertexBuffer>(mesh->m_PositionBuffer);

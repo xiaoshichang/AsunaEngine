@@ -9,11 +9,17 @@ namespace asuna
 	{
 	public:
 		DirectX11VertexBuffer()
+			: m_Buffer(nullptr)
 		{
 		}
 
 		virtual ~DirectX11VertexBuffer()
 		{
+			if (m_Buffer != nullptr)
+			{
+				m_Buffer->Release();
+				m_Buffer = nullptr;
+			}
 		}
 
 	public:

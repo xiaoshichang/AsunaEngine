@@ -14,6 +14,9 @@ namespace asuna
 		{
 		}
 
+		virtual ~OpenglShader();
+		
+
 	public:
 		unsigned int m_Shader = 0;
 
@@ -27,7 +30,11 @@ namespace asuna
 	{
 	public:
 		OpenglVertexShader() : OpenglShader(ShaderType::VertexShader)
-		{}
+		{
+		}
+
+		virtual ~OpenglVertexShader();
+		
 
 	public:
 		static std::shared_ptr<OpenglVertexShader> Create(const std::string& path);
@@ -43,9 +50,8 @@ namespace asuna
 		{
 		}
 
-		virtual ~OpenglPixelShader()
-		{
-		}
+		virtual ~OpenglPixelShader();
+		
 
 	public:
 		static std::shared_ptr<OpenglPixelShader> Create(const std::string& path);
@@ -62,9 +68,8 @@ namespace asuna
 		{
 		}
 
-		virtual ~OpenglShaderProgram()
-		{
-		}
+		virtual ~OpenglShaderProgram();
+		
 
 	public:
 		unsigned int m_Program = 0;

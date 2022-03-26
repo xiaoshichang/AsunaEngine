@@ -2,7 +2,7 @@
 
 void asuna::Application::Run()
 {
-	while (true)
+	while (!m_Quit)
 	{
 		Tick();
 		Render();

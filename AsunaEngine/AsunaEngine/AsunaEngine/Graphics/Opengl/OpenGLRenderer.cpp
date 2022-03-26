@@ -99,6 +99,14 @@ void asuna::OpenGLRenderer::CreateDeviceContext()
 
 void asuna::OpenGLRenderer::ReleaseDeviceContext()
 {
+	if (m_RenderContext != 0)
+	{
+		wglDeleteContext(m_RenderContext);
+		m_RenderContext = 0;
+	}
+
+	m_hDC = 0;
+
 }
 
 

@@ -22,6 +22,11 @@ namespace asuna
 
 		virtual ~DirectX11ConstantBuffer()
 		{
+			if (m_ConstantBuffer != nullptr)
+			{
+				m_ConstantBuffer->Release();
+				m_ConstantBuffer = nullptr;
+			}
 		}
 
 	public:

@@ -11,15 +11,14 @@ namespace asuna
 		{
 		}
 
-		virtual ~OpenglIndexBuffer()
-		{
-		}
+		virtual ~OpenglIndexBuffer();
+		
 
 	public:
 		unsigned short GetGLIndexType();
 		void Bind();
 	public:
-		unsigned int m_IndexBuffer = 0;
+		unsigned int m_VEO = 0;
 
 	public:
 		static std::shared_ptr<OpenglIndexBuffer> Create(std::shared_ptr<IndexBufferCreateParam> param);
