@@ -1,5 +1,6 @@
 #pragma once
 #include "../Foundation/Interface/IModule.h"
+#include "RenderAPIType.h"
 #include "RenderSurface.h"
 #include "RenderContext.h"
 #include "RenderItem.h"
@@ -16,6 +17,7 @@ namespace asuna
 	public:
 		Renderer()
 		{
+			m_APIType = RenderAPIType::None;
 			m_Surface = 0;
 			m_Context = 0;
 			m_RenderItemQueue = new RenderItemQueue();
@@ -30,6 +32,7 @@ namespace asuna
 		virtual RenderContext* GetContext();
 		virtual void AddRenderItem(RenderItem* item);
 		virtual void RemoveRenderItem(RenderItem* item);
+		RenderAPIType GetRenderAPIType();
 
 	protected:
 		virtual void ClearRenderTarget(float r, float g, float b, float a) = 0;
@@ -38,6 +41,7 @@ namespace asuna
 		virtual void ReleaseDeviceContext() = 0;
 
 	protected:
+		RenderAPIType m_APIType;
 		RenderSurface* m_Surface;
 		RenderContext* m_Context;
 		RenderItemQueue* m_RenderItemQueue;

@@ -49,6 +49,7 @@ void TransformCoord(asuna::Vector3f& vector, float* matrix)
 
 void asuna::OpenGLRenderer::Initialize()
 {
+	m_APIType = RenderAPIType::Opengl;
 	CreateDeviceContext();
 	InitializeBuffers();
 }

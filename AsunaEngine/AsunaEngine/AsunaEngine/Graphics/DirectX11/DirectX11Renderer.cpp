@@ -25,6 +25,7 @@ using namespace DirectX::PackedVector;
 
 void DirectX11Renderer::Initialize()
 {
+	m_APIType = RenderAPIType::Directx11;
 	CreateDeviceContext();
 	InitTriangle();
 }
@@ -261,7 +262,7 @@ void DirectX11Renderer::CreateDeviceContext()
 	rasterDesc.DepthBiasClamp = 0.0f;
 	rasterDesc.DepthClipEnable = true;
 	rasterDesc.FillMode = D3D11_FILL_SOLID;
-	rasterDesc.FrontCounterClockwise = true;
+	rasterDesc.FrontCounterClockwise = false;
 	rasterDesc.MultisampleEnable = false;
 	rasterDesc.ScissorEnable = false;
 	rasterDesc.SlopeScaledDepthBias = 0.0f;

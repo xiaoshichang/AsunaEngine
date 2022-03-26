@@ -11,6 +11,7 @@ namespace asuna
 	public:
 		static MeshCreateParam* LoadMesh(const std::string& scenePath);
 	private:
+		static bool CheckLeftHandRenderAPI();
 		static PrimitiveType ConvertPrimitiveType(unsigned int pt);
 	private:
 		static Assimp::Importer* MeshImporter;

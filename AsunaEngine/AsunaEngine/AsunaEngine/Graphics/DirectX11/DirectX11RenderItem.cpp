@@ -26,10 +26,10 @@ void DirectX11RenderItem::Render()
 	screenAspect = (float)1024 / (float)768;
 
 	// just invert z-axis to convert left hand to right hand coordinate
-	m_ConstantBuffer->m_Data.m_WorldMatrix = BuildMatrixRotationX(PI / 2) * BuildMatrixScale(1, 1, -1);
+	m_ConstantBuffer->m_Data.m_WorldMatrix = BuildMatrixRotationX(PI / 2);
 	// directx use row major matrix, use dont transpose matrix here.
-	m_ConstantBuffer->m_Data.m_ViexMatrix = BuildMatrixViewLookatRH(position, lookAt, up);
-	m_ConstantBuffer->m_Data.m_ProjectionMatrix = BuildMatrixPerspectiveFovRH(fieldOfView, screenAspect, 0.1f, 1000.0f);
+	m_ConstantBuffer->m_Data.m_ViexMatrix = BuildMatrixViewLookatLH(position, lookAt, up);
+	m_ConstantBuffer->m_Data.m_ProjectionMatrix = BuildMatrixPerspectiveFovLH(fieldOfView, screenAspect, 0.1f, 1000.0f);
 
 	// map data
 	{

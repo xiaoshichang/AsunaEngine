@@ -4,6 +4,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include "../Foundation/Platform/Assert.h"
+#include "../Graphics/Renderer.h"
 
 using namespace asuna;
 using namespace Assimp;
@@ -19,10 +20,12 @@ MeshCreateParam* AssetLoader::LoadMesh(const std::string& scenePath)
 {
 	MeshCreateParam* param = new MeshCreateParam();
 
-	auto readFlag = 
-		aiProcess_Triangulate |
-		aiProcess_JoinIdenticalVertices |
-		aiProcess_SortByPType;
+	auto readFlag = aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_SortByPType;
+	if (CheckLeftHandRenderAPI())
+	{
+		readFlag = readFlag | aiProcess_ConvertToLeftHanded;
+	}
+
 	auto sceneRoot = MeshImporter->ReadFile(scenePath, readFlag);
 	ASUNA_ASSERT(sceneRoot);
 
@@ -76,6 +79,22 @@ MeshCreateParam* AssetLoader::LoadMesh(const std::string& scenePath)
 	}
 
 	return param;
+}
+
+bool AssetLoader::CheckLeftHandRenderAPI()
+{
+	switch (Renderer::Current->GetRenderAPIType())
+	{
+	case RenderAPIType::Directx11:
+	case RenderAPIType::Directx12:
+		return true;
+	case RenderAPIType::Opengl:
+	case RenderAPIType::Opengles:
+		return false;
+	default:
+		ASUNA_ASSERT(false);
+		return false;
+	}
 }
 
 PrimitiveType AssetLoader::ConvertPrimitiveType(unsigned int pt)
