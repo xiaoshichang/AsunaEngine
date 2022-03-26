@@ -10,9 +10,8 @@ namespace asuna
 	{
 	public:
 		DirectX11Renderer():
-			m_hwnd(0),
 			m_swapChain(nullptr),
-			m_renderTargetView(nullptr),
+			m_RenderTargetView(nullptr),
 			m_depthStencilBuffer(nullptr),
 			m_depthStencilState(nullptr),
 			m_depthStencilView(nullptr),
@@ -26,8 +25,9 @@ namespace asuna
 		}
 
 	public:
-		virtual void Initialize() override;
+		virtual void Initialize(CreateRendererContextParam param) override;
 		virtual void Finalize() override;
+		virtual void ResizeResolution(int width, int height) override;
 
 	protected:
 		virtual void ClearRenderTarget(float r, float g, float b, float a) override;
@@ -37,11 +37,11 @@ namespace asuna
 
 	private:
 		void InitTriangle();
+		void SetViewPort(int width, int height);
 
 	private:
-		HWND m_hwnd;
 		IDXGISwapChain* m_swapChain;
-		ID3D11RenderTargetView* m_renderTargetView;
+		ID3D11RenderTargetView* m_RenderTargetView;
 		ID3D11Texture2D* m_depthStencilBuffer;
 		ID3D11DepthStencilState* m_depthStencilState;
 		ID3D11DepthStencilView* m_depthStencilView;

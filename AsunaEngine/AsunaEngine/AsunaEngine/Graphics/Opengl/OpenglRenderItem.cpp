@@ -1,5 +1,6 @@
 #include "glad/glad.h"
 #include "OpenglRenderItem.h"
+#include "../Renderer.h"
 #include "../../Foundation/Math/AMath.h"
 
 using namespace asuna;
@@ -30,7 +31,7 @@ void OpenglRenderItem::Render()
 		// Set the field of view and screen aspect ratio.
 		float fieldOfView, screenAspect;
 		fieldOfView = PI / 4.0f;
-		screenAspect = (float)1024 / (float)768;
+		screenAspect = (float)Renderer::Current->m_ResolutionWidth / (float)Renderer::Current->m_ResolutionHeight;
 
 		// Build the perspective projection matrix.
 		Matrix4x4f projectionMatrix = BuildMatrixPerspectiveFovRH(fieldOfView, screenAspect, 0.1f, 1000.0f).TransposeCopy();

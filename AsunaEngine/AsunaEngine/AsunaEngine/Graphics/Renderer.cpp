@@ -14,11 +14,6 @@ void Renderer::Render()
 	Present();
 }
 
-void Renderer::SetRenderSurface(shared_ptr<RenderSurface> surface)
-{
-	m_Surface = surface;
-}
-
 shared_ptr<RenderContext> asuna::Renderer::GetContext()
 {
 	return m_Context;

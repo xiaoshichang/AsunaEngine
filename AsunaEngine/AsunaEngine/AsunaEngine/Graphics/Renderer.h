@@ -13,17 +13,25 @@
 namespace asuna
 {
 	// explicit export template class
-	template  class __declspec(dllexport) std::shared_ptr<RenderSurface>;
-	template  class __declspec(dllexport) std::shared_ptr<RenderContext>;
-	template  class __declspec(dllexport) std::shared_ptr<RenderItemQueue>;
+	template  class ASUNAENGINE_API std::shared_ptr<RenderContext>;
+	template  class ASUNAENGINE_API std::shared_ptr<RenderItemQueue>;
 
 
-	class ASUNAENGINE_API Renderer : public IModule
+	struct CreateRendererContextParam
+	{
+		int m_ResolutionWith;
+		int m_ResolutionHeight;
+		RenderSurfaceType m_SurfaceType;
+		HWND m_HWND;
+	};
+
+
+	class ASUNAENGINE_API Renderer
 	{
 	public:
 		Renderer() :
-			m_Surface(nullptr),
-			m_Context(nullptr)
+			m_Context(nullptr),
+			m_Surface({})
 		{
 			m_APIType = RenderAPIType::None;
 			m_RenderItemQueue = std::make_shared<RenderItemQueue>();
@@ -33,26 +41,35 @@ namespace asuna
 		{
 		}
 
+		virtual void Initialize(CreateRendererContextParam param) = 0;
+		virtual void Finalize() = 0;
 		virtual void Render();
-		virtual void SetRenderSurface(std::shared_ptr<RenderSurface> surface);
-		virtual std::shared_ptr<RenderContext> GetContext();
-		virtual void AddRenderItem(std::shared_ptr<RenderItem> item);
-		virtual void RemoveRenderItem(std::shared_ptr<RenderItem> item);
-		RenderAPIType GetRenderAPIType();
+		virtual void ResizeResolution(int width, int height) = 0;
 
-	
 
-	protected:
+	private:
 		virtual void ClearRenderTarget(float r, float g, float b, float a) = 0;
 		virtual void Present() = 0;
 		virtual void CreateDeviceContext() = 0;
 		virtual void ReleaseDeviceContext() = 0;
 
+
+	public:
+		RenderAPIType GetRenderAPIType();
+		std::shared_ptr<RenderContext> GetContext();
+		virtual void AddRenderItem(std::shared_ptr<RenderItem> item);
+		virtual void RemoveRenderItem(std::shared_ptr<RenderItem> item);
+
+
 	protected:
 		RenderAPIType m_APIType;
-		std::shared_ptr<RenderSurface> m_Surface;
 		std::shared_ptr<RenderContext> m_Context;
 		std::shared_ptr<RenderItemQueue> m_RenderItemQueue;
+		RenderSurface m_Surface;
+
+	public:
+		int m_ResolutionWidth = 0;
+		int m_ResolutionHeight = 0;
 
 	public:
 		static Renderer* Current;

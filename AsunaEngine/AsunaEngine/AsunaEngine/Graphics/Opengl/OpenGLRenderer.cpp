@@ -47,15 +47,25 @@ void TransformCoord(asuna::Vector3f& vector, float* matrix)
 }
 
 
-void asuna::OpenGLRenderer::Initialize()
+void asuna::OpenGLRenderer::Initialize(CreateRendererContextParam param)
 {
 	m_APIType = RenderAPIType::Opengl;
+	m_ResolutionWidth = param.m_ResolutionWith;
+	m_ResolutionHeight = param.m_ResolutionHeight;
+	m_Surface.Type = param.m_SurfaceType;
+	m_Surface.HWND = param.m_HWND;
+
 	CreateDeviceContext();
 	InitializeBuffers();
 }
 
 void asuna::OpenGLRenderer::Finalize()
 {
+}
+
+void asuna::OpenGLRenderer::ResizeResolution(int width, int height)
+{
+	glViewport(0, 0, width, height);
 }
 
 void asuna::OpenGLRenderer::ClearRenderTarget(float r, float g, float b, float a)
@@ -93,7 +103,7 @@ void asuna::OpenGLRenderer::CreateDeviceContext()
 	// Enable back face culling.
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
-	glViewport(0, 0, 1024, 768);
+	SetViewPort(m_ResolutionWidth, m_ResolutionHeight);
 	wglSwapIntervalEXT(0); // disable vertical sync to get high fps.
 }
 
@@ -175,8 +185,7 @@ void asuna::OpenGLRenderer::CreateGLContext()
 	PIXELFORMATDESCRIPTOR pfd;
 	int result;
 
-	auto windowsSurface = dynamic_pointer_cast<RenderSurfaceWindowsApplication>(m_Surface);
-	m_hDC = GetDC(windowsSurface->HWND);
+	m_hDC = GetDC(m_Surface.HWND);
 
 	if (GLAD_WGL_ARB_pixel_format && GLAD_WGL_ARB_multisample && GLAD_WGL_ARB_create_context)
 	{
@@ -235,6 +244,11 @@ void asuna::OpenGLRenderer::CreateGLContext()
 		result = wglMakeCurrent(m_hDC, m_RenderContext);
 		ASUNA_ASSERT(result == 1);
 	}
+}
+
+void OpenGLRenderer::SetViewPort(int width, int height)
+{
+	glViewport(0, 0, width, height);
 }
 
 bool OpenGLRenderer::InitializeBuffers()

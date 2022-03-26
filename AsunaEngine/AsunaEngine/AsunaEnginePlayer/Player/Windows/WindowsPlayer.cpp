@@ -15,7 +15,7 @@ using namespace std;
 void WindowsPlayer::Initialize()
 {
 	InitMainWindow();
-	InitRenderer(RenderAPIType::Opengl);
+	InitRenderer(RenderAPIType::Directx11);
 }
 
 void WindowsPlayer::Finialize()
@@ -57,6 +57,16 @@ LRESULT WindowsPlayer::WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 		{
 			app->m_Quit = true;
 			return 0;
+		}
+		case WM_SIZE:
+		{
+			if (Renderer::Current != nullptr)
+			{
+				UINT width = LOWORD(lParam);
+				UINT height = HIWORD(lParam);
+				Renderer::Current->ResizeResolution(width, height);
+				return 0;
+			}
 		}
 	}
 	return DefWindowProc(hWnd, message, wParam, lParam);
@@ -119,9 +129,13 @@ void WindowsPlayer::InitRenderer(RenderAPIType api)
 	{
 		ASUNA_ASSERT(false);
 	}
-	auto surface = make_shared<RenderSurfaceWindowsApplication>(m_HWND);
-	Renderer::Current->SetRenderSurface(surface);
-	Renderer::Current->Initialize();
+
+	CreateRendererContextParam param;
+	param.m_HWND = m_HWND;
+	param.m_SurfaceType = RenderSurfaceType::WindowsApplication;
+	param.m_ResolutionWith = 1024;
+	param.m_ResolutionHeight = 768;
+	Renderer::Current->Initialize(param);
 }
 
 

@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-void asuna::DirectX12Renderer::Initialize()
+void asuna::DirectX12Renderer::Initialize(CreateRendererContextParam param)
 {
 	cout << "DirectX12 Initialize" << endl;
 }
@@ -10,6 +10,10 @@ void asuna::DirectX12Renderer::Initialize()
 void asuna::DirectX12Renderer::Finalize()
 {
 	cout << "DirectX12 Finalize" << endl;
+}
+
+void asuna::DirectX12Renderer::ResizeResolution(int width, int height)
+{
 }
 
 

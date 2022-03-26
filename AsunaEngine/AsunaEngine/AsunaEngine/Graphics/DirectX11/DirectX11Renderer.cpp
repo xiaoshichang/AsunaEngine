@@ -18,9 +18,13 @@ using namespace std;
 #pragma comment(lib, "d3dcompiler.lib")
 
 
-void DirectX11Renderer::Initialize()
+void DirectX11Renderer::Initialize(CreateRendererContextParam param)
 {
 	m_APIType = RenderAPIType::Directx11;
+	m_ResolutionWidth = param.m_ResolutionWith;
+	m_ResolutionHeight = param.m_ResolutionHeight;
+	m_Surface.Type = param.m_SurfaceType;
+	m_Surface.HWND = param.m_HWND;
 	CreateDeviceContext();
 	InitTriangle();
 }
@@ -31,12 +35,53 @@ void DirectX11Renderer::Finalize()
 }
 
 
+void DirectX11Renderer::ResizeResolution(int width, int height)
+{
+	auto context = dynamic_pointer_cast<DirectX11RenderContext>(m_Context);
+	context->m_DeviceContext->OMSetRenderTargets(0, 0, 0);
+
+	m_RenderTargetView->Release();
+	HRESULT hr;
+	hr = m_swapChain->ResizeBuffers(0, 0, 0, DXGI_FORMAT_UNKNOWN, 0);
+	ASUNA_ASSERT(SUCCEEDED(hr));
+	ID3D11Texture2D* pBuffer;
+	hr = m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&pBuffer);
+	if (pBuffer == nullptr)
+	{
+		ASUNA_ASSERT(false);
+		return;
+	}
+	hr = context->m_Device->CreateRenderTargetView(pBuffer, NULL,&m_RenderTargetView);
+	ASUNA_ASSERT(SUCCEEDED(hr));
+	pBuffer->Release();
+
+	context->m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, NULL);
+	SetViewPort(width, height);
+}
+
+
+void DirectX11Renderer::SetViewPort(int width, int height)
+{
+	D3D11_VIEWPORT viewport;
+	// Setup the viewport for rendering.
+	viewport.Width = (float)width;
+	viewport.Height = (float)height;
+	viewport.MinDepth = 0.0f;
+	viewport.MaxDepth = 1.0f;
+	viewport.TopLeftX = 0;
+	viewport.TopLeftY = 0;
+	// Create the viewport.
+	auto context = dynamic_pointer_cast<DirectX11RenderContext>(m_Context);
+	context->m_DeviceContext->RSSetViewports(1, &viewport);
+}
+
+
 void DirectX11Renderer::ClearRenderTarget(float r, float g, float b, float a)
 {
 	auto context = dynamic_pointer_cast<DirectX11RenderContext>(m_Context);
 	float color[4] = { r, g, b, a };
 	// Clear the back buffer.
-	context->m_DeviceContext->ClearRenderTargetView(m_renderTargetView, color);
+	context->m_DeviceContext->ClearRenderTargetView(m_RenderTargetView, color);
 	// Clear the depth buffer.
 	context->m_DeviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
@@ -53,6 +98,7 @@ void asuna::DirectX11Renderer::Present()
 void DirectX11Renderer::CreateDeviceContext()
 {
 	auto context = make_shared<DirectX11RenderContext>();
+	m_Context = context;
 
 	HRESULT result;
 	IDXGIFactory* factory;
@@ -65,12 +111,10 @@ void DirectX11Renderer::CreateDeviceContext()
 	int error;
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;
 	D3D_FEATURE_LEVEL featureLevel;
-	ID3D11Texture2D* backBufferPtr;
 	D3D11_TEXTURE2D_DESC depthBufferDesc;
 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
 	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
 	D3D11_RASTERIZER_DESC rasterDesc;
-	D3D11_VIEWPORT viewport;
 
 	// Use the factory to create an adapter for the primary graphics interface (video card).
 	result = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory);
@@ -128,8 +172,8 @@ void DirectX11Renderer::CreateDeviceContext()
 	swapChainDesc.BufferCount = 1;
 
 	// Set the width and height of the back buffer.
-	swapChainDesc.BufferDesc.Width = 1024;
-	swapChainDesc.BufferDesc.Height = 748;
+	swapChainDesc.BufferDesc.Width = m_ResolutionWidth;
+	swapChainDesc.BufferDesc.Height = m_ResolutionHeight;
 
 	// Set regular 32-bit surface for the back buffer.
 	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -142,8 +186,14 @@ void DirectX11Renderer::CreateDeviceContext()
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 
 	// Set the handle for the window to render to.
-	auto surface = dynamic_pointer_cast<RenderSurfaceWindowsApplication>(m_Surface);
-	swapChainDesc.OutputWindow = surface->HWND;
+	if (m_Surface.Type == RenderSurfaceType::WindowsApplication)
+	{
+		swapChainDesc.OutputWindow = m_Surface.HWND;
+	}
+	else
+	{
+		ASUNA_ASSERT(false);
+	}
 
 	// Turn multisampling off.
 	swapChainDesc.SampleDesc.Count = 1;
@@ -177,24 +227,29 @@ void DirectX11Renderer::CreateDeviceContext()
 		D3D11_SDK_VERSION, &swapChainDesc, &m_swapChain, &context->m_Device, NULL, &context->m_DeviceContext);
 	ASUNA_ASSERT(result >= 0);
 
-	// Get the pointer to the back buffer.
-	result = m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBufferPtr);
-	ASUNA_ASSERT(result >= 0);
 
-	// Create the render target view with the back buffer pointer.
-	result = context->m_Device->CreateRenderTargetView(backBufferPtr, NULL, &m_renderTargetView);
-	ASUNA_ASSERT(result >= 0);
+	// create render target from swapchain back buffer.
+	{
+		// Get the pointer to the back buffer.
+		ID3D11Texture2D* backBufferPtr;
+		result = m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBufferPtr);
+		ASUNA_ASSERT(result >= 0);
 
-	// Release pointer to the back buffer as we no longer need it.
-	backBufferPtr->Release();
-	backBufferPtr = 0;
+		// Create the render target view with the back buffer pointer.
+		result = context->m_Device->CreateRenderTargetView(backBufferPtr, NULL, &m_RenderTargetView);
+		ASUNA_ASSERT(result >= 0);
+
+		// Release pointer to the back buffer as we no longer need it.
+		backBufferPtr->Release();
+		backBufferPtr = 0;
+	}
+	
 
 	// Initialize the description of the depth buffer.
 	ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
-
 	// Set up the description of the depth buffer.
-	depthBufferDesc.Width = 1024;
-	depthBufferDesc.Height = 768;
+	depthBufferDesc.Width = m_ResolutionWidth;
+	depthBufferDesc.Height = m_ResolutionHeight;
 	depthBufferDesc.MipLevels = 1;
 	depthBufferDesc.ArraySize = 1;
 	depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -250,7 +305,7 @@ void DirectX11Renderer::CreateDeviceContext()
 	ASUNA_ASSERT(result >= 0);
 
 	// Bind the render target view and depth stencil buffer to the output render pipeline.
-	context->m_DeviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
+	context->m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, m_depthStencilView);
 
 	// Setup the raster description which will determine how and what polygons will be drawn.
 	rasterDesc.AntialiasedLineEnable = false;
@@ -271,16 +326,7 @@ void DirectX11Renderer::CreateDeviceContext()
 	// Now set the rasterizer state.
 	context->m_DeviceContext->RSSetState(m_rasterState);
 
-	// Setup the viewport for rendering.
-	viewport.Width = (float)1024;
-	viewport.Height = (float)768;
-	viewport.MinDepth = 0.0f;
-	viewport.MaxDepth = 1.0f;
-	viewport.TopLeftX = 0.0f;
-	viewport.TopLeftY = 0.0f;
-	// Create the viewport.
-	context->m_DeviceContext->RSSetViewports(1, &viewport);
-	m_Context = context;
+	SetViewPort(m_ResolutionWidth, m_ResolutionHeight);
 }
 
 void DirectX11Renderer::ReleaseDeviceContext()
@@ -291,10 +337,10 @@ void DirectX11Renderer::ReleaseDeviceContext()
 		m_swapChain = nullptr;
 	}
 
-	if (m_renderTargetView != nullptr)
+	if (m_RenderTargetView != nullptr)
 	{
-		m_renderTargetView->Release();
-		m_renderTargetView = nullptr;
+		m_RenderTargetView->Release();
+		m_RenderTargetView = nullptr;
 	}
 
 	if (m_depthStencilBuffer != nullptr)

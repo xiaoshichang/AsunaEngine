@@ -17,8 +17,9 @@ namespace asuna
 		}
 
 	public:
-		virtual void Initialize();
+		virtual void Initialize(CreateRendererContextParam param);
 		virtual void Finalize();
+		virtual void ResizeResolution(int width, int height);
 
 	private:
 		virtual void ClearRenderTarget(float r, float g, float b, float a) override;
@@ -29,6 +30,8 @@ namespace asuna
 	private:
 		void LoadWGL();
 		void CreateGLContext();
+		void SetViewPort(int width, int height);
+
 
 	private:
 		bool InitializeBuffers();

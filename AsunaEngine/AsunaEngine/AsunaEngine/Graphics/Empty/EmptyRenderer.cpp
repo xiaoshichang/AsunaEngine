@@ -1,10 +1,14 @@
 #include "EmptyRenderer.h"
 
-void asuna::EmptyRenderer::Initialize()
+void asuna::EmptyRenderer::Initialize(CreateRendererContextParam param)
 {
 }
 
 void asuna::EmptyRenderer::Finalize()
+{
+}
+
+void asuna::EmptyRenderer::ResizeResolution(int width, int height)
 {
 }
 

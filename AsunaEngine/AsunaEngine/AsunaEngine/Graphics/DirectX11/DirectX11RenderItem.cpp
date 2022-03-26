@@ -24,7 +24,7 @@ void DirectX11RenderItem::Render()
 	lookAt.z = 0.0f;
 	float fieldOfView, screenAspect;
 	fieldOfView = PI / 4.0f;
-	screenAspect = (float)1024 / (float)768;
+	screenAspect = Renderer::Current->m_ResolutionWidth / (float)Renderer::Current->m_ResolutionHeight;
 
 	// just invert z-axis to convert left hand to right hand coordinate
 	m_ConstantBuffer->m_Data.m_WorldMatrix = BuildMatrixRotationX(PI / 2);
