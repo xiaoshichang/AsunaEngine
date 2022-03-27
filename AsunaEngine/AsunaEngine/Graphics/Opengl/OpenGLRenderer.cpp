@@ -52,8 +52,7 @@ void asuna::OpenGLRenderer::Initialize(CreateRendererContextParam param)
 	m_APIType = RenderAPIType::Opengl;
 	m_ResolutionWidth = param.m_ResolutionWith;
 	m_ResolutionHeight = param.m_ResolutionHeight;
-	m_Surface.Type = param.m_SurfaceType;
-	m_Surface.HWND = param.m_HWND;
+	m_HWND = param.m_HWND;
 
 	CreateDeviceContext();
 	InitializeBuffers();
@@ -185,7 +184,7 @@ void asuna::OpenGLRenderer::CreateGLContext()
 	PIXELFORMATDESCRIPTOR pfd;
 	int result;
 
-	m_hDC = GetDC(m_Surface.HWND);
+	m_hDC = GetDC(m_HWND);
 
 	if (GLAD_WGL_ARB_pixel_format && GLAD_WGL_ARB_multisample && GLAD_WGL_ARB_create_context)
 	{

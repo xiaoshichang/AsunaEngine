@@ -83,7 +83,7 @@ shared_ptr<MeshCreateParam> AssetLoader::LoadMesh(const std::string& scenePath)
 
 bool AssetLoader::CheckLeftHandRenderAPI()
 {
-	switch (Renderer::Current->GetRenderAPIType())
+	switch (Renderer::Current->m_APIType)
 	{
 	case RenderAPIType::Directx11:
 	case RenderAPIType::Directx12:

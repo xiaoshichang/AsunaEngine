@@ -13,18 +13,13 @@
 using namespace asuna;
 using namespace std;
 
-#pragma comment(lib, "dxgi.lib")
-#pragma comment(lib, "d3d11.lib")
-#pragma comment(lib, "d3dcompiler.lib")
-
 
 void DirectX11Renderer::Initialize(CreateRendererContextParam param)
 {
 	m_APIType = RenderAPIType::Directx11;
 	m_ResolutionWidth = param.m_ResolutionWith;
 	m_ResolutionHeight = param.m_ResolutionHeight;
-	m_Surface.Type = param.m_SurfaceType;
-	m_Surface.HWND = param.m_HWND;
+	m_HWND = param.m_HWND;
 	CreateDeviceContext();
 	InitTriangle();
 }
@@ -186,14 +181,7 @@ void DirectX11Renderer::CreateDeviceContext()
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 
 	// Set the handle for the window to render to.
-	if (m_Surface.Type == RenderSurfaceType::WindowsApplication)
-	{
-		swapChainDesc.OutputWindow = m_Surface.HWND;
-	}
-	else
-	{
-		ASUNA_ASSERT(false);
-	}
+	swapChainDesc.OutputWindow = m_HWND;
 
 	// Turn multisampling off.
 	swapChainDesc.SampleDesc.Count = 1;

@@ -3,12 +3,12 @@ project(AsunaEngine)
 
 set(CMAKE_CXX_STANDARD 17)
 
+find_package(imgui CONFIG REQUIRED)
 find_package(assimp CONFIG REQUIRED)
 
 add_subdirectory(AsunaEngine)
 add_subdirectory(AsunaPlayer)
 add_subdirectory(AsunaEditor)
-
 
 enable_testing()
 add_subdirectory(AsunaEngineUnitTest)

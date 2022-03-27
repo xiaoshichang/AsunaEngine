@@ -4,5 +4,5 @@ add_library(AsunaEngine ${AsunaEngineSources})
 TARGET_COMPILE_DEFINITIONS(AsunaEngine PUBLIC ASUNAENGINE_EXPORTS )
 
 
-target_link_libraries(AsunaEngine assimp::assimp opengl32)
+target_link_libraries(AsunaEngine imgui::imgui assimp::assimp opengl32 dxgi d3d11 d3dcompiler)
 

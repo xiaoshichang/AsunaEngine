@@ -3,7 +3,7 @@
 
 namespace asuna
 {
-	class WindowsPlayer : public WindowsApplication
+	class WindowsEditor : public WindowsApplication
 	{
 
 	};

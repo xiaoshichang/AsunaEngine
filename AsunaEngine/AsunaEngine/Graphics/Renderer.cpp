@@ -11,7 +11,6 @@ void Renderer::Render()
 {
 	ClearRenderTarget(0.1f, 0.2f, 0.3f, 1.0f);
 	m_RenderItemQueue->Render();
-	Present();
 }
 
 shared_ptr<RenderContext> asuna::Renderer::GetContext()
@@ -27,9 +26,4 @@ void Renderer::AddRenderItem(shared_ptr<RenderItem> item)
 void Renderer::RemoveRenderItem(shared_ptr<RenderItem> item)
 {
 	m_RenderItemQueue->RemoveRenderItem(item);
-}
-
-RenderAPIType Renderer::GetRenderAPIType()
-{
-	return m_APIType;
 }

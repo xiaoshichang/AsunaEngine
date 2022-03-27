@@ -28,10 +28,10 @@ namespace asuna
 		virtual void Initialize(CreateRendererContextParam param) override;
 		virtual void Finalize() override;
 		virtual void ResizeResolution(int width, int height) override;
+		virtual void Present();
 
 	protected:
 		virtual void ClearRenderTarget(float r, float g, float b, float a) override;
-		virtual void Present();
 		virtual void CreateDeviceContext() override;
 		virtual void ReleaseDeviceContext() override;
 
