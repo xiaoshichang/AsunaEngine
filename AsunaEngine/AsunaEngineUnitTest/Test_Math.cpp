@@ -16,22 +16,6 @@ using namespace asuna;
     static void methodName()
 
 
-class Assert
-{
-public:
-    static void IsTrue(bool ret)
-    {
-        if (ret)
-        {
-            return;
-        }
-        else
-        {
-            _ASSERTE(false);
-        }
-    }
-};
-
 
 class AsunaEngineMathTest
 {
@@ -39,7 +23,7 @@ public:
     TEST_METHOD(TestVectorEqule) {
         Vector3i v1(1, 1, 1);
         Vector3i v2(1, 1, 1);
-        Assert::IsTrue(v1 == v2);
+        _ASSERTE(v1 == v2);
     }
 
 
@@ -50,9 +34,9 @@ public:
         auto v4 = v1 + v2;
         Vector3i v5(1, 1, 1);
         Vector3i v6(2, 2, 2);
-        Assert::IsTrue(v4 == v3);
-        Assert::IsTrue(v1 == v5);
-        Assert::IsTrue(v2 == v6);
+        _ASSERTE(v4 == v3);
+        _ASSERTE(v1 == v5);
+        _ASSERTE(v2 == v6);
     }
 
     TEST_METHOD(TestVectorSubstraction) {
@@ -62,9 +46,9 @@ public:
         auto v4 = v3 - v2;
         Vector3i v5(2, 2, 2);
         Vector3i v6(3, 3, 3);
-        Assert::IsTrue(v4 == v1);
-        Assert::IsTrue(v2 == v5);
-        Assert::IsTrue(v3 == v6);
+        _ASSERTE(v4 == v1);
+        _ASSERTE(v2 == v5);
+        _ASSERTE(v3 == v6);
     }
 
     TEST_METHOD(TestVectorScale) {
@@ -73,24 +57,24 @@ public:
         auto v5 = 3 * v3;
         Vector3i v6(9, 9, 9);
         Vector3i v7(3, 3, 3);
-        Assert::IsTrue(v4 == v5);
-        Assert::IsTrue(v5 == v6);
-        Assert::IsTrue(v7 == v3);
+        _ASSERTE(v4 == v5);
+        _ASSERTE(v5 == v6);
+        _ASSERTE(v7 == v3);
     }
 
     TEST_METHOD(TestVectorNormalize) {
         Vector3f v1(1, 1, 1);
         auto v2 = v1.NormalizeCopy();
         v1.Normalize();
-        Assert::IsTrue(v2 == v1);
-        Assert::IsTrue(comparison_traits<float>::equal(1, v2.LengthSquare()));
-        Assert::IsTrue(comparison_traits<float>::equal(1, v1.LengthSquare()));
+        _ASSERTE(v2 == v1);
+        _ASSERTE(comparison_traits<float>::equal(1, v2.LengthSquare()));
+        _ASSERTE(comparison_traits<float>::equal(1, v1.LengthSquare()));
     }
 
     TEST_METHOD(TestVectorDotProduct) {
         Vector3f v1(2, 2, 2);
         Vector3f v2(3, 3, 3);
-        Assert::IsTrue(comparison_traits<float>::equal(18, v2.DotProduct(v1)));
+        _ASSERTE(comparison_traits<float>::equal(18, v2.DotProduct(v1)));
     }
 
     TEST_METHOD(TestVectorCrossProduct) {
@@ -99,14 +83,14 @@ public:
         Vector3f v2(4, 9, 2);
         auto v3 = v1.CrossProduct(v2);
         Vector3f v4(-15, -2, 39);
-        Assert::IsTrue(v4 == v3);
+        _ASSERTE(v4 == v3);
     }
 
     TEST_METHOD(TestMatrixAccess) {
         Matrix4x4f m = {0};
         m[1][1] = 10;
         m[1][2] = 9;
-        Assert::IsTrue(m[1][1] - m[1][2] == 1);
+        _ASSERTE(m[1][1] - m[1][2] == 1);
     }
 
     TEST_METHOD(TestMatrixEqule) {
@@ -115,20 +99,20 @@ public:
         Matrix4x4f m3 = {1, 2, 3, 4, 5};
         m1[1][1] = 10;
         m2[1][1] = 10;
-        Assert::IsTrue(m1 == m2);
-        Assert::IsTrue(m3[0][3] == 4);
-        Assert::IsTrue(m3[1][0] == 5);
-        Assert::IsTrue(m2 != m3);
+        _ASSERTE(m1 == m2);
+        _ASSERTE(m3[0][3] == 4);
+        _ASSERTE(m3[1][0] == 5);
+        _ASSERTE(m2 != m3);
     }
 
     TEST_METHOD(TestMatrixTranspose) {
         Matrix4x4f m1 = {1, 2, 3, 4, 5};
         auto m2 = m1.TransposeCopy();
         m1.Transpose();
-        Assert::IsTrue(m1 == m2);
-        Assert::IsTrue(m1[0][0] == 1);
-        Assert::IsTrue(m1[1][0] == 2);
-        Assert::IsTrue(m1[0][1] == 5);
+        _ASSERTE(m1 == m2);
+        _ASSERTE(m1[0][0] == 1);
+        _ASSERTE(m1[1][0] == 2);
+        _ASSERTE(m1[0][1] == 5);
     }
 
     TEST_METHOD(TestMatrixAddSub) {
@@ -143,8 +127,8 @@ public:
                 m3[i][j] = 3.0f;
             }
         }
-        Assert::IsTrue(m1 + m2 == m3);
-        Assert::IsTrue(m3 - m2 == m1);
+        _ASSERTE(m1 + m2 == m3);
+        _ASSERTE(m3 - m2 == m1);
     }
 
     TEST_METHOD(TestMatrixMultiple) {
@@ -152,8 +136,8 @@ public:
         Matrix<float, 1, 3> m2 = {1, 2, 3};
         Matrix<float, 3, 3> m3 = {4, 8, 12, 5, 10, 15, 6, 12, 18};
         Matrix<float, 1, 1> m4 = {32};
-        Assert::IsTrue(m1 * m2 == m3);
-        Assert::IsTrue(m2 * m1 == m4);
+        _ASSERTE(m1 * m2 == m3);
+        _ASSERTE(m2 * m1 == m4);
     }
 
     TEST_METHOD(TestMatrixInverse) {
@@ -161,8 +145,8 @@ public:
         Matrix3x3f m1 = {1, 2, 3, 0, 1, 4, 5, 6, 0};
         Matrix3x3f m2 = {-24, 18, 5, 20, -15, -4, -5, 4, 1};
         // todo: there some precision problem
-        // Assert::IsTrue(m1.Inverse() == m2);
-        Assert::IsTrue(true);
+        // _ASSERTE(m1.Inverse() == m2);
+        _ASSERTE(true);
     }
 
     TEST_METHOD(TestMatrixRotation) {
@@ -171,7 +155,7 @@ public:
         Matrix4x4f x180 = BuildMatrixRotationX(PI);
         auto d = x180.TransformPoint(c);
         Vector3f e(5, -2, -6);
-        Assert::IsTrue(e == d);
+        _ASSERTE(e == d);
     }
 
     TEST_METHOD(TestMatrixRotationPYR) {
@@ -179,7 +163,7 @@ public:
         auto m2 = BuildMatrixYawPitchRollLH(1, 2, 1);
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                Assert::IsTrue(comparison_traits<float>::equal(m1.r[j].m128_f32[i], m2[i][j]));
+                _ASSERTE(comparison_traits<float>::equal(m1.r[j].m128_f32[i], m2[i][j]));
             }
         }
     }
@@ -196,7 +180,7 @@ public:
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                Assert::IsTrue(comparison_traits<float>::equal(view1.r[j].m128_f32[i], view2[i][j]));
+                _ASSERTE(comparison_traits<float>::equal(view1.r[j].m128_f32[i], view2[i][j]));
             }
         }
     }
@@ -213,7 +197,7 @@ public:
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                Assert::IsTrue(comparison_traits<float>::equal(view1.r[j].m128_f32[i], view2[i][j]));
+                _ASSERTE(comparison_traits<float>::equal(view1.r[j].m128_f32[i], view2[i][j]));
             }
         }
     }
@@ -225,10 +209,10 @@ public:
         auto p2 = BuildMatrixPerspectiveFovRH(angle, aspect, 0.1f, 1000.0f);
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                Assert::IsTrue(comparison_traits<float>::equal(p1.r[j].m128_f32[i], p2[i][j]));
+                _ASSERTE(comparison_traits<float>::equal(p1.r[j].m128_f32[i], p2[i][j]));
             }
         }
-        Assert::IsTrue(true);
+        _ASSERTE(true);
     }
 
     TEST_METHOD(TestMatrixCameraPerspectiveFovLH) {
@@ -238,10 +222,10 @@ public:
         auto p2 = BuildMatrixPerspectiveFovLH(angle, aspect, 0.1f, 1000.0f);
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                Assert::IsTrue(comparison_traits<float>::equal(p1.r[j].m128_f32[i], p2[i][j]));
+                _ASSERTE(comparison_traits<float>::equal(p1.r[j].m128_f32[i], p2[i][j]));
             }
         }
-        Assert::IsTrue(true);
+        _ASSERTE(true);
     }
 
     TEST_METHOD(TestMatrixCameraOrthographicRH) {
@@ -249,10 +233,10 @@ public:
         auto p2 = BuildMatrixOrthographicRH(1024.0f, 768.0f, 0.1f, 1000.0f);
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                Assert::IsTrue(comparison_traits<float>::equal(p1.r[j].m128_f32[i], p2[i][j]));
+                _ASSERTE(comparison_traits<float>::equal(p1.r[j].m128_f32[i], p2[i][j]));
             }
         }
-        Assert::IsTrue(true);
+        _ASSERTE(true);
     }
 
     TEST_METHOD(TestMatrixCameraOrthographicLH) {
@@ -260,10 +244,10 @@ public:
         auto p2 = BuildMatrixOrthographicLH(1024.0f, 768.0f, 0.1f, 1000.0f);
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                Assert::IsTrue(comparison_traits<float>::equal(p1.r[j].m128_f32[i], p2[i][j]));
+                _ASSERTE(comparison_traits<float>::equal(p1.r[j].m128_f32[i], p2[i][j]));
             }
         }
-        Assert::IsTrue(true);
+        _ASSERTE(true);
     }
 };
 

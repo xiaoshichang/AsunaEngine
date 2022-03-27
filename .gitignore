@@ -2,9 +2,10 @@
 bin/
 obj/
 Logs/
+build/
+out/
 cmake-build-debug/
 cmake-build-release/
-build/
 
 .idea
 .vs

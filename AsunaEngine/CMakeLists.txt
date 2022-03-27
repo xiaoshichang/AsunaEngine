@@ -8,4 +8,7 @@ find_package(assimp CONFIG REQUIRED)
 add_subdirectory(AsunaEngine)
 add_subdirectory(AsunaPlayer)
 add_subdirectory(AsunaEditor)
+
+
+enable_testing()
 add_subdirectory(AsunaEngineUnitTest)
