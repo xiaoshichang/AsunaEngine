@@ -24,6 +24,10 @@ namespace asuna
 			return m_RenderTargetView;
 		}
 
+		void SetRenderTarget(ID3D11RenderTargetView* rtv)
+		{
+			m_RenderTargetView = rtv;
+		}
 
 	private:
 		ID3D11Texture2D* m_RenderTargetTexture;

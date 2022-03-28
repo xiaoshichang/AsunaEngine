@@ -9,7 +9,6 @@ namespace asuna
 	class WindowsApplication : public Application
 	{
 	public:
-		// Í¨¹ý Application ¼Ì³Ð
 		virtual void Initialize() override;
 		virtual void Finalize() override;
 		virtual void Tick() override;

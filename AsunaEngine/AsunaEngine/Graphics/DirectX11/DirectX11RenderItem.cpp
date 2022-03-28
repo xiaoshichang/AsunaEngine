@@ -104,8 +104,6 @@ void DirectX11RenderItem::Render()
 
 		}
 	}
-
-	
 }
 
 std::shared_ptr<DirectX11RenderItem> asuna::DirectX11RenderItem::Create(std::shared_ptr<Mesh> mesh, std::shared_ptr<Shader> vs, std::shared_ptr<Shader> ps, std::shared_ptr<ConstantBuffer> cb)

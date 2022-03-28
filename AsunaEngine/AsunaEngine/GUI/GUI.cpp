@@ -63,6 +63,7 @@ void asuna::GUI::Begin()
 void asuna::GUI::End()
 {
     ImGui::Render();
+    Renderer::Current->ClearRenderTarget(nullptr, 0.1f, 0.2f, 0.3f, 1.0f);
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
     ImGuiIO& io = ImGui::GetIO();
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)

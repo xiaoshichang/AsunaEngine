@@ -40,7 +40,6 @@ void WindowsApplication::Tick()
 
 void WindowsApplication::Render()
 {
-
 	Renderer::Current->Render();
 	Renderer::Current->Present();
 }

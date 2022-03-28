@@ -30,7 +30,7 @@ void DirectX11Renderer::Finalize()
 	ReleaseDeviceContext();
 }
 
-
+/// https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/d3d10-graphics-programming-guide-dxgi#handling-window-resizing
 void DirectX11Renderer::ResizeResolution(int width, int height)
 {
 	auto context = dynamic_pointer_cast<DirectX11RenderContext>(m_Context);
@@ -41,6 +41,7 @@ void DirectX11Renderer::ResizeResolution(int width, int height)
 	if (mainRT != nullptr)
 	{
 		mainRT->GetRenderTargetView()->Release();
+        mainRT->SetRenderTarget(nullptr);
 	}
 	
 	auto hr = context->m_swapChain->ResizeBuffers(0, 0, 0, DXGI_FORMAT_UNKNOWN, 0);
@@ -51,13 +52,18 @@ void DirectX11Renderer::ResizeResolution(int width, int height)
 	auto rtv = mainRT->GetRenderTargetView();
 	hr = context->m_Device->CreateRenderTargetView(pBuffer, NULL, &rtv);
 	ASUNA_ASSERT(SUCCEEDED(hr));
+    mainRT->SetRenderTarget(rtv);
 	pBuffer->Release();
+    context->m_DeviceContext->OMSetRenderTargets(1, &rtv, nullptr);
 	SetViewPort(context->m_DeviceContext, width, height);
 }
 
 
 void DirectX11Renderer::SetViewPort(ID3D11DeviceContext* deviceContext, int width, int height)
 {
+    m_ResolutionWidth = width;
+    m_ResolutionHeight = height;
+
 	D3D11_VIEWPORT viewport;
 	// Setup the viewport for rendering.
 	viewport.Width = (float)width;
