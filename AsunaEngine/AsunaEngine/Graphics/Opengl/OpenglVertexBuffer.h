@@ -8,15 +8,18 @@ namespace asuna
 	class OpenglVertexBuffer : public VertexBuffer
 	{
 	public:
-		OpenglVertexBuffer() 
+		OpenglVertexBuffer() = delete;
+
+		OpenglVertexBuffer(unsigned int vbo, VertexBufferFormat format, int count, int stride, int offset):
+			m_VBO(vbo),
+			VertexBuffer(format, count, stride, offset)
 		{
 		}
 
 		virtual ~OpenglVertexBuffer();
-
-	public:
 		void Bind(int index);
-	public:
+
+	private:
 		unsigned int m_VBO = 0;
 	public:
 		static std::shared_ptr<OpenglVertexBuffer> Create(std::shared_ptr<VertexBufferCreateParam> param);

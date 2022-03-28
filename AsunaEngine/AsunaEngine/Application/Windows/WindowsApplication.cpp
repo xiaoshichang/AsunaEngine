@@ -5,11 +5,11 @@
 #include "../../Graphics/Renderer.h"
 
 #include "../../Graphics/Empty/EmptyRenderer.h"
-#include "../../Graphics/DirectX12/DirectX12Renderer.h"
 #include "../../Graphics/DirectX11/DirectX11Renderer.h"
 #include "../../Graphics/Opengl/OpenGLRenderer.h"
-#include "../../IMGui/IMGui.h"
+#include "../../GUI/GUI.h"
 #include "../../AssetLoader/AssetLoader.h"
+
 
 using namespace asuna;
 using namespace std;
@@ -18,12 +18,12 @@ void WindowsApplication::Initialize()
 {
 	InitMainWindow();
 	InitRenderer(RenderAPIType::Directx11);
-	IMGui::Initialize();
+	GUI::Initialize();
 }
 
 void WindowsApplication::Finalize()
 {
-	IMGui::Finalize();
+	GUI::Finalize();
 	Renderer::Current->Finalize();
 }
 
@@ -31,7 +31,8 @@ void WindowsApplication::Finalize()
 void WindowsApplication::Tick()
 {
 	MSG msg = {};
-	if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+	if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) 
+	{
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
@@ -39,8 +40,8 @@ void WindowsApplication::Tick()
 
 void WindowsApplication::Render()
 {
+
 	Renderer::Current->Render();
-	IMGui::Render();
 	Renderer::Current->Present();
 }
 
@@ -51,7 +52,7 @@ HWND WindowsApplication::GetWindowsHandler() noexcept
 
 LRESULT WindowsApplication::WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	if (IMGui::HandleEvents(hWnd, message, wParam, lParam))
+	if (GUI::HandleEvents(hWnd, message, wParam, lParam))
 	{
 		return true;
 	}
@@ -59,25 +60,31 @@ LRESULT WindowsApplication::WindowProc(HWND hWnd, UINT message, WPARAM wParam, L
 	auto app = reinterpret_cast<WindowsApplication*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 	switch (message)
 	{
-		case WM_CREATE: {
+		case WM_CREATE: 
+		{
 			LPCREATESTRUCT pCreateStruct = reinterpret_cast<LPCREATESTRUCT>(lParam);
 			SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pCreateStruct->lpCreateParams));
-			return 0;
+			break;
 		}
 		case WM_DESTROY:
 		{
 			app->m_Quit = true;
-			return 0;
+			break;
 		}
 		case WM_SIZE:
 		{
-			if (Renderer::Current != nullptr)
+			if (Renderer::Current != nullptr && wParam != SIZE_MINIMIZED)
 			{
 				UINT width = LOWORD(lParam);
 				UINT height = HIWORD(lParam);
 				Renderer::Current->ResizeResolution(width, height);
-				return 0;
 			}
+			break;
+		}
+		case WM_DPICHANGED:
+		{
+			GUI::HandleMultiViewport(hWnd, lParam);
+			break;
 		}
 	}
 	return DefWindowProc(hWnd, message, wParam, lParam);
@@ -127,10 +134,6 @@ void WindowsApplication::InitRenderer(RenderAPIType api)
 	if (api == RenderAPIType::Directx11)
 	{
 		Renderer::Current = new DirectX11Renderer();
-	}
-	else if (api == RenderAPIType::Directx12)
-	{
-		Renderer::Current = new DirectX12Renderer();
 	}
 	else if (api == RenderAPIType::Opengl)
 	{

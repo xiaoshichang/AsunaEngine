@@ -1,22 +1,18 @@
 #pragma once
 #include <memory>
 #include <d3d11.h>
-#include "../../Foundation/Math/AMath.h"
+#include "../ConstantBuffer.h"
 
 namespace asuna
 {
-	struct ConstantBufferData
-	{
-		Matrix4x4f m_WorldMatrix;
-		Matrix4x4f m_ViexMatrix;
-		Matrix4x4f m_ProjectionMatrix;
-	};
-
-	class DirectX11ConstantBuffer
+	
+	class DirectX11ConstantBuffer : public ConstantBuffer
 	{
 	public:
-		DirectX11ConstantBuffer() :
-			m_Data()
+		DirectX11ConstantBuffer() = delete;
+		DirectX11ConstantBuffer(ID3D11Buffer* cb) :
+			m_ConstantBuffer(cb),
+			ConstantBuffer()
 		{
 		}
 
@@ -29,8 +25,13 @@ namespace asuna
 			}
 		}
 
-	public:
-		ConstantBufferData m_Data;
+		ID3D11Buffer* GetBuffer()
+		{
+			return m_ConstantBuffer;
+		}
+
+
+	private:
 		ID3D11Buffer* m_ConstantBuffer = nullptr;
 
 	public:

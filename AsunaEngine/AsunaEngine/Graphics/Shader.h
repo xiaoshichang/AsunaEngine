@@ -4,7 +4,8 @@ namespace asuna
 {
 	enum class ShaderType
 	{
-		VertexShader = 1,
+		Unknown = 0,
+		VertexShader,
 		PixelShader
 	};
 

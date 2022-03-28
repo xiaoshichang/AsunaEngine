@@ -8,8 +8,10 @@ namespace asuna
 	class DirectX11VertexBuffer : public VertexBuffer
 	{
 	public:
-		DirectX11VertexBuffer()
-			: m_Buffer(nullptr)
+		DirectX11VertexBuffer() = delete;
+		DirectX11VertexBuffer(ID3D11Buffer* buffer, VertexBufferFormat format, int count, int stride, int offset) :
+			m_Buffer(buffer),
+			VertexBuffer(format, count, stride, offset)
 		{
 		}
 
@@ -22,7 +24,12 @@ namespace asuna
 			}
 		}
 
-	public:
+		ID3D11Buffer* GetBuffer()
+		{
+			return m_Buffer;
+		}
+
+	private:
 		ID3D11Buffer* m_Buffer;
 
 	public:

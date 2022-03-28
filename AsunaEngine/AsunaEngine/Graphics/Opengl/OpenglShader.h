@@ -10,51 +10,26 @@ namespace asuna
 	class OpenglShader : public Shader
 	{
 	public:
-		OpenglShader(ShaderType shaderType) : Shader(shaderType)
+		OpenglShader() = delete;
+		OpenglShader(unsigned int shader, ShaderType shaderType) : 
+			m_Shader(shader),
+			Shader(shaderType)
 		{
 		}
 
 		virtual ~OpenglShader();
 		
+		unsigned int GetShader()
+		{
+			return m_Shader;
+		}
 
-	public:
+	private:
 		unsigned int m_Shader = 0;
 
-	};
-
-	////////////////////////////////////////////////////////////////////
-	/////////////////////////// Vertex Shader //////////////////////////
-	////////////////////////////////////////////////////////////////////
-
-	class OpenglVertexShader : public OpenglShader
-	{
 	public:
-		OpenglVertexShader() : OpenglShader(ShaderType::VertexShader)
-		{
-		}
+		static std::shared_ptr<OpenglShader> Create(const std::string& path, ShaderType shaderType);
 
-		virtual ~OpenglVertexShader();
-		
-
-	public:
-		static std::shared_ptr<OpenglVertexShader> Create(const std::string& path);
-	};
-
-	////////////////////////////////////////////////////////////////////
-	/////////////////////////// Pixel Shader ///////////////////////////
-	////////////////////////////////////////////////////////////////////
-	class OpenglPixelShader : public OpenglShader
-	{
-	public:
-		OpenglPixelShader() : OpenglShader(ShaderType::PixelShader)
-		{
-		}
-
-		virtual ~OpenglPixelShader();
-		
-
-	public:
-		static std::shared_ptr<OpenglPixelShader> Create(const std::string& path);
 	};
 
 
@@ -64,7 +39,9 @@ namespace asuna
 	class OpenglShaderProgram
 	{
 	public:
-		OpenglShaderProgram()
+		OpenglShaderProgram() = delete;
+		OpenglShaderProgram(unsigned int program):
+			m_Program(program)
 		{
 		}
 
@@ -74,7 +51,7 @@ namespace asuna
 	public:
 		unsigned int m_Program = 0;
 	public:
-		static std::shared_ptr<OpenglShaderProgram> Create(std::shared_ptr<OpenglVertexShader> vs, std::shared_ptr<OpenglPixelShader> ps);
+		static std::shared_ptr<OpenglShaderProgram> Create(std::shared_ptr<OpenglShader> vs, std::shared_ptr<OpenglShader> ps);
 	};
 
 }

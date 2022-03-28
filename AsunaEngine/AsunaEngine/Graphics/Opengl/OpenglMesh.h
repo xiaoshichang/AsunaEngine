@@ -10,7 +10,16 @@ namespace asuna
 	class OpengSubMesh : public SubMesh
 	{
 	public:
-		OpengSubMesh() 
+		OpengSubMesh() = delete;
+		OpengSubMesh(
+			unsigned int vao,
+			std::shared_ptr<VertexBuffer> position,
+			std::shared_ptr<VertexBuffer> normal,
+			std::shared_ptr<VertexBuffer> texcoord,
+			std::shared_ptr<IndexBuffer> index,
+			PrimitiveType pt) :
+			m_VAO(vao),
+			SubMesh(position, normal, texcoord, index, pt)
 		{
 		}
 
@@ -18,7 +27,7 @@ namespace asuna
 
 	public:
 		unsigned int GetGLPrimitive();
-		unsigned int m_VAO = 0;
+		unsigned int m_VAO;
 
 	public:
 		static std::shared_ptr<OpengSubMesh> Create(std::shared_ptr<SubMeshCreateParam> param);

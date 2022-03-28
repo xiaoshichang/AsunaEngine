@@ -24,9 +24,7 @@ DXGI_FORMAT asuna::DirectX11IndexBuffer::GetDXGIFormat()
 
 shared_ptr<DirectX11IndexBuffer> DirectX11IndexBuffer::Create(shared_ptr<IndexBufferCreateParam> param)
 {
-	auto indexBuffer = make_shared<DirectX11IndexBuffer>();
-	indexBuffer->m_ElementCount = param->m_ElementCount;
-	indexBuffer->m_Format = param->m_Format;
+	ID3D11Buffer* buffer;
 	D3D11_BUFFER_DESC indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA indexData;
 	// Set up the description of the static index buffer.
@@ -45,7 +43,9 @@ shared_ptr<DirectX11IndexBuffer> DirectX11IndexBuffer::Create(shared_ptr<IndexBu
 	// Create the index buffer.
 	HRESULT result;
 	auto context = dynamic_pointer_cast<DirectX11RenderContext>( Renderer::Current->GetContext());
-	result = context->m_Device->CreateBuffer(&indexBufferDesc, &indexData, &indexBuffer->m_IndexBuffer);
+	result = context->m_Device->CreateBuffer(&indexBufferDesc, &indexData, &buffer);
 	ASUNA_ASSERT(SUCCEEDED(result));
+
+	auto indexBuffer = make_shared<DirectX11IndexBuffer>(buffer, param->m_ElementCount, param->m_Format);
 	return indexBuffer;
 }

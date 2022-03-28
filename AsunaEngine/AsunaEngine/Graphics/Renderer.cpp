@@ -9,7 +9,8 @@ Renderer* Renderer::Current = nullptr;
 
 void Renderer::Render()
 {
-	ClearRenderTarget(0.1f, 0.2f, 0.3f, 1.0f);
+	ClearRenderTarget(nullptr, 0.1f, 0.2f, 0.3f, 1.0f);
+	SetRenderTarget(nullptr);
 	m_RenderItemQueue->Render();
 }
 

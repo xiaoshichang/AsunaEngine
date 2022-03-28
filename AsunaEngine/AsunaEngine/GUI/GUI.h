@@ -4,14 +4,16 @@
 
 namespace asuna
 {
-	class IMGui
+	class GUI
 	{
 	public:
 
 		static void Initialize();
-		static void Render();
+		static void Begin();
+		static void End();
 		static void Finalize();
 		static HRESULT HandleEvents(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+		static void HandleMultiViewport(HWND hWnd, LPARAM lParam);
 	private:
 		static void TestGUI();
 	};

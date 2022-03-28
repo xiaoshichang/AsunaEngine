@@ -7,7 +7,11 @@ namespace asuna
 	class DirectX11IndexBuffer : public IndexBuffer
 	{
 	public:
-		DirectX11IndexBuffer()
+		DirectX11IndexBuffer() = delete;
+		DirectX11IndexBuffer(ID3D11Buffer* buffer, int count, IndexBufferFormat format):
+			m_IndexBuffer(buffer),
+			m_ElementCount(count),
+			m_Format(format)
 		{
 		}
 
@@ -20,11 +24,23 @@ namespace asuna
 			}
 		}
 
+		ID3D11Buffer* GetBuffer()
+		{
+			return m_IndexBuffer;
+		}
 
-	public:
+		int GetElementCount()
+		{
+			return m_ElementCount;
+		}
+
 		DXGI_FORMAT GetDXGIFormat();
-	public:
+
+	private:
 		ID3D11Buffer* m_IndexBuffer = nullptr;
+		int m_ElementCount = 0;
+		IndexBufferFormat m_Format;
+
 	public:
 		static std::shared_ptr<DirectX11IndexBuffer> Create(std::shared_ptr<IndexBufferCreateParam> param);
 	};

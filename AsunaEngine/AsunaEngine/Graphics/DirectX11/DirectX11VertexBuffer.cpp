@@ -8,11 +8,7 @@ using namespace std;
 shared_ptr<DirectX11VertexBuffer> DirectX11VertexBuffer::Create(shared_ptr<VertexBufferCreateParam> param)
 {
 	HRESULT result;
-	auto vertexBuffer = make_shared<DirectX11VertexBuffer>();
-	vertexBuffer->m_ElementCount = param->m_ElementCount;
-	vertexBuffer->m_Format = param->m_Format;
-	vertexBuffer->m_Stride = param->GetFormatStride();
-	vertexBuffer->m_Offset = 0;
+	ID3D11Buffer* buffer;
 
 	auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
 	auto sizeInBytes = param->m_ElementCount * param->GetFormatStride();
@@ -31,16 +27,17 @@ shared_ptr<DirectX11VertexBuffer> DirectX11VertexBuffer::Create(shared_ptr<Verte
 		bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;		// allow CPU to write in buffer
 		bd.MiscFlags = 0;
 		bd.StructureByteStride = 0;
-		result = context->m_Device->CreateBuffer(&bd, NULL, &vertexBuffer->m_Buffer);
+		result = context->m_Device->CreateBuffer(&bd, NULL, &buffer);
 		ASUNA_ASSERT(SUCCEEDED(result));
 	}
-	// copy the vertices into the buffer
+	// copy the data into the buffer
 	{
 		D3D11_MAPPED_SUBRESOURCE ms;
-		result = context->m_DeviceContext->Map(vertexBuffer->m_Buffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);    // map the buffer
+		result = context->m_DeviceContext->Map(buffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);    // map the buffer
 		ASUNA_ASSERT(SUCCEEDED(result));
 		memcpy(ms.pData, param->m_VertexData, sizeInBytes);                       // copy the data
-		context->m_DeviceContext->Unmap(vertexBuffer->m_Buffer, NULL);
+		context->m_DeviceContext->Unmap(buffer, NULL);
 	}
-	return vertexBuffer;
+
+	return make_shared<DirectX11VertexBuffer>(buffer, param->m_Format, param->m_ElementCount, param->GetFormatStride(), 0);
 }

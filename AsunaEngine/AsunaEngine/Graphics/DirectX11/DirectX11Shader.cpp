@@ -11,11 +11,11 @@ using namespace std;
 
 shared_ptr<DirectX11VextexShader> DirectX11VextexShader::Create(const std::string& path)
 {
-	auto shader = make_shared<DirectX11VextexShader> ();
-
 	HRESULT result;
 	ID3D10Blob* errorMessage;
-	ID3DBlob* byteCode = nullptr;
+	ID3DBlob* byteCode;
+	ID3D11VertexShader* vs;
+	ID3D11InputLayout* layout;
 	
 	DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 	dwShaderFlags |= D3DCOMPILE_DEBUG;
@@ -28,7 +28,7 @@ shared_ptr<DirectX11VextexShader> DirectX11VextexShader::Create(const std::strin
 		std::cout << reinterpret_cast<const char*>(errorMessage->GetBufferPointer()) << std::endl;
 	}
 	auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
-	context->m_Device->CreateVertexShader(byteCode->GetBufferPointer(), byteCode->GetBufferSize(), nullptr, &shader->m_VS);
+	context->m_Device->CreateVertexShader(byteCode->GetBufferPointer(), byteCode->GetBufferSize(), nullptr, &vs);
 
 	ASUNA_ASSERT(SUCCEEDED(result));
 	
@@ -40,17 +40,17 @@ shared_ptr<DirectX11VextexShader> DirectX11VextexShader::Create(const std::strin
 			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
 	};
 
-	context->m_Device->CreateInputLayout(ied, 1, byteCode->GetBufferPointer(), byteCode->GetBufferSize(), &shader->m_Layout);
+	context->m_Device->CreateInputLayout(ied, 1, byteCode->GetBufferPointer(), byteCode->GetBufferSize(), &layout);
 	byteCode->Release();
-	return shader;
+	return make_shared<DirectX11VextexShader>(vs, layout);
 }
 
 shared_ptr<DirectX11PixelShader> DirectX11PixelShader::Create(const std::string& path)
 {
-	auto shader = make_shared<DirectX11PixelShader>();
 	HRESULT result;
 	ID3D10Blob* errorMessage;
 	ID3DBlob* byteCode = nullptr;
+	ID3D11PixelShader* ps;
 
 	DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 	dwShaderFlags |= D3DCOMPILE_DEBUG;
@@ -63,9 +63,9 @@ shared_ptr<DirectX11PixelShader> DirectX11PixelShader::Create(const std::string&
 		std::cout << reinterpret_cast<const char*>(errorMessage->GetBufferPointer()) << std::endl;
 	}
 	auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
-	context->m_Device->CreatePixelShader(byteCode->GetBufferPointer(), byteCode->GetBufferSize(), nullptr, &shader->m_PS);
-
+	context->m_Device->CreatePixelShader(byteCode->GetBufferPointer(), byteCode->GetBufferSize(), nullptr, &ps);
 	ASUNA_ASSERT(SUCCEEDED(result));
+
 	byteCode->Release();
-	return shader;
+	return make_shared<DirectX11PixelShader>(ps);
 }

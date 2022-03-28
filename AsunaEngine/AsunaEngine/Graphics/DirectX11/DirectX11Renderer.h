@@ -10,8 +10,6 @@ namespace asuna
 	{
 	public:
 		DirectX11Renderer():
-			m_swapChain(nullptr),
-			m_RenderTargetView(nullptr),
 			m_depthStencilBuffer(nullptr),
 			m_depthStencilState(nullptr),
 			m_depthStencilView(nullptr),
@@ -24,30 +22,41 @@ namespace asuna
 		{
 		}
 
+		virtual void CreateDeviceContext() override;
+		virtual void ReleaseDeviceContext() override;
+
 	public:
 		virtual void Initialize(CreateRendererContextParam param) override;
 		virtual void Finalize() override;
 		virtual void ResizeResolution(int width, int height) override;
 		virtual void Present();
+		virtual void ClearRenderTarget(std::shared_ptr<RenderTarget> rt, float r, float g, float b, float a) override;
+		virtual void SetRenderTarget(std::shared_ptr<RenderTarget> rt) override;
 
-	protected:
-		virtual void ClearRenderTarget(float r, float g, float b, float a) override;
-		virtual void CreateDeviceContext() override;
-		virtual void ReleaseDeviceContext() override;
+		virtual std::shared_ptr<Mesh> CreateMesh(const std::string& scenePath) override;
+		virtual std::shared_ptr<RenderTarget> CreateRenderTarget() override;
+		virtual std::shared_ptr<Shader> CreateShader(const std::string& scenePath, ShaderType shaderType) override;
+		virtual std::shared_ptr<ConstantBuffer> CreateConstantBuffer() override;
+		virtual std::shared_ptr<RenderItem> CreateRenderItem(std::shared_ptr<Mesh> mesh, std::shared_ptr<Shader> vertexShader, std::shared_ptr<Shader> pixelShader, std::shared_ptr<ConstantBuffer> constantBuffer) override;
 
 	private:
-		void InitTriangle();
-		void SetViewPort(int width, int height);
+		void SetViewPort(ID3D11DeviceContext* deviceContext, int width, int height);
+		void SetRasterizerState(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+		void CreateDepthStencilState(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+
 
 	private:
-		IDXGISwapChain* m_swapChain;
-		ID3D11RenderTargetView* m_RenderTargetView;
+
+
 		ID3D11Texture2D* m_depthStencilBuffer;
 		ID3D11DepthStencilState* m_depthStencilState;
 		ID3D11DepthStencilView* m_depthStencilView;
 		ID3D11RasterizerState* m_rasterState;
 		int m_videoCardMemory;
 		
+
+		// Í¨¹ý Renderer ¼Ì³Ð
+
 	};
 }
 

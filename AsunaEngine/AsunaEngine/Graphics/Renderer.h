@@ -1,12 +1,16 @@
 #pragma once
 #include <Windows.h>
 #include <memory>
+#include <string>
 #include "../Foundation/Interface/IModule.h"
 #include "RenderAPIType.h"
 #include "RenderContext.h"
 #include "RenderItem.h"
+#include "RenderTarget.h"
 #include "RenderItemQueue.h"
+#include "ConstantBuffer.h"
 #include "Shader.h"
+#include "Mesh.h"
 
 #include "../DLLExport/DLLExport.h"
 
@@ -44,17 +48,20 @@ namespace asuna
 		virtual void Render();
 		virtual void ResizeResolution(int width, int height) = 0;
 		virtual void Present() = 0;
-
-	private:
-		virtual void ClearRenderTarget(float r, float g, float b, float a) = 0;
+		virtual void ClearRenderTarget(std::shared_ptr<RenderTarget> rt, float r, float g, float b, float a) = 0;
 		virtual void CreateDeviceContext() = 0;
 		virtual void ReleaseDeviceContext() = 0;
+		virtual void SetRenderTarget(std::shared_ptr<RenderTarget> rt) = 0;
+		virtual std::shared_ptr<Mesh> CreateMesh(const std::string& scenePath) = 0;
+		virtual std::shared_ptr<RenderTarget> CreateRenderTarget() = 0;
+		virtual std::shared_ptr<Shader> CreateShader(const std::string& scenePath, ShaderType shaderType) = 0;
+		virtual std::shared_ptr<RenderItem> CreateRenderItem(std::shared_ptr<Mesh> mesh, std::shared_ptr<Shader> vertexShader, std::shared_ptr<Shader> pixelShader, std::shared_ptr<ConstantBuffer> constantBuffer) = 0;
+		virtual std::shared_ptr<ConstantBuffer> CreateConstantBuffer() = 0;
 
 
-	public:
-		std::shared_ptr<RenderContext> GetContext();
 		virtual void AddRenderItem(std::shared_ptr<RenderItem> item);
 		virtual void RemoveRenderItem(std::shared_ptr<RenderItem> item);
+		std::shared_ptr<RenderContext> GetContext();
 
 
 	protected:

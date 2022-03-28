@@ -34,10 +34,7 @@ namespace asuna
 		virtual ~IndexBuffer()
 		{
 		}
-
-	public:
-		int m_ElementCount = 0;
-		IndexBufferFormat m_Format;
+		
 	};
 }
 

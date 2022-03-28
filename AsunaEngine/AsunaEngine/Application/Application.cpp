@@ -2,9 +2,13 @@
 
 void asuna::Application::Run()
 {
-	while (!m_Quit)
+	while (true)
 	{
 		Tick();
+		if (m_Quit)
+		{
+			break;
+		}
 		Render();
 	}
 }

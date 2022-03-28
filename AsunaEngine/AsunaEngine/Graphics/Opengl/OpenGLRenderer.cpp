@@ -55,7 +55,6 @@ void asuna::OpenGLRenderer::Initialize(CreateRendererContextParam param)
 	m_HWND = param.m_HWND;
 
 	CreateDeviceContext();
-	InitializeBuffers();
 }
 
 void asuna::OpenGLRenderer::Finalize()
@@ -67,7 +66,7 @@ void asuna::OpenGLRenderer::ResizeResolution(int width, int height)
 	glViewport(0, 0, width, height);
 }
 
-void asuna::OpenGLRenderer::ClearRenderTarget(float r, float g, float b, float a)
+void asuna::OpenGLRenderer::ClearRenderTarget(std::shared_ptr<RenderTarget> rt, float r, float g, float b, float a)
 {
 	glClearColor(r, g, b, a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -250,31 +249,35 @@ void OpenGLRenderer::SetViewPort(int width, int height)
 	glViewport(0, 0, width, height);
 }
 
-bool OpenGLRenderer::InitializeBuffers()
+
+std::shared_ptr<Shader> asuna::OpenGLRenderer::CreateShader(const std::string& path, ShaderType shaderType)
 {
-	float vertices[] = {
-		 1.0f,   1.0f,  1.0f,   1.0f, 0.0f, 0.0f,
-		 1.0f,   1.0f, -1.0f,   0.0f, 1.0f, 0.0f,
-		 -1.0f,  1.0f, -1.0f,   0.0f, 0.0f, 1.0f,
-		 -1.0f,  1.0f,  1.0f,   1.0f, 1.0f, 0.0f,
-		 1.0f,  -1.0f,  1.0f,   1.0f, 0.0f, 1.0f,
-		 1.0f,  -1.0f, -1.0f,   0.0f, 1.0f, 1.0f,
-		 -1.0f, -1.0f, -1.0f,   0.5f, 1.0f, 0.5f,
-		 -1.0f, -1.0f,  1.0f,   1.0f, 0.5f, 1.0f,
-	};
-	uint16_t indices[] = { 1, 2, 3, 3, 2, 6, 6, 7, 3, 3, 0, 1, 0, 3, 7, 7, 6, 4, 4, 6, 5, 0, 7, 4, 1, 0, 4, 1, 4, 5, 2, 1, 5, 2, 5, 6 };
-	// Set the number of indices in the index array.
-	int elementCount = sizeof(indices) / sizeof(uint16_t);
+	return OpenglShader::Create(path, shaderType);
+}
 
-	auto param = AssetLoader::LoadMesh("Assets\\Models\\keqin.fbx");
+std::shared_ptr<RenderItem> asuna::OpenGLRenderer::CreateRenderItem(std::shared_ptr<Mesh> mesh, std::shared_ptr<Shader> vs, std::shared_ptr<Shader> ps, std::shared_ptr<ConstantBuffer> cb)
+{
+	return OpenglRenderItem::Create(mesh, vs, ps, cb);
+}
 
-	auto mesh = OpenglMesh::Create(param);
-	auto vs = OpenglVertexShader::Create("Assets\\Shaders\\color.vs");
-	auto ps = OpenglPixelShader::Create("Assets\\Shaders\\color.ps");
-	auto sp = OpenglShaderProgram::Create(vs, ps);
-	auto renderItem = make_shared<OpenglRenderItem>(mesh, sp);
-	Renderer::Current->AddRenderItem(renderItem);
-	return true;
+std::shared_ptr<ConstantBuffer> asuna::OpenGLRenderer::CreateConstantBuffer()
+{
+	return std::shared_ptr<ConstantBuffer>();
+}
+
+std::shared_ptr<Mesh> asuna::OpenGLRenderer::CreateMesh(const std::string& scenePath)
+{
+	auto param = AssetLoader::LoadMesh(scenePath);
+	return OpenglMesh::Create(param);
+}
+
+std::shared_ptr<RenderTarget> asuna::OpenGLRenderer::CreateRenderTarget()
+{
+	return std::shared_ptr<RenderTarget>();
+}
+
+void asuna::OpenGLRenderer::SetRenderTarget(std::shared_ptr<RenderTarget> rt)
+{
 }
 
 

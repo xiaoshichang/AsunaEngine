@@ -2,13 +2,13 @@
 #include "DirectX11RenderContext.h"
 #include "../Renderer.h"
 #include "../../Foundation/Platform/Assert.h"
+
 using namespace asuna;
 using namespace std;
 
 shared_ptr<DirectX11ConstantBuffer> DirectX11ConstantBuffer::Create()
 {
-	auto constantBuffer = make_shared<DirectX11ConstantBuffer>();
-
+	ID3D11Buffer* cb;
 	D3D11_BUFFER_DESC matrixBufferDesc;
 	// Setup the description of the dynamic matrix constant buffer that is in the vertex shader.
 	matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -19,8 +19,9 @@ shared_ptr<DirectX11ConstantBuffer> DirectX11ConstantBuffer::Create()
 	matrixBufferDesc.StructureByteStride = 0;
 
 	auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
-	auto result = context->m_Device->CreateBuffer(&matrixBufferDesc, NULL, &constantBuffer->m_ConstantBuffer);
+	auto result = context->m_Device->CreateBuffer(&matrixBufferDesc, NULL, &cb);
 	ASUNA_ASSERT(SUCCEEDED(result));
 
-	return constantBuffer;
+	return 	make_shared<DirectX11ConstantBuffer>(cb);
+	;
 }

@@ -6,25 +6,15 @@
 
 namespace asuna
 {
-	class DirectX11Shader : public Shader
+
+	class DirectX11VextexShader : public Shader
 	{
 	public:
-		DirectX11Shader(ShaderType shaderType) : Shader(shaderType)
-		{
-		}
-
-		virtual ~DirectX11Shader()
-		{
-		}
-
-	};
-
-
-	class DirectX11VextexShader : public DirectX11Shader
-	{
-	public:
-		DirectX11VextexShader()
-			: DirectX11Shader(ShaderType::VertexShader)
+		DirectX11VextexShader() = delete;
+		DirectX11VextexShader(ID3D11VertexShader* vs, ID3D11InputLayout* layout) : 
+			m_VS(vs),
+			m_Layout(layout),
+			Shader(ShaderType::VertexShader)
 		{
 		}
 
@@ -43,20 +33,33 @@ namespace asuna
 			}
 		}
 
-	public:
-		ID3D11VertexShader* m_VS = nullptr;
-		ID3D11InputLayout* m_Layout = nullptr;              
+		ID3D11VertexShader* GetShader()
+		{
+			return m_VS;
+		}
+
+		ID3D11InputLayout* GetLayout()
+		{
+			return m_Layout;
+		}
+
+
+	private:
+		ID3D11VertexShader* m_VS;
+		ID3D11InputLayout* m_Layout;              
 
 	public:
 		static std::shared_ptr<DirectX11VextexShader> Create(const std::string& path);
 	};
 
 
-	class DirectX11PixelShader : public DirectX11Shader
+	class DirectX11PixelShader : public Shader
 	{
 	public:
-		DirectX11PixelShader()
-			: DirectX11Shader(ShaderType::PixelShader)
+		DirectX11PixelShader() = delete;
+		DirectX11PixelShader(ID3D11PixelShader* ps) :
+			m_PS(ps),
+			Shader(ShaderType::PixelShader)
 		{
 		}
 
@@ -69,7 +72,13 @@ namespace asuna
 			}
 		}
 
-	public:
+		ID3D11PixelShader* GetShader()
+		{
+			return m_PS;
+		}
+
+
+	private:
 		ID3D11PixelShader* m_PS = nullptr;
 
 	public:

@@ -4,28 +4,31 @@ using namespace std;
 
  shared_ptr<DirectX11SubMesh> DirectX11SubMesh::Create(shared_ptr<SubMeshCreateParam> param)
 {
-	auto submesh = make_shared<DirectX11SubMesh>();
-	submesh->m_PrimitiveType = param->m_PrimitiveType;
+	 std::shared_ptr<VertexBuffer> position = nullptr;
+	 std::shared_ptr<VertexBuffer> normal = nullptr;
+	 std::shared_ptr<VertexBuffer> texcoord = nullptr;
+	 std::shared_ptr<IndexBuffer>  index = nullptr;
+
 	if (param->m_PositionCreateParam != nullptr)
 	{
-		submesh->m_PositionBuffer = DirectX11VertexBuffer::Create(param->m_PositionCreateParam);
+		position = DirectX11VertexBuffer::Create(param->m_PositionCreateParam);
 	}
 
 	if (param->m_NormalCreateParam != nullptr)
 	{
-		submesh->m_NormalBuffer = DirectX11VertexBuffer::Create(param->m_NormalCreateParam);
+		normal = DirectX11VertexBuffer::Create(param->m_NormalCreateParam);
 	}
 
 	if (param->m_TexcoordCreateParam != nullptr)
 	{
-		submesh->m_TexCoordBuffer = DirectX11VertexBuffer::Create(param->m_TexcoordCreateParam);
+		texcoord = DirectX11VertexBuffer::Create(param->m_TexcoordCreateParam);
 	}
 
 	if (param->m_IndexCreateParam != nullptr)
 	{
-		submesh->m_IndexBuffer = DirectX11IndexBuffer::Create(param->m_IndexCreateParam);
+		index = DirectX11IndexBuffer::Create(param->m_IndexCreateParam);
 	}
-	return submesh;
+	return make_shared<DirectX11SubMesh>(position, normal, texcoord, index, param->m_PrimitiveType);
 }
 
 shared_ptr<DirectX11Mesh> DirectX11Mesh::Create(shared_ptr<MeshCreateParam> param)

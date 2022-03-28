@@ -38,15 +38,11 @@ void OpenglIndexBuffer::Bind()
 
  shared_ptr<OpenglIndexBuffer> OpenglIndexBuffer::Create(shared_ptr<IndexBufferCreateParam> param)
 {
-	auto indexBuffer = make_shared<OpenglIndexBuffer>();
-	indexBuffer->m_Format = param->m_Format;
-	indexBuffer->m_ElementCount = param->m_ElementCount;
-
+	unsigned int veo;
 	// Generate an ID for the index buffer.
-	glGenBuffers(1, &indexBuffer->m_VEO);
-
+	glGenBuffers(1, &veo);
 	// Bind the index buffer and load the index data into it.
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer->m_VEO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, veo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, param->m_ElementCount * param->GetFormatSize(), param->m_IndexData, GL_STATIC_DRAW);
-	return indexBuffer;
+	return make_shared<OpenglIndexBuffer>(veo, param->m_ElementCount, param->m_Format);
 }

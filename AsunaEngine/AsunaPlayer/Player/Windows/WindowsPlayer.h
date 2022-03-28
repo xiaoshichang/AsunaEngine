@@ -5,6 +5,8 @@ namespace asuna
 {
 	class WindowsPlayer : public WindowsApplication
 	{
+	public:
+		virtual void Initialize() override;
 
 	};
 }

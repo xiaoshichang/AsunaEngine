@@ -16,7 +16,7 @@ Assimp::Importer* AssetLoader::MeshImporter = new Assimp::Importer();
 /// By default, all 3D data is provided in a right-handed coordinate system such as OpenGL uses. 
 /// In this coordinate system, +X points to the right, -Z points away from the viewer into the screen and +Y points upwards.
 /// </summary>
-shared_ptr<MeshCreateParam> AssetLoader::LoadMesh(const std::string& scenePath)
+shared_ptr<MeshCreateParam> AssetLoader::LoadMesh(const std::string& Path)
 {
 	auto param = make_shared<MeshCreateParam>();
 
@@ -26,7 +26,7 @@ shared_ptr<MeshCreateParam> AssetLoader::LoadMesh(const std::string& scenePath)
 		readFlag = readFlag | aiProcess_ConvertToLeftHanded;
 	}
 
-	auto sceneRoot = MeshImporter->ReadFile(scenePath, readFlag);
+	auto sceneRoot = MeshImporter->ReadFile(Path, readFlag);
 	ASUNA_ASSERT(sceneRoot);
 
 	param->m_SubMeshCount = sceneRoot->mNumMeshes;

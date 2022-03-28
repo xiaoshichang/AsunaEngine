@@ -40,55 +40,58 @@ unsigned int OpengSubMesh::GetGLPrimitive()
 
 std::shared_ptr<OpengSubMesh> OpengSubMesh::Create(std::shared_ptr<SubMeshCreateParam> param)
 {
-	auto mesh = make_shared<OpengSubMesh>();
-	mesh->m_PrimitiveType = param->m_PrimitiveType;
+	std::shared_ptr<VertexBuffer> position = nullptr;
+	std::shared_ptr<VertexBuffer> normal = nullptr;
+	std::shared_ptr<VertexBuffer> texcoord = nullptr;
+	std::shared_ptr<IndexBuffer>  index = nullptr;
+	unsigned int vao;
 
 	if (param->m_PositionCreateParam != nullptr)
 	{
-		mesh->m_PositionBuffer = OpenglVertexBuffer::Create(param->m_PositionCreateParam);
+		position = OpenglVertexBuffer::Create(param->m_PositionCreateParam);
 	}
 	if (param->m_NormalCreateParam != nullptr)
 	{
-		mesh->m_NormalBuffer = OpenglVertexBuffer::Create(param->m_NormalCreateParam);
+		normal = OpenglVertexBuffer::Create(param->m_NormalCreateParam);
 	}
 	if (param->m_TexcoordCreateParam != nullptr)
 	{
-		mesh->m_TexCoordBuffer = OpenglVertexBuffer::Create(param->m_TexcoordCreateParam);
+		texcoord = OpenglVertexBuffer::Create(param->m_TexcoordCreateParam);
 	}
 	if (param->m_TexcoordCreateParam != nullptr)
 	{
-		mesh->m_IndexBuffer = OpenglIndexBuffer::Create(param->m_IndexCreateParam);
+		index = OpenglIndexBuffer::Create(param->m_IndexCreateParam);
 	}
 
 	// bind vao
 	{
 		// Allocate an OpenGL vertex array object.
-		glGenVertexArrays(1, &mesh->m_VAO);
+		glGenVertexArrays(1, &vao);
 		// Bind the vertex array object to store all the buffers and vertex attributes we create here.
-		glBindVertexArray(mesh->m_VAO);
-		if (mesh->m_PositionBuffer != nullptr)
+		glBindVertexArray(vao);
+		if (position != nullptr)
 		{
-			auto vb = dynamic_pointer_cast<OpenglVertexBuffer>(mesh->m_PositionBuffer);
+			auto vb = dynamic_pointer_cast<OpenglVertexBuffer>(position);
 			vb->Bind(0);
 		}
-		if (mesh->m_NormalBuffer != nullptr)
+		if (normal != nullptr)
 		{
-			auto vb = dynamic_pointer_cast<OpenglVertexBuffer>(mesh->m_NormalBuffer);
+			auto vb = dynamic_pointer_cast<OpenglVertexBuffer>(normal);
 			vb->Bind(1);
 		}
-		if (mesh->m_TexCoordBuffer != nullptr)
+		if (texcoord != nullptr)
 		{
-			auto vb = dynamic_pointer_cast<OpenglVertexBuffer>(mesh->m_TexCoordBuffer);
+			auto vb = dynamic_pointer_cast<OpenglVertexBuffer>(texcoord);
 			vb->Bind(2);
 		}
-		if (mesh->m_IndexBuffer != nullptr)
+		if (index != nullptr)
 		{
-			auto ib = dynamic_pointer_cast<OpenglIndexBuffer>(mesh->m_IndexBuffer);
+			auto ib = dynamic_pointer_cast<OpenglIndexBuffer>(index);
 			ib->Bind();
 		}
 		glBindVertexArray(0);
 	}
-	return mesh;
+	return make_shared<OpengSubMesh>(vao, position, normal, texcoord, index, param->m_PrimitiveType);
 }
 
 
