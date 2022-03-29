@@ -10,7 +10,8 @@ namespace asuna
     class LogPanel : public BasePanel
     {
     public:
-        virtual void Render() override;
+        void Initialize() override;
+        void Render() override;
     };
 
 }

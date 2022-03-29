@@ -370,7 +370,8 @@ std::shared_ptr<Mesh> asuna::DirectX11Renderer::CreateMesh(const std::string& sc
 
 std::shared_ptr<RenderTarget> asuna::DirectX11Renderer::CreateRenderTarget(RenderTargetDesc desc)
 {
-	return std::shared_ptr<RenderTarget>();
+    auto context = dynamic_pointer_cast<DirectX11RenderContext>(m_Context);
+	return DirectX11RenderTarget::Create(desc, context->m_Device);
 }
 
 void asuna::DirectX11Renderer::SetRenderTarget(std::shared_ptr<RenderTarget> rt)

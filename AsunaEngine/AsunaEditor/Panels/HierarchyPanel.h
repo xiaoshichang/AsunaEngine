@@ -6,7 +6,8 @@ namespace asuna
 	class HierarchyPanel : public BasePanel
 	{
     public:
-        virtual void Render() override;
+         void Initialize() override;
+         void Render() override;
 
 
 	};

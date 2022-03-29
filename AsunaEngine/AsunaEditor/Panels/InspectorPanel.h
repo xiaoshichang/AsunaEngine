@@ -11,7 +11,8 @@ namespace asuna
     class InspectorPanel : public BasePanel
     {
     public:
-        virtual void Render() override;
+        void Initialize() override;
+        void Render() override;
     };
 
 }

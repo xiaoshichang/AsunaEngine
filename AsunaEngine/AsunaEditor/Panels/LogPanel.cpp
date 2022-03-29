@@ -7,9 +7,15 @@
 
 using namespace asuna;
 
+void LogPanel::Initialize()
+{
+
+}
+
 void LogPanel::Render()
 {
     ImGui::Begin("Log Window", &m_Showing);
 
     ImGui::End();
 }
+

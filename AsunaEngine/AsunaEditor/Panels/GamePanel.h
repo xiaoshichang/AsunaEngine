@@ -3,6 +3,8 @@
 //
 
 #pragma once
+#include <memory>
+#include "AsunaEngine/Graphics/RenderTarget.h"
 #include "BasePanel.h"
 
 namespace asuna
@@ -10,7 +12,19 @@ namespace asuna
     class GamePanel : public  BasePanel
     {
     public:
-        virtual void Render() override;
+        GamePanel() :
+            m_RT(nullptr)
+        {
+        }
+
+        void Initialize() override;
+        void Render() override;
+
+    private:
+        void CreateRenderTarget();
+
+    private:
+        std::shared_ptr<RenderTarget> m_RT;
     };
 }
 

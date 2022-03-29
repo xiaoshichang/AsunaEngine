@@ -7,9 +7,16 @@
 
 using namespace asuna;
 
+void InspectorPanel::Initialize()
+{
+
+}
+
 void InspectorPanel::Render()
 {
     ImGui::Begin("Inspector Window", &m_Showing);
 
     ImGui::End();
 }
+
+
