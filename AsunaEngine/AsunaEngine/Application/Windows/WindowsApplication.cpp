@@ -38,12 +38,6 @@ void WindowsApplication::Tick()
 	}
 }
 
-void WindowsApplication::Render()
-{
-	Renderer::Current->Render();
-	Renderer::Current->Present();
-}
-
 HWND WindowsApplication::GetWindowsHandler() noexcept
 {
 	return m_HWND;
@@ -130,7 +124,7 @@ void WindowsApplication::InitRenderer(RenderAPIType api)
 	{
 		Renderer::Current = new EmptyRenderer();
 	}
-	if (api == RenderAPIType::Directx11)
+	else if (api == RenderAPIType::Directx11)
 	{
 		Renderer::Current = new DirectX11Renderer();
 	}

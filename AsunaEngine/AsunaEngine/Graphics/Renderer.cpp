@@ -7,10 +7,10 @@ using namespace std;
 
 Renderer* Renderer::Current = nullptr;
 
-void Renderer::Render()
+void Renderer::RenderScene(std::shared_ptr<RenderTarget> rt)
 {
-	ClearRenderTarget(nullptr, 0.1f, 0.2f, 0.3f, 1.0f);
-	SetRenderTarget(nullptr);
+	ClearRenderTarget(rt, 0.1f, 0.2f, 0.3f, 1.0f);
+	SetRenderTarget(rt);
 	m_RenderItemQueue->Render();
 }
 

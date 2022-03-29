@@ -7,6 +7,7 @@ namespace asuna
 	{
 	public:
 		virtual void Initialize() override;
+        virtual void Render() override;
 
 	};
 }

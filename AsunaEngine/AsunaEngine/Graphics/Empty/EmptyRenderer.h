@@ -4,7 +4,7 @@
 namespace asuna
 {
 
-	class ASUNAENGINE_API EmptyRenderer : public Renderer
+	class EmptyRenderer : public Renderer
 	{
 	public:
 		virtual void Initialize(CreateRendererContextParam param);
@@ -25,7 +25,7 @@ namespace asuna
 
 		
 
-		// Í¨¹ý Renderer ¼Ì³Ð
+		// Í¨ï¿½ï¿½ Renderer ï¿½Ì³ï¿½
 		
 
 	};

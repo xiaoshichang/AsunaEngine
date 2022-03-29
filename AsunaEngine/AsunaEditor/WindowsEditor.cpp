@@ -27,7 +27,6 @@ void WindowsEditor::Initialize()
 
 void asuna::WindowsEditor::Render()
 {
-	Renderer::Current->Render();
 	GUI::Begin();
     RenderEditorBegin();
     m_HierarchyPanel.Render();

@@ -12,7 +12,6 @@ namespace asuna
 		virtual void Initialize() override;
 		virtual void Finalize() override;
 		virtual void Tick() override;
-		virtual void Render() override;
 
 	public:
 		HWND GetWindowsHandler() noexcept;

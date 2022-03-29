@@ -1,11 +1,10 @@
 #pragma once
 
 #include "../Renderer.h"
-#include "../../DLLExport/DLLExport.h"
 
 namespace asuna
 {
-	class ASUNAENGINE_API OpenGLRenderer : public Renderer
+	class OpenGLRenderer : public Renderer
 	{
 	public:
 		OpenGLRenderer()

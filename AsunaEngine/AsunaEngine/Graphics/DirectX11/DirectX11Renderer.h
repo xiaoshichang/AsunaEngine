@@ -2,11 +2,10 @@
 #include <d3d11.h>
 #include <Windows.h>
 #include "../Renderer.h"
-#include "../../DLLExport/DLLExport.h"
 
 namespace asuna
 {
-	class ASUNAENGINE_API DirectX11Renderer : public Renderer
+	class DirectX11Renderer : public Renderer
 	{
 	public:
 		DirectX11Renderer():
@@ -53,9 +52,6 @@ namespace asuna
 		ID3D11DepthStencilView* m_depthStencilView;
 		ID3D11RasterizerState* m_rasterState;
 		int m_videoCardMemory;
-		
-
-		// Í¨¹ý Renderer ¼Ì³Ð
 
 	};
 }

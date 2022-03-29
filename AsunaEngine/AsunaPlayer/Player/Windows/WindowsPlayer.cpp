@@ -12,3 +12,9 @@ void asuna::WindowsPlayer::Initialize()
 	auto renderItem = Renderer::Current->CreateRenderItem(mesh, vertexShader, pixelShader, constantBuffer);
 	Renderer::Current->AddRenderItem(renderItem);
 }
+
+void asuna::WindowsPlayer::Render()
+{
+    Renderer::Current->RenderScene(nullptr);
+    Renderer::Current->Present();
+}

@@ -2,7 +2,6 @@
 #include <Windows.h>
 #include <memory>
 #include <string>
-#include "../Foundation/Interface/IModule.h"
 #include "RenderAPIType.h"
 #include "RenderContext.h"
 #include "RenderItem.h"
@@ -12,15 +11,10 @@
 #include "Shader.h"
 #include "Mesh.h"
 
-#include "../DLLExport/DLLExport.h"
+#include "../Foundation/Interface/IModule.h"
 
 namespace asuna
 {
-	// explicit export template class
-	template  class ASUNAENGINE_API std::shared_ptr<RenderContext>;
-	template  class ASUNAENGINE_API std::shared_ptr<RenderItemQueue>;
-
-
 	struct CreateRendererContextParam
 	{
 		int m_ResolutionWith;
@@ -29,7 +23,7 @@ namespace asuna
 	};
 
 
-	class ASUNAENGINE_API Renderer
+	class Renderer
 	{
 	public:
 		Renderer() :
@@ -45,7 +39,6 @@ namespace asuna
 
 		virtual void Initialize(CreateRendererContextParam param) = 0;
 		virtual void Finalize() = 0;
-		virtual void Render();
 		virtual void ResizeResolution(int width, int height) = 0;
 		virtual void Present() = 0;
 		virtual void ClearRenderTarget(std::shared_ptr<RenderTarget> rt, float r, float g, float b, float a) = 0;
@@ -58,7 +51,7 @@ namespace asuna
 		virtual std::shared_ptr<RenderItem> CreateRenderItem(std::shared_ptr<Mesh> mesh, std::shared_ptr<Shader> vertexShader, std::shared_ptr<Shader> pixelShader, std::shared_ptr<ConstantBuffer> constantBuffer) = 0;
 		virtual std::shared_ptr<ConstantBuffer> CreateConstantBuffer() = 0;
 
-
+        virtual void RenderScene(std::shared_ptr<RenderTarget> rt);
 		virtual void AddRenderItem(std::shared_ptr<RenderItem> item);
 		virtual void RemoveRenderItem(std::shared_ptr<RenderItem> item);
 		std::shared_ptr<RenderContext> GetContext();
