@@ -11,8 +11,8 @@ int main()
 	auto app = new WindowsEditor();
     ApplicationInitParam param {0};
     param.RenderAPIType = RenderAPIType::Directx11;
-    param.WindowWidth = 1200;
-    param.WindowHeight = 800;
+    param.WindowWidth = 1600;
+    param.WindowHeight = 1200;
 
 	app->Initialize(param);
 	app->Run();

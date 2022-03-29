@@ -271,7 +271,7 @@ std::shared_ptr<Mesh> asuna::OpenGLRenderer::CreateMesh(const std::string& scene
 	return OpenglMesh::Create(param);
 }
 
-std::shared_ptr<RenderTarget> asuna::OpenGLRenderer::CreateRenderTarget()
+std::shared_ptr<RenderTarget> asuna::OpenGLRenderer::CreateRenderTarget(RenderTargetDesc desc)
 {
 	return std::shared_ptr<RenderTarget>();
 }

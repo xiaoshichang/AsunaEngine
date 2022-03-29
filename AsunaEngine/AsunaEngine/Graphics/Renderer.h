@@ -46,7 +46,7 @@ namespace asuna
 		virtual void ReleaseDeviceContext() = 0;
 		virtual void SetRenderTarget(std::shared_ptr<RenderTarget> rt) = 0;
 		virtual std::shared_ptr<Mesh> CreateMesh(const std::string& scenePath) = 0;
-		virtual std::shared_ptr<RenderTarget> CreateRenderTarget() = 0;
+		virtual std::shared_ptr<RenderTarget> CreateRenderTarget(RenderTargetDesc desc) = 0;
 		virtual std::shared_ptr<Shader> CreateShader(const std::string& scenePath, ShaderType shaderType) = 0;
 		virtual std::shared_ptr<RenderItem> CreateRenderItem(std::shared_ptr<Mesh> mesh, std::shared_ptr<Shader> vertexShader, std::shared_ptr<Shader> pixelShader, std::shared_ptr<ConstantBuffer> constantBuffer) = 0;
 		virtual std::shared_ptr<ConstantBuffer> CreateConstantBuffer() = 0;

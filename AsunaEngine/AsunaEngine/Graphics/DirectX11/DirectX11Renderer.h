@@ -33,7 +33,7 @@ namespace asuna
 		virtual void SetRenderTarget(std::shared_ptr<RenderTarget> rt) override;
 
 		virtual std::shared_ptr<Mesh> CreateMesh(const std::string& scenePath) override;
-		virtual std::shared_ptr<RenderTarget> CreateRenderTarget() override;
+		virtual std::shared_ptr<RenderTarget> CreateRenderTarget(RenderTargetDesc desc) override;
 		virtual std::shared_ptr<Shader> CreateShader(const std::string& scenePath, ShaderType shaderType) override;
 		virtual std::shared_ptr<ConstantBuffer> CreateConstantBuffer() override;
 		virtual std::shared_ptr<RenderItem> CreateRenderItem(std::shared_ptr<Mesh> mesh, std::shared_ptr<Shader> vertexShader, std::shared_ptr<Shader> pixelShader, std::shared_ptr<ConstantBuffer> constantBuffer) override;

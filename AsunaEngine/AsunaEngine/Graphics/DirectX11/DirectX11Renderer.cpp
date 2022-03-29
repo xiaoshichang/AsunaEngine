@@ -35,8 +35,9 @@ void DirectX11Renderer::ResizeResolution(int width, int height)
 {
 	auto context = dynamic_pointer_cast<DirectX11RenderContext>(m_Context);
 	auto mainRT = context->m_MainRT;
-	
-	context->m_DeviceContext->OMSetRenderTargets(0, 0, 0);
+
+    SetRenderTarget(nullptr);
+    ClearRenderTarget(nullptr, 0.1f, 0.2f, 0.3f, 1.0f);
 
 	if (mainRT != nullptr)
 	{
@@ -44,7 +45,7 @@ void DirectX11Renderer::ResizeResolution(int width, int height)
         mainRT->SetRenderTarget(nullptr);
 	}
 	
-	auto hr = context->m_swapChain->ResizeBuffers(0, 0, 0, DXGI_FORMAT_UNKNOWN, 0);
+	auto hr = context->m_swapChain->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
 	ASUNA_ASSERT(SUCCEEDED(hr));
 	ID3D11Texture2D* pBuffer;
 	hr = context->m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&pBuffer);
@@ -100,58 +101,58 @@ void asuna::DirectX11Renderer::SetRasterizerState(ID3D11Device* device, ID3D11De
 
 void asuna::DirectX11Renderer::CreateDepthStencilState(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
-	D3D11_TEXTURE2D_DESC depthBufferDesc;
-	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
-	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
-
-	ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
-	// Set up the description of the depth buffer.
-	depthBufferDesc.Width = m_ResolutionWidth;
-	depthBufferDesc.Height = m_ResolutionHeight;
-	depthBufferDesc.MipLevels = 1;
-	depthBufferDesc.ArraySize = 1;
-	depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	depthBufferDesc.SampleDesc.Count = 1;
-	depthBufferDesc.SampleDesc.Quality = 0;
-	depthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	depthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-	depthBufferDesc.CPUAccessFlags = 0;
-	depthBufferDesc.MiscFlags = 0;
-	auto result = device->CreateTexture2D(&depthBufferDesc, NULL, &m_depthStencilBuffer);
-	ASUNA_ASSERT(result >= 0);
-	// Initialize the description of the stencil state.
-	ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
-	// Set up the description of the stencil state.
-	depthStencilDesc.DepthEnable = false;
-	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
-	depthStencilDesc.StencilEnable = false;
-	depthStencilDesc.StencilReadMask = 0xFF;
-	depthStencilDesc.StencilWriteMask = 0xFF;
-	// Stencil operations if pixel is front-facing.
-	depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-	depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-	depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-	// Stencil operations if pixel is back-facing.
-	depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-	depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-	depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-	// Create the depth stencil state.
-	result = device->CreateDepthStencilState(&depthStencilDesc, &m_depthStencilState);
-	ASUNA_ASSERT(result >= 0);
-	// Set the depth stencil state.
-	deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
-	// Initailze the depth stencil view.
-	ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
-	// Set up the depth stencil view description.
-	depthStencilViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-	depthStencilViewDesc.Texture2D.MipSlice = 0;
-	// Create the depth stencil view.
-	result = device->CreateDepthStencilView(m_depthStencilBuffer, &depthStencilViewDesc, &m_depthStencilView);
-	ASUNA_ASSERT(result >= 0);
+//	D3D11_TEXTURE2D_DESC depthBufferDesc;
+//	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
+//	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
+//
+//	ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
+//	// Set up the description of the depth buffer.
+//	depthBufferDesc.Width = m_ResolutionWidth;
+//	depthBufferDesc.Height = m_ResolutionHeight;
+//	depthBufferDesc.MipLevels = 1;
+//	depthBufferDesc.ArraySize = 1;
+//	depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+//	depthBufferDesc.SampleDesc.Count = 1;
+//	depthBufferDesc.SampleDesc.Quality = 0;
+//	depthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+//	depthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+//	depthBufferDesc.CPUAccessFlags = 0;
+//	depthBufferDesc.MiscFlags = 0;
+//	auto result = device->CreateTexture2D(&depthBufferDesc, NULL, &m_depthStencilBuffer);
+//	ASUNA_ASSERT(result >= 0);
+//	// Initialize the description of the stencil state.
+//	ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
+//	// Set up the description of the stencil state.
+//	depthStencilDesc.DepthEnable = false;
+//	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+//	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+//	depthStencilDesc.StencilEnable = false;
+//	depthStencilDesc.StencilReadMask = 0xFF;
+//	depthStencilDesc.StencilWriteMask = 0xFF;
+//	// Stencil operations if pixel is front-facing.
+//	depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+//	depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+//	depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+//	depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+//	// Stencil operations if pixel is back-facing.
+//	depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+//	depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+//	depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+//	depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+//	// Create the depth stencil state.
+//	result = device->CreateDepthStencilState(&depthStencilDesc, &m_depthStencilState);
+//	ASUNA_ASSERT(result >= 0);
+//	// Set the depth stencil state.
+//	deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
+//	// Initailze the depth stencil view.
+//	ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
+//	// Set up the depth stencil view description.
+//	depthStencilViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+//	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+//	depthStencilViewDesc.Texture2D.MipSlice = 0;
+//	// Create the depth stencil view.
+//	result = device->CreateDepthStencilView(m_depthStencilBuffer, &depthStencilViewDesc, &m_depthStencilView);
+//	ASUNA_ASSERT(result >= 0);
 }
 
 std::shared_ptr<Shader> asuna::DirectX11Renderer::CreateShader(const std::string& path, ShaderType shaderType)
@@ -317,8 +318,9 @@ void DirectX11Renderer::CreateDeviceContext()
 	);
 	ASUNA_ASSERT(result >= 0);
 
-	auto renderTarget = DirectX11RenderTarget::CreateFromSwapChain(device, swapChain);
-	CreateDepthStencilState(device, deviceContext);
+    RenderTargetDesc desc{0};
+	auto renderTarget = DirectX11RenderTarget::CreateFromSwapChain(desc, device, swapChain);
+	//CreateDepthStencilState(device, deviceContext);
 	SetRasterizerState(device, deviceContext);
 	SetViewPort(deviceContext, m_ResolutionWidth, m_ResolutionHeight);
 
@@ -366,7 +368,7 @@ std::shared_ptr<Mesh> asuna::DirectX11Renderer::CreateMesh(const std::string& sc
 	return mesh;
 }
 
-std::shared_ptr<RenderTarget> asuna::DirectX11Renderer::CreateRenderTarget()
+std::shared_ptr<RenderTarget> asuna::DirectX11Renderer::CreateRenderTarget(RenderTargetDesc desc)
 {
 	return std::shared_ptr<RenderTarget>();
 }
@@ -379,12 +381,12 @@ void asuna::DirectX11Renderer::SetRenderTarget(std::shared_ptr<RenderTarget> rt)
 	{
 		auto mainRT = context->m_MainRT;
 		auto rtv = mainRT->GetRenderTargetView();
-		context->m_DeviceContext->OMSetRenderTargets(1, &rtv, m_depthStencilView);
+		context->m_DeviceContext->OMSetRenderTargets(1, &rtv, nullptr);
 	}
 	else
 	{
 		auto dx11rt = dynamic_pointer_cast<DirectX11RenderTarget>(rt);
 		auto rtv = dx11rt->GetRenderTargetView();
-		context->m_DeviceContext->OMSetRenderTargets(1, &rtv, m_depthStencilView);
+		context->m_DeviceContext->OMSetRenderTargets(1, &rtv, nullptr);
 	}
 }

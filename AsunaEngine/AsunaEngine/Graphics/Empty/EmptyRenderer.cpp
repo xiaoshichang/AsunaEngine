@@ -51,7 +51,7 @@ std::shared_ptr<Mesh> asuna::EmptyRenderer::CreateMesh(const std::string& sceneP
     return std::shared_ptr<Mesh>();
 }
 
-std::shared_ptr<RenderTarget> asuna::EmptyRenderer::CreateRenderTarget()
+std::shared_ptr<RenderTarget> asuna::EmptyRenderer::CreateRenderTarget(RenderTargetDesc desc)
 {
     return std::shared_ptr<RenderTarget>();
 }
