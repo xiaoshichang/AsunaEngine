@@ -2,9 +2,9 @@
 #include "AsunaEngine/Graphics/Renderer.h"
 #include "AsunaEngine/AssetLoader/AssetLoader.h"
 
-void asuna::WindowsPlayer::Initialize()
+void asuna::WindowsPlayer::Initialize(ApplicationInitParam param)
 {
-	WindowsApplication::Initialize();
+	WindowsApplication::Initialize(param);
 	auto mesh = Renderer::Current->CreateMesh("Assets\\Models\\keqin.fbx");
 	auto vertexShader = Renderer::Current->CreateShader("Assets\\Shaders\\triangle.vs", ShaderType::VertexShader);
 	auto pixelShader = Renderer::Current->CreateShader("Assets\\Shaders\\triangle.ps", ShaderType::PixelShader);

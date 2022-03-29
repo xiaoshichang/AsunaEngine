@@ -14,10 +14,10 @@
 using namespace asuna;
 using namespace std;
 
-void WindowsApplication::Initialize()
+void WindowsApplication::Initialize(ApplicationInitParam param)
 {
-	InitMainWindow();
-	InitRenderer(RenderAPIType::Directx11);
+	InitMainWindow(param.WindowWidth, param.WindowHeight);
+	InitRenderer(param.RenderAPIType, param.WindowWidth, param.WindowHeight);
 	GUI::Initialize();
 }
 
@@ -31,7 +31,7 @@ void WindowsApplication::Finalize()
 void WindowsApplication::Tick()
 {
 	MSG msg = {};
-	if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) 
+    while (PeekMessage(&msg, nullptr, 0U, 0U, PM_REMOVE))
 	{
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
@@ -50,10 +50,11 @@ LRESULT WindowsApplication::WindowProc(HWND hWnd, UINT message, WPARAM wParam, L
 		return true;
 	}
 
+
 	auto app = reinterpret_cast<WindowsApplication*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 	switch (message)
 	{
-		case WM_CREATE: 
+		case WM_CREATE:
 		{
 			LPCREATESTRUCT pCreateStruct = reinterpret_cast<LPCREATESTRUCT>(lParam);
 			SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pCreateStruct->lpCreateParams));
@@ -83,7 +84,7 @@ LRESULT WindowsApplication::WindowProc(HWND hWnd, UINT message, WPARAM wParam, L
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
-void WindowsApplication::InitMainWindow()
+void WindowsApplication::InitMainWindow(int width, int height)
 {
 	HINSTANCE hInstance = GetModuleHandle(NULL);
 	WNDCLASSEX windowClass = { 0 };
@@ -95,7 +96,7 @@ void WindowsApplication::InitMainWindow()
 	windowClass.lpszClassName = "AsunaEngine";
 	RegisterClassEx(&windowClass);
 
-	RECT windowRect = { 0, 0, 1024, 768 };
+	RECT windowRect = { 0, 0, width, height };
 	AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, FALSE);
 
 	// Create the window and store a handle to it.
@@ -117,7 +118,7 @@ void WindowsApplication::InitMainWindow()
 	ShowWindow(m_HWND, 5);
 }
 
-void WindowsApplication::InitRenderer(RenderAPIType api)
+void WindowsApplication::InitRenderer(RenderAPIType api, int width, int height)
 {
 	ASUNA_ASSERT(Renderer::Current == nullptr);
 	if (api == RenderAPIType::None)
@@ -139,8 +140,8 @@ void WindowsApplication::InitRenderer(RenderAPIType api)
 
 	CreateRendererContextParam param;
 	param.m_HWND = m_HWND;
-	param.m_ResolutionWith = 1024;
-	param.m_ResolutionHeight = 768;
+	param.m_ResolutionWith = width;
+	param.m_ResolutionHeight = height;
 	Renderer::Current->Initialize(param);
 }
 

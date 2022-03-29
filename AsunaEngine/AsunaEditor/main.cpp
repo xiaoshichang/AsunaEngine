@@ -9,7 +9,12 @@ using namespace asuna;
 int main()
 {
 	auto app = new WindowsEditor();
-	app->Initialize();
+    ApplicationInitParam param {0};
+    param.RenderAPIType = RenderAPIType::Directx11;
+    param.WindowWidth = 1200;
+    param.WindowHeight = 800;
+
+	app->Initialize(param);
 	app->Run();
 	app->Finalize();
 	exit(0);

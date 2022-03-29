@@ -1,7 +1,16 @@
 #pragma once
+#include "../Graphics/RenderAPIType.h"
 
 namespace asuna
 {
+    struct ApplicationInitParam
+    {
+        int WindowWidth;
+        int WindowHeight;
+        RenderAPIType RenderAPIType;
+    };
+
+
 	class Application
 	{
 	public:
@@ -15,7 +24,7 @@ namespace asuna
 		}
 
 	public:
-		virtual void Initialize() = 0;
+		virtual void Initialize(ApplicationInitParam param) = 0;
 		virtual void Finalize() = 0;
 		virtual void Run();
 		virtual void Tick() = 0;

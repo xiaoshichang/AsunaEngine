@@ -9,17 +9,17 @@ namespace asuna
 	class WindowsApplication : public Application
 	{
 	public:
-		virtual void Initialize() override;
-		virtual void Finalize() override;
-		virtual void Tick() override;
+		void Initialize(ApplicationInitParam param) override;
+		void Finalize() override;
+		void Tick() override;
 
 	public:
 		HWND GetWindowsHandler() noexcept;
 
 	private:
 		static LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-		void InitMainWindow();
-		void InitRenderer(RenderAPIType api);
+		void InitMainWindow(int width, int height);
+		void InitRenderer(RenderAPIType api, int width, int height);
 
 	private:
 		HWND m_HWND;

@@ -19,9 +19,13 @@ static void ShowDockingDisabledMessage()
 }
 
 
-void WindowsEditor::Initialize()
+void WindowsEditor::Initialize(ApplicationInitParam param)
 {
-    WindowsApplication::Initialize();
+    WindowsApplication::Initialize(param);
+//    m_HierarchyPanel.Initialize();
+//    m_LogPanel.Initialize();
+//    m_GamePanel.Initialize();
+//    m_InspectorPanel.Initialize();
 }
 
 
@@ -29,10 +33,11 @@ void asuna::WindowsEditor::Render()
 {
 	GUI::Begin();
     RenderEditorBegin();
-    m_HierarchyPanel.Render();
-    m_LogPanel.Render();
-    m_GamePanel.Render();
-    m_InspectorPanel.Render();
+    ImGui::ShowDemoWindow();
+//    m_HierarchyPanel.Render();
+//    m_LogPanel.Render();
+//    m_GamePanel.Render();
+//    m_InspectorPanel.Render();
     RenderEditorEnd();
 	GUI::End();
 	Renderer::Current->Present();

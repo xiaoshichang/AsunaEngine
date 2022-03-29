@@ -122,10 +122,10 @@ void asuna::DirectX11Renderer::CreateDepthStencilState(ID3D11Device* device, ID3
 	// Initialize the description of the stencil state.
 	ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
 	// Set up the description of the stencil state.
-	depthStencilDesc.DepthEnable = true;
+	depthStencilDesc.DepthEnable = false;
 	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
-	depthStencilDesc.StencilEnable = true;;
+	depthStencilDesc.StencilEnable = false;
 	depthStencilDesc.StencilReadMask = 0xFF;
 	depthStencilDesc.StencilWriteMask = 0xFF;
 	// Stencil operations if pixel is front-facing.
@@ -191,7 +191,6 @@ void DirectX11Renderer::ClearRenderTarget(std::shared_ptr<RenderTarget> rt, floa
 	if (rt == nullptr)
 	{
 		context->m_DeviceContext->ClearRenderTargetView(context->m_MainRT->GetRenderTargetView(), color);
-		context->m_DeviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 	}
 	else
 	{
@@ -207,7 +206,7 @@ void asuna::DirectX11Renderer::Present()
 	// m_swapChain->Present(1, 0);
 	// Present as fast as possible.
 	auto context = dynamic_pointer_cast<DirectX11RenderContext>(m_Context);
-	context->m_swapChain->Present(0, 0);
+	context->m_swapChain->Present(1, 0);
 }
 
 
