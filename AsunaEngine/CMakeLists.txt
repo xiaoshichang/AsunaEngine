@@ -10,5 +10,5 @@ add_subdirectory(AsunaEngine)
 add_subdirectory(AsunaPlayer)
 add_subdirectory(AsunaEditor)
 
-enable_testing()
+include(CTest)
 add_subdirectory(AsunaEngineUnitTest)

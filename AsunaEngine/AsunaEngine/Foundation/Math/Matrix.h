@@ -327,6 +327,7 @@ namespace asuna {
 	////////////////////////////////////  Rotation ////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// https://docs.microsoft.com/en-us/windows/win32/api/_dxmath/
+    // pitch to the x-axis, yaw to the y-axis, and roll to the z-axis is a common one for computer graphics and games
 
 	/// <summary>
 	/// Builds a matrix that rotates around the x-axis.
@@ -540,13 +541,4 @@ namespace asuna {
 		return matrix;
 	}
 
-
-	inline Matrix4x4f BuildMatrixIndentity()
-	{
-		Matrix4x4f matrix = { 0 };
-		matrix[0][0] = matrix[1][1] = matrix[2][2] = matrix[3][3] = 1;
-		return matrix;
-	}
-	
-	
 }

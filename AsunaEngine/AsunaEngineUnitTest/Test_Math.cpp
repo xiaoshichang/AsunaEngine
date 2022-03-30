@@ -4,8 +4,6 @@
 
 #include "AsunaEngine/Foundation/Math/AMath.h"
 #include <DirectXMath.h>
-#include <DirectXPackedVector.h>
-#include <DirectXColors.h>
 #include <crtdbg.h>
 
 
@@ -249,6 +247,47 @@ public:
         }
         _ASSERTE(true);
     }
+
+    TEST_METHOD(TestMatrixQuaternion)
+    {
+        FXMVECTOR q1{1, 2, 3, 1};
+        auto q = XMQuaternionNormalize(q1);
+        auto p1 = XMMatrixRotationQuaternion(q);
+
+        Quaternion q2(1, 2, 3, 1);
+        q2.Normalize();
+        auto p2 = BuildMatrixQuaternion(q2);
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                _ASSERTE(comparison_traits<float>::equal(p1.r[j].m128_f32[i], p2[i][j]));
+            }
+        }
+        _ASSERTE(true);
+    }
+
+    //https://www.andre-gaschler.com/rotationconverter/
+    TEST_METHOD(TestQuaternionPitchYawRoll)
+    {
+        Quaternion q = Quaternion::FromRollPitchYawLH(1, 2, 3);
+        auto q2 = XMQuaternionRotationRollPitchYaw(1, 2, 3);
+        _ASSERT(comparison_traits<float>::equal(q2.m128_f32[0], q.x));
+        _ASSERT(comparison_traits<float>::equal(q2.m128_f32[1], q.y));
+        _ASSERT(comparison_traits<float>::equal(q2.m128_f32[2], q.z));
+        _ASSERT(comparison_traits<float>::equal(q2.m128_f32[3], q.w));
+
+        Quaternion q3 = Quaternion::FromRollPitchYawRH(-1, -2, -3);
+        _ASSERT(comparison_traits<float>::equal(q2.m128_f32[0], q3.x));
+        _ASSERT(comparison_traits<float>::equal(q2.m128_f32[1], q3.y));
+        _ASSERT(comparison_traits<float>::equal(q2.m128_f32[2], q3.z));
+        _ASSERT(comparison_traits<float>::equal(q2.m128_f32[3], q3.w));
+
+        auto angle = q.ToEuler();
+        _ASSERT(comparison_traits<float>::equal(angle.x, 1));
+        _ASSERT(comparison_traits<float>::equal(angle.y, 2));
+        _ASSERT(comparison_traits<float>::equal(angle.z, 3));
+    }
+
 };
 
 
@@ -279,6 +318,8 @@ int main()
     AsunaEngineMathTest::TestMatrixCameraPerspectiveFovRH();
     AsunaEngineMathTest::TestMatrixCameraOrthographicLH();
     AsunaEngineMathTest::TestMatrixCameraOrthographicRH();
+    AsunaEngineMathTest::TestMatrixQuaternion();
+    AsunaEngineMathTest::TestQuaternionPitchYawRoll();
 
 }
 
