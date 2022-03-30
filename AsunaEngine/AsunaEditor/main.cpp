@@ -1,6 +1,5 @@
 
-
-#include "iostream"
+#include <memory>
 #include "WindowsEditor.h"
 
 using namespace std;
@@ -9,10 +8,12 @@ using namespace asuna;
 int main()
 {
 	auto app = new WindowsEditor();
-    ApplicationInitParam param {0};
-    param.RenderAPIType = RenderAPIType::Directx11;
-    param.WindowWidth = 1600;
-    param.WindowHeight = 1200;
+    auto param = make_shared<ApplicationInitParam>();
+    param->RenderAPIType = RenderAPIType::Directx11;
+    param->WindowWidth = 1600;
+    param->WindowHeight = 1200;
+    param->LogFile = (char*)"Editor";
+    param->LogDir = (char*)"Logs";
 
 	app->Initialize(param);
 	app->Run();

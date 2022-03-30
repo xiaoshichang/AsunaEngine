@@ -2,7 +2,7 @@
 #include "AsunaEngine/Graphics/Renderer.h"
 #include "AsunaEngine/AssetLoader/AssetLoader.h"
 
-void asuna::WindowsPlayer::Initialize(ApplicationInitParam param)
+void asuna::WindowsPlayer::Initialize(std::shared_ptr<ApplicationInitParam> param)
 {
 	WindowsApplication::Initialize(param);
 	auto mesh = Renderer::Current->CreateMesh("Assets\\Models\\keqin.fbx");

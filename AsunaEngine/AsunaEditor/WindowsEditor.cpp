@@ -1,4 +1,5 @@
 #include "WindowsEditor.h"
+#include "AsunaEngine/Foundation/Logger/Logger.h"
 #include "AsunaEngine/Graphics/Renderer.h"
 #include "AsunaEngine/GUI/GUI.h"
 #include <imgui.h>
@@ -19,13 +20,14 @@ static void ShowDockingDisabledMessage()
 }
 
 
-void WindowsEditor::Initialize(ApplicationInitParam param)
+void WindowsEditor::Initialize(std::shared_ptr<ApplicationInitParam> param)
 {
     WindowsApplication::Initialize(param);
     m_HierarchyPanel.Initialize();
     m_LogPanel.Initialize();
     m_GamePanel.Initialize();
     m_InspectorPanel.Initialize();
+    Logger::Info("Editor Init OK!");
 }
 
 

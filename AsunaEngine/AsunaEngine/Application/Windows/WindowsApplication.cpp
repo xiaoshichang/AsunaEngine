@@ -14,10 +14,11 @@
 using namespace asuna;
 using namespace std;
 
-void WindowsApplication::Initialize(ApplicationInitParam param)
+void WindowsApplication::Initialize(std::shared_ptr<ApplicationInitParam> param)
 {
-	InitMainWindow(param.WindowWidth, param.WindowHeight);
-	InitRenderer(param.RenderAPIType, param.WindowWidth, param.WindowHeight);
+    Application::Initialize(param);
+	InitMainWindow(param->WindowWidth, param->WindowHeight);
+	InitRenderer(param->RenderAPIType, param->WindowWidth, param->WindowHeight);
 	GUI::Initialize();
 }
 

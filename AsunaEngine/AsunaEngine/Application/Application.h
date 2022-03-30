@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "../Graphics/RenderAPIType.h"
 
 namespace asuna
@@ -8,6 +9,8 @@ namespace asuna
         int WindowWidth;
         int WindowHeight;
         RenderAPIType RenderAPIType;
+        char* LogDir;
+        char* LogFile;
     };
 
 
@@ -24,7 +27,7 @@ namespace asuna
 		}
 
 	public:
-		virtual void Initialize(ApplicationInitParam param) = 0;
+		virtual void Initialize(std::shared_ptr<ApplicationInitParam> param);
 		virtual void Finalize() = 0;
 		virtual void Run();
 		virtual void Tick() = 0;

@@ -9,7 +9,7 @@ namespace asuna
 	class WindowsApplication : public Application
 	{
 	public:
-		void Initialize(ApplicationInitParam param) override;
+		void Initialize(std::shared_ptr<ApplicationInitParam> param) override;
 		void Finalize() override;
 		void Tick() override;
 

@@ -7,10 +7,12 @@ using namespace asuna;
 
 int main()
 {
-    ApplicationInitParam param {0};
-    param.RenderAPIType = RenderAPIType::Directx11;
-    param.WindowWidth = 800;
-    param.WindowHeight = 600;
+    auto param = make_shared<ApplicationInitParam>();
+    param->RenderAPIType = RenderAPIType::Directx11;
+    param->WindowWidth = 1200;
+    param->WindowHeight = 1800;
+    param->LogFile = (char*)"Player";
+    param->LogDir = (char*)"Logs";
 
 	auto app = new WindowsPlayer();
 	app->Initialize(param);
