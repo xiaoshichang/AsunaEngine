@@ -2,6 +2,8 @@
 #include "AsunaEngine/Foundation/Logger/Logger.h"
 #include "AsunaEngine/Graphics/Renderer.h"
 #include "AsunaEngine/GUI/GUI.h"
+#include "AsunaEngine/Scene/SceneManager.h"
+#include "AsunaEngine/GameObject/GameObject.h"
 #include <imgui.h>
 
 
@@ -23,6 +25,13 @@ static void ShowDockingDisabledMessage()
 void WindowsEditor::Initialize(std::shared_ptr<ApplicationInitParam> param)
 {
     WindowsApplication::Initialize(param);
+
+    SceneManager::Instance->CreateGameObject("girl1", nullptr);
+    auto g2 = SceneManager::Instance->CreateGameObject("girl2", nullptr);
+    auto g3 = SceneManager::Instance->CreateGameObject("girl3", nullptr);
+    SceneManager::Instance->CreateGameObject("girl4", g3);
+    SceneManager::Instance->CreateGameObject("girl5", g2);
+
     m_HierarchyPanel.Initialize();
     m_LogPanel.Initialize();
     m_GamePanel.Initialize();

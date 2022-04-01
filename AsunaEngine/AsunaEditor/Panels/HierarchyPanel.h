@@ -1,5 +1,7 @@
 #pragma once
+#include <memory>
 #include "BasePanel.h"
+#include "AsunaEngine/Scene/SceneManager.h"
 
 namespace asuna
 {
@@ -9,6 +11,10 @@ namespace asuna
          void Initialize() override;
          void Render() override;
 
+    private:
+        void RenderGameObject(GameObject* gameObject);
 
+    private:
+        GameObject* m_SelectedObject = nullptr;
 	};
 }

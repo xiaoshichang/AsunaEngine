@@ -8,6 +8,7 @@
 #include "../../Graphics/DirectX11/DirectX11Renderer.h"
 #include "../../Graphics/Opengl/OpenGLRenderer.h"
 #include "../../GUI/GUI.h"
+#include "../../Scene/SceneManager.h"
 #include "../../AssetLoader/AssetLoader.h"
 
 
@@ -19,13 +20,15 @@ void WindowsApplication::Initialize(std::shared_ptr<ApplicationInitParam> param)
     Application::Initialize(param);
 	InitMainWindow(param->WindowWidth, param->WindowHeight);
 	InitRenderer(param->RenderAPIType, param->WindowWidth, param->WindowHeight);
-	GUI::Initialize();
+    SceneManager::Instance->Initialize();
+    GUI::Initialize();
 }
 
 void WindowsApplication::Finalize()
 {
 	GUI::Finalize();
-	Renderer::Current->Finalize();
+    SceneManager::Instance->Finalize();
+    Renderer::Current->Finalize();
 }
 
 
