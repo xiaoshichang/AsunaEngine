@@ -2,9 +2,9 @@
 // Created by xiao on 2022/4/1.
 //
 #include <imgui.h>
-#include "Transform.h"
+#include "TransformCmptEditor.h"
 
-void asuna::TransformComponentEditor::Render(asuna::TransformCmpt *transform)
+void asuna::TransformCmptEditor::Render(asuna::TransformCmpt *transform)
 {
     auto position = transform->GetPosition();
     auto rotation = transform->GetEuler();

@@ -4,7 +4,8 @@
 
 #include "InspectorPanel.h"
 #include <imgui.h>
-#include "../Component/Transform.h"
+#include "../Component/TransformCmptEditor.h"
+#include "../Component/CameraCmptEditor.h"
 #include "AsunaEngine/GameObject/GameObject.h"
 #include "AsunaEngine/Foundation/Logger/Logger.h"
 
@@ -24,7 +25,14 @@ void InspectorPanel::Render()
     if (m_InspectingGameObject != nullptr)
     {
         ImGui::Text(m_InspectingGameObject->GetName().c_str());
-        TransformComponentEditor::Render(m_InspectingGameObject->GetTransform());
+        TransformCmptEditor::Render(m_InspectingGameObject->GetTransform());
+
+        auto camera = m_InspectingGameObject->GetComponent<CameraCmpt>();
+        if (camera != nullptr)
+        {
+            CameraCmptEditor::Render(camera);
+        }
+
     }
     ImGui::End();
     ImGui::PopStyleVar();

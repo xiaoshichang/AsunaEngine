@@ -5,6 +5,8 @@
 #include <memory>
 #include <string>
 #include "Component/Transform/TransformCmpt.h"
+#include <map>
+#include <typeindex>
 
 namespace asuna
 {
@@ -14,6 +16,35 @@ namespace asuna
         GameObject() = delete;
         explicit GameObject(const std::string& name);
         ~GameObject();
+
+    public:
+
+        template<typename T, typename = std::enable_if_t<std::is_base_of_v<Component, T>>>
+        T* AddComponent()
+        {
+            auto pair = std::make_pair(std::type_index(typeid(T)), new T(this));
+            return dynamic_cast<T*>(m_Components.insert(pair)->second);
+        }
+
+        template<typename T, typename = std::enable_if_t<std::is_base_of_v<Component, T>>>
+        T* GetComponent()
+        {
+            auto it = m_Components.find(std::type_index(typeid(T)));
+            if (it == m_Components.end()) return nullptr;
+            return dynamic_cast<T*>(it->second);
+        }
+
+        template<typename T, typename = std::enable_if_t<std::is_base_of_v<Component, T>>>
+        void RemoveComponent()
+        {
+            auto it = m_Components.find(std::type_index(typeid(T)));
+            if (it == m_Components.end())
+            {
+                return;
+            }
+            auto cmpt = (T*)*it->second;
+            delete cmpt;
+        }
 
 
     public:
@@ -26,7 +57,7 @@ namespace asuna
     private:
         std::string m_Name;
         TransformCmpt* m_TransformCmpt;
-
+        std::multimap<std::type_index, Component*> m_Components;
     };
 }
 

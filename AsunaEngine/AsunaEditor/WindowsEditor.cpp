@@ -2,6 +2,7 @@
 #include "AsunaEngine/Foundation/Logger/Logger.h"
 #include "AsunaEngine/Graphics/Renderer.h"
 #include "AsunaEngine/GUI/GUI.h"
+#include "AsunaEngine/GameObject/Component/CameraCmpt/CameraCmpt.h"
 #include <imgui.h>
 
 
@@ -24,7 +25,9 @@ void WindowsEditor::Initialize(std::shared_ptr<ApplicationInitParam> param)
 {
     WindowsApplication::Initialize(param);
 
-    SceneManager::Instance->CreateGameObject("girl1", nullptr);
+    auto camera = SceneManager::Instance->CreateGameObject("Camera", nullptr);
+    camera->AddComponent<CameraCmpt>();
+
     auto g2 = SceneManager::Instance->CreateGameObject("girl2", nullptr);
     auto g3 = SceneManager::Instance->CreateGameObject("girl3", nullptr);
     SceneManager::Instance->CreateGameObject("girl4", g3);

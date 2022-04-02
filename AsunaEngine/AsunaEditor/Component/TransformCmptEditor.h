@@ -8,7 +8,7 @@
 
 namespace asuna
 {
-    class TransformComponentEditor
+    class TransformCmptEditor
     {
     public:
         static void Render(TransformCmpt* transform);
