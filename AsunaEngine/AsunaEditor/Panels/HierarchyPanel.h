@@ -10,6 +10,7 @@ namespace asuna
     public:
          void Initialize() override;
          void Render() override;
+         void Finalize() override;
 
     private:
         void RenderGameObject(GameObject* gameObject);

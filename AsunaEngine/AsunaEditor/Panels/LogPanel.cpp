@@ -19,3 +19,8 @@ void LogPanel::Render()
     ImGui::End();
 }
 
+void LogPanel::Finalize()
+{
+
+}
+

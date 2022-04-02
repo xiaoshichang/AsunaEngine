@@ -1,6 +1,8 @@
 
 #include "HierarchyPanel.h"
 #include <imgui.h>
+#include "../Events/EditorEventType.h"
+#include "../Events/EditorEventManager.h"
 #include "AsunaEngine/Foundation/Logger/Logger.h"
 
 using namespace  asuna;
@@ -30,8 +32,8 @@ void HierarchyPanel::RenderGameObject(GameObject* gameObject)
     {
         if (ImGui::IsItemClicked())
         {
-            Logger::Info("click %s", gameObject->GetName().c_str());
             m_SelectedObject = gameObject;
+            EditorEventManager::Dispatch(EditorEventType::OnHierarchPanelSelectNewObject, gameObject);
         }
 
         auto children = gameObject->GetTransform()->GetChildren();
@@ -41,6 +43,11 @@ void HierarchyPanel::RenderGameObject(GameObject* gameObject)
         }
         ImGui::TreePop();
     }
+}
+
+void HierarchyPanel::Finalize()
+{
+
 }
 
 

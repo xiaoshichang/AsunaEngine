@@ -10,8 +10,10 @@
 namespace asuna
 {
 
-    inline void threeaxisrot(float r11, float r12, float r21, float r31, float r32, float res[]){
+    inline void threeaxisrot(float r11, float r12, float r21, float r31, float r32, float res[])
+    {
         res[0] = atan2( r31, r32 );
+        r21 = std::clamp(r21, -1.0f, 1.0f);
         res[1] = asin ( r21 );
         res[2] = atan2( r11, r12 );
     }

@@ -6,6 +6,9 @@
 #include "GamePanel.h"
 #include "AsunaEngine/Graphics/Renderer.h"
 #include "AsunaEngine/Graphics/DirectX11/DirectX11RenderTarget.h"
+#include "AsunaEngine/Foundation/Logger/Logger.h"
+#include "../Events/EditorEventManager.h"
+#include "../Events/EditorEventType.h"
 
 using namespace asuna;
 
@@ -46,5 +49,11 @@ void GamePanel::Render()
     ImVec2 winSize = {(float)width, (float)height};
     ImGui::Image(tid, winSize);
     ImGui::End();
+}
+
+
+void GamePanel::Finalize()
+{
+
 }
 

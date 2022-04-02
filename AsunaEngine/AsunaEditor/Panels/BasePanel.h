@@ -12,6 +12,7 @@ namespace asuna
 
         virtual void Initialize() = 0;
 		virtual void Render() = 0;
+        virtual void Finalize() = 0;
 
 	protected:
 		bool m_Showing{};

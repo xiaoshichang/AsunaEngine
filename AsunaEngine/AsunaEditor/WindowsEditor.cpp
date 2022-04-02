@@ -2,8 +2,6 @@
 #include "AsunaEngine/Foundation/Logger/Logger.h"
 #include "AsunaEngine/Graphics/Renderer.h"
 #include "AsunaEngine/GUI/GUI.h"
-#include "AsunaEngine/Scene/SceneManager.h"
-#include "AsunaEngine/GameObject/GameObject.h"
 #include <imgui.h>
 
 
@@ -43,6 +41,7 @@ void WindowsEditor::Initialize(std::shared_ptr<ApplicationInitParam> param)
 void asuna::WindowsEditor::Render()
 {
 	GUI::Begin();
+    ImGui::ShowDemoWindow();
     RenderEditorBegin();
     m_HierarchyPanel.Render();
     m_LogPanel.Render();
@@ -117,5 +116,14 @@ void WindowsEditor::RenderEditorBegin()
         ShowDockingDisabledMessage();
     }
 
+}
+
+void WindowsEditor::Finalize()
+{
+    m_HierarchyPanel.Finalize();
+    m_LogPanel.Finalize();
+    m_GamePanel.Finalize();
+    m_InspectorPanel.Finalize();
+    WindowsApplication::Finalize();
 }
 

@@ -4,8 +4,10 @@
 
 #pragma once
 #include <memory>
+#include <AsunaEditor/Events/EditorEventType.h>
 #include "AsunaEngine/Graphics/RenderTarget.h"
 #include "BasePanel.h"
+#include "AsunaEngine/GameObject/GameObject.h"
 
 namespace asuna
 {
@@ -19,9 +21,10 @@ namespace asuna
 
         void Initialize() override;
         void Render() override;
+        void Finalize() override;
 
     private:
-        void CreateRenderTarget();
+
 
     private:
         std::shared_ptr<RenderTarget> m_RT;
