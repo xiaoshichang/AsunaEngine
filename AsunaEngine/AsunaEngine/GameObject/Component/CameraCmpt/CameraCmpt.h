@@ -9,7 +9,7 @@ namespace asuna
 {
     enum class CameraProjectionType
     {
-        Perspective = 1,
+        Perspective = 0,
         Orthographic
     };
 
@@ -32,66 +32,88 @@ namespace asuna
 
         void Initialize() override;
         void Finalize() override;
+        void Tick() override;
 
-        float& GetNear()
+        CameraProjectionType GetProjectionType()
+        {
+            return m_ProjectionType;
+        }
+
+        void SetProjectionType(CameraProjectionType pt)
+        {
+            m_ProjectionMatrixDirty = true;
+            m_ProjectionType = pt;
+        }
+
+        float GetNear()
         {
             return m_Near;
         }
 
         void SetNear(float nearPlane)
         {
+            m_ProjectionMatrixDirty = true;
             m_Near = nearPlane;
         }
 
-        float& GetFar()
+        float GetFar()
         {
             return m_Far;
         }
 
         void SetFar(float farPlane)
         {
+            m_ProjectionMatrixDirty = true;
             m_Far = farPlane;
         }
 
-        float& GetFov()
+        float GetFov()
         {
             return m_Fov;
         }
 
         void SetFov(float fov)
         {
+            m_ProjectionMatrixDirty = true;
             m_Fov = fov;
         }
 
-        float& GetAspectRatio()
+        float GetAspectRatio()
         {
             return m_AspectRatio;
         }
 
         void SetAspectRatio(float ar)
         {
+            m_ProjectionMatrixDirty = true;
             m_AspectRatio = ar;
         }
 
-        float& GetViewWidth()
+        float GetViewWidth()
         {
             return m_ViewWidth;
         }
 
         void SetViewWidth(float vw)
         {
+            m_ProjectionMatrixDirty = true;
             m_ViewWidth = vw;
         }
 
-        float& GetViewHeight()
+        float GetViewHeight()
         {
             return m_ViewHeight;
         }
 
         void SetViewHeight(float vh)
         {
+            m_ProjectionMatrixDirty = true;
             m_ViewHeight = vh;
         }
+
+        const Matrix4x4f& GetProjectionMatrix();
+        void CalculateProjectionMatrix();
+
 
 
     private:
@@ -102,6 +124,9 @@ namespace asuna
         float m_AspectRatio;
         float m_ViewWidth;
         float m_ViewHeight;
+        Matrix4x4f m_ProjectionMatrix;
+        bool m_ProjectionMatrixDirty = false;
+        bool m_ViewMatrixDirty = false;
     };
 }
 

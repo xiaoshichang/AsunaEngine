@@ -21,7 +21,7 @@ shared_ptr<MeshCreateParam> AssetLoader::LoadMesh(const std::string& Path)
 	auto param = make_shared<MeshCreateParam>();
 
 	auto readFlag = aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_SortByPType;
-	if (CheckLeftHandRenderAPI())
+	if (Renderer::Current->CheckLeftHandRenderAPI())
 	{
 		readFlag = readFlag | aiProcess_ConvertToLeftHanded;
 	}
@@ -81,21 +81,6 @@ shared_ptr<MeshCreateParam> AssetLoader::LoadMesh(const std::string& Path)
 	return param;
 }
 
-bool AssetLoader::CheckLeftHandRenderAPI()
-{
-	switch (Renderer::Current->m_APIType)
-	{
-	case RenderAPIType::Directx11:
-	case RenderAPIType::Directx12:
-		return true;
-	case RenderAPIType::Opengl:
-	case RenderAPIType::Opengles:
-		return false;
-	default:
-		ASUNA_ASSERT(false);
-		return false;
-	}
-}
 
 PrimitiveType AssetLoader::ConvertPrimitiveType(unsigned int pt)
 {

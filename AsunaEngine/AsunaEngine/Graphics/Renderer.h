@@ -56,6 +56,9 @@ namespace asuna
 		virtual void RemoveRenderItem(std::shared_ptr<RenderItem> item);
 		std::shared_ptr<RenderContext> GetContext();
 
+    public:
+        bool CheckLeftHandRenderAPI() const;
+
 
 	protected:
 		std::shared_ptr<RenderContext> m_Context;

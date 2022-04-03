@@ -12,6 +12,7 @@ namespace asuna
     public:
         virtual void Initialize() = 0;
         virtual void Finalize() = 0;
+        virtual void Tick() = 0;
     };
 
 

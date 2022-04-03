@@ -51,6 +51,21 @@ namespace asuna
             return w * rhs.w + v1.DotProduct(v2);
         }
 
+        bool operator==(const Quaternion& rhs) const
+        {
+            auto c1 = comparison_traits<float>::equal(x, rhs.x);
+            auto c2 = comparison_traits<float>::equal(y, rhs.y);
+            auto c3 = comparison_traits<float>::equal(z, rhs.z);
+            auto c4 = comparison_traits<float>::equal(w, rhs.w);
+            return c1 && c2 && c3 && c4;
+        }
+
+        bool operator!=(const Quaternion& rhs) const
+        {
+            auto ret = *this == rhs;
+            return !ret;
+        }
+
         Quaternion operator*(const Quaternion& rhs) const
         {
             Vector3f v1(x, y, z);

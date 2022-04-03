@@ -30,8 +30,9 @@ void WindowsEditor::Initialize(std::shared_ptr<ApplicationInitParam> param)
 
     auto g2 = SceneManager::Instance->CreateGameObject("girl2", nullptr);
     auto g3 = SceneManager::Instance->CreateGameObject("girl3", nullptr);
-    SceneManager::Instance->CreateGameObject("girl4", g3);
+    auto g4 = SceneManager::Instance->CreateGameObject("girl4", g3);
     SceneManager::Instance->CreateGameObject("girl5", g2);
+    g3->GetTransform()->RemoveChild(g4->GetTransform());
 
     m_HierarchyPanel.Initialize();
     m_LogPanel.Initialize();

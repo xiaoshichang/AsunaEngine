@@ -283,9 +283,21 @@ public:
         _ASSERT(comparison_traits<float>::equal(q2.m128_f32[3], q3.w));
 
         auto angle = q.ToEuler();
-        _ASSERT(comparison_traits<float>::equal(angle.x, 1));
-        _ASSERT(comparison_traits<float>::equal(angle.y, 2));
-        _ASSERT(comparison_traits<float>::equal(angle.z, 3));
+        _ASSERT(angle == Vector3f(1, 2, 3));
+    }
+
+    TEST_METHOD(TestQuaternionMatrixTransform)
+    {
+        Vector3f v = {1, 0, 0};
+        Quaternion q = Quaternion::FromRollPitchYawLH(0, PI/2, 0);
+        Matrix4x4f m = BuildMatrixQuaternion(q);
+        auto v1 = m.TransformVector(v);
+        _ASSERT(v1 == Vector3f(0, 0, -1));
+
+        Quaternion q2 = Quaternion::FromRollPitchYawLH(0, -PI/2, 0);
+        Matrix4x4f m2 = BuildMatrixQuaternion(q2);
+        auto v2 = m2.TransformVector(v);
+        _ASSERT(v2 == Vector3f(0, 0, 1));
     }
 
 };
@@ -320,6 +332,7 @@ int main()
     AsunaEngineMathTest::TestMatrixCameraOrthographicRH();
     AsunaEngineMathTest::TestMatrixQuaternion();
     AsunaEngineMathTest::TestQuaternionPitchYawRoll();
+    AsunaEngineMathTest::TestQuaternionMatrixTransform();
 
 }
 

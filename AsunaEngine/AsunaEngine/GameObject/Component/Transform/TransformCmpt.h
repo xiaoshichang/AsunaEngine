@@ -23,6 +23,7 @@ namespace asuna
 
         void Initialize() override;
         void Finalize() override;
+        void Tick() override;
 
         void SetParent(TransformCmpt* parent ) { m_Parent = parent;}
         TransformCmpt* GetParent() { return m_Parent;}
@@ -31,11 +32,15 @@ namespace asuna
         std::vector<TransformCmpt*>& GetChildren() { return m_Children;}
 
         Vector3f GetPosition() {return m_Position;}
-        void SetPosition(float x, float y, float z) {m_Position.x = x; m_Position.y = y; m_Position.z = z;}
+        void SetPosition(float x, float y, float z);
         Vector3f GetScale() {return m_Scale;}
-        void SetScale(float x, float y, float z) {m_Scale.x = x; m_Scale.y = y; m_Scale.z = z;}
+        void SetScale(float x, float y, float z);
         Vector3f GetEuler();
         void SetEuler(float x, float y, float z);
+        Matrix4x4f GetRTSMatrix();
+
+    private:
+        void CalculateRTSMatrix();
 
     private:
         Vector3f m_Position;
@@ -43,6 +48,8 @@ namespace asuna
         Quaternion m_Rotation;
         TransformCmpt* m_Parent;
         std::vector<TransformCmpt*> m_Children;
+        bool m_RTSMatrixDirty = false;
+        Matrix4x4f m_RTSMatrix;
 
     };
 }

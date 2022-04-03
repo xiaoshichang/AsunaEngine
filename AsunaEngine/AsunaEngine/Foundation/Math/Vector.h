@@ -40,6 +40,12 @@ namespace asuna {
 			return c1 && c2;
 		}
 
+        bool operator!=(const Vector2Type<T>& rhs) const
+        {
+            auto ret = *this == rhs;
+            return !ret;
+        }
+
 		Vector2Type<T> operator+(const Vector2Type<T>& rhs) const
 		{
 			Vector2Type<T> ret;
@@ -172,6 +178,12 @@ namespace asuna {
 			return c1 && c2 && c3;
 		}
 
+        bool operator!=(const Vector3Type<T>& rhs) const
+        {
+            auto ret = *this == rhs;
+            return !ret;
+        }
+
 		T LengthSquare() const
 		{
 			return x * x + y * y + z * z;
@@ -294,6 +306,12 @@ namespace asuna {
 			auto c4 = comparison_traits<T>::equal(w, rhs.w);
 			return c1 && c2 && c3 && c4;
 		}
+
+        bool operator!=(const Vector4Type<T>& rhs) const
+        {
+            auto ret = *this == rhs;
+            return !ret;
+        }
 
 		T LengthSquare() const
 		{
