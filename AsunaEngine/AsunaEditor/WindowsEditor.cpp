@@ -3,6 +3,7 @@
 #include "AsunaEngine/Graphics/Renderer.h"
 #include "AsunaEngine/GUI/GUI.h"
 #include "AsunaEngine/GameObject/Component/CameraCmpt/CameraCmpt.h"
+#include "AsunaEngine/GameObject/Component/MeshRenderCmpt/MeshRenderCmpt.h"
 #include <imgui.h>
 
 
@@ -28,11 +29,10 @@ void WindowsEditor::Initialize(std::shared_ptr<ApplicationInitParam> param)
     auto camera = SceneManager::Instance->CreateGameObject("Camera", nullptr);
     camera->AddComponent<CameraCmpt>();
 
-    auto g2 = SceneManager::Instance->CreateGameObject("girl2", nullptr);
-    auto g3 = SceneManager::Instance->CreateGameObject("girl3", nullptr);
-    auto g4 = SceneManager::Instance->CreateGameObject("girl4", g3);
-    SceneManager::Instance->CreateGameObject("girl5", g2);
-    g3->GetTransform()->RemoveChild(g4->GetTransform());
+    auto girl = SceneManager::Instance->CreateGameObject("girl", nullptr);
+    auto mesh = girl->AddComponent<MeshRenderCmpt>();
+    mesh->SetMesh("Assets\\Models\\keqin.fbx");
+    mesh->SetMaterial("Assets\\Shaders\\triangle.vs", "Assets\\Shaders\\triangle.ps");
 
     m_HierarchyPanel.Initialize();
     m_LogPanel.Initialize();

@@ -19,12 +19,12 @@ shared_ptr<RenderContext> asuna::Renderer::GetContext()
 	return m_Context;
 }
 
-void Renderer::AddRenderItem(shared_ptr<RenderItem> item)
+void Renderer::AddRenderItem(const shared_ptr<RenderItem>& item)
 {
 	m_RenderItemQueue->AddRenderItem(item);
 }
 
-void Renderer::RemoveRenderItem(shared_ptr<RenderItem> item)
+void Renderer::RemoveRenderItem(const shared_ptr<RenderItem>& item)
 {
 	m_RenderItemQueue->RemoveRenderItem(item);
 }

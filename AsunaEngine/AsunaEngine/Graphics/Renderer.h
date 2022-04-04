@@ -45,15 +45,15 @@ namespace asuna
 		virtual void CreateDeviceContext() = 0;
 		virtual void ReleaseDeviceContext() = 0;
 		virtual void SetRenderTarget(std::shared_ptr<RenderTarget> rt) = 0;
-		virtual std::shared_ptr<Mesh> CreateMesh(const std::string& scenePath) = 0;
+		virtual std::shared_ptr<Mesh> CreateMesh(const std::string& path) = 0;
 		virtual std::shared_ptr<RenderTarget> CreateRenderTarget(RenderTargetDesc desc) = 0;
-		virtual std::shared_ptr<Shader> CreateShader(const std::string& scenePath, ShaderType shaderType) = 0;
+		virtual std::shared_ptr<Shader> CreateShader(const std::string& path, ShaderType shaderType) = 0;
 		virtual std::shared_ptr<RenderItem> CreateRenderItem(std::shared_ptr<Mesh> mesh, std::shared_ptr<Shader> vertexShader, std::shared_ptr<Shader> pixelShader, std::shared_ptr<ConstantBuffer> constantBuffer) = 0;
 		virtual std::shared_ptr<ConstantBuffer> CreateConstantBuffer() = 0;
 
         virtual void RenderScene(std::shared_ptr<RenderTarget> rt);
-		virtual void AddRenderItem(std::shared_ptr<RenderItem> item);
-		virtual void RemoveRenderItem(std::shared_ptr<RenderItem> item);
+		virtual void AddRenderItem(const std::shared_ptr<RenderItem>& item);
+		virtual void RemoveRenderItem(const std::shared_ptr<RenderItem>& item);
 		std::shared_ptr<RenderContext> GetContext();
 
     public:

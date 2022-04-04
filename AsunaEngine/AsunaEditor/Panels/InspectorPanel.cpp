@@ -4,8 +4,6 @@
 
 #include "InspectorPanel.h"
 #include <imgui.h>
-#include "../Component/TransformCmptEditor.h"
-#include "../Component/CameraCmptEditor.h"
 #include "AsunaEngine/GameObject/GameObject.h"
 #include "AsunaEngine/Foundation/Logger/Logger.h"
 
@@ -24,15 +22,10 @@ void InspectorPanel::Render()
     ImGui::Begin("Inspector Window", &m_Showing);
     if (m_InspectingGameObject != nullptr)
     {
-        ImGui::Text(m_InspectingGameObject->GetName().c_str());
-        TransformCmptEditor::Render(m_InspectingGameObject->GetTransform());
-
-        auto camera = m_InspectingGameObject->GetComponent<CameraCmpt>();
-        if (camera != nullptr)
-        {
-            CameraCmptEditor::Render(camera);
-        }
-
+        ImGui::Text("%s", m_InspectingGameObject->GetName().c_str());
+        TransformCmptEditor::Render(m_TransformCmpt);
+        CameraCmptEditor::Render(m_CameraCmpt);
+        MeshRenderEditor::Render(m_MeshRenderCmpt);
     }
     ImGui::End();
     ImGui::PopStyleVar();
@@ -47,6 +40,9 @@ void InspectorPanel::Finalize()
 void InspectorPanel::OnSelectNewGameObject(EditorEventType type, const void* param)
 {
     m_InspectingGameObject = (GameObject*)param;
+    m_TransformCmpt = m_InspectingGameObject->GetTransform();
+    m_CameraCmpt = m_InspectingGameObject->GetComponent<CameraCmpt>();
+    m_MeshRenderCmpt = m_InspectingGameObject->GetComponent<MeshRenderCmpt>();
 }
 
 

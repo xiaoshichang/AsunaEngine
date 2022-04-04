@@ -4,7 +4,7 @@
 #pragma once
 #include <memory>
 #include <string>
-#include "Component/Transform/TransformCmpt.h"
+#include "Component/TransformCmpt/TransformCmpt.h"
 #include <map>
 #include <typeindex>
 
@@ -22,7 +22,9 @@ namespace asuna
         template<typename T, typename = std::enable_if_t<std::is_base_of_v<Component, T>>>
         T* AddComponent()
         {
-            auto pair = std::make_pair(std::type_index(typeid(T)), new T(this));
+            auto cmpt = (Component*)new T(this);
+            auto pair = std::make_pair(std::type_index(typeid(T)), cmpt);
+            cmpt->Initialize();
             return dynamic_cast<T*>(m_Components.insert(pair)->second);
         }
 
@@ -42,8 +44,12 @@ namespace asuna
             {
                 return;
             }
-            auto cmpt = (T*)*it->second;
+            auto cmpt = (Component*)it->second;
+
+            m_Components.erase(std::type_index(typeid(T)));
+            cmpt->Finalize();
             delete cmpt;
+
         }
 
 

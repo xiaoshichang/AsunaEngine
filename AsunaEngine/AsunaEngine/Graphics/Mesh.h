@@ -3,6 +3,7 @@
 #include <vector>
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
+#include "../Foundation/Logger/Logger.h"
 
 
 namespace asuna
@@ -44,9 +45,7 @@ namespace asuna
 		{
 		}
 
-		~MeshCreateParam()
-		{
-		}
+		~MeshCreateParam() = default;
 	};
 
 
@@ -55,10 +54,10 @@ namespace asuna
 	public:
 		SubMesh() = delete;
 		SubMesh(
-			std::shared_ptr<VertexBuffer> position, 
-			std::shared_ptr<VertexBuffer> normal,
-			std::shared_ptr<VertexBuffer> texcoord,
-			std::shared_ptr<IndexBuffer> index,
+			std::shared_ptr<VertexBuffer>& position,
+			std::shared_ptr<VertexBuffer>& normal,
+			std::shared_ptr<VertexBuffer>& texcoord,
+			std::shared_ptr<IndexBuffer>& index,
 			PrimitiveType pt):
 			m_PositionBuffer(position),
 			m_NormalBuffer(normal),
@@ -69,9 +68,7 @@ namespace asuna
 		}
 
 
-		virtual ~SubMesh()
-		{
-		}
+		virtual ~SubMesh() = default;
 
 	public:
 		std::shared_ptr<VertexBuffer> GetPositionBuffer()

@@ -4,6 +4,7 @@
 #include "../Mesh.h"
 #include "DirectX11IndexBuffer.h"
 #include "DirectX11VertexBuffer.h"
+#include "../../Foundation/Logger/Logger.h"
 
 namespace asuna
 {

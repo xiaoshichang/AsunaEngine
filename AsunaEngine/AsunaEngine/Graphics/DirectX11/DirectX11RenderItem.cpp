@@ -10,6 +10,11 @@ using namespace std;
 
 void DirectX11RenderItem::Render()
 {
+    if (GetMesh() == nullptr || GetVertexShader() == nullptr || GetPixelShader() == nullptr)
+    {
+        return;
+    }
+
 	auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
 	Vector3f up, position, lookAt;
 	// Setup the vector that points upwards.
@@ -26,7 +31,7 @@ void DirectX11RenderItem::Render()
 	lookAt.z = 0.0f;
 	float fieldOfView, screenAspect;
 	fieldOfView = PI / 4.0f;
-	screenAspect = Renderer::Current->m_ResolutionWidth / (float)Renderer::Current->m_ResolutionHeight;
+	screenAspect = (float)Renderer::Current->m_ResolutionWidth / (float)Renderer::Current->m_ResolutionHeight;
 
 	{
 		auto cb = dynamic_pointer_cast<DirectX11ConstantBuffer>(GetConstantBuffer());
@@ -56,10 +61,9 @@ void DirectX11RenderItem::Render()
 
 	{
 		auto mesh = GetMesh();
-		for (int i = 0; i < mesh->m_SubMeshes.size(); i++)
+		for (const auto& subMesh : mesh->m_SubMeshes)
 		{
-			auto subMesh = mesh->m_SubMeshes[i];
-			auto positionBuffer = subMesh->GetPositionBuffer();
+            auto positionBuffer = subMesh->GetPositionBuffer();
 			auto normalBuffer = subMesh->GetNormalBuffer();
 			auto texcoordBuffer = subMesh->GetTexcoordBuffer();
 			auto indexBuffer = subMesh->GetIndexBuffer();
@@ -106,7 +110,11 @@ void DirectX11RenderItem::Render()
 	}
 }
 
-std::shared_ptr<DirectX11RenderItem> asuna::DirectX11RenderItem::Create(std::shared_ptr<Mesh> mesh, std::shared_ptr<Shader> vs, std::shared_ptr<Shader> ps, std::shared_ptr<ConstantBuffer> cb)
+std::shared_ptr<DirectX11RenderItem> asuna::DirectX11RenderItem::Create(
+        const std::shared_ptr<Mesh>& mesh,
+        const std::shared_ptr<Shader>& vs,
+        const std::shared_ptr<Shader>& ps,
+        const std::shared_ptr<ConstantBuffer>& cb)
 {
 	return make_shared<DirectX11RenderItem>(mesh, vs, ps, cb);
 }

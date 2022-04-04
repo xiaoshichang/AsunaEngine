@@ -6,6 +6,11 @@
 
 void asuna::CameraCmptEditor::Render(asuna::CameraCmpt *camera)
 {
+    if (camera == nullptr)
+    {
+        return;
+    }
+
     int selectedType = (int)camera->GetProjectionType();
     float far = camera->GetFar();
     float near = camera->GetNear();

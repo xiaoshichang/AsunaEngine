@@ -16,14 +16,15 @@ namespace asuna
 		{
 		}
 
-		virtual ~DirectX11RenderItem()
-		{
-		}
-
+		~DirectX11RenderItem() override = default;
 
 		virtual void Render() override;
 
-		static std::shared_ptr<DirectX11RenderItem> Create(std::shared_ptr<Mesh> mesh, std::shared_ptr<Shader> vs, std::shared_ptr<Shader> ps, std::shared_ptr<ConstantBuffer> cb);
+		static std::shared_ptr<DirectX11RenderItem> Create(
+                const std::shared_ptr<Mesh>& mesh,
+                const std::shared_ptr<Shader>& vs,
+                const std::shared_ptr<Shader>& ps,
+                const std::shared_ptr<ConstantBuffer>& cb);
 	};
 }
 
