@@ -41,7 +41,7 @@ namespace asuna
 
         void SetProjectionType(CameraProjectionType pt)
         {
-            m_ProjectionMatrixDirty = true;
+            m_ProjectionMatrixDirty = pt != m_ProjectionType;
             m_ProjectionType = pt;
         }
 
@@ -52,7 +52,7 @@ namespace asuna
 
         void SetNear(float nearPlane)
         {
-            m_ProjectionMatrixDirty = true;
+            m_ProjectionMatrixDirty = !comparison_traits<float>::equal(nearPlane, m_Near);
             m_Near = nearPlane;
         }
 
@@ -63,7 +63,7 @@ namespace asuna
 
         void SetFar(float farPlane)
         {
-            m_ProjectionMatrixDirty = true;
+            m_ProjectionMatrixDirty = !comparison_traits<float>::equal(farPlane, m_Far);
             m_Far = farPlane;
         }
 
@@ -74,7 +74,7 @@ namespace asuna
 
         void SetFov(float fov)
         {
-            m_ProjectionMatrixDirty = true;
+            m_ProjectionMatrixDirty = !comparison_traits<float>::equal(fov, m_Fov);
             m_Fov = fov;
         }
 
@@ -85,7 +85,7 @@ namespace asuna
 
         void SetAspectRatio(float ar)
         {
-            m_ProjectionMatrixDirty = true;
+            m_ProjectionMatrixDirty = !comparison_traits<float>::equal(ar, m_AspectRatio);
             m_AspectRatio = ar;
         }
 
@@ -96,7 +96,7 @@ namespace asuna
 
         void SetViewWidth(float vw)
         {
-            m_ProjectionMatrixDirty = true;
+            m_ProjectionMatrixDirty = !comparison_traits<float>::equal(vw, m_ViewWidth);
             m_ViewWidth = vw;
         }
 
@@ -107,7 +107,7 @@ namespace asuna
 
         void SetViewHeight(float vh)
         {
-            m_ProjectionMatrixDirty = true;
+            m_ProjectionMatrixDirty = !comparison_traits<float>::equal(vh, m_ViewHeight);
             m_ViewHeight = vh;
         }
 

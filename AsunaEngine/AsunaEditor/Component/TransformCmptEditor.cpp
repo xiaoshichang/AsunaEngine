@@ -2,6 +2,7 @@
 // Created by xiao on 2022/4/1.
 //
 #include <imgui.h>
+#include "AsunaEngine/GameObject/Component/TransformCmpt/TransformCmpt.h"
 #include "TransformCmptEditor.h"
 
 void asuna::TransformCmptEditor::Render(asuna::TransformCmpt *transform)
@@ -11,7 +12,7 @@ void asuna::TransformCmptEditor::Render(asuna::TransformCmpt *transform)
     auto scale = transform->GetScale();
 
     ImGui::Separator();
-    ImGui::Text("Transform");
+    ImGui::Text("TransformCmpt");
     ImGui::Text("Position"); ImGui::SameLine();
     ImGui::SetCursorPosX(80);
     ImGui::PushItemWidth(80);

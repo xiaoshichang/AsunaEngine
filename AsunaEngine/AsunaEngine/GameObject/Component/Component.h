@@ -25,6 +25,8 @@ namespace asuna
         {
         }
 
+        virtual ~Component() = default;
+
         GameObject* GetOwner() { return m_Owner;}
 
     protected:
