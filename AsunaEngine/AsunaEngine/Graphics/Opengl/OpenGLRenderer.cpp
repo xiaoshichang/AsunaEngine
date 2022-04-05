@@ -255,15 +255,9 @@ std::shared_ptr<Shader> asuna::OpenGLRenderer::CreateShader(const std::string& p
 	return OpenglShader::Create(path, shaderType);
 }
 
-std::shared_ptr<RenderItem> asuna::OpenGLRenderer::CreateRenderItem(
-        std::shared_ptr<Mesh> mesh,
-        std::shared_ptr<Shader> vs,
-        std::shared_ptr<Shader> ps,
-        std::shared_ptr<ConstantBuffer> perObject,
-        std::shared_ptr<ConstantBuffer> perScene
-        )
+std::shared_ptr<RenderItem> asuna::OpenGLRenderer::CreateRenderItem(std::shared_ptr<Mesh> mesh, std::shared_ptr<Shader> vs, std::shared_ptr<Shader> ps, std::shared_ptr<ConstantBuffer> perObject)
 {
-	return OpenglRenderItem::Create(mesh, vs, ps, perObject, perScene);
+	return OpenglRenderItem::Create(mesh, vs, ps, perObject);
 }
 
 std::shared_ptr<ConstantBuffer> asuna::OpenGLRenderer::CreateConstantBuffer(ConstantBufferDataType dt)
@@ -284,6 +278,11 @@ std::shared_ptr<RenderTarget> asuna::OpenGLRenderer::CreateRenderTarget(RenderTa
 
 void asuna::OpenGLRenderer::SetRenderTarget(std::shared_ptr<RenderTarget> rt)
 {
+}
+
+std::shared_ptr<RenderItemQueue> OpenGLRenderer::CreateRenderItemQueue()
+{
+    return std::shared_ptr<RenderItemQueue>();
 }
 
 

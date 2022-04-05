@@ -45,15 +45,9 @@ namespace asuna
 		virtual std::shared_ptr<Mesh> CreateMesh(const std::string& path) = 0;
 		virtual std::shared_ptr<RenderTarget> CreateRenderTarget(RenderTargetDesc desc) = 0;
 		virtual std::shared_ptr<Shader> CreateShader(const std::string& path, ShaderType shaderType) = 0;
-
-		virtual std::shared_ptr<RenderItem> CreateRenderItem(
-                std::shared_ptr<Mesh> mesh,
-                std::shared_ptr<Shader> vertexShader,
-                std::shared_ptr<Shader> pixelShader,
-                std::shared_ptr<ConstantBuffer> perObject,
-                std::shared_ptr<ConstantBuffer> perScene) = 0;
-
+		virtual std::shared_ptr<RenderItem> CreateRenderItem(std::shared_ptr<Mesh> mesh, std::shared_ptr<Shader> vertexShader, std::shared_ptr<Shader> pixelShader, std::shared_ptr<ConstantBuffer> perObject) = 0;
 		virtual std::shared_ptr<ConstantBuffer> CreateConstantBuffer(ConstantBufferDataType dt) = 0;
+        virtual std::shared_ptr<RenderItemQueue> CreateRenderItemQueue() = 0;
 		std::shared_ptr<RenderContext> GetContext();
 
     public:

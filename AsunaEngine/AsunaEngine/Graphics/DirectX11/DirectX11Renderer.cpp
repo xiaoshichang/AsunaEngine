@@ -10,6 +10,7 @@
 #include "DirectX11RenderItem.h"
 #include "DirectX11RenderTarget.h"
 #include "DirectX11ConstantBuffer.h"
+#include "DirectX11RenderItemQueue.h"
 
 
 using namespace asuna;
@@ -155,7 +156,7 @@ void asuna::DirectX11Renderer::CreateDepthStencilState(ID3D11Device* device, ID3
 //	ASUNA_ASSERT(result >= 0);
 }
 
-std::shared_ptr<Shader> asuna::DirectX11Renderer::CreateShader(const std::string& path, ShaderType shaderType)
+shared_ptr<Shader> asuna::DirectX11Renderer::CreateShader(const string& path, ShaderType shaderType)
 {
 	if (shaderType == ShaderType::VertexShader)
 	{
@@ -172,24 +173,19 @@ std::shared_ptr<Shader> asuna::DirectX11Renderer::CreateShader(const std::string
 	}
 }
 
-std::shared_ptr<ConstantBuffer> DirectX11Renderer::CreateConstantBuffer(ConstantBufferDataType dt)
+shared_ptr<ConstantBuffer> DirectX11Renderer::CreateConstantBuffer(ConstantBufferDataType dt)
 {
 	auto cb = DirectX11ConstantBuffer::Create(dt);
 	return cb;
 }
 
-std::shared_ptr<RenderItem> asuna::DirectX11Renderer::CreateRenderItem(
-        std::shared_ptr<Mesh> mesh,
-        std::shared_ptr<Shader> vs,
-        std::shared_ptr<Shader> ps,
-        std::shared_ptr<ConstantBuffer> perObject,
-        std::shared_ptr<ConstantBuffer> perScene)
+shared_ptr<RenderItem> asuna::DirectX11Renderer::CreateRenderItem(shared_ptr<Mesh> mesh, shared_ptr<Shader> vs, shared_ptr<Shader> ps, shared_ptr<ConstantBuffer> perObject)
 {
-	return DirectX11RenderItem::Create(mesh, vs, ps, perObject, perScene);
+	return DirectX11RenderItem::Create(mesh, vs, ps, perObject);
 }
 
 
-void DirectX11Renderer::ClearRenderTarget(std::shared_ptr<RenderTarget> rt, float r, float g, float b, float a)
+void DirectX11Renderer::ClearRenderTarget(shared_ptr<RenderTarget> rt, float r, float g, float b, float a)
 {
 	auto context = dynamic_pointer_cast<DirectX11RenderContext>(m_Context);
 	float color[4] = { r, g, b, a };
@@ -366,20 +362,20 @@ void DirectX11Renderer::ReleaseDeviceContext()
 
 }
 
-std::shared_ptr<Mesh> asuna::DirectX11Renderer::CreateMesh(const std::string& scenePath)
+shared_ptr<Mesh> asuna::DirectX11Renderer::CreateMesh(const string& scenePath)
 {
 	auto param = AssetLoader::LoadMesh(scenePath);
 	auto mesh = DirectX11Mesh::Create(param);
 	return mesh;
 }
 
-std::shared_ptr<RenderTarget> asuna::DirectX11Renderer::CreateRenderTarget(RenderTargetDesc desc)
+shared_ptr<RenderTarget> asuna::DirectX11Renderer::CreateRenderTarget(RenderTargetDesc desc)
 {
     auto context = dynamic_pointer_cast<DirectX11RenderContext>(m_Context);
 	return DirectX11RenderTarget::Create(desc, context->m_Device);
 }
 
-void asuna::DirectX11Renderer::SetRenderTarget(std::shared_ptr<RenderTarget> rt)
+void asuna::DirectX11Renderer::SetRenderTarget(shared_ptr<RenderTarget> rt)
 {
 	auto context = dynamic_pointer_cast<DirectX11RenderContext>(m_Context);
 	
@@ -395,4 +391,9 @@ void asuna::DirectX11Renderer::SetRenderTarget(std::shared_ptr<RenderTarget> rt)
 		auto rtv = dx11rt->GetRenderTargetView();
 		context->m_DeviceContext->OMSetRenderTargets(1, &rtv, nullptr);
 	}
+}
+
+shared_ptr<RenderItemQueue> DirectX11Renderer::CreateRenderItemQueue()
+{
+    return make_shared<DirectX11RenderItemQueue>();
 }

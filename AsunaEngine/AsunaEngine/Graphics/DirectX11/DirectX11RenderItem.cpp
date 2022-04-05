@@ -1,8 +1,5 @@
 #include "../../Foundation/Math/AMath.h"
 #include "DirectX11RenderItem.h"
-#include "DirectX11RenderContext.h"
-#include "DirectX11ConstantBuffer.h"
-#include "DirectX11Shader.h"
 #include "../Renderer.h"
 
 using namespace asuna;
@@ -25,21 +22,6 @@ void DirectX11RenderItem::BindConstantBufferPerObject(DirectX11RenderContext* co
     context->m_DeviceContext->PSSetConstantBuffers(1, 1, &buffer);
 }
 
-void DirectX11RenderItem::BindConstantBufferPerScene(DirectX11RenderContext* context)
-{
-    auto cb = dynamic_pointer_cast<DirectX11ConstantBuffer>(GetConstantBufferPerScene());
-    auto data = (ConstantBufferDataPerScene*)cb->GetData();
-    auto buffer = cb->GetBuffer();
-    // map data
-    D3D11_MAPPED_SUBRESOURCE mappedResource;
-    auto result = context->m_DeviceContext->Map(buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-    ASUNA_ASSERT(SUCCEEDED(result));
-    auto dataPtr = (ConstantBufferDataPerScene*)mappedResource.pData;
-    memcpy(dataPtr, data, sizeof(ConstantBufferDataPerScene));
-    context->m_DeviceContext->Unmap(buffer, 0);
-    context->m_DeviceContext->VSSetConstantBuffers(0, 1, &buffer);
-    context->m_DeviceContext->PSSetConstantBuffers(0, 1, &buffer);
-}
 
 void DirectX11RenderItem::BindShaders(DirectX11RenderContext* context)
 {
@@ -108,21 +90,14 @@ void DirectX11RenderItem::Render()
     }
 
 	auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext()).get();
-    BindConstantBufferPerScene(context);
     BindConstantBufferPerObject(context);
     BindShaders(context);
     DrawMesh(context);
 }
 
-std::shared_ptr<DirectX11RenderItem> asuna::DirectX11RenderItem::Create(
-        const std::shared_ptr<Mesh>& mesh,
-        const std::shared_ptr<Shader>& vs,
-        const std::shared_ptr<Shader>& ps,
-        const std::shared_ptr<ConstantBuffer>& perObject,
-        const std::shared_ptr<ConstantBuffer>& perScene
-        )
+shared_ptr<DirectX11RenderItem> DirectX11RenderItem::Create(const shared_ptr<Mesh>& mesh, const shared_ptr<Shader>& vs, const shared_ptr<Shader>& ps, const shared_ptr<ConstantBuffer>& perObject)
 {
-	return make_shared<DirectX11RenderItem>(mesh, vs, ps, perObject, perScene);
+	return make_shared<DirectX11RenderItem>(mesh, vs, ps, perObject);
 }
 
 

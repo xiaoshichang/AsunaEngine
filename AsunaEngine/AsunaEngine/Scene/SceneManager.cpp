@@ -17,13 +17,15 @@ SceneManager::SceneManager()
 
 void SceneManager::Initialize()
 {
-    m_Root = std::make_shared<GameObject>("Root");
     m_ConstantBufferPerScene = Renderer::Current->CreateConstantBuffer(ConstantBufferDataType::PerScene);
+    m_RenderItemQueue = Renderer::Current->CreateRenderItemQueue();
+    m_Root = std::make_shared<GameObject>("Root");
 }
 
 void SceneManager::Finalize()
 {
     m_Root = nullptr;
+    m_RenderItemQueue = nullptr;
     m_ConstantBufferPerScene = nullptr;
 }
 
@@ -119,19 +121,19 @@ void SceneManager::UpdateCameraMatrix()
 
 void SceneManager::AddRenderItem(const shared_ptr<RenderItem>& item)
 {
-    m_RenderItemQueue.AddRenderItem(item);
+    m_RenderItemQueue->AddRenderItem(item);
 }
 
 void SceneManager::RemoveRenderItem(const shared_ptr<RenderItem>& item)
 {
-    m_RenderItemQueue.RemoveRenderItem(item);
+    m_RenderItemQueue->RemoveRenderItem(item);
 }
 
 void SceneManager::Render(const std::shared_ptr<RenderTarget>& rt)
 {
     Renderer::Current->ClearRenderTarget(rt, 0.1f, 0.2f, 0.3f, 1.0f);
     Renderer::Current->SetRenderTarget(rt);
-    m_RenderItemQueue.Render();
+    m_RenderItemQueue->Render();
 }
 
 

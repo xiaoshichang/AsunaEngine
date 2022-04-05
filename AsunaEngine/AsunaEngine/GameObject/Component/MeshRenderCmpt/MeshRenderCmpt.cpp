@@ -11,8 +11,7 @@ using namespace asuna;
 void MeshRenderCmpt::Initialize()
 {
     m_ConstantBufferPerObject = Renderer::Current->CreateConstantBuffer(ConstantBufferDataType::PerObject);
-    auto perScene = SceneManager::Instance->GetConstantBufferPerScene();
-    m_RenderItem = Renderer::Current->CreateRenderItem(nullptr, nullptr, nullptr, m_ConstantBufferPerObject, perScene);
+    m_RenderItem = Renderer::Current->CreateRenderItem(nullptr, nullptr, nullptr, m_ConstantBufferPerObject);
     SceneManager::Instance->AddRenderItem(m_RenderItem);
 }
 

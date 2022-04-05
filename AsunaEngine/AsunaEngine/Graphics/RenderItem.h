@@ -17,14 +17,11 @@ namespace asuna
 			std::shared_ptr<Mesh>& mesh,
 			std::shared_ptr<Shader>& vertexShader,
 			std::shared_ptr<Shader>& pixelShader,
-			std::shared_ptr<ConstantBuffer>& perObject,
-            std::shared_ptr<ConstantBuffer>& perScene
-            ):
+			std::shared_ptr<ConstantBuffer>& perObject):
 			m_Mesh(mesh),
 			m_VertexShader(vertexShader),
 			m_PixelShader(pixelShader),
-			m_ConstantBufferPerObject(perObject),
-            m_ConstantBufferPerScene(perScene)
+			m_ConstantBufferPerObject(perObject)
 		{}
 
 		virtual ~RenderItem() = default;
@@ -69,17 +66,6 @@ namespace asuna
             m_ConstantBufferPerObject = cb;
         }
 
-        std::shared_ptr<ConstantBuffer> GetConstantBufferPerScene()
-        {
-            return m_ConstantBufferPerScene;
-        }
-
-        void SetConstantBufferPerScene(const std::shared_ptr<ConstantBuffer>& cb)
-        {
-            m_ConstantBufferPerScene = cb;
-        }
-
-
 	public:
 		virtual void Render() = 0;
 
@@ -89,7 +75,6 @@ namespace asuna
 		std::shared_ptr<Shader> m_VertexShader;
 		std::shared_ptr<Shader> m_PixelShader;
 		std::shared_ptr<ConstantBuffer> m_ConstantBufferPerObject;
-        std::shared_ptr<ConstantBuffer> m_ConstantBufferPerScene;
 	};
 }
 

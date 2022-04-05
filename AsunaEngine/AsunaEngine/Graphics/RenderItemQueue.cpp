@@ -1,19 +1,22 @@
 #include "RenderItemQueue.h"
 
-void asuna::RenderItemQueue::Render()
+using namespace asuna;
+
+void RenderItemQueue::Render()
 {
-	for (auto item : m_RenderItems)
+    BindConstantBufferPerFrame();
+	for (const auto& item : m_RenderItems)
 	{
 		item->Render();
 	}
 }
 
-void asuna::RenderItemQueue::AddRenderItem(std::shared_ptr<RenderItem> item)
+void RenderItemQueue::AddRenderItem(const std::shared_ptr<RenderItem>& item)
 {
 	m_RenderItems.push_back(item);
 }
 
-void asuna::RenderItemQueue::RemoveRenderItem(std::shared_ptr<RenderItem> item)
+void RenderItemQueue::RemoveRenderItem(const std::shared_ptr<RenderItem>& item)
 {
 	m_RenderItems.remove(item);
 }

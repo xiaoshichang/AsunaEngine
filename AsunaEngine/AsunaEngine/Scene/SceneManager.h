@@ -50,8 +50,7 @@ namespace asuna
         std::vector<CameraCmpt*> m_Cameras;
         std::shared_ptr<ConstantBuffer> m_ConstantBufferPerScene = nullptr;
 
-        RenderItemQueue m_RenderItemQueue;
-
+        std::shared_ptr<RenderItemQueue> m_RenderItemQueue;
 
     };
 
