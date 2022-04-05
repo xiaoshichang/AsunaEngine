@@ -24,9 +24,16 @@ namespace asuna
         void Finalize() override;
 
     private:
-
+        void RenderResolutionOptions();
+        void ResizeRT();
+        void RenderSceneToRT();
+        void RenderRTTOWindow();
 
     private:
+        int m_SelectedResolution = 0;
+        int m_LastResolution = 0;
+        int m_TargetResolutionWidth = 0;
+        int m_TargetResolutionHeight = 0;
         std::shared_ptr<RenderTarget> m_RT;
     };
 }

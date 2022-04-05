@@ -12,6 +12,7 @@ namespace asuna
 		 void ResizeResolution(int width, int height) override;
 		 void ClearRenderTarget(std::shared_ptr<RenderTarget> rt, float r, float g, float b, float a) override;
 		 void SetRenderTarget(std::shared_ptr<RenderTarget> rt) override;
+         void SetViewPort(int x, int y, int width, int height) override;
 
 		 std::shared_ptr<Mesh> CreateMesh(const std::string& scenePath) override;
 		 std::shared_ptr<RenderTarget> CreateRenderTarget(RenderTargetDesc desc) override;

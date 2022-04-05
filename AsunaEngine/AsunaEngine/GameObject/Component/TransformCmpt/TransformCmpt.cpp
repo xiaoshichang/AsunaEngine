@@ -54,21 +54,21 @@ void TransformCmpt::Tick()
 void TransformCmpt::SetPosition(float x, float y, float z)
 {
     Vector3f v(x, y, z);
-    m_RTSMatrixDirty = v != m_Position;
+    m_RTSMatrixDirty = true;
     m_Position = v;
 }
 
 void TransformCmpt::SetScale(float x, float y, float z)
 {
     Vector3f v(x, y, z);
-    m_RTSMatrixDirty = v != m_Scale;
+    m_RTSMatrixDirty = true;
     m_Scale = v;
 }
 
 void TransformCmpt::SetEuler(float x, float y, float z)
 {
     auto q = Quaternion::FromRollPitchYawLH(x, y, z);
-    m_RTSMatrixDirty = q != m_Rotation;
+    m_RTSMatrixDirty = true;
     m_Rotation = q;
 }
 

@@ -285,4 +285,9 @@ std::shared_ptr<RenderItemQueue> OpenGLRenderer::CreateRenderItemQueue()
     return std::shared_ptr<RenderItemQueue>();
 }
 
+void OpenGLRenderer::SetViewPort(int x, int y, int width, int height)
+{
+
+}
+
 

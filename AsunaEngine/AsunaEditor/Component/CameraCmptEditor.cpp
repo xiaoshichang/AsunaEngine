@@ -25,7 +25,7 @@ void asuna::CameraCmptEditor::Render(asuna::CameraCmpt *camera)
         float fov = camera->GetFov();
         float aspectRatio = camera->GetAspectRatio();
         ImGui::DragFloat("Fov", &fov, 0.001, 0.001, PI/2);
-        ImGui::DragFloat("Respect Ratio", &aspectRatio, 0.001, 0.001, 10);
+        ImGui::DragFloat("Aspect Ratio", &aspectRatio, 0.001, 0.001, 10);
         camera->SetFov(fov);
         camera->SetAspectRatio(aspectRatio);
         camera->SetProjectionType(CameraProjectionType::Perspective);

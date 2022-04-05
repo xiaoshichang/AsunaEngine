@@ -34,6 +34,9 @@ void DirectX11Renderer::Finalize()
 /// https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/d3d10-graphics-programming-guide-dxgi#handling-window-resizing
 void DirectX11Renderer::ResizeResolution(int width, int height)
 {
+    m_ResolutionWidth = width;
+    m_ResolutionHeight = height;
+
 	auto context = dynamic_pointer_cast<DirectX11RenderContext>(m_Context);
 	auto mainRT = context->m_MainRT;
 
@@ -57,26 +60,8 @@ void DirectX11Renderer::ResizeResolution(int width, int height)
     mainRT->SetRenderTarget(rtv);
 	pBuffer->Release();
     context->m_DeviceContext->OMSetRenderTargets(1, &rtv, nullptr);
-	SetViewPort(context->m_DeviceContext, width, height);
 }
 
-
-void DirectX11Renderer::SetViewPort(ID3D11DeviceContext* deviceContext, int width, int height)
-{
-    m_ResolutionWidth = width;
-    m_ResolutionHeight = height;
-
-	D3D11_VIEWPORT viewport;
-	// Setup the viewport for rendering.
-	viewport.Width = (float)width;
-	viewport.Height = (float)height;
-	viewport.MinDepth = 0.0f;
-	viewport.MaxDepth = 1.0f;
-	viewport.TopLeftX = 0;
-	viewport.TopLeftY = 0;
-	// Create the viewport.
-	deviceContext->RSSetViewports(1, &viewport);
-}
 
 void asuna::DirectX11Renderer::SetRasterizerState(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
@@ -323,8 +308,6 @@ void DirectX11Renderer::CreateDeviceContext()
 	auto renderTarget = DirectX11RenderTarget::CreateFromSwapChain(desc, device, swapChain);
 	//CreateDepthStencilState(device, deviceContext);
 	SetRasterizerState(device, deviceContext);
-	SetViewPort(deviceContext, m_ResolutionWidth, m_ResolutionHeight);
-
 	m_Context = make_shared<DirectX11RenderContext>(device, deviceContext, swapChain, renderTarget);
 }
 
@@ -396,4 +379,18 @@ void asuna::DirectX11Renderer::SetRenderTarget(shared_ptr<RenderTarget> rt)
 shared_ptr<RenderItemQueue> DirectX11Renderer::CreateRenderItemQueue()
 {
     return make_shared<DirectX11RenderItemQueue>();
+}
+
+void DirectX11Renderer::SetViewPort(int x, int y, int width, int height)
+{
+    auto context = dynamic_pointer_cast<DirectX11RenderContext>(m_Context);
+    D3D11_VIEWPORT viewport;
+    viewport.Width = width == -1 ? (float)m_ResolutionWidth : (float)width;
+    viewport.Height = height == -1 ? (float)m_ResolutionHeight : (float)height;
+    viewport.MinDepth = 0.0f;
+    viewport.MaxDepth = 1.0f;
+    viewport.TopLeftX = (float)x;
+    viewport.TopLeftY = (float)y;
+    // Create the viewport.
+    context->m_DeviceContext->RSSetViewports(1, &viewport);
 }

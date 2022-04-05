@@ -64,3 +64,8 @@ std::shared_ptr<RenderItemQueue> EmptyRenderer::CreateRenderItemQueue()
 {
     return std::shared_ptr<RenderItemQueue>();
 }
+
+void EmptyRenderer::SetViewPort(int x, int y, int width, int height)
+{
+
+}

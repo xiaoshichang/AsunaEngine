@@ -136,3 +136,8 @@ void WindowsEditor::Tick()
     SceneManager::Instance->Tick();
 }
 
+void WindowsEditor::OnWindowSizeChange(int width, int height)
+{
+    WindowsApplication::OnWindowSizeChange(width, height);
+}
+

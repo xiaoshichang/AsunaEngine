@@ -37,6 +37,7 @@ namespace asuna
 		virtual void Initialize(CreateRendererContextParam param) = 0;
 		virtual void Finalize() = 0;
 		virtual void ResizeResolution(int width, int height) = 0;
+        virtual void SetViewPort(int x, int y, int width, int height) = 0;
 		virtual void Present() = 0;
 		virtual void ClearRenderTarget(std::shared_ptr<RenderTarget> rt, float r, float g, float b, float a) = 0;
 		virtual void CreateDeviceContext() = 0;

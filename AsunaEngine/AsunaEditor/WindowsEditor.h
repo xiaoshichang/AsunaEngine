@@ -16,6 +16,9 @@ namespace asuna
 		void Render() override;
         void Finalize() override;
 
+    protected:
+        void OnWindowSizeChange(int width, int height) override;
+
 	private:
 		void RenderEditorBegin();
         void RenderEditorEnd();

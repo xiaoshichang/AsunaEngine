@@ -16,17 +16,12 @@ namespace asuna
 		 void ResizeResolution(int width, int height) override;
 		 void Present() override;
 		 void SetRenderTarget(std::shared_ptr<RenderTarget> rt) override;
+         void SetViewPort(int x, int y, int width, int height) override;
 
 		 std::shared_ptr<Mesh> CreateMesh(const std::string& scenePath) override;
 		 std::shared_ptr<RenderTarget> CreateRenderTarget(RenderTargetDesc desc) override;
 		 std::shared_ptr<Shader> CreateShader(const std::string& scenePath, ShaderType shaderType) override;
-
-		 std::shared_ptr<RenderItem> CreateRenderItem(
-                std::shared_ptr<Mesh> mesh,
-                std::shared_ptr<Shader> vertexShader,
-                std::shared_ptr<Shader> pixelShader,
-                std::shared_ptr<ConstantBuffer> perObject) override;
-
+		 std::shared_ptr<RenderItem> CreateRenderItem(std::shared_ptr<Mesh> mesh, std::shared_ptr<Shader> vertexShader, std::shared_ptr<Shader> pixelShader, std::shared_ptr<ConstantBuffer> perObject) override;
 		 std::shared_ptr<ConstantBuffer> CreateConstantBuffer(ConstantBufferDataType dt) override;
          std::shared_ptr<RenderItemQueue> CreateRenderItemQueue() override;
 

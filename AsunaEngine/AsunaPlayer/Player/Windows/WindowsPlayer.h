@@ -10,5 +10,8 @@ namespace asuna
         void Render() override;
         void Tick() override;
 
+    protected:
+        void OnWindowSizeChange(int width, int height) override;
+
 	};
 }

@@ -13,8 +13,10 @@ namespace asuna
 		void Finalize() override;
 		void Tick() override;
 
-	public:
 		HWND GetWindowsHandler() noexcept;
+
+    protected:
+        virtual void OnWindowSizeChange(int width, int height);
 
 	private:
 		static LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);

@@ -71,11 +71,11 @@ LRESULT WindowsApplication::WindowProc(HWND hWnd, UINT message, WPARAM wParam, L
 		}
 		case WM_SIZE:
 		{
-			if (Renderer::Current != nullptr && wParam != SIZE_MINIMIZED)
+			if (wParam != SIZE_MINIMIZED)
 			{
 				UINT width = LOWORD(lParam);
 				UINT height = HIWORD(lParam);
-				Renderer::Current->ResizeResolution(width, height);
+                app->OnWindowSizeChange((int)width, (int)height);
 			}
 			break;
 		}
@@ -147,6 +147,14 @@ void WindowsApplication::InitRenderer(RenderAPIType api, int width, int height)
 	param.m_ResolutionWith = width;
 	param.m_ResolutionHeight = height;
 	Renderer::Current->Initialize(param);
+}
+
+void WindowsApplication::OnWindowSizeChange(int width, int height)
+{
+    if (Renderer::Current != nullptr)
+    {
+        Renderer::Current->ResizeResolution(width, height);
+    }
 }
 
 

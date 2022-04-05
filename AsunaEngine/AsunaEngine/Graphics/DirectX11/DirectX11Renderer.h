@@ -33,6 +33,7 @@ namespace asuna
 		void Present();
 		void ClearRenderTarget(shared_ptr<RenderTarget> rt, float r, float g, float b, float a) override;
 		void SetRenderTarget(shared_ptr<RenderTarget> rt) override;
+        void SetViewPort(int x, int y, int width, int height) override;
 
 		shared_ptr<Mesh> CreateMesh(const string& scenePath) override;
 		shared_ptr<RenderTarget> CreateRenderTarget(RenderTargetDesc desc) override;
@@ -42,7 +43,6 @@ namespace asuna
         shared_ptr<RenderItemQueue> CreateRenderItemQueue() override;
 
 	private:
-		void SetViewPort(ID3D11DeviceContext* deviceContext, int width, int height);
 		void SetRasterizerState(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 		void CreateDepthStencilState(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 

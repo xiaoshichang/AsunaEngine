@@ -11,7 +11,8 @@ using namespace std;
 
 SceneManager* SceneManager::Instance = new SceneManager();
 
-SceneManager::SceneManager()
+SceneManager::SceneManager() :
+        m_Cameras()
 {
 }
 
