@@ -4,24 +4,26 @@
 
 #include "CameraCmpt.h"
 #include "../../../Graphics/Renderer.h"
-#include "../../../Foundation/Math/AMath.h"
+#include "../../../Scene/SceneManager.h"
 
-void asuna::CameraCmpt::Initialize()
+using namespace asuna;
+
+void CameraCmpt::Initialize()
+{
+    SceneManager::Instance->AddCamera(this);
+}
+
+void CameraCmpt::Finalize()
+{
+    SceneManager::Instance->RemoveCamera(this);
+}
+
+void CameraCmpt::Tick()
 {
 
 }
 
-void asuna::CameraCmpt::Finalize()
-{
-
-}
-
-void asuna::CameraCmpt::Tick()
-{
-
-}
-
-const asuna::Matrix4x4f &asuna::CameraCmpt::GetProjectionMatrix()
+const Matrix4x4f &CameraCmpt::GetProjectionMatrix()
 {
     if (m_ProjectionMatrixDirty)
     {
@@ -30,7 +32,7 @@ const asuna::Matrix4x4f &asuna::CameraCmpt::GetProjectionMatrix()
     return m_ProjectionMatrix;
 }
 
-void asuna::CameraCmpt::CalculateProjectionMatrix()
+void CameraCmpt::CalculateProjectionMatrix()
 {
     if (Renderer::Current->CheckLeftHandRenderAPI())
     {
@@ -56,5 +58,27 @@ void asuna::CameraCmpt::CalculateProjectionMatrix()
     }
     m_ProjectionMatrixDirty = false;
 }
+
+const Matrix4x4f &CameraCmpt::GetViewMatrix() 
+{
+    auto transform = GetOwner()->GetTransform();
+    auto eye = transform->GetPosition();
+    // todo: get correct up direction by rotation
+    Vector3f up(0, 1, 0);
+    Vector3f look(0, 0, 0);
+    if (Renderer::Current->CheckLeftHandRenderAPI())
+    {
+        m_ViewMatrix = BuildMatrixViewLookatLH(eye, look, up);
+    }
+    else
+    {
+        m_ViewMatrix = BuildMatrixViewLookatRH(eye, look, up);
+    }
+    return m_ViewMatrix;
+}
+
+
+
+
 
 

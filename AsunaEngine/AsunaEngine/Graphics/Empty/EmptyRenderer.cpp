@@ -32,12 +32,17 @@ std::shared_ptr<Shader> asuna::EmptyRenderer::CreateShader(const std::string& sc
     return std::shared_ptr<Shader>();
 }
 
-std::shared_ptr<RenderItem> asuna::EmptyRenderer::CreateRenderItem(std::shared_ptr<Mesh> mesh, std::shared_ptr<Shader> vertexShader, std::shared_ptr<Shader> pixelShader, std::shared_ptr<ConstantBuffer> constantBuffer)
+std::shared_ptr<RenderItem> asuna::EmptyRenderer::CreateRenderItem(
+        std::shared_ptr<Mesh> mesh,
+        std::shared_ptr<Shader> vertexShader,
+        std::shared_ptr<Shader> pixelShader,
+        std::shared_ptr<ConstantBuffer> perObject,
+        std::shared_ptr<ConstantBuffer> perScene)
 {
     return std::shared_ptr<RenderItem>();
 }
 
-std::shared_ptr<ConstantBuffer> asuna::EmptyRenderer::CreateConstantBuffer()
+std::shared_ptr<ConstantBuffer> asuna::EmptyRenderer::CreateConstantBuffer(ConstantBufferDataType dt)
 {
     return std::shared_ptr<ConstantBuffer>();
 }

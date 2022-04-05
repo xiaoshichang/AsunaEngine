@@ -462,11 +462,11 @@ namespace asuna {
 
 	/// <summary>
 	/// Builds a view matrix for a left-handed coordinate system using a camera position, an up direction, and a focal point.
+    /// https://blog.csdn.net/silangquan/article/details/50987196
 	/// </summary>
 	/// <param name="EyePosition"> Position of the camera. </param>
 	/// <param name="FocusPosition"> Position of the focal point. </param>
 	/// <param name="UpDirection"> Up direction of the camera, typically < 0.0f, 1.0f, 0.0f >. </param>
-	/// https://blog.csdn.net/silangquan/article/details/50987196
 	inline Matrix4x4f BuildMatrixViewLookatLH(const Vector3f& EyePosition, const Vector3f& FocusPosition, const Vector3f& UpDirection) {
 		auto EyeDirection = FocusPosition - EyePosition;
 		return __BuildMatrixViewLookatLH(EyePosition, EyeDirection, UpDirection);

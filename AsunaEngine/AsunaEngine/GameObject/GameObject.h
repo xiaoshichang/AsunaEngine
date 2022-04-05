@@ -49,7 +49,15 @@ namespace asuna
             m_Components.erase(std::type_index(typeid(T)));
             cmpt->Finalize();
             delete cmpt;
+        }
 
+        void Tick()
+        {
+            m_TransformCmpt->Tick();
+            for(auto cmpt : m_Components)
+            {
+                cmpt.second->Tick();
+            }
         }
 
 

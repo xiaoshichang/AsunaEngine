@@ -6,8 +6,9 @@ namespace asuna
 	class WindowsPlayer : public WindowsApplication
 	{
 	public:
-		virtual void Initialize(std::shared_ptr<ApplicationInitParam> param) override;
-        virtual void Render() override;
+		void Initialize(std::shared_ptr<ApplicationInitParam> param) override;
+        void Render() override;
+        void Tick() override;
 
 	};
 }

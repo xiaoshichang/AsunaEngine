@@ -11,9 +11,10 @@ namespace asuna
 	class WindowsEditor : public WindowsApplication
 	{
 	public:
-        virtual void Initialize(std::shared_ptr<ApplicationInitParam> param) override;
-		virtual void Render() override;
-        virtual void Finalize() override;
+        void Initialize(std::shared_ptr<ApplicationInitParam> param) override;
+        void Tick() override;
+		void Render() override;
+        void Finalize() override;
 
 	private:
 		void RenderEditorBegin();

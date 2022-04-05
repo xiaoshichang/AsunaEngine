@@ -3,32 +3,37 @@
 //
 
 #include "MeshRenderCmpt.h"
+#include "../../../Scene/SceneManager.h"
 #include "../../../Graphics/Renderer.h"
 
-void asuna::MeshRenderCmpt::Initialize()
+using namespace asuna;
+
+void MeshRenderCmpt::Initialize()
 {
-    auto cb = Renderer::Current->CreateConstantBuffer();
-    m_RenderItem = Renderer::Current->CreateRenderItem(nullptr, nullptr, nullptr, cb);
+    m_ConstantBufferPerObject = Renderer::Current->CreateConstantBuffer(ConstantBufferDataType::PerObject);
+    auto perScene = SceneManager::Instance->GetConstantBufferPerScene();
+    m_RenderItem = Renderer::Current->CreateRenderItem(nullptr, nullptr, nullptr, m_ConstantBufferPerObject, perScene);
     Renderer::Current->AddRenderItem(m_RenderItem);
 }
 
-void asuna::MeshRenderCmpt::Finalize()
+void MeshRenderCmpt::Finalize()
 {
     Renderer::Current->RemoveRenderItem(m_RenderItem);
 }
 
-void asuna::MeshRenderCmpt::Tick()
+void MeshRenderCmpt::Tick()
 {
+    UpdateConstantBufferPerObject();
 }
 
-void asuna::MeshRenderCmpt::SetMesh(const std::string &path)
+void MeshRenderCmpt::SetMesh(const std::string &path)
 {
     m_MeshPath = path;
     auto mesh = Renderer::Current->CreateMesh(path);
     m_RenderItem->SetMesh(mesh);
 }
 
-void asuna::MeshRenderCmpt::SetMaterial(const std::string &vsPath, const std::string &psPath)
+void MeshRenderCmpt::SetMaterial(const std::string &vsPath, const std::string &psPath)
 {
     m_VSPath = vsPath;
     m_PSPath = psPath;
@@ -36,5 +41,11 @@ void asuna::MeshRenderCmpt::SetMaterial(const std::string &vsPath, const std::st
     auto ps = Renderer::Current->CreateShader(psPath, ShaderType::PixelShader);
     m_RenderItem->SetVertexShader(vs);
     m_RenderItem->SetPixelShader(ps);
+}
+
+void MeshRenderCmpt::UpdateConstantBufferPerObject()
+{
+    auto perObject = (ConstantBufferDataPerObject*)m_ConstantBufferPerObject->GetData();
+    perObject->m_WorldMatrix = GetOwner()->GetTransform()->GetRTSMatrix();
 }
 

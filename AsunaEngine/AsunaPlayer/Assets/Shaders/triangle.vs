@@ -7,12 +7,17 @@ struct v2p {
 	float4 position : SV_POSITION;
 };
 
-cbuffer MatrixBuffer
+cbuffer ConstantBufferPerScene
 {
-    matrix worldMatrix;
     matrix viewMatrix;
     matrix projectionMatrix;
+    matrix vp;
 };
+
+cbuffer ConstantBufferPerObject
+{
+    matrix worldMatrix;
+}
 
 v2p main(a2v input) 
 {

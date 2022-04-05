@@ -17,18 +17,11 @@ namespace asuna
     {
     public:
         MeshRenderCmpt() = delete;
-        explicit MeshRenderCmpt(GameObject* owner) :
-                m_MeshPath(),
-                m_VSPath(),
-                m_PSPath(),
-                m_RenderItem(nullptr),
-                Component(owner)
+        explicit MeshRenderCmpt(GameObject* owner) : Component(owner)
         {
         }
 
-        ~MeshRenderCmpt() override
-        {
-        }
+        ~MeshRenderCmpt() override = default;
 
         void Initialize() override;
         void Finalize() override;
@@ -55,9 +48,13 @@ namespace asuna
         }
 
     private:
+        void UpdateConstantBufferPerObject();
+
+    private:
         std::string m_MeshPath;
         std::string m_VSPath;
         std::string m_PSPath;
-        std::shared_ptr<RenderItem> m_RenderItem;
+        std::shared_ptr<RenderItem> m_RenderItem = nullptr;
+        std::shared_ptr<ConstantBuffer> m_ConstantBufferPerObject = nullptr;
     };
 }

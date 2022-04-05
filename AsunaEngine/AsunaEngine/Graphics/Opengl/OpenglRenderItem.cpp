@@ -75,7 +75,13 @@ void OpenglRenderItem::Render()
 	
 }
 
-std::shared_ptr<OpenglRenderItem> asuna::OpenglRenderItem::Create(std::shared_ptr<Mesh> mesh, std::shared_ptr<Shader> vs, std::shared_ptr<Shader> ps, std::shared_ptr<ConstantBuffer> cb)
+std::shared_ptr<OpenglRenderItem> asuna::OpenglRenderItem::Create(
+        std::shared_ptr<Mesh> mesh,
+        std::shared_ptr<Shader> vs,
+        std::shared_ptr<Shader> ps,
+        std::shared_ptr<ConstantBuffer> perObject,
+        std::shared_ptr<ConstantBuffer> perScene
+        )
 {
-	return make_shared<OpenglRenderItem>(mesh, vs, ps, cb);
+	return make_shared<OpenglRenderItem>(mesh, vs, ps, perObject, perScene);
 }

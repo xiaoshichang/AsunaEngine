@@ -172,15 +172,20 @@ std::shared_ptr<Shader> asuna::DirectX11Renderer::CreateShader(const std::string
 	}
 }
 
-std::shared_ptr<ConstantBuffer> DirectX11Renderer::CreateConstantBuffer()
+std::shared_ptr<ConstantBuffer> DirectX11Renderer::CreateConstantBuffer(ConstantBufferDataType dt)
 {
-	auto cb = DirectX11ConstantBuffer::Create();
+	auto cb = DirectX11ConstantBuffer::Create(dt);
 	return cb;
 }
 
-std::shared_ptr<RenderItem> asuna::DirectX11Renderer::CreateRenderItem(std::shared_ptr<Mesh> mesh, std::shared_ptr<Shader> vs, std::shared_ptr<Shader> ps, std::shared_ptr<ConstantBuffer> cb)
+std::shared_ptr<RenderItem> asuna::DirectX11Renderer::CreateRenderItem(
+        std::shared_ptr<Mesh> mesh,
+        std::shared_ptr<Shader> vs,
+        std::shared_ptr<Shader> ps,
+        std::shared_ptr<ConstantBuffer> perObject,
+        std::shared_ptr<ConstantBuffer> perScene)
 {
-	return DirectX11RenderItem::Create(mesh, vs, ps, cb);
+	return DirectX11RenderItem::Create(mesh, vs, ps, perObject, perScene);
 }
 
 

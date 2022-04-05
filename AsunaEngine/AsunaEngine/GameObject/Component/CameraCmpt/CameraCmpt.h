@@ -19,7 +19,7 @@ namespace asuna
     public:
         CameraCmpt() = delete;
         CameraCmpt(GameObject* owner) :
-            m_ProjectionType(CameraProjectionType::Orthographic),
+            m_ProjectionType(CameraProjectionType::Perspective),
             m_Near(0.1f),
             m_Far(1000.0f),
             m_Fov(PI / 4.0f),
@@ -113,6 +113,7 @@ namespace asuna
 
         const Matrix4x4f& GetProjectionMatrix();
         void CalculateProjectionMatrix();
+        const Matrix4x4f& GetViewMatrix();
 
 
 
@@ -125,8 +126,8 @@ namespace asuna
         float m_ViewWidth;
         float m_ViewHeight;
         Matrix4x4f m_ProjectionMatrix;
-        bool m_ProjectionMatrixDirty = false;
-        bool m_ViewMatrixDirty = false;
+        Matrix4x4f m_ViewMatrix;
+        bool m_ProjectionMatrixDirty = true;
     };
 }
 

@@ -1,9 +1,7 @@
 #include "WindowsEditor.h"
-#include "AsunaEngine/Foundation/Logger/Logger.h"
 #include "AsunaEngine/Graphics/Renderer.h"
 #include "AsunaEngine/GUI/GUI.h"
-#include "AsunaEngine/GameObject/Component/CameraCmpt/CameraCmpt.h"
-#include "AsunaEngine/GameObject/Component/MeshRenderCmpt/MeshRenderCmpt.h"
+#include "AsunaEngine/Scene/SceneManager.h"
 #include <imgui.h>
 
 
@@ -27,6 +25,7 @@ void WindowsEditor::Initialize(std::shared_ptr<ApplicationInitParam> param)
     WindowsApplication::Initialize(param);
 
     auto camera = SceneManager::Instance->CreateGameObject("Camera", nullptr);
+    camera->GetTransform()->SetPosition(0, 0, 60);
     camera->AddComponent<CameraCmpt>();
 
     auto girl = SceneManager::Instance->CreateGameObject("girl", nullptr);
@@ -129,5 +128,11 @@ void WindowsEditor::Finalize()
     m_GamePanel.Finalize();
     m_InspectorPanel.Finalize();
     WindowsApplication::Finalize();
+}
+
+void WindowsEditor::Tick()
+{
+    WindowsApplication::Tick();
+    SceneManager::Instance->Tick();
 }
 

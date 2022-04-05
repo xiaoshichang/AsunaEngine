@@ -29,7 +29,7 @@ namespace asuna
         TransformCmpt* GetParent() { return m_Parent;}
         void AddChild(TransformCmpt* child);
         void RemoveChild(TransformCmpt* child);
-        std::vector<TransformCmpt*>& GetChildren() { return m_Children;}
+        const std::vector<TransformCmpt*>& GetChildren() { return m_Children;}
 
         Vector3f GetPosition() {return m_Position;}
         void SetPosition(float x, float y, float z);
@@ -48,7 +48,7 @@ namespace asuna
         Quaternion m_Rotation;
         TransformCmpt* m_Parent;
         std::vector<TransformCmpt*> m_Children;
-        bool m_RTSMatrixDirty = false;
+        bool m_RTSMatrixDirty = true;
         Matrix4x4f m_RTSMatrix;
 
     };
