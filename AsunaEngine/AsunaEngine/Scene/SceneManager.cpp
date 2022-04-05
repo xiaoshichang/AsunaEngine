@@ -33,6 +33,16 @@ void SceneManager::Tick()
     UpdateConstantBufferPerScene();
 }
 
+std::shared_ptr<GameObject> SceneManager::GetRoot()
+{
+    return m_Root;
+}
+
+const std::shared_ptr<ConstantBuffer> &SceneManager::GetConstantBufferPerScene()
+{
+    return m_ConstantBufferPerScene;
+}
+
 void SceneManager::TickGameObject(GameObject* obj)
 {
     obj->Tick();
@@ -106,6 +116,24 @@ void SceneManager::UpdateCameraMatrix()
     data->m_ProjectionMatrix = projectionMatrix;
     data->m_VP = projectionMatrix * viewMatrix;
 }
+
+void SceneManager::AddRenderItem(const shared_ptr<RenderItem>& item)
+{
+    m_RenderItemQueue.AddRenderItem(item);
+}
+
+void SceneManager::RemoveRenderItem(const shared_ptr<RenderItem>& item)
+{
+    m_RenderItemQueue.RemoveRenderItem(item);
+}
+
+void SceneManager::Render(const std::shared_ptr<RenderTarget>& rt)
+{
+    Renderer::Current->ClearRenderTarget(rt, 0.1f, 0.2f, 0.3f, 1.0f);
+    Renderer::Current->SetRenderTarget(rt);
+    m_RenderItemQueue.Render();
+}
+
 
 
 

@@ -13,12 +13,12 @@ void MeshRenderCmpt::Initialize()
     m_ConstantBufferPerObject = Renderer::Current->CreateConstantBuffer(ConstantBufferDataType::PerObject);
     auto perScene = SceneManager::Instance->GetConstantBufferPerScene();
     m_RenderItem = Renderer::Current->CreateRenderItem(nullptr, nullptr, nullptr, m_ConstantBufferPerObject, perScene);
-    Renderer::Current->AddRenderItem(m_RenderItem);
+    SceneManager::Instance->AddRenderItem(m_RenderItem);
 }
 
 void MeshRenderCmpt::Finalize()
 {
-    Renderer::Current->RemoveRenderItem(m_RenderItem);
+    SceneManager::Instance->RemoveRenderItem(m_RenderItem);
 }
 
 void MeshRenderCmpt::Tick()

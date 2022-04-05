@@ -22,7 +22,7 @@ void WindowsPlayer::Initialize(std::shared_ptr<ApplicationInitParam> param)
 
 void WindowsPlayer::Render()
 {
-    Renderer::Current->RenderScene(nullptr);
+    SceneManager::Instance->Render(nullptr);
     Renderer::Current->Present();
 }
 

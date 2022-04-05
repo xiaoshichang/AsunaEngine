@@ -6,9 +6,8 @@
 #include "GamePanel.h"
 #include "AsunaEngine/Graphics/Renderer.h"
 #include "AsunaEngine/Graphics/DirectX11/DirectX11RenderTarget.h"
-#include "AsunaEngine/Foundation/Logger/Logger.h"
+#include "AsunaEngine/Scene/SceneManager.h"
 #include "../Events/EditorEventManager.h"
-#include "../Events/EditorEventType.h"
 
 using namespace asuna;
 
@@ -20,7 +19,7 @@ void GamePanel::Render()
 {
     if (m_RT != nullptr)
     {
-        Renderer::Current->RenderScene(m_RT);
+        SceneManager::Instance->Render(m_RT);
     }
 
     ImGui::Begin("Game Window", &m_Showing);

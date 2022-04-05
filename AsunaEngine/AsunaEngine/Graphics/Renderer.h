@@ -5,8 +5,8 @@
 #include "RenderAPIType.h"
 #include "RenderContext.h"
 #include "RenderItem.h"
-#include "RenderTarget.h"
 #include "RenderItemQueue.h"
+#include "RenderTarget.h"
 #include "ConstantBuffer.h"
 #include "Shader.h"
 #include "Mesh.h"
@@ -30,12 +30,9 @@ namespace asuna
 			m_Context(nullptr)
 		{
 			m_APIType = RenderAPIType::None;
-			m_RenderItemQueue = std::make_shared<RenderItemQueue>();
 		}
 
-		virtual ~Renderer()
-		{
-		}
+		virtual ~Renderer() = default;
 
 		virtual void Initialize(CreateRendererContextParam param) = 0;
 		virtual void Finalize() = 0;
@@ -57,10 +54,6 @@ namespace asuna
                 std::shared_ptr<ConstantBuffer> perScene) = 0;
 
 		virtual std::shared_ptr<ConstantBuffer> CreateConstantBuffer(ConstantBufferDataType dt) = 0;
-
-        virtual void RenderScene(std::shared_ptr<RenderTarget> rt);
-		virtual void AddRenderItem(const std::shared_ptr<RenderItem>& item);
-		virtual void RemoveRenderItem(const std::shared_ptr<RenderItem>& item);
 		std::shared_ptr<RenderContext> GetContext();
 
     public:
@@ -69,13 +62,12 @@ namespace asuna
 
 	protected:
 		std::shared_ptr<RenderContext> m_Context;
-		std::shared_ptr<RenderItemQueue> m_RenderItemQueue;
 
 	public:
 		RenderAPIType m_APIType;
 		int m_ResolutionWidth = 0;
 		int m_ResolutionHeight = 0;
-		HWND m_HWND;
+		HWND m_HWND{};
 
 	public:
 		static Renderer* Current;
