@@ -86,6 +86,8 @@ void TransformCmpt::CalculateRTSMatrix()
     auto r = BuildMatrixQuaternion(m_Rotation);
     auto t = BuildMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
     auto s = BuildMatrixScale(m_Scale.x, m_Scale.y, m_Scale.z);
-    m_RTSMatrix = s * t * r;
+    // todo: more standard asset pipeline
+    auto assetDefault = BuildMatrixRotationX(PI / 2);
+    m_RTSMatrix = s * t * r * assetDefault;
     m_RTSMatrixDirty = false;
 }

@@ -17,13 +17,13 @@ void asuna::TransformCmptEditor::Render(asuna::TransformCmpt *transform)
     ImGui::SetCursorPosX(80);
     ImGui::PushItemWidth(80);
     ImGui::PushID("px");
-    ImGui::DragFloat("X", reinterpret_cast<float *>(&position.x), 0.001f); ImGui::SameLine();
+    ImGui::DragFloat("X", reinterpret_cast<float *>(&position.x), 0.1f); ImGui::SameLine();
     ImGui::PopID();
     ImGui::PushID("py");
-    ImGui::DragFloat("Y", reinterpret_cast<float *>(&position.y), 0.001f); ImGui::SameLine();
+    ImGui::DragFloat("Y", reinterpret_cast<float *>(&position.y), 0.1f); ImGui::SameLine();
     ImGui::PopID();
     ImGui::PushID("pz");
-    ImGui::DragFloat("Z", reinterpret_cast<float *>(&position.z), 0.001f);
+    ImGui::DragFloat("Z", reinterpret_cast<float *>(&position.z), 0.1f);
     ImGui::PopID();
     ImGui::PopItemWidth();
 
@@ -32,13 +32,13 @@ void asuna::TransformCmptEditor::Render(asuna::TransformCmpt *transform)
     ImGui::SetCursorPosX(80);
     ImGui::PushItemWidth(80);
     ImGui::PushID("rx");
-    ImGui::DragFloat("X", reinterpret_cast<float *>(&rotation.x), 0.001f, -PI/2, PI/2, "%.4f"); ImGui::SameLine();
+    ImGui::DragFloat("X", reinterpret_cast<float *>(&rotation.x), 0.05f, -PI/2, PI/2, "%.4f"); ImGui::SameLine();
     ImGui::PopID();
     ImGui::PushID("ry");
-    ImGui::DragFloat("Y", reinterpret_cast<float *>(&rotation.y), 0.001f, -PI, PI, "%.4f"); ImGui::SameLine();
+    ImGui::DragFloat("Y", reinterpret_cast<float *>(&rotation.y), 0.05f, -PI, PI, "%.4f"); ImGui::SameLine();
     ImGui::PopID();
     ImGui::PushID("rz");
-    ImGui::DragFloat("Z", reinterpret_cast<float *>(&rotation.z), 0.001f, -PI, PI, "%.4f");
+    ImGui::DragFloat("Z", reinterpret_cast<float *>(&rotation.z), 0.05f, -PI, PI, "%.4f");
     ImGui::PopID();
     ImGui::PopItemWidth();
 
@@ -46,13 +46,13 @@ void asuna::TransformCmptEditor::Render(asuna::TransformCmpt *transform)
     ImGui::SetCursorPosX(80);
     ImGui::PushItemWidth(80);
     ImGui::PushID("sx");
-    ImGui::DragFloat("X", reinterpret_cast<float *>(&scale.x), 0.001f); ImGui::SameLine();
+    ImGui::DragFloat("X", reinterpret_cast<float *>(&scale.x), 0.1f); ImGui::SameLine();
     ImGui::PopID();
     ImGui::PushID("sy");
-    ImGui::DragFloat("Y", reinterpret_cast<float *>(&scale.y), 0.001f); ImGui::SameLine();
+    ImGui::DragFloat("Y", reinterpret_cast<float *>(&scale.y), 0.1f); ImGui::SameLine();
     ImGui::PopID();
     ImGui::PushID("sz");
-    ImGui::DragFloat("Z", reinterpret_cast<float *>(&scale.z), 0.001f);
+    ImGui::DragFloat("Z", reinterpret_cast<float *>(&scale.z), 0.1f);
     ImGui::PopID();
     ImGui::PopItemWidth();
 
