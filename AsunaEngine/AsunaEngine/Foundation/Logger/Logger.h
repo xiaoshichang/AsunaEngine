@@ -21,7 +21,7 @@ namespace asuna
         static void ErrorScript(const char* message, ...);
 
 
-        static void ToConsole(const char* message);
+        static void ToConsole(SeverityLevel level, const char* message);
 		static void ToFile(const char* message);
 
 

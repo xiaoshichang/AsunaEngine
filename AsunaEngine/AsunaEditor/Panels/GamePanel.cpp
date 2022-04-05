@@ -7,6 +7,7 @@
 #include "AsunaEngine/Graphics/Renderer.h"
 #include "AsunaEngine/Graphics/DirectX11/DirectX11RenderTarget.h"
 #include "AsunaEngine/Scene/SceneManager.h"
+#include "AsunaEngine/Foundation/Platform/Assert.h"
 #include "../Events/EditorEventManager.h"
 
 using namespace asuna;
@@ -52,11 +53,17 @@ void GamePanel::RenderResolutionOptions()
         m_TargetResolutionWidth = 1200;
         m_TargetResolutionHeight = 960;
     }
-    else
+    else if(m_SelectedResolution == 2)
     {
         m_TargetResolutionWidth = 1200;
         m_TargetResolutionHeight = 800;
     }
+    else
+    {
+        Logger::Error("unknown resolution type!");
+        ASUNA_ASSERT(false);
+    }
+
     if (m_RT == nullptr || m_SelectedResolution != m_LastResolution)
     {
         ResizeRT();
@@ -81,13 +88,13 @@ void GamePanel::RenderRTTOWindow()
     float warpWidth, warpHeight;
     if ((float)m_TargetResolutionWidth / (float)m_TargetResolutionWidth > winWidth / winHeight)
     {
-        warpWidth = (float)winWidth * 0.95;
-        warpHeight = (float)winWidth * (float)m_TargetResolutionHeight / (float)m_TargetResolutionWidth * 0.95;
+        warpWidth = (float)winWidth * 0.95f;
+        warpHeight = (float)winWidth * (float)m_TargetResolutionHeight / (float)m_TargetResolutionWidth * 0.95f;
     }
     else
     {
-        warpWidth = (float)winHeight * (float)m_TargetResolutionWidth / (float)m_TargetResolutionHeight * 0.95;
-        warpHeight = (float)winHeight * 0.95;
+        warpWidth = (float)winHeight * (float)m_TargetResolutionWidth / (float)m_TargetResolutionHeight * 0.95f;
+        warpHeight = (float)winHeight * 0.95f;
     }
     ImGui::SetCursorPosX((float)winWidth / 2 - warpWidth / 2 + 10);
     ImGui::SetCursorPosY((float)(vMax.y - vMin.y) / 2 - warpHeight / 2 + optionHeight * 2);

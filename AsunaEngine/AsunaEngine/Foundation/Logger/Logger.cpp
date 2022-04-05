@@ -77,7 +77,7 @@ void Logger::Log(SeverityLevel level, const char* tag, const char *message)
 
     if (console_enable_)
     {
-        ToConsole(buffer);
+        ToConsole(level, buffer);
     }
     if (file_enable_)
     {
@@ -142,9 +142,16 @@ void Logger::ErrorScript(const char *message, ...)
     Log(SeverityLevel::error, TAG_SCRIPT, buffer);
 }
 
-void Logger::ToConsole(const char *message)
+void Logger::ToConsole(SeverityLevel level, const char *message)
 {
-    std::cout << message;
+    if (level == SeverityLevel::error)
+    {
+        std::cerr << message;
+    }
+    else
+    {
+        std::cout << message;
+    }
 }
 
 void Logger::ToFile(const char *message)
