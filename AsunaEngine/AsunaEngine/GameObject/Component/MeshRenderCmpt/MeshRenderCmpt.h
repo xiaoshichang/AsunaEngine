@@ -5,9 +5,9 @@
 #pragma once
 #include <memory>
 #include <string>
-#include "../../../Graphics/Mesh.h"
-#include "../../../Graphics/Shader.h"
-#include "../../../Graphics/RenderItem.h"
+#include "../../../Graphics/Abstract/Mesh.h"
+#include "../../../Graphics/Abstract/Shader.h"
+#include "../../../Graphics/Abstract/RenderItem.h"
 #include "../Component.h"
 
 

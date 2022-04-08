@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include <assimp/Importer.hpp>
-#include "../Graphics/Mesh.h"
+#include "../Graphics/Abstract/Mesh.h"
 
 
 namespace asuna

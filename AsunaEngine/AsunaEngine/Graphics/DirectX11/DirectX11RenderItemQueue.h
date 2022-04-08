@@ -3,8 +3,8 @@
 //
 
 #pragma once
-#include "../RenderItemQueue.h"
-#include "../RenderContext.h"
+#include "../Abstract/RenderItemQueue.h"
+#include "../Abstract/RenderContext.h"
 
 namespace asuna
 {

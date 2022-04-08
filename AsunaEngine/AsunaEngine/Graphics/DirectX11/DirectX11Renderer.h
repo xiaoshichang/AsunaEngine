@@ -1,7 +1,7 @@
 #pragma once
 #include <d3d11.h>
 #include <Windows.h>
-#include "../Renderer.h"
+#include "../Abstract/Renderer.h"
 
 using namespace std;
 

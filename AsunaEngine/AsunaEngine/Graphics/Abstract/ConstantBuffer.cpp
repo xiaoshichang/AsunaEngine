@@ -9,9 +9,9 @@ ConstantBuffer::ConstantBuffer(ConstantBufferDataType dt)  :
     {
         m_Data = new ConstantBufferDataPerObject();
     }
-    else if (ConstantBufferDataType::PerScene == dt)
+    else if (ConstantBufferDataType::PerFrame == dt)
     {
-        m_Data = new ConstantBufferDataPerScene();
+        m_Data = new ConstantBufferDataPerFrame();
     }
     else
     {
@@ -28,9 +28,9 @@ ConstantBuffer::~ConstantBuffer()
             auto data = (ConstantBufferDataPerObject*)m_Data;
             delete data;
         }
-        else if(ConstantBufferDataType::PerScene == m_DataType)
+        else if(ConstantBufferDataType::PerFrame == m_DataType)
         {
-            auto data = (ConstantBufferDataPerScene*)m_Data;
+            auto data = (ConstantBufferDataPerFrame*)m_Data;
             delete data;
         }
         m_Data = nullptr;
@@ -41,7 +41,7 @@ int ConstantBuffer::GetDataSizeByDataType(ConstantBufferDataType dt)
 {
     switch (dt)
     {
-        case ConstantBufferDataType::PerScene : return sizeof(ConstantBufferDataPerScene);
+        case ConstantBufferDataType::PerFrame : return sizeof(ConstantBufferDataPerFrame);
         case ConstantBufferDataType::PerObject : return sizeof(ConstantBufferDataPerObject);
         default:
             return 0;

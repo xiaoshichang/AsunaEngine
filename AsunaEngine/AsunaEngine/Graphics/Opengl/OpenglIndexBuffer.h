@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "../IndexBuffer.h"
+#include "../Abstract/IndexBuffer.h"
 
 namespace asuna
 {

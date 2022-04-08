@@ -3,7 +3,7 @@
 //
 
 #include "CameraCmpt.h"
-#include "../../../Graphics/Renderer.h"
+#include "../../../Graphics/Abstract/Renderer.h"
 #include "../../../Scene/SceneManager.h"
 
 using namespace asuna;

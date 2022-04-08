@@ -1,5 +1,5 @@
 #pragma once
-#include "../RenderItem.h"
+#include "../Abstract/RenderItem.h"
 #include "OpenglMesh.h"
 #include "OpenglVertexBuffer.h"
 #include "OpenglIndexBuffer.h"

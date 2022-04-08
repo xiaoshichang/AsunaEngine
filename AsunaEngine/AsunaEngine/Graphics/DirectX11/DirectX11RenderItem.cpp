@@ -1,6 +1,6 @@
 #include "../../Foundation/Math/AMath.h"
 #include "DirectX11RenderItem.h"
-#include "../Renderer.h"
+#include "../Abstract/Renderer.h"
 
 using namespace asuna;
 using namespace std;

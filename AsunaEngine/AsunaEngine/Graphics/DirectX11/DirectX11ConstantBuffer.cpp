@@ -1,6 +1,6 @@
 #include "DirectX11ConstantBuffer.h"
 #include "DirectX11RenderContext.h"
-#include "../Renderer.h"
+#include "../Abstract/Renderer.h"
 #include "../../Foundation/Platform/Assert.h"
 
 using namespace asuna;

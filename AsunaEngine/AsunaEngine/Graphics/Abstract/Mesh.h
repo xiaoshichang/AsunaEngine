@@ -3,7 +3,7 @@
 #include <vector>
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
-#include "../Foundation/Logger/Logger.h"
+#include "../../Foundation/Logger/Logger.h"
 
 
 namespace asuna

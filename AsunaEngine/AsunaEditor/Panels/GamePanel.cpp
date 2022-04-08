@@ -4,7 +4,7 @@
 #include <memory>
 #include <imgui.h>
 #include "GamePanel.h"
-#include "AsunaEngine/Graphics/Renderer.h"
+#include "AsunaEngine/Graphics/Abstract/Renderer.h"
 #include "AsunaEngine/Graphics/DirectX11/DirectX11RenderTarget.h"
 #include "AsunaEngine/Scene/SceneManager.h"
 #include "AsunaEngine/Foundation/Platform/Assert.h"

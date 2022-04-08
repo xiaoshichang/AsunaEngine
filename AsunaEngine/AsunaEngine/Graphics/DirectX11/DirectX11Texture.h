@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include <d3d11.h>
-#include "../Texture.h"
+#include "../Abstract/Texture.h"
 
 namespace asuna
 {

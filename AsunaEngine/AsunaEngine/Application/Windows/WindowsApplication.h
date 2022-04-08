@@ -1,7 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include "../Application.h"
-#include "../../Graphics/RenderAPIType.h"
+#include "../../Graphics/Abstract/RenderAPIType.h"
 
 
 namespace asuna

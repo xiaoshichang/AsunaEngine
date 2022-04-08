@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include <d3d11.h>
-#include "../ConstantBuffer.h"
+#include "../Abstract/ConstantBuffer.h"
 
 namespace asuna
 {

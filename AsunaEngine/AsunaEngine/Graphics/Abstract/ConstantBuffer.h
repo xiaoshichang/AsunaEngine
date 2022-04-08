@@ -1,16 +1,17 @@
 #pragma once
-#include "../Foundation/Math/AMath.h"
+#include "../../Foundation/Math/AMath.h"
 
 
 namespace asuna
 {
     enum class ConstantBufferDataType
     {
+        PerMaterial,
         PerObject,
-        PerScene
+        PerFrame
     };
 
-    struct ConstantBufferDataPerScene
+    struct ConstantBufferDataPerFrame
     {
         Matrix4x4f m_ViewMatrix;
         Matrix4x4f m_ProjectionMatrix;

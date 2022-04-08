@@ -3,7 +3,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include "../Foundation/Platform/Assert.h"
-#include "../Graphics/Renderer.h"
+#include "../Graphics/Abstract/Renderer.h"
 
 using namespace asuna;
 using namespace Assimp;

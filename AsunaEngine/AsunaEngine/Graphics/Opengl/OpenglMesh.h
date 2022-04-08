@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include <vector>
-#include "../Mesh.h"
+#include "../Abstract/Mesh.h"
 #include "OpenglVertexBuffer.h"
 #include "OpenglIndexBuffer.h"
 

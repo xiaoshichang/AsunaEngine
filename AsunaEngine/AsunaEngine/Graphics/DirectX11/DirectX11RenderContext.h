@@ -2,7 +2,7 @@
 #include <memory>
 #include <d3d11.h>
 #include "DirectX11RenderTarget.h"
-#include "../RenderContext.h"
+#include "../Abstract/RenderContext.h"
 namespace asuna
 {
 	class DirectX11RenderContext : public RenderContext

@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include <iostream>
-#include "../Shader.h"
+#include "../Abstract/Shader.h"
 namespace asuna
 {
 	////////////////////////////////////////////////////////////////////

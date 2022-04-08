@@ -2,7 +2,7 @@
 
 #include "../../Foundation/Platform/Assert.h"
 #include "../../Foundation/Math/AMath.h"
-#include "../../Graphics/Renderer.h"
+#include "../../Graphics/Abstract/Renderer.h"
 
 #include "../../Graphics/Empty/EmptyRenderer.h"
 #include "../../Graphics/DirectX11/DirectX11Renderer.h"

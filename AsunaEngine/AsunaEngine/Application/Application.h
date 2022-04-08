@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "../Graphics/RenderAPIType.h"
+#include "../Graphics/Abstract/RenderAPIType.h"
 
 namespace asuna
 {

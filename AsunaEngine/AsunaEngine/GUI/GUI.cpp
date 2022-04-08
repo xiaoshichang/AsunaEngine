@@ -4,7 +4,7 @@
 #include <imgui_impl_dx11.h>
 #include <imgui_impl_win32.h>
 
-#include "../Graphics/Renderer.h"
+#include "../Graphics/Abstract/Renderer.h"
 #include "../Graphics/DirectX11/DirectX11RenderContext.h"
 
 using namespace std;

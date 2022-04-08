@@ -7,11 +7,11 @@
 #include <memory>
 #include <vector>
 #include "../GameObject/GameObject.h"
-#include "../Graphics/ConstantBuffer.h"
+#include "../Graphics/Abstract/ConstantBuffer.h"
 #include "../GameObject/Component/CameraCmpt/CameraCmpt.h"
-#include "../Graphics/RenderItemQueue.h"
-#include "../Graphics/RenderItem.h"
-#include "../Graphics/RenderTarget.h"
+#include "../Graphics/Abstract/RenderItemQueue.h"
+#include "../Graphics/Abstract/RenderItem.h"
+#include "../Graphics/Abstract/RenderTarget.h"
 
 
 namespace asuna

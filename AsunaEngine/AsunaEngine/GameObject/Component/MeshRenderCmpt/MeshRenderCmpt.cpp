@@ -4,7 +4,7 @@
 
 #include "MeshRenderCmpt.h"
 #include "../../../Scene/SceneManager.h"
-#include "../../../Graphics/Renderer.h"
+#include "../../../Graphics/Abstract/Renderer.h"
 
 using namespace asuna;
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include <d3d11.h>
-#include "../IndexBuffer.h"
+#include "../Abstract/IndexBuffer.h"
 namespace asuna
 {
 	class DirectX11IndexBuffer : public IndexBuffer

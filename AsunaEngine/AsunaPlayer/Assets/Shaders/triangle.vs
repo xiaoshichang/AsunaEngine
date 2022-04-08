@@ -7,7 +7,7 @@ struct v2p {
 	float4 position : SV_POSITION;
 };
 
-cbuffer ConstantBufferPerScene
+cbuffer ConstantBufferPerFrame
 {
     matrix viewMatrix;
     matrix projectionMatrix;
@@ -17,6 +17,11 @@ cbuffer ConstantBufferPerScene
 cbuffer ConstantBufferPerObject
 {
     matrix worldMatrix;
+}
+
+cbuffer ConstantBufferPerMaterial
+{
+    float4 mainColor;
 }
 
 v2p main(a2v input) 

@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "../VertexBuffer.h"
+#include "../Abstract/VertexBuffer.h"
 
 namespace asuna
 {

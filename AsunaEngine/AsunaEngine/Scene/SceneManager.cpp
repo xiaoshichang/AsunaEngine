@@ -3,7 +3,7 @@
 //
 
 #include "SceneManager.h"
-#include "../Graphics/Renderer.h"
+#include "../Graphics/Abstract/Renderer.h"
 #include "../Foundation/Logger/Logger.h"
 
 using namespace asuna;
@@ -18,7 +18,7 @@ SceneManager::SceneManager() :
 
 void SceneManager::Initialize()
 {
-    m_ConstantBufferPerScene = Renderer::Current->CreateConstantBuffer(ConstantBufferDataType::PerScene);
+    m_ConstantBufferPerScene = Renderer::Current->CreateConstantBuffer(ConstantBufferDataType::PerFrame);
     m_RenderItemQueue = Renderer::Current->CreateRenderItemQueue();
     m_Root = std::make_shared<GameObject>("Root");
 }
@@ -112,7 +112,7 @@ void SceneManager::UpdateCameraMatrix()
         Logger::Error("no camera in scene!");
         return;
     }
-    auto data = (ConstantBufferDataPerScene*)m_ConstantBufferPerScene->GetData();
+    auto data = (ConstantBufferDataPerFrame*)m_ConstantBufferPerScene->GetData();
     auto viewMatrix = mainCamera->GetViewMatrix();
     auto projectionMatrix = mainCamera->GetProjectionMatrix();
     data->m_ViewMatrix = viewMatrix;

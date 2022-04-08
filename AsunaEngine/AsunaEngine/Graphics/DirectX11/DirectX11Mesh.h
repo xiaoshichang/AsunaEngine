@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <memory>
-#include "../Mesh.h"
+#include "../Abstract/Mesh.h"
 #include "DirectX11IndexBuffer.h"
 #include "DirectX11VertexBuffer.h"
 #include "../../Foundation/Logger/Logger.h"

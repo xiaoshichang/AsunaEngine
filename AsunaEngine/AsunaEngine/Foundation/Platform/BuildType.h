@@ -1,7 +1,7 @@
 #pragma once
 
-#if defined(Debug)
+#if defined(_Debug_)
 	#define ASUNA_BUILD_DEBUG
-#elif defined(Release)
+#elif defined(_Release_)
 	#define ASUNA_BUILD_RELEASE
 #endif

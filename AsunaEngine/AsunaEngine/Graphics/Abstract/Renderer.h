@@ -11,7 +11,7 @@
 #include "Shader.h"
 #include "Mesh.h"
 
-#include "../Foundation/Interface/IModule.h"
+#include "../../Foundation/Interface/IModule.h"
 
 namespace asuna
 {

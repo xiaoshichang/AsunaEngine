@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "../RenderItem.h"
+#include "../Abstract/RenderItem.h"
 #include "DirectX11Mesh.h"
 #include "DirectX11Shader.h"
 #include "DirectX11ConstantBuffer.h"
