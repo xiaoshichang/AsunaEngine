@@ -2,7 +2,7 @@
 using namespace asuna;
 using namespace std;
 
- shared_ptr<DirectX11SubMesh> DirectX11SubMesh::Create(shared_ptr<SubMeshCreateParam> param)
+ shared_ptr<DirectX11SubMesh> DirectX11SubMesh::Create(const shared_ptr<SubMeshCreateParam>& param)
 {
 	 std::shared_ptr<VertexBuffer> position = nullptr;
 	 std::shared_ptr<VertexBuffer> normal = nullptr;
@@ -28,7 +28,7 @@ using namespace std;
 	{
 		index = DirectX11IndexBuffer::Create(param->m_IndexCreateParam);
 	}
-	return make_shared<DirectX11SubMesh>(position, normal, texcoord, index, param->m_PrimitiveType);
+	return make_shared<DirectX11SubMesh>(position, normal, texcoord, index, param->m_PrimitiveType, param->m_MaterialIndex);
 }
 
 shared_ptr<DirectX11Mesh> DirectX11Mesh::Create(shared_ptr<MeshCreateParam> param)

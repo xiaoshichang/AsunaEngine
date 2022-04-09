@@ -27,6 +27,7 @@ shared_ptr<MeshCreateParam> AssetLoader::LoadMesh(const std::string& Path)
 	}
 
 	auto sceneRoot = MeshImporter->ReadFile(Path, readFlag);
+    param->m_RawResource = sceneRoot;
 	ASUNA_ASSERT(sceneRoot);
 
 	param->m_SubMeshCount = sceneRoot->mNumMeshes;
@@ -75,9 +76,9 @@ shared_ptr<MeshCreateParam> AssetLoader::LoadMesh(const std::string& Path)
 				ptr[j * 3 + 2] = face.mIndices[2];
 			}
 		}
+        subParam->m_MaterialIndex = meshNode->mMaterialIndex;
 		param->m_SubMeshCreateParam.push_back(subParam);
 	}
-
 	return param;
 }
 

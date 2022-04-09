@@ -38,7 +38,7 @@ unsigned int OpenglSubMesh::GetGLPrimitive()
 	}
 }
 
-std::shared_ptr<OpenglSubMesh> OpenglSubMesh::Create(std::shared_ptr<SubMeshCreateParam> param)
+std::shared_ptr<OpenglSubMesh> OpenglSubMesh::Create(const std::shared_ptr<SubMeshCreateParam>& param)
 {
 	std::shared_ptr<VertexBuffer> position = nullptr;
 	std::shared_ptr<VertexBuffer> normal = nullptr;
@@ -91,11 +91,11 @@ std::shared_ptr<OpenglSubMesh> OpenglSubMesh::Create(std::shared_ptr<SubMeshCrea
 		}
 		glBindVertexArray(0);
 	}
-	return make_shared<OpenglSubMesh>(vao, position, normal, texcoord, index, param->m_PrimitiveType);
+	return make_shared<OpenglSubMesh>(vao, position, normal, texcoord, index, param->m_PrimitiveType, param->m_MaterialIndex);
 }
 
 
-shared_ptr<OpenglMesh> OpenglMesh::Create(shared_ptr<MeshCreateParam> param)
+shared_ptr<OpenglMesh> OpenglMesh::Create(const shared_ptr<MeshCreateParam>& param)
 {
 	auto mesh = make_shared<OpenglMesh>();
 	for (size_t i = 0; i < param->m_SubMeshCount; i++)

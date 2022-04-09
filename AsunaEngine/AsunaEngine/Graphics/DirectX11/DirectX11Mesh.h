@@ -17,19 +17,16 @@ namespace asuna
 			std::shared_ptr<VertexBuffer> normal,
 			std::shared_ptr<VertexBuffer> texcoord,
 			std::shared_ptr<IndexBuffer> index,
-			PrimitiveType pt) :
-			SubMesh(position, normal, texcoord, index, pt)
+			PrimitiveType pt,
+            int materialIndex):
+			SubMesh(position, normal, texcoord, index, pt, materialIndex)
 		{
 		}
 
-		virtual ~DirectX11SubMesh()
-		{
-		}
-
-
+		~DirectX11SubMesh() override = default;
 
 	public:
-		static std::shared_ptr<DirectX11SubMesh> Create(std::shared_ptr<SubMeshCreateParam> param);
+		static std::shared_ptr<DirectX11SubMesh> Create(const std::shared_ptr<SubMeshCreateParam>& param);
 	};
 
 
@@ -37,13 +34,8 @@ namespace asuna
 	class DirectX11Mesh : public Mesh
 	{
 	public:
-		DirectX11Mesh() 
-		{
-		}
-
-		virtual ~DirectX11Mesh()
-		{
-		}
+		DirectX11Mesh() = default;
+		~DirectX11Mesh() override = default;
 
 	public:
 		static std::shared_ptr<DirectX11Mesh> Create(std::shared_ptr<MeshCreateParam> param);

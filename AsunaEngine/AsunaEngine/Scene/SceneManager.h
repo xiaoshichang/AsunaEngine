@@ -34,7 +34,7 @@ namespace asuna
         void RemoveCamera(CameraCmpt* camera);
         CameraCmpt* GetMainCamera();
 
-        const std::shared_ptr<ConstantBuffer>& GetConstantBufferPerScene();
+        std::shared_ptr<ConstantBuffer> GetConstantBufferPerScene();
         void AddRenderItem(const std::shared_ptr<RenderItem>& item);
         void RemoveRenderItem(const std::shared_ptr<RenderItem>& item);
 

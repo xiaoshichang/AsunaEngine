@@ -41,7 +41,7 @@ std::shared_ptr<GameObject> SceneManager::GetRoot()
     return m_Root;
 }
 
-const std::shared_ptr<ConstantBuffer> &SceneManager::GetConstantBufferPerScene()
+std::shared_ptr<ConstantBuffer> SceneManager::GetConstantBufferPerScene()
 {
     return m_ConstantBufferPerScene;
 }

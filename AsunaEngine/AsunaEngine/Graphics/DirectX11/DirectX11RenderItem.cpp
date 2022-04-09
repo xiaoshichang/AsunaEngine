@@ -68,8 +68,16 @@ void DirectX11RenderItem::DrawMesh(DirectX11RenderContext* context)
         // https://docs.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-iasetindexbuffer
         context->m_DeviceContext->IASetIndexBuffer(ib->GetBuffer(), ib->GetDXGIFormat(), 0);
 
-        auto material = GetMaterial(0);
-        material->Apply();
+        auto material = GetMaterial(subMesh->GetMaterialIndex());
+        if (material == nullptr)
+        {
+            // use default material
+            Logger::Warning("material not found!");
+        }
+        else
+        {
+            material->Apply();
+        }
 
         // https://docs.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-drawindexed
         context->m_DeviceContext->DrawIndexed(ib->GetElementCount(), 0, 0);

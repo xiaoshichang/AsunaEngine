@@ -17,7 +17,10 @@ void WindowsPlayer::Initialize(std::shared_ptr<ApplicationInitParam> param)
     auto girl = SceneManager::Instance->CreateGameObject("girl", nullptr);
     auto mesh = girl->AddComponent<MeshRenderCmpt>();
     mesh->SetMesh("Assets\\Models\\keqin.fbx");
-    mesh->SetMaterial(0, "BaseColor");
+    for (int i = 0; i < 20; ++i)
+    {
+        mesh->SetMaterial(i, "BaseColor");
+    }
 }
 
 void WindowsPlayer::Render()
