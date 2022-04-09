@@ -30,7 +30,7 @@ bool Renderer::CheckLeftHandRenderAPI() const
     }
 }
 
-std::shared_ptr<Material> Renderer::CreateMaterial(const shared_ptr<Shader> &vs, const shared_ptr<Shader> &ps)
+std::shared_ptr<Material> Renderer::CreateMaterial(const std::string& materialPath)
 {
-    return Material::Create(vs, ps);
+    return Material::Create(materialPath);
 }

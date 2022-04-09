@@ -13,15 +13,15 @@ namespace asuna
     class Material
     {
     public:
-        Material() = delete;
-        Material(const std::shared_ptr<Shader>& vs, const std::shared_ptr<Shader>& ps);
-        static std::shared_ptr<Material> Create(const std::shared_ptr<Shader>& vs, const std::shared_ptr<Shader>& ps);
+        explicit Material(const std::string& materialPath);
+        static std::shared_ptr<Material> Create(const std::string& materialPath);
         void Apply();
 
         void SetFloat(const std::string& name, float value);
         float GetFloat(const std::string& name);
         void SetVector4(const std::string& name, Vector4f value);
         Vector4f GetVector4(const std::string& name);
+        const std::string& GetName();
 
         std::shared_ptr<Shader> GetVertexShader()
         {
@@ -44,6 +44,7 @@ namespace asuna
         }
 
     private:
+        std::string m_MaterialName;
         std::shared_ptr<Shader> m_VS;
         std::shared_ptr<Shader> m_PS;
         std::unordered_map<std::string, float> m_FloatParams;

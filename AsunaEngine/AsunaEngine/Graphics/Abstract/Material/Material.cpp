@@ -3,20 +3,21 @@
 //
 
 #include "Material.h"
+#include "../Renderer.h"
 
 using namespace asuna;
 using namespace std;
 
-Material::Material(const shared_ptr<Shader> &vs, const shared_ptr<Shader> &ps):
-    m_VS(vs),
-    m_PS(ps)
+Material::Material(const std::string& materialPath) :
+    m_MaterialName(materialPath)
 {
-
+    m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\triangle.vs", ShaderType::VertexShader);
+    m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\triangle.ps", ShaderType::PixelShader);
 }
 
-shared_ptr<Material> Material::Create(const shared_ptr<Shader> &vs, const shared_ptr<Shader> &ps)
+shared_ptr<Material> Material::Create(const std::string& materialPath)
 {
-    return make_shared<Material>(vs, ps);
+    return make_shared<Material>(materialPath);
 }
 
 void Material::Apply()
@@ -72,6 +73,11 @@ Vector4f Material::GetVector4(const string &name)
         return {0, 0, 0, 0};
     }
     return m_Vector4Params[name];
+}
+
+const string& Material::GetName()
+{
+    return m_MaterialName;
 }
 
 

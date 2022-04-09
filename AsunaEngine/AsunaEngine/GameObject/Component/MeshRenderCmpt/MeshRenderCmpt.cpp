@@ -33,15 +33,20 @@ void MeshRenderCmpt::SetMesh(const std::string &path)
     auto mesh = Renderer::Current->CreateMesh(path);
     m_RenderItem->SetMesh(mesh);
 }
-
-void MeshRenderCmpt::SetMaterial(const std::string &vsPath, const std::string &psPath)
+int MeshRenderCmpt::GetMaterialCount() const
 {
-    m_VSPath = vsPath;
-    m_PSPath = psPath;
-    auto vs = Renderer::Current->CreateShader(vsPath, ShaderType::VertexShader);
-    auto ps = Renderer::Current->CreateShader(psPath, ShaderType::PixelShader);
-    auto material = Renderer::Current->CreateMaterial(vs, ps);
-    m_RenderItem->SetMaterial(0, material);
+    return m_RenderItem->GetMaterialCount();
+}
+
+std::shared_ptr<Material> MeshRenderCmpt::GetMaterial(int index)
+{
+    return m_RenderItem->GetMaterial(index);
+}
+
+void MeshRenderCmpt::SetMaterial(int index, const std::string& materialPath)
+{
+    auto material = Renderer::Current->CreateMaterial(materialPath);
+    m_RenderItem->SetMaterial(index, material);
 }
 
 void MeshRenderCmpt::UpdateConstantBufferPerObject()
@@ -49,4 +54,8 @@ void MeshRenderCmpt::UpdateConstantBufferPerObject()
     auto perObject = (ConstantBufferDataPerObject*)m_ConstantBufferPerObject->GetData();
     perObject->m_WorldMatrix = GetOwner()->GetTransform()->GetRTSMatrix();
 }
+
+
+
+
 

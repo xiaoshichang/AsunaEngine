@@ -30,30 +30,16 @@ namespace asuna
 
     public:
         void SetMesh(const std::string& path);
-        void SetMaterial(const std::string& vs, const std::string& ps);
-
-        const std::string& GetMeshPath()
-        {
-            return m_MeshPath;
-        }
-
-        const std::string& GetVSPath()
-        {
-            return m_VSPath;
-        }
-
-        const std::string& GetPSPath()
-        {
-            return m_PSPath;
-        }
+        void SetMaterial(int index, const std::string& materialPath);
+        int GetMaterialCount() const;
+        std::shared_ptr<Material> GetMaterial(int index);
+        const std::string& GetMeshPath(){return m_MeshPath;}
 
     private:
         void UpdateConstantBufferPerObject();
 
     private:
         std::string m_MeshPath;
-        std::string m_VSPath;
-        std::string m_PSPath;
         std::shared_ptr<RenderItem> m_RenderItem = nullptr;
         std::shared_ptr<ConstantBuffer> m_ConstantBufferPerObject = nullptr;
     };

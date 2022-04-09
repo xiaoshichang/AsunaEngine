@@ -31,7 +31,7 @@ void WindowsEditor::Initialize(std::shared_ptr<ApplicationInitParam> param)
     auto girl = SceneManager::Instance->CreateGameObject("girl", nullptr);
     auto mesh = girl->AddComponent<MeshRenderCmpt>();
     mesh->SetMesh("Assets\\Models\\keqin.fbx");
-    mesh->SetMaterial("Assets\\Shaders\\triangle.vs", "Assets\\Shaders\\triangle.ps");
+    mesh->SetMaterial(0, "BaseColor");
 
     m_HierarchyPanel.Initialize();
     m_LogPanel.Initialize();

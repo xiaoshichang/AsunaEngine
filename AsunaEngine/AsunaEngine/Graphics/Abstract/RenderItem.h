@@ -48,6 +48,7 @@ namespace asuna
         }
 
         std::shared_ptr<Material> GetMaterial(int index) const;
+        int GetMaterialCount() const;
         void SetMaterial(int index, const std::shared_ptr<Material>& material);
 
 	public:

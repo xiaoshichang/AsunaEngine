@@ -21,11 +21,16 @@ void RenderItem::SetMaterial(int index, const shared_ptr<Material> &material)
     }
 }
 
-shared_ptr<Material> RenderItem::GetMaterial(int index) const
+std::shared_ptr<Material> RenderItem::GetMaterial(int index) const
 {
     if (index >= m_Materials.size())
     {
         return nullptr;
     }
     return m_Materials[index];
+}
+
+int RenderItem::GetMaterialCount() const
+{
+    return m_Materials.size();
 }
