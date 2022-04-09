@@ -45,6 +45,13 @@ shared_ptr<DirectX11VertexShader> DirectX11VertexShader::Create(const std::strin
 	return make_shared<DirectX11VertexShader>(vs, layout);
 }
 
+void DirectX11VertexShader::Bind()
+{
+    auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
+    context->m_DeviceContext->IASetInputLayout(m_Layout);
+    context->m_DeviceContext->VSSetShader(m_VS, 0, 0);
+}
+
 shared_ptr<DirectX11PixelShader> DirectX11PixelShader::Create(const std::string& path)
 {
 	HRESULT result;
@@ -68,4 +75,10 @@ shared_ptr<DirectX11PixelShader> DirectX11PixelShader::Create(const std::string&
 
 	byteCode->Release();
 	return make_shared<DirectX11PixelShader>(ps);
+}
+
+void DirectX11PixelShader::Bind()
+{
+    auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
+    context->m_DeviceContext->PSSetShader(m_PS, 0, 0);
 }

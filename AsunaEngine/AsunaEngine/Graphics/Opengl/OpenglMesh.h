@@ -7,11 +7,11 @@
 
 namespace asuna
 {
-	class OpengSubMesh : public SubMesh
+	class OpenglSubMesh : public SubMesh
 	{
 	public:
-		OpengSubMesh() = delete;
-		OpengSubMesh(
+		OpenglSubMesh() = delete;
+		OpenglSubMesh(
 			unsigned int vao,
 			std::shared_ptr<VertexBuffer> position,
 			std::shared_ptr<VertexBuffer> normal,
@@ -23,14 +23,14 @@ namespace asuna
 		{
 		}
 
-		virtual ~OpengSubMesh();
+        ~OpenglSubMesh();
 
 	public:
 		unsigned int GetGLPrimitive();
 		unsigned int m_VAO;
 
 	public:
-		static std::shared_ptr<OpengSubMesh> Create(std::shared_ptr<SubMeshCreateParam> param);
+		static std::shared_ptr<OpenglSubMesh> Create(std::shared_ptr<SubMeshCreateParam> param);
 	};
 
 

@@ -8,7 +8,7 @@
 using namespace asuna;
 using namespace std;
 
-asuna::OpengSubMesh::~OpengSubMesh()
+asuna::OpenglSubMesh::~OpenglSubMesh()
 {
 	if (m_VAO != 0)
 	{
@@ -17,7 +17,7 @@ asuna::OpengSubMesh::~OpengSubMesh()
 	}
 }
 
-unsigned int OpengSubMesh::GetGLPrimitive()
+unsigned int OpenglSubMesh::GetGLPrimitive()
 {
 	if (m_PrimitiveType == PrimitiveType::Triangle)
 	{
@@ -38,7 +38,7 @@ unsigned int OpengSubMesh::GetGLPrimitive()
 	}
 }
 
-std::shared_ptr<OpengSubMesh> OpengSubMesh::Create(std::shared_ptr<SubMeshCreateParam> param)
+std::shared_ptr<OpenglSubMesh> OpenglSubMesh::Create(std::shared_ptr<SubMeshCreateParam> param)
 {
 	std::shared_ptr<VertexBuffer> position = nullptr;
 	std::shared_ptr<VertexBuffer> normal = nullptr;
@@ -91,7 +91,7 @@ std::shared_ptr<OpengSubMesh> OpengSubMesh::Create(std::shared_ptr<SubMeshCreate
 		}
 		glBindVertexArray(0);
 	}
-	return make_shared<OpengSubMesh>(vao, position, normal, texcoord, index, param->m_PrimitiveType);
+	return make_shared<OpenglSubMesh>(vao, position, normal, texcoord, index, param->m_PrimitiveType);
 }
 
 
@@ -101,7 +101,7 @@ shared_ptr<OpenglMesh> OpenglMesh::Create(shared_ptr<MeshCreateParam> param)
 	for (size_t i = 0; i < param->m_SubMeshCount; i++)
 	{
 		auto subPram = param->m_SubMeshCreateParam[i];
-		auto subMesh = OpengSubMesh::Create(subPram);
+		auto subMesh = OpenglSubMesh::Create(subPram);
 		mesh->m_SubMeshes.push_back(subMesh);
 	}
 	return mesh;

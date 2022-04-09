@@ -29,3 +29,8 @@ bool Renderer::CheckLeftHandRenderAPI() const
             return false;
     }
 }
+
+std::shared_ptr<Material> Renderer::CreateMaterial(const shared_ptr<Shader> &vs, const shared_ptr<Shader> &ps)
+{
+    return Material::Create(vs, ps);
+}

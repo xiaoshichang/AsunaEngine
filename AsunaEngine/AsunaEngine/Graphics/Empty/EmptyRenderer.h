@@ -17,7 +17,7 @@ namespace asuna
 		 std::shared_ptr<Mesh> CreateMesh(const std::string& scenePath) override;
 		 std::shared_ptr<RenderTarget> CreateRenderTarget(RenderTargetDesc desc) override;
 		 std::shared_ptr<Shader> CreateShader(const std::string& scenePath, ShaderType shaderType) override;
-		 std::shared_ptr<RenderItem> CreateRenderItem(std::shared_ptr<Mesh> mesh, std::shared_ptr<Shader> vertexShader, std::shared_ptr<Shader> pixelShader, std::shared_ptr<ConstantBuffer> perObject) override;
+		 std::shared_ptr<RenderItem> CreateRenderItem(const std::shared_ptr<Mesh>& mesh, const std::vector<std::shared_ptr<Material>>& materials, const std::shared_ptr<ConstantBuffer>& perObject) override;
 		 std::shared_ptr<ConstantBuffer> CreateConstantBuffer(ConstantBufferDataType dt) override;
          std::shared_ptr<RenderItemQueue> CreateRenderItemQueue() override;
 	protected:

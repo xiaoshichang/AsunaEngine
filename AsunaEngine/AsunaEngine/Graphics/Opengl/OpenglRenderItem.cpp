@@ -65,7 +65,7 @@ void OpenglRenderItem::Render()
 
 	for (size_t i = 0; i < m_Mesh->m_SubMeshes.size(); i++)
 	{
-		auto submesh = dynamic_pointer_cast<OpengSubMesh>(m_Mesh->m_SubMeshes[i]);
+		auto submesh = dynamic_pointer_cast<OpenglSubMesh>(m_Mesh->m_SubMeshes[i]);
 		glBindVertexArray(submesh->m_VAO);
 		auto indexBuffer = dynamic_pointer_cast<OpenglIndexBuffer>(submesh->GetIndexBuffer());
 		indexBuffer->Bind();
@@ -75,7 +75,7 @@ void OpenglRenderItem::Render()
 	
 }
 
-std::shared_ptr<OpenglRenderItem> asuna::OpenglRenderItem::Create(std::shared_ptr<Mesh> mesh, std::shared_ptr<Shader> vs, std::shared_ptr<Shader> ps, std::shared_ptr<ConstantBuffer> perObject)
+shared_ptr<OpenglRenderItem> asuna::OpenglRenderItem::Create(const shared_ptr<Mesh>& mesh, const vector<shared_ptr<Material>>& materials, const shared_ptr<ConstantBuffer>& perObject)
 {
-	return make_shared<OpenglRenderItem>(mesh, vs, ps, perObject);
+	return make_shared<OpenglRenderItem>(mesh, materials, perObject);
 }

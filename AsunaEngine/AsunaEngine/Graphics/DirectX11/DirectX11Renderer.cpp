@@ -164,9 +164,12 @@ shared_ptr<ConstantBuffer> DirectX11Renderer::CreateConstantBuffer(ConstantBuffe
 	return cb;
 }
 
-shared_ptr<RenderItem> asuna::DirectX11Renderer::CreateRenderItem(shared_ptr<Mesh> mesh, shared_ptr<Shader> vs, shared_ptr<Shader> ps, shared_ptr<ConstantBuffer> perObject)
+shared_ptr<RenderItem> asuna::DirectX11Renderer::CreateRenderItem(
+        const std::shared_ptr<Mesh>& mesh,
+        const vector<std::shared_ptr<Material>>& materials,
+        const std::shared_ptr<ConstantBuffer>& perObject)
 {
-	return DirectX11RenderItem::Create(mesh, vs, ps, perObject);
+	return DirectX11RenderItem::Create(mesh, materials, perObject);
 }
 
 

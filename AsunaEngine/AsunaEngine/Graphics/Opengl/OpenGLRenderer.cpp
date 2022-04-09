@@ -255,9 +255,9 @@ std::shared_ptr<Shader> asuna::OpenGLRenderer::CreateShader(const std::string& p
 	return OpenglShader::Create(path, shaderType);
 }
 
-std::shared_ptr<RenderItem> asuna::OpenGLRenderer::CreateRenderItem(std::shared_ptr<Mesh> mesh, std::shared_ptr<Shader> vs, std::shared_ptr<Shader> ps, std::shared_ptr<ConstantBuffer> perObject)
+std::shared_ptr<RenderItem> asuna::OpenGLRenderer::CreateRenderItem(const std::shared_ptr<Mesh>& mesh, const vector<std::shared_ptr<Material>>& materials, const std::shared_ptr<ConstantBuffer>& perObject)
 {
-	return OpenglRenderItem::Create(mesh, vs, ps, perObject);
+	return OpenglRenderItem::Create(mesh, materials, perObject);
 }
 
 std::shared_ptr<ConstantBuffer> asuna::OpenGLRenderer::CreateConstantBuffer(ConstantBufferDataType dt)

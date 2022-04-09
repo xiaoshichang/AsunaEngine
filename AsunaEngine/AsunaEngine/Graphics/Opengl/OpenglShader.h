@@ -17,12 +17,14 @@ namespace asuna
 		{
 		}
 
-		virtual ~OpenglShader();
+		~OpenglShader() override;
 		
-		unsigned int GetShader()
+		unsigned int GetShader() const
 		{
 			return m_Shader;
 		}
+
+        void Bind() override;
 
 	private:
 		unsigned int m_Shader = 0;
@@ -45,13 +47,13 @@ namespace asuna
 		{
 		}
 
-		virtual ~OpenglShaderProgram();
+        ~OpenglShaderProgram();
 		
 
 	public:
 		unsigned int m_Program = 0;
 	public:
-		static std::shared_ptr<OpenglShaderProgram> Create(std::shared_ptr<OpenglShader> vs, std::shared_ptr<OpenglShader> ps);
+		static std::shared_ptr<OpenglShaderProgram> Create(const std::shared_ptr<OpenglShader>& vs, const std::shared_ptr<OpenglShader>& ps);
 	};
 
 }

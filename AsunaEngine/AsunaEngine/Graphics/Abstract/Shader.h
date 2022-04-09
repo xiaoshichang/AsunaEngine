@@ -13,14 +13,14 @@ namespace asuna
 	class Shader
 	{
 	public:
-		Shader(ShaderType shaderType) : 
+		explicit Shader(ShaderType shaderType) :
 			m_ShaderType(shaderType)
 		{
 		}
 
-		virtual ~Shader()
-		{
-		}
+		virtual ~Shader() = default;
+
+        virtual void Bind() = 0;
 
 	public:
 		ShaderType m_ShaderType;

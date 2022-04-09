@@ -23,15 +23,6 @@ void DirectX11RenderItem::BindConstantBufferPerObject(DirectX11RenderContext* co
 }
 
 
-void DirectX11RenderItem::BindShaders(DirectX11RenderContext* context)
-{
-    auto vs = dynamic_pointer_cast<DirectX11VertexShader>(GetVertexShader());
-    context->m_DeviceContext->IASetInputLayout(vs->GetLayout());
-    context->m_DeviceContext->VSSetShader(vs->GetShader(), 0, 0);
-    auto ps = dynamic_pointer_cast<DirectX11PixelShader>(GetPixelShader());
-    context->m_DeviceContext->PSSetShader(ps->GetShader(), 0, 0);
-}
-
 void DirectX11RenderItem::DrawMesh(DirectX11RenderContext* context)
 {
     auto mesh = GetMesh();
@@ -77,6 +68,9 @@ void DirectX11RenderItem::DrawMesh(DirectX11RenderContext* context)
         // https://docs.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-iasetindexbuffer
         context->m_DeviceContext->IASetIndexBuffer(ib->GetBuffer(), ib->GetDXGIFormat(), 0);
 
+        auto material = GetMaterial(0);
+        material->Apply();
+
         // https://docs.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-drawindexed
         context->m_DeviceContext->DrawIndexed(ib->GetElementCount(), 0, 0);
     }
@@ -84,20 +78,22 @@ void DirectX11RenderItem::DrawMesh(DirectX11RenderContext* context)
 
 void DirectX11RenderItem::Render()
 {
-    if (GetMesh() == nullptr || GetVertexShader() == nullptr || GetPixelShader() == nullptr)
+    if (GetMesh() == nullptr || GetMaterial(0) == nullptr)
     {
         return;
     }
 
 	auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext()).get();
     BindConstantBufferPerObject(context);
-    BindShaders(context);
     DrawMesh(context);
 }
 
-shared_ptr<DirectX11RenderItem> DirectX11RenderItem::Create(const shared_ptr<Mesh>& mesh, const shared_ptr<Shader>& vs, const shared_ptr<Shader>& ps, const shared_ptr<ConstantBuffer>& perObject)
+shared_ptr<DirectX11RenderItem> DirectX11RenderItem::Create(
+        const std::shared_ptr<Mesh>& mesh,
+        const vector<std::shared_ptr<Material>>& materials,
+        const std::shared_ptr<ConstantBuffer>& perObject)
 {
-	return make_shared<DirectX11RenderItem>(mesh, vs, ps, perObject);
+	return make_shared<DirectX11RenderItem>(mesh, materials, perObject);
 }
 
 

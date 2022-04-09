@@ -7,11 +7,13 @@
 #include "../../../Graphics/Abstract/Renderer.h"
 
 using namespace asuna;
+using namespace std;
 
 void MeshRenderCmpt::Initialize()
 {
     m_ConstantBufferPerObject = Renderer::Current->CreateConstantBuffer(ConstantBufferDataType::PerObject);
-    m_RenderItem = Renderer::Current->CreateRenderItem(nullptr, nullptr, nullptr, m_ConstantBufferPerObject);
+    vector<shared_ptr<Material>> materials;
+    m_RenderItem = Renderer::Current->CreateRenderItem(nullptr, materials, m_ConstantBufferPerObject);
     SceneManager::Instance->AddRenderItem(m_RenderItem);
 }
 
@@ -38,8 +40,8 @@ void MeshRenderCmpt::SetMaterial(const std::string &vsPath, const std::string &p
     m_PSPath = psPath;
     auto vs = Renderer::Current->CreateShader(vsPath, ShaderType::VertexShader);
     auto ps = Renderer::Current->CreateShader(psPath, ShaderType::PixelShader);
-    m_RenderItem->SetVertexShader(vs);
-    m_RenderItem->SetPixelShader(ps);
+    auto material = Renderer::Current->CreateMaterial(vs, ps);
+    m_RenderItem->SetMaterial(0, material);
 }
 
 void MeshRenderCmpt::UpdateConstantBufferPerObject()

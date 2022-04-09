@@ -37,6 +37,9 @@ std::shared_ptr<OpenglShader> asuna::OpenglShader::Create(const std::string& pat
 	return make_shared<OpenglShader>(shader, shaderType);
 }
 
+void OpenglShader::Bind()
+{
+}
 
 
 OpenglShaderProgram::~OpenglShaderProgram()
@@ -48,7 +51,7 @@ OpenglShaderProgram::~OpenglShaderProgram()
 	}
 }
 
-shared_ptr<OpenglShaderProgram> OpenglShaderProgram::Create(shared_ptr<OpenglShader> vs, shared_ptr<OpenglShader> ps)
+shared_ptr<OpenglShaderProgram> OpenglShaderProgram::Create(const std::shared_ptr<OpenglShader>& vs, const std::shared_ptr<OpenglShader>& ps)
 {
 	// Create a shader program object.
 	auto program = glCreateProgram();

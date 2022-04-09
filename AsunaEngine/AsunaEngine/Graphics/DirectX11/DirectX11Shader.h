@@ -18,7 +18,7 @@ namespace asuna
 		{
 		}
 
-		virtual ~DirectX11VertexShader()
+		~DirectX11VertexShader() override
 		{
 			if (m_VS != nullptr)
 			{
@@ -43,6 +43,8 @@ namespace asuna
 			return m_Layout;
 		}
 
+        void Bind() override;
+
 
 	private:
 		ID3D11VertexShader* m_VS;
@@ -56,14 +58,13 @@ namespace asuna
 	class DirectX11PixelShader : public Shader
 	{
 	public:
-		DirectX11PixelShader() = delete;
-		DirectX11PixelShader(ID3D11PixelShader* ps) :
+		explicit DirectX11PixelShader(ID3D11PixelShader* ps) :
 			m_PS(ps),
 			Shader(ShaderType::PixelShader)
 		{
 		}
 
-		virtual ~DirectX11PixelShader()
+		~DirectX11PixelShader() override
 		{
 			if (m_PS != nullptr)
 			{
@@ -76,6 +77,8 @@ namespace asuna
 		{
 			return m_PS;
 		}
+
+        void Bind() override;
 
 
 	private:

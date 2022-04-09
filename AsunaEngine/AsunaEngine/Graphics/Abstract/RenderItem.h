@@ -6,6 +6,8 @@
 #include "Shader.h"
 #include "RenderItem.h"
 #include "ConstantBuffer.h"
+#include "Material/Material.h"
+
 
 namespace asuna
 {
@@ -14,19 +16,18 @@ namespace asuna
 	public:
 		RenderItem() = delete;
 		RenderItem(
-			std::shared_ptr<Mesh>& mesh,
-			std::shared_ptr<Shader>& vertexShader,
-			std::shared_ptr<Shader>& pixelShader,
-			std::shared_ptr<ConstantBuffer>& perObject):
-			m_Mesh(mesh),
-			m_VertexShader(vertexShader),
-			m_PixelShader(pixelShader),
-			m_ConstantBufferPerObject(perObject)
-		{}
+                const std::shared_ptr<Mesh>& mesh,
+                const std::vector<std::shared_ptr<Material>>& materials,
+                const std::shared_ptr<ConstantBuffer>& perObject)
+		{
+            m_Mesh = mesh;
+            m_ConstantBufferPerObject = perObject;
+            m_Materials = materials;
+        }
 
 		virtual ~RenderItem() = default;
 
-		std::shared_ptr<Mesh> GetMesh()
+        std::shared_ptr<Mesh> GetMesh()
 		{
 			return m_Mesh;
 		}
@@ -36,27 +37,7 @@ namespace asuna
             m_Mesh = mesh;
         }
 
-		std::shared_ptr<Shader> GetVertexShader()
-		{
-			return m_VertexShader;
-		}
-
-        void SetVertexShader(const std::shared_ptr<Shader>& vs)
-        {
-            m_VertexShader = vs;
-        }
-
-		std::shared_ptr<Shader> GetPixelShader()
-		{
-			return m_PixelShader;
-		}
-
-        void SetPixelShader(const std::shared_ptr<Shader>& ps)
-        {
-            m_PixelShader = ps;
-        }
-
-		std::shared_ptr<ConstantBuffer> GetConstantBufferPerObject()
+        std::shared_ptr<ConstantBuffer> GetConstantBufferPerObject()
 		{
 			return m_ConstantBufferPerObject;
 		}
@@ -66,15 +47,17 @@ namespace asuna
             m_ConstantBufferPerObject = cb;
         }
 
+        std::shared_ptr<Material> GetMaterial(int index) const;
+        void SetMaterial(int index, const std::shared_ptr<Material>& material);
+
 	public:
 		virtual void Render() = 0;
 
 
 	private:
-		std::shared_ptr<Mesh> m_Mesh;
-		std::shared_ptr<Shader> m_VertexShader;
-		std::shared_ptr<Shader> m_PixelShader;
-		std::shared_ptr<ConstantBuffer> m_ConstantBufferPerObject;
+        std::shared_ptr<Mesh> m_Mesh;
+        std::vector<std::shared_ptr<Material>> m_Materials;
+        std::shared_ptr<ConstantBuffer> m_ConstantBufferPerObject;
 	};
 }
 

@@ -10,8 +10,8 @@ namespace asuna
 	class OpenglRenderItem : public RenderItem
 	{
 	public:
-		OpenglRenderItem(std::shared_ptr<Mesh> mesh, std::shared_ptr<Shader> vs, std::shared_ptr<Shader> ps, std::shared_ptr<ConstantBuffer> perObject) :
-			RenderItem(mesh, vs, ps, perObject)
+		OpenglRenderItem(const std::shared_ptr<Mesh>& mesh, const std::vector<std::shared_ptr<Material>>& materials, const std::shared_ptr<ConstantBuffer>& perObject) :
+			RenderItem(mesh, materials, perObject)
 		{
 		}
 
@@ -21,7 +21,7 @@ namespace asuna
 
 		virtual void Render() override;
 
-		static std::shared_ptr<OpenglRenderItem> Create(std::shared_ptr<Mesh> mesh, std::shared_ptr<Shader> vs, std::shared_ptr<Shader> ps, std::shared_ptr<ConstantBuffer> perObject);
+		static std::shared_ptr<OpenglRenderItem> Create(const std::shared_ptr<Mesh>& mesh, const std::vector<std::shared_ptr<Material>>& materials, const std::shared_ptr<ConstantBuffer>& perObject);
 
 	private:
 		std::shared_ptr<OpenglShaderProgram> m_ShaderProgram;
