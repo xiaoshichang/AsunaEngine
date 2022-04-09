@@ -5,20 +5,13 @@ struct v2p
 	float4 position : SV_POSITION;
 };
 
-cbuffer ConstantBufferPerScene
+cbuffer ConstantBufferPerMaterial
 {
-    matrix viewMatrix;
-    matrix projectionMatrix;
-    matrix vp;
-};
-
-cbuffer ConstantBufferPerObject
-{
-    matrix worldMatrix;
+    float4 mainColor;
 }
 
 float4 main(v2p input) : SV_TARGET
 {
-    return float4(frac(input.position.x), frac(input.position.y), frac(input.position.z), 1);
+    return mainColor;
 }
 

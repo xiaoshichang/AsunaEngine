@@ -9,7 +9,7 @@
 using namespace asuna;
 using namespace std;
 
-shared_ptr<DirectX11VextexShader> DirectX11VextexShader::Create(const std::string& path)
+shared_ptr<DirectX11VertexShader> DirectX11VertexShader::Create(const std::string& path)
 {
 	HRESULT result;
 	ID3D10Blob* errorMessage;
@@ -42,7 +42,7 @@ shared_ptr<DirectX11VextexShader> DirectX11VextexShader::Create(const std::strin
 
 	context->m_Device->CreateInputLayout(ied, 1, byteCode->GetBufferPointer(), byteCode->GetBufferSize(), &layout);
 	byteCode->Release();
-	return make_shared<DirectX11VextexShader>(vs, layout);
+	return make_shared<DirectX11VertexShader>(vs, layout);
 }
 
 shared_ptr<DirectX11PixelShader> DirectX11PixelShader::Create(const std::string& path)

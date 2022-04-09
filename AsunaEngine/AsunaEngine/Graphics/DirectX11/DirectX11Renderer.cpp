@@ -145,7 +145,7 @@ shared_ptr<Shader> asuna::DirectX11Renderer::CreateShader(const string& path, Sh
 {
 	if (shaderType == ShaderType::VertexShader)
 	{
-		return DirectX11VextexShader::Create(path);
+		return DirectX11VertexShader::Create(path);
 	}
 	else if (shaderType == ShaderType::PixelShader)
 	{

@@ -9,7 +9,7 @@ int main()
 {
     auto param = make_shared<ApplicationInitParam>();
     param->RenderAPIType = RenderAPIType::Directx11;
-    param->WindowWidth = 1600;
+    param->WindowWidth = 1200;
     param->WindowHeight = 800;
     param->LogFile = (char*)"Player";
     param->LogDir = (char*)"Logs";

@@ -7,18 +7,18 @@
 namespace asuna
 {
 
-	class DirectX11VextexShader : public Shader
+	class DirectX11VertexShader : public Shader
 	{
 	public:
-		DirectX11VextexShader() = delete;
-		DirectX11VextexShader(ID3D11VertexShader* vs, ID3D11InputLayout* layout) : 
+		DirectX11VertexShader() = delete;
+		DirectX11VertexShader(ID3D11VertexShader* vs, ID3D11InputLayout* layout) :
 			m_VS(vs),
 			m_Layout(layout),
 			Shader(ShaderType::VertexShader)
 		{
 		}
 
-		virtual ~DirectX11VextexShader()
+		virtual ~DirectX11VertexShader()
 		{
 			if (m_VS != nullptr)
 			{
@@ -49,7 +49,7 @@ namespace asuna
 		ID3D11InputLayout* m_Layout;              
 
 	public:
-		static std::shared_ptr<DirectX11VextexShader> Create(const std::string& path);
+		static std::shared_ptr<DirectX11VertexShader> Create(const std::string& path);
 	};
 
 

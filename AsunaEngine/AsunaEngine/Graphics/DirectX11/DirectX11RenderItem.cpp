@@ -25,7 +25,7 @@ void DirectX11RenderItem::BindConstantBufferPerObject(DirectX11RenderContext* co
 
 void DirectX11RenderItem::BindShaders(DirectX11RenderContext* context)
 {
-    auto vs = dynamic_pointer_cast<DirectX11VextexShader>(GetVertexShader());
+    auto vs = dynamic_pointer_cast<DirectX11VertexShader>(GetVertexShader());
     context->m_DeviceContext->IASetInputLayout(vs->GetLayout());
     context->m_DeviceContext->VSSetShader(vs->GetShader(), 0, 0);
     auto ps = dynamic_pointer_cast<DirectX11PixelShader>(GetPixelShader());
