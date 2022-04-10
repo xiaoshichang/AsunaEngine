@@ -14,6 +14,7 @@ Material::Material(const std::string& materialPath) :
     m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\triangle.vs", ShaderType::VertexShader);
     m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\triangle.ps", ShaderType::PixelShader);
     m_PerMaterial = Renderer::Current->CreateConstantBuffer(ConstantBufferDataType::PerMaterial, 512);
+    BuildMaterialParametersLayout();
 }
 
 shared_ptr<Material> Material::Create(const std::string& materialPath)
@@ -52,6 +53,19 @@ void Material::SetFloat(const string &name, float value)
     {
         pair->second = value;
     }
+
+    auto offset = GetParamOffset(name);
+    if (offset == -1)
+    {
+        Logger::Warning("%s not found in parameter defines", name.c_str());
+    }
+    else
+    {
+        char* buffer = (char*)m_PerMaterial->GetData();
+        char* address = buffer + offset;
+        memcpy(address, &value, sizeof(float));
+    }
+
 }
 
 void Material::SetVector4(const string &name, Vector4f value)
@@ -64,6 +78,18 @@ void Material::SetVector4(const string &name, Vector4f value)
     else
     {
         pair->second = value;
+    }
+
+    auto offset = GetParamOffset(name);
+    if (offset == -1)
+    {
+        Logger::Warning("%s not found in parameter defines", name.c_str());
+    }
+    else
+    {
+        char* buffer = (char*)m_PerMaterial->GetData();
+        char* address = buffer + offset;
+        memcpy(address, &value, sizeof(Vector4f));
     }
 }
 
@@ -82,4 +108,27 @@ const string& Material::GetName()
     return m_MaterialName;
 }
 
+int Material::GetParamOffset(const string &name)
+{
+    auto kv = m_ParamDefines.find(name);
+    if (kv != m_ParamDefines.end())
+    {
+        return kv->second.m_Offset;
+    }
+    return -1;
+}
 
+MaterialParameterType Material::GetParamType(const string &name)
+{
+    auto kv = m_ParamDefines.find(name);
+    if (kv != m_ParamDefines.end())
+    {
+        return kv->second.m_Type;
+    }
+    return MaterialParameterType::Unknown;
+}
+
+void Material::BuildMaterialParametersLayout()
+{
+    m_ParamDefines["BaseColor"] = {0, MaterialParameterType::Vector4};
+}

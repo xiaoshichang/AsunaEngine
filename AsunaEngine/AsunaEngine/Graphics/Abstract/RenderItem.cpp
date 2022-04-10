@@ -6,13 +6,9 @@ using namespace std;
 void RenderItem::SetMaterial(int index, const shared_ptr<Material> &material)
 {
     {
-        if (index > m_Materials.size())
+        if (index >= m_Materials.size())
         {
             return;
-        }
-        else if (index == m_Materials.size())
-        {
-            m_Materials.push_back(material);
         }
         else
         {
@@ -33,4 +29,13 @@ std::shared_ptr<Material> RenderItem::GetMaterial(int index) const
 int RenderItem::GetMaterialCount() const
 {
     return m_Materials.size();
+}
+
+void RenderItem::AllocateMaterials(int count)
+{
+    m_Materials.clear();
+    for (int i = 0; i < count; ++i)
+    {
+        m_Materials.push_back(nullptr);
+    }
 }

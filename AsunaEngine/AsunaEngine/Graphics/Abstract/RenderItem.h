@@ -56,9 +56,10 @@ namespace asuna
             m_ConstantBufferPerObject = cb;
         }
 
+        void AllocateMaterials(int count);
+        void SetMaterial(int index, const std::shared_ptr<Material>& material);
         std::shared_ptr<Material> GetMaterial(int index) const;
         int GetMaterialCount() const;
-        void SetMaterial(int index, const std::shared_ptr<Material>& material);
 
 	public:
 		virtual void Render() = 0;

@@ -37,6 +37,7 @@ void DirectX11ConstantBuffer::Bind()
     memcpy(dataPtr, m_Data, m_Size);
     context->m_DeviceContext->Unmap(m_ConstantBuffer, 0);
 
+    // todo: get startSlot from shader reflection without hardcode
     if (GetDataType() == ConstantBufferDataType::PerFrame)
     {
         context->m_DeviceContext->VSSetConstantBuffers(0, 1, &m_ConstantBuffer);
@@ -47,6 +48,7 @@ void DirectX11ConstantBuffer::Bind()
     }
     else if(GetDataType() == ConstantBufferDataType::PerMaterial)
     {
+        context->m_DeviceContext->VSSetConstantBuffers(2, 1, &m_ConstantBuffer);
         context->m_DeviceContext->PSSetConstantBuffers(0, 1, &m_ConstantBuffer);
     }
     else

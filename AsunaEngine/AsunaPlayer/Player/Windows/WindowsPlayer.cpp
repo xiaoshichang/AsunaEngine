@@ -20,6 +20,8 @@ void WindowsPlayer::Initialize(std::shared_ptr<ApplicationInitParam> param)
     for (int i = 0; i < 20; ++i)
     {
         mesh->SetMaterial(i, "BaseColor");
+        auto material = mesh->GetMaterial(i);
+        material->SetVector4("BaseColor", {0.05f * i, 0.05f * i, 0.05f * i, 1.0f});
     }
 }
 

@@ -13,6 +13,7 @@ void MeshRenderCmpt::Initialize()
 {
     m_ConstantBufferPerObject = Renderer::Current->CreateConstantBuffer(ConstantBufferDataType::PerObject, sizeof(ConstantBufferDataPerObject));
     m_RenderItem = Renderer::Current->CreateRenderItem(nullptr, m_ConstantBufferPerObject);
+    AllocateMaterials(20);
     SceneManager::Instance->AddRenderItem(m_RenderItem);
 }
 
@@ -32,6 +33,12 @@ void MeshRenderCmpt::SetMesh(const std::string &path)
     auto mesh = Renderer::Current->CreateMesh(path);
     m_RenderItem->SetMesh(mesh);
 }
+
+void MeshRenderCmpt::AllocateMaterials(int count)
+{
+    m_RenderItem->AllocateMaterials(count);
+}
+
 int MeshRenderCmpt::GetMaterialCount() const
 {
     return m_RenderItem->GetMaterialCount();
@@ -53,6 +60,7 @@ void MeshRenderCmpt::UpdateConstantBufferPerObject()
     auto perObject = (ConstantBufferDataPerObject*)m_ConstantBufferPerObject->GetData();
     perObject->m_WorldMatrix = GetOwner()->GetTransform()->GetRTSMatrix();
 }
+
 
 
 

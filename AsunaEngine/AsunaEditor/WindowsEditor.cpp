@@ -31,7 +31,12 @@ void WindowsEditor::Initialize(std::shared_ptr<ApplicationInitParam> param)
     auto girl = SceneManager::Instance->CreateGameObject("girl", nullptr);
     auto mesh = girl->AddComponent<MeshRenderCmpt>();
     mesh->SetMesh("Assets\\Models\\keqin.fbx");
-    mesh->SetMaterial(0, "BaseColor");
+    for (int i = 0; i < 20; ++i)
+    {
+        mesh->SetMaterial(i, "BaseColor");
+        auto material = mesh->GetMaterial(i);
+        material->SetVector4("BaseColor", {0.05f * i, 0.05f * i, 0.05f * i, 1.0f});
+    }
 
     m_HierarchyPanel.Initialize();
     m_LogPanel.Initialize();

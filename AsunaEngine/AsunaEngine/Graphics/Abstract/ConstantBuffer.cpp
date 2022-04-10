@@ -18,8 +18,6 @@ ConstantBuffer::ConstantBuffer(ConstantBufferDataType dt, int size)  :
     else
     {
         m_Data = new char[size];
-        Vector4f red(1.0f, 1.0f, 0.0f, 1.0f);
-        memcpy(m_Data, &red, sizeof(Vector4f));
         m_Size = size;
     }
 }
