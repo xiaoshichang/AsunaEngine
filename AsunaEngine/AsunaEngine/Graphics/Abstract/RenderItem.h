@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <utility>
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "Mesh.h"
@@ -17,12 +18,20 @@ namespace asuna
 		RenderItem() = delete;
 		RenderItem(
                 const std::shared_ptr<Mesh>& mesh,
-                const std::vector<std::shared_ptr<Material>>& materials,
+                std::vector<std::shared_ptr<Material>>  materials,
                 const std::shared_ptr<ConstantBuffer>& perObject)
 		{
             m_Mesh = mesh;
             m_ConstantBufferPerObject = perObject;
-            m_Materials = materials;
+            m_Materials = std::move(materials);
+        }
+
+        RenderItem(
+                const std::shared_ptr<Mesh>& mesh,
+                const std::shared_ptr<ConstantBuffer>& perObject)
+        {
+            m_Mesh = mesh;
+            m_ConstantBufferPerObject = perObject;
         }
 
 		virtual ~RenderItem() = default;

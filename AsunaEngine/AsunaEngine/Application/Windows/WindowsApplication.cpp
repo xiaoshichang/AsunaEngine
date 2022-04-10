@@ -4,7 +4,6 @@
 #include "../../Foundation/Math/AMath.h"
 #include "../../Graphics/Abstract/Renderer.h"
 
-#include "../../Graphics/Empty/EmptyRenderer.h"
 #include "../../Graphics/DirectX11/DirectX11Renderer.h"
 #include "../../Graphics/Opengl/OpenGLRenderer.h"
 #include "../../GUI/GUI.h"
@@ -125,11 +124,7 @@ void WindowsApplication::InitMainWindow(int width, int height)
 void WindowsApplication::InitRenderer(RenderAPIType api, int width, int height)
 {
 	ASUNA_ASSERT(Renderer::Current == nullptr);
-	if (api == RenderAPIType::None)
-	{
-		Renderer::Current = new EmptyRenderer();
-	}
-	else if (api == RenderAPIType::Directx11)
+    if (api == RenderAPIType::Directx11)
 	{
 		Renderer::Current = new DirectX11Renderer();
 	}

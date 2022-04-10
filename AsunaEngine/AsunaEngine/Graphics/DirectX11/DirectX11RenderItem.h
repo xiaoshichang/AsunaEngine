@@ -12,10 +12,18 @@ namespace asuna
 	class DirectX11RenderItem : public RenderItem
 	{
 	public:
-		DirectX11RenderItem(const std::shared_ptr<Mesh>& mesh, const std::vector<std::shared_ptr<Material>>& materials, const std::shared_ptr<ConstantBuffer>& perObject):
+		DirectX11RenderItem(const std::shared_ptr<Mesh>& mesh,
+                            const std::vector<std::shared_ptr<Material>>& materials,
+                            const std::shared_ptr<ConstantBuffer>& perObject):
 			RenderItem(mesh, materials, perObject)
 		{
 		}
+
+        DirectX11RenderItem(const std::shared_ptr<Mesh>& mesh,
+                            const std::shared_ptr<ConstantBuffer>& perObject):
+                RenderItem(mesh, perObject)
+        {
+        }
 
 		~DirectX11RenderItem() override = default;
 
@@ -23,6 +31,10 @@ namespace asuna
 		static std::shared_ptr<DirectX11RenderItem> Create(
                 const std::shared_ptr<Mesh>& mesh,
                 const std::vector<std::shared_ptr<Material>>& materials,
+                const std::shared_ptr<ConstantBuffer>& perObject);
+
+        static std::shared_ptr<DirectX11RenderItem> Create(
+                const std::shared_ptr<Mesh>& mesh,
                 const std::shared_ptr<ConstantBuffer>& perObject);
 
     private:

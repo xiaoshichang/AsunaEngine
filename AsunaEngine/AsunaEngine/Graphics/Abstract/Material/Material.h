@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include "../../../Foundation/Math/AMath.h"
 #include "../Shader.h"
+#include "../ConstantBuffer.h"
 
 namespace asuna
 {
@@ -47,6 +48,7 @@ namespace asuna
         std::string m_MaterialName;
         std::shared_ptr<Shader> m_VS;
         std::shared_ptr<Shader> m_PS;
+        std::shared_ptr<ConstantBuffer> m_PerMaterial;
         std::unordered_map<std::string, float> m_FloatParams;
         std::unordered_map<std::string, Vector4f> m_Vector4Params;
 

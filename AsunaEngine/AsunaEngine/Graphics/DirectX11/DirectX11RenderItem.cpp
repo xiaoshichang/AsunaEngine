@@ -8,18 +8,7 @@ using namespace std;
 
 void DirectX11RenderItem::BindConstantBufferPerObject(DirectX11RenderContext* context)
 {
-    auto cb = dynamic_pointer_cast<DirectX11ConstantBuffer>(GetConstantBufferPerObject());
-    auto data = (ConstantBufferDataPerObject*)cb->GetData();
-    auto buffer = cb->GetBuffer();
-    // map data
-    D3D11_MAPPED_SUBRESOURCE mappedResource;
-    auto result = context->m_DeviceContext->Map(buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-    ASUNA_ASSERT(SUCCEEDED(result));
-    auto dataPtr = (ConstantBufferDataPerObject*)mappedResource.pData;
-    memcpy(dataPtr, data, sizeof(ConstantBufferDataPerObject));
-    context->m_DeviceContext->Unmap(buffer, 0);
-    context->m_DeviceContext->VSSetConstantBuffers(1, 1, &buffer);
-    context->m_DeviceContext->PSSetConstantBuffers(1, 1, &buffer);
+    GetConstantBufferPerObject()->Bind();
 }
 
 
@@ -102,6 +91,13 @@ shared_ptr<DirectX11RenderItem> DirectX11RenderItem::Create(
         const std::shared_ptr<ConstantBuffer>& perObject)
 {
 	return make_shared<DirectX11RenderItem>(mesh, materials, perObject);
+}
+
+shared_ptr<DirectX11RenderItem> DirectX11RenderItem::Create(
+        const shared_ptr<Mesh> &mesh,
+        const shared_ptr<ConstantBuffer> &perObject)
+{
+    return make_shared<DirectX11RenderItem>(mesh, perObject);
 }
 
 

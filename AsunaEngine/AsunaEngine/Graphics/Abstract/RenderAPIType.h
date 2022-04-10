@@ -8,9 +8,7 @@ namespace asuna
 	{
 		None = 0,
 		Directx11,
-		Directx12,
 		Opengl,
-		Opengles,
 	};
 
 	

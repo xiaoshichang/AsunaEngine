@@ -158,9 +158,9 @@ shared_ptr<Shader> asuna::DirectX11Renderer::CreateShader(const string& path, Sh
 	}
 }
 
-shared_ptr<ConstantBuffer> DirectX11Renderer::CreateConstantBuffer(ConstantBufferDataType dt)
+shared_ptr<ConstantBuffer> DirectX11Renderer::CreateConstantBuffer(ConstantBufferDataType dt, int size)
 {
-	auto cb = DirectX11ConstantBuffer::Create(dt);
+	auto cb = DirectX11ConstantBuffer::Create(dt, size);
 	return cb;
 }
 
@@ -170,6 +170,12 @@ shared_ptr<RenderItem> asuna::DirectX11Renderer::CreateRenderItem(
         const std::shared_ptr<ConstantBuffer>& perObject)
 {
 	return DirectX11RenderItem::Create(mesh, materials, perObject);
+}
+
+shared_ptr<RenderItem>
+DirectX11Renderer::CreateRenderItem(const shared_ptr<Mesh> &mesh, const shared_ptr<ConstantBuffer> &perObject)
+{
+    return DirectX11RenderItem::Create(mesh, perObject);
 }
 
 
@@ -397,3 +403,5 @@ void DirectX11Renderer::SetViewPort(int x, int y, int width, int height)
     // Create the viewport.
     context->m_DeviceContext->RSSetViewports(1, &viewport);
 }
+
+

@@ -260,7 +260,7 @@ std::shared_ptr<RenderItem> asuna::OpenGLRenderer::CreateRenderItem(const std::s
 	return OpenglRenderItem::Create(mesh, materials, perObject);
 }
 
-std::shared_ptr<ConstantBuffer> asuna::OpenGLRenderer::CreateConstantBuffer(ConstantBufferDataType dt)
+std::shared_ptr<ConstantBuffer> asuna::OpenGLRenderer::CreateConstantBuffer(ConstantBufferDataType dt, int size)
 {
 	return std::shared_ptr<ConstantBuffer>();
 }
@@ -288,6 +288,12 @@ std::shared_ptr<RenderItemQueue> OpenGLRenderer::CreateRenderItemQueue()
 void OpenGLRenderer::SetViewPort(int x, int y, int width, int height)
 {
 
+}
+
+std::shared_ptr<RenderItem>
+OpenGLRenderer::CreateRenderItem(const shared_ptr<Mesh> &mesh, const shared_ptr<ConstantBuffer> &perObject)
+{
+    return std::shared_ptr<RenderItem>();
 }
 
 

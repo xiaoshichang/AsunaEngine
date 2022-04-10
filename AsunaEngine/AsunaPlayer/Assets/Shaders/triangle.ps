@@ -5,6 +5,18 @@ struct v2p
 	float4 position : SV_POSITION;
 };
 
+cbuffer ConstantBufferPerFrame
+{
+    matrix viewMatrix;
+    matrix projectionMatrix;
+    matrix vp;
+};
+
+cbuffer ConstantBufferPerObject
+{
+    matrix worldMatrix;
+}
+
 cbuffer ConstantBufferPerMaterial
 {
     float4 mainColor;

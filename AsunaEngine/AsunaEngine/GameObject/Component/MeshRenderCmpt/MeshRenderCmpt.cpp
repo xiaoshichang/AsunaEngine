@@ -11,9 +11,8 @@ using namespace std;
 
 void MeshRenderCmpt::Initialize()
 {
-    m_ConstantBufferPerObject = Renderer::Current->CreateConstantBuffer(ConstantBufferDataType::PerObject);
-    vector<shared_ptr<Material>> materials;
-    m_RenderItem = Renderer::Current->CreateRenderItem(nullptr, materials, m_ConstantBufferPerObject);
+    m_ConstantBufferPerObject = Renderer::Current->CreateConstantBuffer(ConstantBufferDataType::PerObject, sizeof(ConstantBufferDataPerObject));
+    m_RenderItem = Renderer::Current->CreateRenderItem(nullptr, m_ConstantBufferPerObject);
     SceneManager::Instance->AddRenderItem(m_RenderItem);
 }
 

@@ -13,6 +13,7 @@ Material::Material(const std::string& materialPath) :
 {
     m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\triangle.vs", ShaderType::VertexShader);
     m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\triangle.ps", ShaderType::PixelShader);
+    m_PerMaterial = Renderer::Current->CreateConstantBuffer(ConstantBufferDataType::PerMaterial, 512);
 }
 
 shared_ptr<Material> Material::Create(const std::string& materialPath)
@@ -24,6 +25,7 @@ void Material::Apply()
 {
     m_VS->Bind();
     m_PS->Bind();
+    m_PerMaterial->Bind();
 }
 
 float Material::GetFloat(const string &name)

@@ -19,10 +19,8 @@ bool Renderer::CheckLeftHandRenderAPI() const
     switch (m_APIType)
     {
         case RenderAPIType::Directx11:
-        case RenderAPIType::Directx12:
             return true;
         case RenderAPIType::Opengl:
-        case RenderAPIType::Opengles:
             return false;
         default:
             ASUNA_ASSERT(false);

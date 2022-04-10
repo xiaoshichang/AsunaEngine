@@ -10,9 +10,9 @@ namespace asuna
 	{
 	public:
 		DirectX11ConstantBuffer() = delete;
-		explicit DirectX11ConstantBuffer(ConstantBufferDataType dt, ID3D11Buffer* cb) :
+		explicit DirectX11ConstantBuffer(ConstantBufferDataType dt, int size, ID3D11Buffer* cb) :
 			m_ConstantBuffer(cb),
-			ConstantBuffer(dt)
+			ConstantBuffer(dt, size)
 		{
 		}
 
@@ -30,12 +30,14 @@ namespace asuna
 			return m_ConstantBuffer;
 		}
 
+        void Bind() override;
+
 
 	private:
 		ID3D11Buffer* m_ConstantBuffer = nullptr;
 
 	public:
-		static std::shared_ptr<DirectX11ConstantBuffer> Create(ConstantBufferDataType dt);
+		static std::shared_ptr<DirectX11ConstantBuffer> Create(ConstantBufferDataType dt, int size);
 
 	};
 

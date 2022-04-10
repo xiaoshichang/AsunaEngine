@@ -18,7 +18,7 @@ SceneManager::SceneManager() :
 
 void SceneManager::Initialize()
 {
-    m_ConstantBufferPerScene = Renderer::Current->CreateConstantBuffer(ConstantBufferDataType::PerFrame);
+    m_ConstantBufferPerScene = Renderer::Current->CreateConstantBuffer(ConstantBufferDataType::PerFrame, sizeof(ConstantBufferDataPerFrame));
     m_RenderItemQueue = Renderer::Current->CreateRenderItemQueue();
     m_Root = std::make_shared<GameObject>("Root");
 }

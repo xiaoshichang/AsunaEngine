@@ -28,18 +28,24 @@ namespace asuna
 	class ConstantBuffer
 	{
 	public:
-		explicit ConstantBuffer(ConstantBufferDataType dt);
+		explicit ConstantBuffer(ConstantBufferDataType dt, int size);
 		virtual ~ConstantBuffer();
 		void* GetData()
 		{
 			return m_Data;
 		}
 
-        static int GetDataSizeByDataType(ConstantBufferDataType dt);
+        ConstantBufferDataType GetDataType()
+        {
+            return m_DataType;
+        }
+
+        virtual void Bind() = 0;
 
 
-	private:
+	protected:
         ConstantBufferDataType m_DataType;
+        int m_Size;
 		void* m_Data = nullptr;
 
 	};
