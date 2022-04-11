@@ -25,7 +25,7 @@ void WindowsEditor::Initialize(std::shared_ptr<ApplicationInitParam> param)
     WindowsApplication::Initialize(param);
 
     auto camera = SceneManager::Instance->CreateGameObject("Camera", nullptr);
-    camera->GetTransform()->SetPosition(0, 0, 60);
+    camera->GetTransform()->SetPosition(0, 0, -60);
     camera->AddComponent<CameraCmpt>();
 
     auto girl = SceneManager::Instance->CreateGameObject("girl", nullptr);

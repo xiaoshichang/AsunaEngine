@@ -106,9 +106,16 @@ void GamePanel::RenderRTTOWindow()
 
 void GamePanel::ResizeRT()
 {
-    RenderTargetDesc desc{0};
-    desc.width = m_TargetResolutionWidth;
-    desc.height = m_TargetResolutionHeight;
-    m_RT = Renderer::Current->CreateRenderTarget(desc);
+    if (m_RT == nullptr)
+    {
+        RenderTargetDesc desc{0};
+        desc.width = m_TargetResolutionWidth;
+        desc.height = m_TargetResolutionHeight;
+        m_RT = Renderer::Current->CreateRenderTarget(desc);
+    }
+    else
+    {
+        m_RT->Resize(m_TargetResolutionWidth, m_TargetResolutionHeight);
+    }
 }
 

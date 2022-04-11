@@ -24,6 +24,7 @@ namespace asuna
 		 std::shared_ptr<RenderItem> CreateRenderItem(const std::shared_ptr<Mesh>& mesh, const std::vector<std::shared_ptr<Material>>& materials, const std::shared_ptr<ConstantBuffer>& perObject) override;
          std::shared_ptr<RenderItem> CreateRenderItem(const std::shared_ptr<Mesh>& mesh, const std::shared_ptr<ConstantBuffer>& perObject) override;
 		 std::shared_ptr<ConstantBuffer> CreateConstantBuffer(ConstantBufferDataType dt, int size) override;
+         std::shared_ptr<DepthStencilState> CreateDepthStencilState() override;
          std::shared_ptr<RenderItemQueue> CreateRenderItemQueue() override;
 
 	private:

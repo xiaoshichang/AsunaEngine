@@ -8,6 +8,7 @@
 #include "../../../Foundation/Math/AMath.h"
 #include "../Shader.h"
 #include "../ConstantBuffer.h"
+#include "../DepthStencilState.h"
 
 namespace asuna
 {
@@ -69,6 +70,7 @@ namespace asuna
         std::shared_ptr<Shader> m_VS;
         std::shared_ptr<Shader> m_PS;
         std::shared_ptr<ConstantBuffer> m_PerMaterial;
+        std::shared_ptr<DepthStencilState> m_DepthStencilState;
         std::unordered_map<std::string, float> m_FloatParams;
         std::unordered_map<std::string, Vector4f> m_Vector4Params;
         std::unordered_map<std::string, MaterialParameter> m_ParamDefines;

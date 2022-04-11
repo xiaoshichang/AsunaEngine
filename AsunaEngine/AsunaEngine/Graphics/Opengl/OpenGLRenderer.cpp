@@ -296,4 +296,9 @@ OpenGLRenderer::CreateRenderItem(const shared_ptr<Mesh> &mesh, const shared_ptr<
     return std::shared_ptr<RenderItem>();
 }
 
+std::shared_ptr<DepthStencilState> OpenGLRenderer::CreateDepthStencilState()
+{
+    return std::shared_ptr<DepthStencilState>();
+}
+
 
