@@ -8,6 +8,7 @@
 #include "AsunaEngine/Graphics/DirectX11/DirectX11RenderTarget.h"
 #include "AsunaEngine/Scene/SceneManager.h"
 #include "AsunaEngine/Foundation/Platform/Assert.h"
+#include "AsunaEngine/Foundation/Platform/Platform.h"
 #include "../Events/EditorEventManager.h"
 
 using namespace asuna;
@@ -74,8 +75,15 @@ void GamePanel::RenderResolutionOptions()
 
 void GamePanel::RenderSceneToRT()
 {
-    Renderer::Current->SetViewPort(0, 0, m_TargetResolutionWidth, m_TargetResolutionHeight);
-    SceneManager::Instance->Render(m_RT);
+    if (Renderer::Current->m_APIType == RenderAPIType::Directx11)
+    {
+        Renderer::Current->SetViewPort(0, 0, m_TargetResolutionWidth, m_TargetResolutionHeight);
+        SceneManager::Instance->Render(m_RT);
+    }
+    else
+    {
+
+    }
 }
 
 void GamePanel::RenderRTTOWindow()
@@ -99,9 +107,17 @@ void GamePanel::RenderRTTOWindow()
     ImGui::SetCursorPosX((float)winWidth / 2 - warpWidth / 2 + 10);
     ImGui::SetCursorPosY((float)(vMax.y - vMin.y) / 2 - warpHeight / 2 + optionHeight * 2);
     ImVec2 winSize = {warpWidth, warpHeight};
-    auto rt = std::dynamic_pointer_cast<DirectX11RenderTarget>(m_RT);
-    auto tid = (ImTextureID)rt->GetSRV();
-    ImGui::Image(tid, winSize);
+
+    if (Renderer::Current->m_APIType == RenderAPIType::Directx11)
+    {
+        auto rt = std::dynamic_pointer_cast<DirectX11RenderTarget>(m_RT);
+        auto tid = (ImTextureID)rt->GetSRV();
+        ImGui::Image(tid, winSize);
+    }
+    else
+    {
+
+    }
 }
 
 void GamePanel::ResizeRT()

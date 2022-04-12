@@ -3,6 +3,10 @@
 #include "OpenGLRenderer.h"
 #include "OpenglMesh.h"
 #include "OpenglRenderItem.h"
+#include "OpenglMaterial.h"
+#include "OpenglRenderItemQueue.h"
+#include "OpenglConstantBuffer.h"
+#include "OpenglDepthStencilState.h"
 #include "../../3rd/Glad/include/glad/glad.h"
 #include "../../3rd/Glad/include/glad/glad_wgl.h"
 #include "../../Foundation/Platform/Assert.h"
@@ -29,25 +33,7 @@ static LRESULT CALLBACK TmpWndProc(HWND hWnd, UINT uiMsg, WPARAM wParam, LPARAM 
 	return 0;
 }
 
-
-void TransformCoord(asuna::Vector3f& vector, float* matrix)
-{
-	float x, y, z;
-	// Transform the vector by the 3x3 matrix.
-	x = (vector.x * matrix[0]) + (vector.y * matrix[3]) + (vector.z * matrix[6]);
-	y = (vector.x * matrix[1]) + (vector.y * matrix[4]) + (vector.z * matrix[7]);
-	z = (vector.x * matrix[2]) + (vector.y * matrix[5]) + (vector.z * matrix[8]);
-
-	// Store the result in the reference.
-	vector.x = x;
-	vector.y = y;
-	vector.z = z;
-
-	return;
-}
-
-
-void asuna::OpenGLRenderer::Initialize(CreateRendererContextParam param)
+void OpenGLRenderer::Initialize(CreateRendererContextParam param)
 {
 	m_APIType = RenderAPIType::Opengl;
 	m_ResolutionWidth = param.m_ResolutionWith;
@@ -57,28 +43,28 @@ void asuna::OpenGLRenderer::Initialize(CreateRendererContextParam param)
 	CreateDeviceContext();
 }
 
-void asuna::OpenGLRenderer::Finalize()
+void OpenGLRenderer::Finalize()
 {
 }
 
-void asuna::OpenGLRenderer::ResizeResolution(int width, int height)
+void OpenGLRenderer::ResizeResolution(int width, int height)
 {
 	glViewport(0, 0, width, height);
 }
 
-void asuna::OpenGLRenderer::ClearRenderTarget(std::shared_ptr<RenderTarget> rt, float r, float g, float b, float a)
+void OpenGLRenderer::ClearRenderTarget(shared_ptr<RenderTarget> rt, float r, float g, float b, float a)
 {
 	glClearColor(r, g, b, a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void asuna::OpenGLRenderer::Present()
+void OpenGLRenderer::Present()
 {
 	// Present the back buffer to the screen since rendering is complete.
 	SwapBuffers(m_hDC);
 }
 
-void asuna::OpenGLRenderer::CreateDeviceContext()
+void OpenGLRenderer::CreateDeviceContext()
 {
 	LoadWGL();
 	CreateGLContext();
@@ -90,36 +76,25 @@ void asuna::OpenGLRenderer::CreateDeviceContext()
 		// Enable depth testing.
 		glEnable(GL_DEPTH_TEST);
 	}
-	glClearDepth(1.0f);
-
-	// Enable depth testing.
-	glEnable(GL_DEPTH_TEST);
-
-	// Set the polygon winding to front facing for the left handed system.
 	glFrontFace(GL_CCW);
-
 	// Enable back face culling.
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
-	SetViewPort(m_ResolutionWidth, m_ResolutionHeight);
-	wglSwapIntervalEXT(0); // disable vertical sync to get high fps.
+	SetViewPort(0, 0, m_ResolutionWidth, m_ResolutionHeight);
+	wglSwapIntervalEXT(1); // disable vertical sync to get high fps.
 }
 
-void asuna::OpenGLRenderer::ReleaseDeviceContext()
+void OpenGLRenderer::ReleaseDeviceContext()
 {
 	if (m_RenderContext != 0)
 	{
 		wglDeleteContext(m_RenderContext);
 		m_RenderContext = 0;
 	}
-
 	m_hDC = 0;
-
 }
 
-
-
-void asuna::OpenGLRenderer::LoadWGL()
+void OpenGLRenderer::LoadWGL()
 {
 	int result = 0;
 	DWORD Style = WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
@@ -170,13 +145,13 @@ void asuna::OpenGLRenderer::LoadWGL()
 	auto r = gladLoadWGL(TemphDC);
 	ASUNA_ASSERT(r != 0);
 
-	wglMakeCurrent(NULL, NULL);
+	wglMakeCurrent(nullptr, nullptr);
 	wglDeleteContext(m_RenderContext);
 	ReleaseDC(TemphWnd, TemphDC);
 	DestroyWindow(TemphWnd);
 }
 
-void asuna::OpenGLRenderer::CreateGLContext()
+void OpenGLRenderer::CreateGLContext()
 {
 	int nPixelFormat;
 	UINT numFormats;
@@ -244,61 +219,75 @@ void asuna::OpenGLRenderer::CreateGLContext()
 	}
 }
 
-void OpenGLRenderer::SetViewPort(int width, int height)
-{
-	glViewport(0, 0, width, height);
-}
 
-
-std::shared_ptr<Shader> asuna::OpenGLRenderer::CreateShader(const std::string& path, ShaderType shaderType)
+shared_ptr<Shader> OpenGLRenderer::CreateShader(const string& path, ShaderType shaderType)
 {
 	return OpenglShader::Create(path, shaderType);
 }
 
-std::shared_ptr<RenderItem> asuna::OpenGLRenderer::CreateRenderItem(const std::shared_ptr<Mesh>& mesh, const vector<std::shared_ptr<Material>>& materials, const std::shared_ptr<ConstantBuffer>& perObject)
+shared_ptr<RenderItem>
+OpenGLRenderer::CreateRenderItem(
+        const shared_ptr<Mesh>& mesh,
+        const vector<shared_ptr<Material>>& materials,
+        const shared_ptr<ConstantBuffer>& perObject)
 {
 	return OpenglRenderItem::Create(mesh, materials, perObject);
 }
 
-std::shared_ptr<ConstantBuffer> asuna::OpenGLRenderer::CreateConstantBuffer(ConstantBufferDataType dt, int size)
+shared_ptr<RenderItem>
+OpenGLRenderer::CreateRenderItem(
+        const shared_ptr<Mesh> &mesh,
+        const shared_ptr<ConstantBuffer> &perObject)
 {
-	return std::shared_ptr<ConstantBuffer>();
+    return OpenglRenderItem::Create(mesh, perObject);
 }
 
-std::shared_ptr<Mesh> asuna::OpenGLRenderer::CreateMesh(const std::string& scenePath)
+shared_ptr<ConstantBuffer> OpenGLRenderer::CreateConstantBuffer(ConstantBufferDataType dt, int size)
+{
+	return OpenglConstantBuffer::Create(dt, size);
+}
+
+shared_ptr<Mesh> OpenGLRenderer::CreateMesh(const string& scenePath)
 {
 	auto param = AssetLoader::LoadMesh(scenePath);
 	return OpenglMesh::Create(param);
 }
 
-std::shared_ptr<RenderTarget> asuna::OpenGLRenderer::CreateRenderTarget(RenderTargetDesc desc)
+shared_ptr<RenderTarget> OpenGLRenderer::CreateRenderTarget(RenderTargetDesc desc)
 {
-	return std::shared_ptr<RenderTarget>();
+	return shared_ptr<RenderTarget>();
 }
 
-void asuna::OpenGLRenderer::SetRenderTarget(std::shared_ptr<RenderTarget> rt)
+void OpenGLRenderer::SetRenderTarget(shared_ptr<RenderTarget> rt)
 {
 }
 
-std::shared_ptr<RenderItemQueue> OpenGLRenderer::CreateRenderItemQueue()
+shared_ptr<RenderItemQueue> OpenGLRenderer::CreateRenderItemQueue()
 {
-    return std::shared_ptr<RenderItemQueue>();
+    return make_shared<OpenglRenderItemQueue>();
 }
 
 void OpenGLRenderer::SetViewPort(int x, int y, int width, int height)
 {
-
+    auto w = width == -1 ? m_ResolutionWidth : width;
+    auto h = height == -1 ? m_ResolutionHeight : height;
+    glViewport(x, y, w, h);
 }
 
-std::shared_ptr<RenderItem>
-OpenGLRenderer::CreateRenderItem(const shared_ptr<Mesh> &mesh, const shared_ptr<ConstantBuffer> &perObject)
+shared_ptr<DepthStencilState> OpenGLRenderer::CreateDepthStencilState()
 {
-    return std::shared_ptr<RenderItem>();
+    return make_shared<OpenglDepthStencilState>();
 }
 
-std::shared_ptr<DepthStencilState> OpenGLRenderer::CreateDepthStencilState()
+std::shared_ptr<Material> OpenGLRenderer::CreateMaterial(const string &materialPath)
 {
-    return std::shared_ptr<DepthStencilState>();
+    return OpenglMaterial::Create(materialPath);
+}
+
+void OpenGLRenderer::MakeCurrentContext()
+{
+    auto result = wglMakeCurrent(m_hDC, m_RenderContext);
+    ASUNA_ASSERT(result == 1);
 }
 
 

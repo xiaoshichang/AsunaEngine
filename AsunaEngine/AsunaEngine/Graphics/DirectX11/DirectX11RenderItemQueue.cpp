@@ -4,9 +4,6 @@
 
 #include "DirectX11RenderItemQueue.h"
 #include "DirectX11Renderer.h"
-#include "DirectX11RenderContext.h"
-#include "DirectX11ConstantBuffer.h"
-#include <memory>
 #include "../../Scene/SceneManager.h"
 
 using namespace asuna;

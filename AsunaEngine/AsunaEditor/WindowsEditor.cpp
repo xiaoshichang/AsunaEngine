@@ -49,7 +49,7 @@ void WindowsEditor::Initialize(std::shared_ptr<ApplicationInitParam> param)
 void asuna::WindowsEditor::Render()
 {
 	GUI::Begin();
-    ImGui::ShowDemoWindow();
+    //ImGui::ShowDemoWindow();
     RenderEditorBegin();
     m_HierarchyPanel.Render();
     m_LogPanel.Render();

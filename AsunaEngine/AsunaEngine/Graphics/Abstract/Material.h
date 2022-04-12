@@ -5,10 +5,10 @@
 #include <string>
 #include <memory>
 #include <unordered_map>
-#include "../../../Foundation/Math/AMath.h"
-#include "../Shader.h"
-#include "../ConstantBuffer.h"
-#include "../DepthStencilState.h"
+#include "../../Foundation/Math/AMath.h"
+#include "Shader.h"
+#include "ConstantBuffer.h"
+#include "DepthStencilState.h"
 
 namespace asuna
 {
@@ -30,8 +30,9 @@ namespace asuna
     {
     public:
         explicit Material(const std::string& materialPath);
+        virtual ~Material() = default;
         static std::shared_ptr<Material> Create(const std::string& materialPath);
-        void Apply();
+        virtual void Apply();
         const std::string& GetName();
 
         void SetFloat(const std::string& name, float value);
@@ -65,7 +66,7 @@ namespace asuna
     private:
         void BuildMaterialParametersLayout();
 
-    private:
+    protected:
         std::string m_MaterialName;
         std::shared_ptr<Shader> m_VS;
         std::shared_ptr<Shader> m_PS;

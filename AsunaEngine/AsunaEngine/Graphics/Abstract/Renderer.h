@@ -10,10 +10,11 @@
 #include "ConstantBuffer.h"
 #include "Shader.h"
 #include "Mesh.h"
-#include "Material/Material.h"
+#include "Material.h"
 #include "DepthStencilState.h"
 
 #include "../../Foundation/Interface/IModule.h"
+#include "../../Foundation/Platform/Platform.h"
 
 namespace asuna
 {
@@ -21,7 +22,9 @@ namespace asuna
 	{
 		int m_ResolutionWith;
 		int m_ResolutionHeight;
+#ifdef ASUNA_PLATFORM_WINDOWS
 		HWND m_HWND;
+#endif
 	};
 
 
@@ -67,7 +70,9 @@ namespace asuna
 		RenderAPIType m_APIType;
 		int m_ResolutionWidth = 0;
 		int m_ResolutionHeight = 0;
+#ifdef ASUNA_PLATFORM_WINDOWS
 		HWND m_HWND{};
+#endif
 
 	public:
 		static Renderer* Current;

@@ -1,9 +1,9 @@
 #include "WindowsApplication.h"
 
+#ifdef ASUNA_PLATFORM_WINDOWS
 #include "../../Foundation/Platform/Assert.h"
 #include "../../Foundation/Math/AMath.h"
 #include "../../Graphics/Abstract/Renderer.h"
-
 #include "../../Graphics/DirectX11/DirectX11Renderer.h"
 #include "../../Graphics/Opengl/OpenGLRenderer.h"
 #include "../../GUI/GUI.h"
@@ -20,7 +20,15 @@ void WindowsApplication::Initialize(std::shared_ptr<ApplicationInitParam> param)
 	InitMainWindow(param->WindowWidth, param->WindowHeight);
 	InitRenderer(param->RenderAPIType, param->WindowWidth, param->WindowHeight);
     SceneManager::Instance->Initialize();
-    GUI::Initialize();
+    if (param->fromEditor)
+    {
+        GUI::Initialize(true, true);
+    }
+    else
+    {
+        GUI::Initialize(false, false);
+    }
+
 }
 
 void WindowsApplication::Finalize()
@@ -152,5 +160,5 @@ void WindowsApplication::OnWindowSizeChange(int width, int height)
     }
 }
 
-
+#endif
 

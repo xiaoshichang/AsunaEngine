@@ -3,7 +3,7 @@
 //
 
 #include "TransformCmpt.h"
-
+#include "../../../Graphics/Abstract/Renderer.h"
 using namespace asuna;
 
 
@@ -84,10 +84,20 @@ Matrix4x4f TransformCmpt::GetRTSMatrix()
 void TransformCmpt::CalculateRTSMatrix()
 {
     auto r = BuildMatrixQuaternion(m_Rotation);
-    auto t = BuildMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
     auto s = BuildMatrixScale(m_Scale.x, m_Scale.y, m_Scale.z);
+    auto t = BuildMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
     // todo: more standard asset pipeline
-    auto assetDefault = BuildMatrixRotationX(PI / 2);
-    m_RTSMatrix = s * t * r * assetDefault;
+    if (!Renderer::Current->CheckLeftHandRenderAPI())
+    {
+        auto assetDefault1 = BuildMatrixRotationX(PI / 2);
+        auto assetDefault2 = BuildMatrixRotationY(PI);
+        m_RTSMatrix = s * t * r * assetDefault1 * assetDefault2;
+
+    }
+    else
+    {
+        auto assetDefault1 = BuildMatrixRotationX(PI / 2);
+        m_RTSMatrix = s * t * r * assetDefault1;
+    }
     m_RTSMatrixDirty = false;
 }

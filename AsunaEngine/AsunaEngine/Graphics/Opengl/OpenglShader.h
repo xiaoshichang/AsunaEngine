@@ -35,26 +35,5 @@ namespace asuna
 	};
 
 
-	////////////////////////////////////////////////////////////////////
-	/////////////////////////// Shader Program /////////////////////////
-	////////////////////////////////////////////////////////////////////
-	class OpenglShaderProgram
-	{
-	public:
-		OpenglShaderProgram() = delete;
-		OpenglShaderProgram(unsigned int program):
-			m_Program(program)
-		{
-		}
-
-        ~OpenglShaderProgram();
-		
-
-	public:
-		unsigned int m_Program = 0;
-	public:
-		static std::shared_ptr<OpenglShaderProgram> Create(const std::shared_ptr<OpenglShader>& vs, const std::shared_ptr<OpenglShader>& ps);
-	};
-
 }
 

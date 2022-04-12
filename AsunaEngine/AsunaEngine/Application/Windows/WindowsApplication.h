@@ -1,8 +1,10 @@
 #pragma once
+#include "../../Foundation/Platform/Platform.h"
+#ifdef ASUNA_PLATFORM_WINDOWS
+
 #include <Windows.h>
 #include "../Application.h"
 #include "../../Graphics/Abstract/RenderAPIType.h"
-
 
 namespace asuna
 {
@@ -27,5 +29,5 @@ namespace asuna
 		HWND m_HWND;
 	};
 }
-
+#endif
 

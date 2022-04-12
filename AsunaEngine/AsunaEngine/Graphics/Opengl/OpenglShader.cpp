@@ -19,10 +19,22 @@ std::shared_ptr<OpenglShader> asuna::OpenglShader::Create(const std::string& pat
 {
 	auto source = FileHelper::ReadText(path.c_str());
 	auto sourceString = source.c_str();
-	auto shader = glCreateShader(GL_VERTEX_SHADER);
+    unsigned int shader = 0;
+    if (shaderType == ShaderType::VertexShader)
+    {
+        shader = glCreateShader(GL_VERTEX_SHADER);
+    }
+    else if (shaderType == ShaderType::PixelShader)
+    {
+        shader = glCreateShader(GL_FRAGMENT_SHADER);
+    }
+    else
+    {
+        ASUNA_ASSERT(false);
+    }
 	// Copy the shader source code strings into the vertex and fragment shader objects.
 	{
-		glShaderSource(shader, 1, &sourceString, NULL);
+		glShaderSource(shader, 1, &sourceString, nullptr);
 		glCompileShader(shader);
 	}
 	// Check to see if the vertex shader compiled successfully.
@@ -39,39 +51,5 @@ std::shared_ptr<OpenglShader> asuna::OpenglShader::Create(const std::string& pat
 
 void OpenglShader::Bind()
 {
-}
-
-
-OpenglShaderProgram::~OpenglShaderProgram()
-{
-	if (m_Program != 0)
-	{
-		glDeleteProgram(m_Program);
-		m_Program = 0;
-	}
-}
-
-shared_ptr<OpenglShaderProgram> OpenglShaderProgram::Create(const std::shared_ptr<OpenglShader>& vs, const std::shared_ptr<OpenglShader>& ps)
-{
-	// Create a shader program object.
-	auto program = glCreateProgram();
-	// Attach the vertex and fragment shader to the program object.
-	glAttachShader(program, vs->GetShader());
-	glAttachShader(program, ps->GetShader());
-	// Bind the shader input variables.
-	glBindAttribLocation(program, 0, "inputPosition");
-	glBindAttribLocation(program, 1, "inputColor");
-	// Link the shader program.
-	glLinkProgram(program);
-
-	// Check the status of the link.
-	int status;
-	glGetProgramiv(program, GL_LINK_STATUS, &status);
-	if (status != 1)
-	{
-		// If it did not link then write the syntax error message out to a text file for review.
-		return nullptr;
-	}
-	return make_shared<OpenglShaderProgram>(program);
 }
 

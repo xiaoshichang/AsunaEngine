@@ -7,7 +7,7 @@
 #include "Shader.h"
 #include "RenderItem.h"
 #include "ConstantBuffer.h"
-#include "Material/Material.h"
+#include "Material.h"
 
 
 namespace asuna
@@ -65,7 +65,7 @@ namespace asuna
 		virtual void Render() = 0;
 
 
-	private:
+	protected:
         std::shared_ptr<Mesh> m_Mesh;
         std::vector<std::shared_ptr<Material>> m_Materials;
         std::shared_ptr<ConstantBuffer> m_ConstantBufferPerObject;

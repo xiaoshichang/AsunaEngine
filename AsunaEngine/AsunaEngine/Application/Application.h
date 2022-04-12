@@ -6,6 +6,7 @@ namespace asuna
 {
     struct ApplicationInitParam
     {
+        bool fromEditor;
         int WindowWidth;
         int WindowHeight;
         RenderAPIType RenderAPIType;

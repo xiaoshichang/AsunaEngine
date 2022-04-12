@@ -3,7 +3,7 @@
 //
 
 #include "Material.h"
-#include "../Renderer.h"
+#include "Renderer.h"
 
 using namespace asuna;
 using namespace std;
@@ -11,8 +11,17 @@ using namespace std;
 Material::Material(const std::string& materialPath) :
     m_MaterialName(materialPath)
 {
-    m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\triangle.vs", ShaderType::VertexShader);
-    m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\triangle.ps", ShaderType::PixelShader);
+    if (Renderer::Current->m_APIType == RenderAPIType::Directx11)
+    {
+        m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\dx11_base.vs", ShaderType::VertexShader);
+        m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\dx11_base.ps", ShaderType::PixelShader);
+    }
+    else
+    {
+        m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\gl_base.vs", ShaderType::VertexShader);
+        m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\gl_base.ps", ShaderType::PixelShader);
+    }
+
     m_PerMaterial = Renderer::Current->CreateConstantBuffer(ConstantBufferDataType::PerMaterial, 512);
     m_DepthStencilState = Renderer::Current->CreateDepthStencilState();
     BuildMaterialParametersLayout();

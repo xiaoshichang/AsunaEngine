@@ -24,8 +24,16 @@ namespace asuna
 		 std::shared_ptr<RenderItem> CreateRenderItem(const std::shared_ptr<Mesh>& mesh, const std::vector<std::shared_ptr<Material>>& materials, const std::shared_ptr<ConstantBuffer>& perObject) override;
          std::shared_ptr<RenderItem> CreateRenderItem(const std::shared_ptr<Mesh>& mesh, const std::shared_ptr<ConstantBuffer>& perObject) override;
 		 std::shared_ptr<ConstantBuffer> CreateConstantBuffer(ConstantBufferDataType dt, int size) override;
+         std::shared_ptr<Material> CreateMaterial(const std::string& materialPath) override;
          std::shared_ptr<DepthStencilState> CreateDepthStencilState() override;
          std::shared_ptr<RenderItemQueue> CreateRenderItemQueue() override;
+
+    public:
+        void MakeCurrentContext();
+        void SetConstantBufferDataPerFrame(ConstantBufferDataPerFrame* data) {m_ConstantBufferDataPerFrame = data;}
+        void SetConstantBufferDataPerObject(ConstantBufferDataPerObject* data) {m_ConstantBufferDataPerObject = data;}
+        ConstantBufferDataPerFrame* GetConstantBufferDataPerFrame() {return m_ConstantBufferDataPerFrame;}
+        ConstantBufferDataPerObject* GetConstantBufferDataPerObject() {return m_ConstantBufferDataPerObject;}
 
 	private:
 		 void ClearRenderTarget(std::shared_ptr<RenderTarget> rt, float r, float g, float b, float a) override;
@@ -35,16 +43,12 @@ namespace asuna
 	private:
 		void LoadWGL();
 		void CreateGLContext();
-		void SetViewPort(int width, int height);
-
 
 	private:
-		HGLRC m_RenderContext = 0;
-		HDC   m_hDC = 0;
-
-		unsigned int g_vertexShader = 0;
-		unsigned int g_fragmentShader = 0;
-		unsigned int g_shaderProgram = 0;
+		HGLRC m_RenderContext = nullptr;
+		HDC   m_hDC = nullptr;
+        ConstantBufferDataPerFrame* m_ConstantBufferDataPerFrame = nullptr;
+        ConstantBufferDataPerObject* m_ConstantBufferDataPerObject = nullptr;
 
 		
 
