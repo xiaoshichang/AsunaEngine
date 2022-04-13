@@ -14,7 +14,7 @@ int main()
     param->WindowHeight = 1200;
     param->LogFile = (char*)"Editor";
     param->LogDir = (char*)"Logs";
-    param->fromEditor = true;
+    param->EditorMode = true;
 
 	app->Initialize(param);
 	app->Run();

@@ -5,7 +5,7 @@
 #include "../../Foundation/Math/AMath.h"
 #include "../../Graphics/Abstract/Renderer.h"
 #include "../../Graphics/DirectX11/DirectX11Renderer.h"
-#include "../../Graphics/Opengl/OpenGLRenderer.h"
+#include "../../Graphics/Opengl/OpenglRenderer.h"
 #include "../../GUI/GUI.h"
 #include "../../Scene/SceneManager.h"
 #include "../../AssetLoader/AssetLoader.h"
@@ -20,7 +20,7 @@ void WindowsApplication::Initialize(std::shared_ptr<ApplicationInitParam> param)
 	InitMainWindow(param->WindowWidth, param->WindowHeight);
 	InitRenderer(param->RenderAPIType, param->WindowWidth, param->WindowHeight);
     SceneManager::Instance->Initialize();
-    if (param->fromEditor)
+    if (param->EditorMode)
     {
         GUI::Initialize(true, true);
     }
@@ -138,7 +138,7 @@ void WindowsApplication::InitRenderer(RenderAPIType api, int width, int height)
 	}
 	else if (api == RenderAPIType::Opengl)
 	{
-		Renderer::Current = new OpenGLRenderer();
+		Renderer::Current = new OpenglRenderer();
 	}
 	else
 	{

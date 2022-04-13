@@ -13,7 +13,7 @@ int main()
     param->WindowHeight = 800;
     param->LogFile = (char*)"Player";
     param->LogDir = (char*)"Logs";
-    param->fromEditor = false;
+    param->EditorMode = false;
 
 	auto app = new WindowsPlayer();
 	app->Initialize(param);

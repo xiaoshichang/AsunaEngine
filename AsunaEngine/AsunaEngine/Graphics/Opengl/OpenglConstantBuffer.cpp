@@ -1,7 +1,7 @@
 //
 // Created by xiao on 2022/4/12.
 //
-#include "OpenGLRenderer.h"
+#include "OpenglRenderer.h"
 #include "OpenglConstantBuffer.h"
 #include "../../3rd/Glad/include/glad/glad.h"
 
@@ -22,19 +22,19 @@ void OpenglConstantBuffer::Bind()
 {
     if (m_DataType == ConstantBufferDataType::PerFrame)
     {
-        auto renderer = (OpenGLRenderer*)Renderer::Current;
+        auto renderer = (OpenglRenderer*)Renderer::Current;
         renderer->SetConstantBufferDataPerFrame((ConstantBufferDataPerFrame*)this->GetData());
     }
     else if (m_DataType == ConstantBufferDataType::PerObject)
     {
-        auto renderer = (OpenGLRenderer*)Renderer::Current;
+        auto renderer = (OpenglRenderer*)Renderer::Current;
         renderer->SetConstantBufferDataPerObject((ConstantBufferDataPerObject*)this->GetData());
     }
 }
 
 void OpenglConstantBuffer::BindPerFrameData(unsigned int program)
 {
-    auto renderer = (OpenGLRenderer*)Renderer::Current;
+    auto renderer = (OpenglRenderer*)Renderer::Current;
     auto data = renderer->GetConstantBufferDataPerFrame();
     // Set the view matrix in the vertex shader.
     auto location = glGetUniformLocation(program, "viewMatrix");
@@ -56,7 +56,7 @@ void OpenglConstantBuffer::BindPerFrameData(unsigned int program)
 
 void OpenglConstantBuffer::BindPerObjectData(unsigned int program)
 {
-    auto renderer = (OpenGLRenderer*)Renderer::Current;
+    auto renderer = (OpenglRenderer*)Renderer::Current;
     auto data = renderer->GetConstantBufferDataPerObject();
     // Set the world matrix in the vertex shader.
     auto location = glGetUniformLocation(program, "worldMatrix");

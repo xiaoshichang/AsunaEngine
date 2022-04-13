@@ -3,7 +3,7 @@
 #include <imgui.h>
 #include "../Graphics/Abstract/Renderer.h"
 #include <imgui_impl_opengl3.h>
-#include "../Graphics/Opengl/OpenGLRenderer.h"
+#include "../Graphics/Opengl/OpenglRenderer.h"
 
 #ifdef ASUNA_PLATFORM_WINDOWS
 #include <imgui_impl_dx11.h>
@@ -121,7 +121,7 @@ void GUI::End()
         ImGui::RenderPlatformWindowsDefault();
         if (Renderer::Current->m_APIType == RenderAPIType::Opengl)
         {
-            auto renderer = (OpenGLRenderer*)Renderer::Current;
+            auto renderer = (OpenglRenderer*)Renderer::Current;
             renderer->MakeCurrentContext();
         }
     }

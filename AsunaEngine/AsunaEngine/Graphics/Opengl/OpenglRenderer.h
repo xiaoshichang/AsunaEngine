@@ -4,11 +4,11 @@
 
 namespace asuna
 {
-	class OpenGLRenderer : public Renderer
+	class OpenglRenderer : public Renderer
 	{
 	public:
-		OpenGLRenderer() = default;
-		 ~OpenGLRenderer() override = default;
+		OpenglRenderer() = default;
+		 ~OpenglRenderer() override = default;
 
 	public:
 		 void Initialize(CreateRendererContextParam param) override;
