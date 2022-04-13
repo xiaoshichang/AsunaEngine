@@ -152,6 +152,7 @@ void DirectX11RenderTarget::CreateDepthStencilResource(RenderTargetDesc desc, ID
 
 void DirectX11RenderTarget::Resize(int width, int height)
 {
+    RenderTarget::Resize(width, height);
     auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
     if (m_RenderTargetTexture == nullptr)
     {

@@ -132,8 +132,8 @@ void SceneManager::RemoveRenderItem(const shared_ptr<RenderItem>& item)
 
 void SceneManager::Render(const std::shared_ptr<RenderTarget>& rt)
 {
-    Renderer::Current->ClearRenderTarget(rt, 0.1f, 0.2f, 0.3f, 1.0f);
     Renderer::Current->SetRenderTarget(rt);
+    Renderer::Current->ClearRenderTarget(rt, 0.1f, 0.2f, 0.3f, 1.0f);
     m_RenderItemQueue->Render();
 }
 

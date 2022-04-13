@@ -7,6 +7,7 @@
 #include "OpenglRenderItemQueue.h"
 #include "OpenglConstantBuffer.h"
 #include "OpenglDepthStencilState.h"
+#include "OpenglRenderTarget.h"
 #include "../../3rd/Glad/include/glad/glad.h"
 #include "../../3rd/Glad/include/glad/glad_wgl.h"
 #include "../../Foundation/Platform/Assert.h"
@@ -255,11 +256,19 @@ shared_ptr<Mesh> OpenglRenderer::CreateMesh(const string& scenePath)
 
 shared_ptr<RenderTarget> OpenglRenderer::CreateRenderTarget(RenderTargetDesc desc)
 {
-	return shared_ptr<RenderTarget>();
+	return make_shared<OpenglRenderTarget>(desc);
 }
 
 void OpenglRenderer::SetRenderTarget(shared_ptr<RenderTarget> rt)
 {
+    if (rt == nullptr)
+    {
+
+    }
+    else
+    {
+
+    }
 }
 
 shared_ptr<RenderItemQueue> OpenglRenderer::CreateRenderItemQueue()

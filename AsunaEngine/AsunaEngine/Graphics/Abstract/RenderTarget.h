@@ -15,14 +15,15 @@ namespace asuna
 	public:
         RenderTarget() = delete;
 		explicit RenderTarget(RenderTargetDesc desc)
+            : m_Desc(desc)
 		{
 		}
 
 		virtual ~RenderTarget() = default;
-        virtual void Resize(int width, int height) = 0;
+        virtual void Resize(int width, int height);
 
-    private:
-        RenderTargetDesc m_Desc{};
+    protected:
+        RenderTargetDesc m_Desc;
 
 	};
 
