@@ -16,6 +16,8 @@ namespace asuna
 		void Tick() override;
 
 		HWND GetWindowsHandler() noexcept;
+        void SetWindowTitle(char* title);
+        void SetupApplicationTitle(std::shared_ptr<ApplicationInitParam> param);
 
     protected:
         virtual void OnWindowSizeChange(int width, int height);

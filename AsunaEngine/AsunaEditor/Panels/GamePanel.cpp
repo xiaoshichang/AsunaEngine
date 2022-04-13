@@ -115,6 +115,7 @@ void GamePanel::RenderRTTOWindow()
     {
         auto rt = std::dynamic_pointer_cast<OpenglRenderTarget>(m_RT);
         auto tid = (ImTextureID)rt->GetTexture();
+        // https://github.com/cinder/Cinder/issues/2185
         ImVec2 uv0 = {0, 1};
         ImVec2 uv1 = {1, 0};
         ImGui::Image(tid, winSize, uv0, uv1);

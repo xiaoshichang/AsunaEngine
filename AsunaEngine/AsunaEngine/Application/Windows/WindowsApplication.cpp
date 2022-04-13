@@ -28,6 +28,7 @@ void WindowsApplication::Initialize(std::shared_ptr<ApplicationInitParam> param)
     {
         GUI::Initialize(false, false);
     }
+    SetupApplicationTitle(param);
 
 }
 
@@ -158,6 +159,36 @@ void WindowsApplication::OnWindowSizeChange(int width, int height)
     {
         Renderer::Current->ResizeResolution(width, height);
     }
+}
+
+void WindowsApplication::SetWindowTitle(char* title)
+{
+    SetWindowText(m_HWND, title);
+}
+
+void WindowsApplication::SetupApplicationTitle(std::shared_ptr<ApplicationInitParam> param)
+{
+    char title[128];
+    char* mode;
+    char* render;
+    if (param->EditorMode)
+    {
+        mode = "Editor";
+    }
+    else
+    {
+        mode = "Player";
+    }
+    if (param->RenderAPIType == RenderAPIType::Directx11)
+    {
+        render = "DX11";
+    }
+    else if (param->RenderAPIType == RenderAPIType::Opengl)
+    {
+        render = "Opengl";
+    }
+    sprintf(title, "AsunaEngine - [mode:%s] - [render:%s]", mode, render);
+    SetWindowTitle(title);
 }
 
 #endif
