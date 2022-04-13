@@ -15,6 +15,9 @@ namespace asuna
         ~OpenglRenderTarget() override;
         void Resize(int width, int height) override;
 
+        GLuint GetFrameBuffer() const {return m_FrameBuffer;}
+        GLuint GetTexture() const {return  m_Texture;}
+
     private:
         // http://www.opengl-tutorial.org/cn/intermediate-tutorials/tutorial-14-render-to-texture/
         void GenFrameBuffer();

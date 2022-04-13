@@ -5,11 +5,15 @@
 #include <imgui.h>
 #include "GamePanel.h"
 #include "AsunaEngine/Graphics/Abstract/Renderer.h"
-#include "AsunaEngine/Graphics/DirectX11/DirectX11RenderTarget.h"
+#include "AsunaEngine/Graphics/Opengl/OpenglRenderTarget.h"
+
 #include "AsunaEngine/Scene/SceneManager.h"
 #include "AsunaEngine/Foundation/Platform/Assert.h"
 #include "AsunaEngine/Foundation/Platform/Platform.h"
 #include "../Events/EditorEventManager.h"
+
+#include "AsunaEngine/Graphics/DirectX11/DirectX11RenderTarget.h"
+
 
 using namespace asuna;
 
@@ -75,15 +79,8 @@ void GamePanel::RenderResolutionOptions()
 
 void GamePanel::RenderSceneToRT()
 {
-    if (Renderer::Current->m_APIType == RenderAPIType::Directx11)
-    {
-        Renderer::Current->SetViewPort(0, 0, m_TargetResolutionWidth, m_TargetResolutionHeight);
-        SceneManager::Instance->Render(m_RT);
-    }
-    else
-    {
-
-    }
+    Renderer::Current->SetViewPort(0, 0, m_TargetResolutionWidth, m_TargetResolutionHeight);
+    SceneManager::Instance->Render(m_RT);
 }
 
 void GamePanel::RenderRTTOWindow()
@@ -114,9 +111,17 @@ void GamePanel::RenderRTTOWindow()
         auto tid = (ImTextureID)rt->GetSRV();
         ImGui::Image(tid, winSize);
     }
+    else if (Renderer::Current->m_APIType == RenderAPIType::Opengl)
+    {
+        auto rt = std::dynamic_pointer_cast<OpenglRenderTarget>(m_RT);
+        auto tid = (ImTextureID)rt->GetTexture();
+        ImVec2 uv0 = {0, 1};
+        ImVec2 uv1 = {1, 0};
+        ImGui::Image(tid, winSize, uv0, uv1);
+    }
     else
     {
-
+        ASUNA_ASSERT(false);
     }
 }
 

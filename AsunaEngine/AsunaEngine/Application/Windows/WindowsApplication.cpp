@@ -145,7 +145,7 @@ void WindowsApplication::InitRenderer(RenderAPIType api, int width, int height)
 		ASUNA_ASSERT(false);
 	}
 
-	CreateRendererContextParam param;
+	CreateRendererContextParam param{};
 	param.m_HWND = m_HWND;
 	param.m_ResolutionWith = width;
 	param.m_ResolutionHeight = height;

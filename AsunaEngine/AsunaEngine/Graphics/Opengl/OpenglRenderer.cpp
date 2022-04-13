@@ -55,8 +55,21 @@ void OpenglRenderer::ResizeResolution(int width, int height)
 
 void OpenglRenderer::ClearRenderTarget(shared_ptr<RenderTarget> rt, float r, float g, float b, float a)
 {
-	glClearColor(r, g, b, a);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if (rt == nullptr)
+    {
+        glClearColor(r, g, b, a);
+        glClearDepth(1.0);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+    else
+    {
+        auto openglRT = dynamic_pointer_cast<OpenglRenderTarget>(rt);
+        float color[] = {r, g, b, a};
+        float depth = 1.0f;
+        glClearNamedFramebufferfv(openglRT->GetFrameBuffer(), GL_COLOR, 0, color);
+        glClearNamedFramebufferfv(openglRT->GetFrameBuffer(), GL_DEPTH, 0, &depth);
+    }
+
 }
 
 void OpenglRenderer::Present()
@@ -263,11 +276,12 @@ void OpenglRenderer::SetRenderTarget(shared_ptr<RenderTarget> rt)
 {
     if (rt == nullptr)
     {
-
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
     else
     {
-
+        auto openglRT = dynamic_pointer_cast<OpenglRenderTarget>(rt);
+        glBindFramebuffer(GL_FRAMEBUFFER, openglRT->GetFrameBuffer());
     }
 }
 
