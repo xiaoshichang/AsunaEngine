@@ -72,7 +72,8 @@ const Matrix4x4f &CameraCmpt::GetViewMatrix()
     }
     else
     {
-        m_ViewMatrix = BuildMatrixViewLookatRH(eye, look, up);
+        Vector3f rightHandEye(eye.x, eye.y, -eye.z);
+        m_ViewMatrix = BuildMatrixViewLookatRH(rightHandEye, look, up);
     }
     return m_ViewMatrix;
 }
