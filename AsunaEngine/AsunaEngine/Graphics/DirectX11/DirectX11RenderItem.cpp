@@ -51,7 +51,14 @@ void DirectX11RenderItem::DrawMesh(DirectX11RenderContext* context)
         }
 
         // https://docs.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-iasetprimitivetopology
-        context->m_DeviceContext->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+        if (subMesh->GetPrimitiveType() == PrimitiveType::Triangle)
+        {
+            context->m_DeviceContext->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+        }
+        else if (subMesh->GetPrimitiveType() == PrimitiveType::Line)
+        {
+            context->m_DeviceContext->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_LINELIST);
+        }
 
         auto ib = dynamic_pointer_cast<DirectX11IndexBuffer>(indexBuffer);
         // https://docs.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-iasetindexbuffer

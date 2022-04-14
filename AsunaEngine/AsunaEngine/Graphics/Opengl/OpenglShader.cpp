@@ -2,6 +2,7 @@
 #include "../../3rd/Glad/include/glad/glad.h"
 #include "../../Foundation/Utils/FileHelper.h"
 #include "../../Foundation/Platform/Assert.h"
+#include "../../Foundation/Logger/Logger.h"
 using namespace asuna;
 using namespace std;
 
@@ -43,6 +44,10 @@ std::shared_ptr<OpenglShader> asuna::OpenglShader::Create(const std::string& pat
 		glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
 		if (status != 1)
 		{
+            GLsizei log_length = 0;
+            GLchar message[1024];
+            glGetShaderInfoLog(shader, 1024, &log_length, message);
+            Logger::Error(message);
 			ASUNA_ASSERT(false);
 		}
 	}

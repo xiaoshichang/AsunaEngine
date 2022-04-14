@@ -106,6 +106,8 @@ namespace asuna
             return m_MaterialIndex;
         }
 
+        PrimitiveType GetPrimitiveType() const { return m_PrimitiveType;}
+
 	protected:
 		std::shared_ptr<VertexBuffer> m_PositionBuffer = nullptr;
 		std::shared_ptr<VertexBuffer> m_NormalBuffer = nullptr;

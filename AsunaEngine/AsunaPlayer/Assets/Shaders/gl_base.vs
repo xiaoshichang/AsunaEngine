@@ -8,12 +8,14 @@
 // INPUT VARIABLES //
 /////////////////////
 in vec3 inputPosition;
-in vec3 inputColor;
+in vec3 inputNormal;
+in vec3 inputTexcoord0;
 
 //////////////////////
 // OUTPUT VARIABLES //
 //////////////////////
-out vec3 color;
+out vec3 nw;
+out vec3 texcoord0;
 
 ///////////////////////
 // UNIFORM VARIABLES //
@@ -33,6 +35,7 @@ void main(void)
 	gl_Position = projectionMatrix * gl_Position;
 
 	// Store the input color for the pixel shader to use.
-	color = inputColor;
+	nw = (worldMatrix * vec4(inputNormal, 0.0f)).xyz;
+	texcoord0 = inputTexcoord0;
 }
 

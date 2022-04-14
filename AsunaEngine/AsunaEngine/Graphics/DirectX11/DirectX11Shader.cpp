@@ -32,15 +32,20 @@ shared_ptr<DirectX11VertexShader> DirectX11VertexShader::Create(const std::strin
 
 	ASUNA_ASSERT(SUCCEEDED(result));
 	
-
 	// https://docs.microsoft.com/en-us/windows/win32/api/d3d11/ns-d3d11-d3d11_input_element_desc
 	// https://docs.microsoft.com/en-us/windows/win32/api/d3d11/ne-d3d11-d3d11_input_classification
 	D3D11_INPUT_ELEMENT_DESC ied[] =
 	{
 			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+            {"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 1, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+            {"TEXCOORD", 0, DXGI_FORMAT_R32G32B32_FLOAT, 2, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
 	};
 
-	context->m_Device->CreateInputLayout(ied, 1, byteCode->GetBufferPointer(), byteCode->GetBufferSize(), &layout);
+	context->m_Device->CreateInputLayout(ied, 3, byteCode->GetBufferPointer(), byteCode->GetBufferSize(), &layout);
+    if (layout == nullptr)
+    {
+        ASUNA_ASSERT(false);
+    }
 	return make_shared<DirectX11VertexShader>(vs, layout, byteCode);
 }
 

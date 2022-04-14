@@ -1,8 +1,9 @@
 
 
-struct v2p 
-{
+struct v2p {
 	float4 position : SV_POSITION;
+	float4 nw : NORMAL;
+	float4 texcoord : TEXCOORD;
 };
 
 cbuffer ConstantBufferPerFrame
@@ -24,6 +25,6 @@ cbuffer ConstantBufferPerMaterial
 
 float4 main(v2p input) : SV_TARGET
 {
-    return mainColor;
+    return float4(input.nw.xyz, 1.0f);
 }
 
