@@ -11,9 +11,17 @@ namespace asuna
 
 	struct IndexBufferCreateParam
 	{
+        IndexBufferCreateParam() :
+            m_IndexData(nullptr),
+            m_StartIndex(0),
+            m_Format(IndexBufferFormat::UINT32),
+            m_ElementCount(0)
+        {}
+
 		void* m_IndexData;
 		int m_ElementCount;
 		IndexBufferFormat m_Format;
+        int m_StartIndex;
 
 		int GetFormatSize()
 		{
@@ -31,10 +39,7 @@ namespace asuna
 	class IndexBuffer : public RenderBuffer
 	{
 	public:
-		virtual ~IndexBuffer()
-		{
-		}
-		
+		~IndexBuffer() override = default;
 	};
 }
 

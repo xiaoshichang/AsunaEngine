@@ -8,7 +8,11 @@ using namespace std;
 
 void DirectX11RenderItem::BindConstantBufferPerObject(DirectX11RenderContext* context)
 {
-    GetConstantBufferPerObject()->Bind();
+    auto perObject = GetConstantBufferPerObject();
+    if (perObject != nullptr)
+    {
+        GetConstantBufferPerObject()->Bind();
+    }
 }
 
 
@@ -76,7 +80,7 @@ void DirectX11RenderItem::DrawMesh(DirectX11RenderContext* context)
         }
 
         // https://docs.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-drawindexed
-        context->m_DeviceContext->DrawIndexed(ib->GetElementCount(), 0, 0);
+        context->m_DeviceContext->DrawIndexed(ib->GetElementCount(), ib->GetStartIndex(), 0);
     }
 }
 

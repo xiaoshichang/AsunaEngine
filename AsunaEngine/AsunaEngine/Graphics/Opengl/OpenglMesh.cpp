@@ -58,7 +58,7 @@ std::shared_ptr<OpenglSubMesh> OpenglSubMesh::Create(const std::shared_ptr<SubMe
 	{
 		texcoord = OpenglVertexBuffer::Create(param->m_TexcoordCreateParam);
 	}
-	if (param->m_TexcoordCreateParam != nullptr)
+	if (param->m_IndexCreateParam != nullptr)
 	{
 		index = OpenglIndexBuffer::Create(param->m_IndexCreateParam);
 	}
@@ -98,7 +98,7 @@ std::shared_ptr<OpenglSubMesh> OpenglSubMesh::Create(const std::shared_ptr<SubMe
 shared_ptr<OpenglMesh> OpenglMesh::Create(const shared_ptr<MeshCreateParam>& param)
 {
 	auto mesh = make_shared<OpenglMesh>();
-	for (size_t i = 0; i < param->m_SubMeshCount; i++)
+	for (size_t i = 0; i < param->GetSubMeshCunt(); i++)
 	{
 		auto subPram = param->m_SubMeshCreateParam[i];
 		auto subMesh = OpenglSubMesh::Create(subPram);

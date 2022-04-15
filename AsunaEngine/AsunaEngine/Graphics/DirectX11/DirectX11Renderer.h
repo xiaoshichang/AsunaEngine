@@ -11,17 +11,11 @@ namespace asuna
 	{
 	public:
 		DirectX11Renderer():
-			m_depthStencilBuffer(nullptr),
-			m_depthStencilState(nullptr),
-			m_depthStencilView(nullptr),
-			m_rasterState(nullptr),
-			m_videoCardMemory(0)
+			m_rasterState(nullptr)
 		{
 		}
 
-		~DirectX11Renderer()
-		{
-		}
+		~DirectX11Renderer() override = default;
 
 		void CreateDeviceContext() override;
 		void ReleaseDeviceContext() override;
@@ -36,6 +30,7 @@ namespace asuna
         void SetViewPort(int x, int y, int width, int height) override;
 
 		shared_ptr<Mesh> CreateMesh(const string& scenePath) override;
+        shared_ptr<Mesh> CreateMesh(const std::shared_ptr<MeshCreateParam>& param) override;
 		shared_ptr<RenderTarget> CreateRenderTarget(RenderTargetDesc desc) override;
 		shared_ptr<Shader> CreateShader(const string& scenePath, ShaderType shaderType) override;
 		shared_ptr<ConstantBuffer> CreateConstantBuffer(ConstantBufferDataType dt, int size) override;
@@ -49,13 +44,7 @@ namespace asuna
 
 
 	private:
-
-
-		ID3D11Texture2D* m_depthStencilBuffer;
-		ID3D11DepthStencilState* m_depthStencilState;
-		ID3D11DepthStencilView* m_depthStencilView;
 		ID3D11RasterizerState* m_rasterState;
-		int m_videoCardMemory;
 
 	};
 }

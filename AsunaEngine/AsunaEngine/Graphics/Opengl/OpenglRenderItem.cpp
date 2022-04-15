@@ -8,7 +8,10 @@ using namespace std;
 
 void OpenglRenderItem::Render()
 {
-    m_ConstantBufferPerObject->Bind();
+    if (m_ConstantBufferPerObject != nullptr)
+    {
+        m_ConstantBufferPerObject->Bind();
+    }
 	for (auto & element : m_Mesh->m_SubMeshes)
 	{
 		auto mesh = dynamic_pointer_cast<OpenglSubMesh>(element);
@@ -17,7 +20,10 @@ void OpenglRenderItem::Render()
         indexBuffer->Bind();
         auto material = GetMaterial(mesh->GetMaterialIndex());
         material->Apply();
-		glDrawElements(mesh->GetGLPrimitive(), indexBuffer->GetElementCount(), indexBuffer->GetGLIndexType(), nullptr);
+        int start = indexBuffer->GetStartIndex();
+        int count = indexBuffer->GetElementCount();
+        int end = start + count - 1;
+        glDrawRangeElements(mesh->GetGLPrimitive(), start, end, count, indexBuffer->GetGLIndexType(), nullptr);
 	}
 	
 }

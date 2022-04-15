@@ -46,6 +46,6 @@ shared_ptr<DirectX11IndexBuffer> DirectX11IndexBuffer::Create(shared_ptr<IndexBu
 	result = context->m_Device->CreateBuffer(&indexBufferDesc, &indexData, &buffer);
 	ASUNA_ASSERT(SUCCEEDED(result));
 
-	auto indexBuffer = make_shared<DirectX11IndexBuffer>(buffer, param->m_ElementCount, param->m_Format);
+	auto indexBuffer = make_shared<DirectX11IndexBuffer>(buffer, param);
 	return indexBuffer;
 }

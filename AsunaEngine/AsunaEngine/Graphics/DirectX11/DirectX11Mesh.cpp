@@ -34,7 +34,7 @@ using namespace std;
 shared_ptr<DirectX11Mesh> DirectX11Mesh::Create(shared_ptr<MeshCreateParam> param)
 {
 	auto mesh = make_shared<DirectX11Mesh>();
-	for (size_t i = 0; i < param->m_SubMeshCount; i++)
+	for (size_t i = 0; i < param->GetSubMeshCunt(); i++)
 	{
 		auto submesh = DirectX11SubMesh::Create(param->m_SubMeshCreateParam[i]);
 		mesh->m_SubMeshes.push_back(submesh);

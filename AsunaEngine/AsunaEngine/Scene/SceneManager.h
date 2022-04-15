@@ -42,6 +42,7 @@ namespace asuna
         void TickGameObject(GameObject* obj);
         void UpdateConstantBufferPerScene();
         void UpdateCameraMatrix();
+        void CreateCoordAxisRenderItem();
 
     private:
         std::shared_ptr<GameObject> m_Root = nullptr;
@@ -51,6 +52,9 @@ namespace asuna
         std::shared_ptr<ConstantBuffer> m_ConstantBufferPerScene = nullptr;
 
         std::shared_ptr<RenderItemQueue> m_RenderItemQueue;
+
+        bool m_ShowCoordAxis = true;
+        std::shared_ptr<RenderItemQueue> m_DebugRenderItemQueue;
 
     };
 

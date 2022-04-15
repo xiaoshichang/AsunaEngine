@@ -267,6 +267,11 @@ shared_ptr<Mesh> OpenglRenderer::CreateMesh(const string& scenePath)
 	return OpenglMesh::Create(param);
 }
 
+shared_ptr<Mesh> OpenglRenderer::CreateMesh(const shared_ptr<MeshCreateParam> &param)
+{
+    return OpenglMesh::Create(param);
+}
+
 shared_ptr<RenderTarget> OpenglRenderer::CreateRenderTarget(RenderTargetDesc desc)
 {
 	return make_shared<OpenglRenderTarget>(desc);
@@ -312,5 +317,7 @@ void OpenglRenderer::MakeCurrentContext()
     auto result = wglMakeCurrent(m_hDC, m_RenderContext);
     ASUNA_ASSERT(result == 1);
 }
+
+
 
 

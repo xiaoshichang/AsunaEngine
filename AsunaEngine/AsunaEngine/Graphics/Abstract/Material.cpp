@@ -11,15 +11,31 @@ using namespace std;
 Material::Material(const std::string& materialPath) :
     m_MaterialName(materialPath)
 {
-    if (Renderer::Current->m_APIType == RenderAPIType::Directx11)
+    if (materialPath == "Debug")
     {
-        m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\dx11_base.vs", ShaderType::VertexShader);
-        m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\dx11_base.ps", ShaderType::PixelShader);
+        if (Renderer::Current->m_APIType == RenderAPIType::Directx11)
+        {
+            m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\dx11_debug.vs", ShaderType::VertexShader);
+            m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\dx11_debug.ps", ShaderType::PixelShader);
+        }
+        else
+        {
+            m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\gl_debug.vs", ShaderType::VertexShader);
+            m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\gl_debug.ps", ShaderType::PixelShader);
+        }
     }
     else
     {
-        m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\gl_base.vs", ShaderType::VertexShader);
-        m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\gl_base.ps", ShaderType::PixelShader);
+        if (Renderer::Current->m_APIType == RenderAPIType::Directx11)
+        {
+            m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\dx11_base.vs", ShaderType::VertexShader);
+            m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\dx11_base.ps", ShaderType::PixelShader);
+        }
+        else
+        {
+            m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\gl_base.vs", ShaderType::VertexShader);
+            m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\gl_base.ps", ShaderType::PixelShader);
+        }
     }
 
     m_PerMaterial = Renderer::Current->CreateConstantBuffer(ConstantBufferDataType::PerMaterial, 512);

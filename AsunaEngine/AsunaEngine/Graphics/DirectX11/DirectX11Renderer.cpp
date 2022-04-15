@@ -290,6 +290,11 @@ shared_ptr<Mesh> asuna::DirectX11Renderer::CreateMesh(const string& scenePath)
 	return mesh;
 }
 
+shared_ptr<Mesh> DirectX11Renderer::CreateMesh(const std::shared_ptr<MeshCreateParam>& param)
+{
+    return DirectX11Mesh::Create(param);
+}
+
 shared_ptr<RenderTarget> asuna::DirectX11Renderer::CreateRenderTarget(RenderTargetDesc desc)
 {
     auto context = dynamic_pointer_cast<DirectX11RenderContext>(m_Context);
@@ -339,5 +344,7 @@ shared_ptr<DepthStencilState> DirectX11Renderer::CreateDepthStencilState()
 {
     return make_shared<DirectX11DepthStencilState>();
 }
+
+
 
 

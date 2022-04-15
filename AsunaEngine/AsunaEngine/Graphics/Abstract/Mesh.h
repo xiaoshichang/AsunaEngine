@@ -42,11 +42,9 @@ namespace asuna
 	struct MeshCreateParam
 	{
         const aiScene* m_RawResource;
-		int m_SubMeshCount;
 		std::vector<std::shared_ptr<SubMeshCreateParam>> m_SubMeshCreateParam;
 		MeshCreateParam() :
-            m_RawResource(nullptr),
-            m_SubMeshCount(0)
+            m_RawResource(nullptr)
 		{
 		}
 
@@ -54,6 +52,12 @@ namespace asuna
         {
             delete m_RawResource;
         }
+
+        int GetSubMeshCunt() const
+        {
+            return m_SubMeshCreateParam.size();
+        }
+
 	};
 
 

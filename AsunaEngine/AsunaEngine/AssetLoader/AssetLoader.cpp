@@ -30,7 +30,6 @@ shared_ptr<MeshCreateParam> AssetLoader::LoadMesh(const std::string& Path)
     param->m_RawResource = sceneRoot;
 	ASUNA_ASSERT(sceneRoot);
 
-	param->m_SubMeshCount = sceneRoot->mNumMeshes;
 	for (size_t i = 0; i < sceneRoot->mNumMeshes; i++)
 	{
 		auto meshNode = sceneRoot->mMeshes[i];

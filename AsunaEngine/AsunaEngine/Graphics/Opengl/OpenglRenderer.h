@@ -19,6 +19,7 @@ namespace asuna
          void SetViewPort(int x, int y, int width, int height) override;
 
 		 std::shared_ptr<Mesh> CreateMesh(const std::string& scenePath) override;
+         std::shared_ptr<Mesh> CreateMesh(const std::shared_ptr<MeshCreateParam>& param) override;
 		 std::shared_ptr<RenderTarget> CreateRenderTarget(RenderTargetDesc desc) override;
 		 std::shared_ptr<Shader> CreateShader(const std::string& scenePath, ShaderType shaderType) override;
 		 std::shared_ptr<RenderItem> CreateRenderItem(const std::shared_ptr<Mesh>& mesh, const std::vector<std::shared_ptr<Material>>& materials, const std::shared_ptr<ConstantBuffer>& perObject) override;

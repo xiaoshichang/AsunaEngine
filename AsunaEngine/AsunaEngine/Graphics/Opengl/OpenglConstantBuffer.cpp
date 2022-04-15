@@ -36,6 +36,10 @@ void OpenglConstantBuffer::BindPerFrameData(unsigned int program)
 {
     auto renderer = (OpenglRenderer*)Renderer::Current;
     auto data = renderer->GetConstantBufferDataPerFrame();
+    if (data == nullptr)
+    {
+        return;
+    }
     // Set the view matrix in the vertex shader.
     auto location = glGetUniformLocation(program, "viewMatrix");
     if (location == -1)
@@ -58,6 +62,10 @@ void OpenglConstantBuffer::BindPerObjectData(unsigned int program)
 {
     auto renderer = (OpenglRenderer*)Renderer::Current;
     auto data = renderer->GetConstantBufferDataPerObject();
+    if (data == nullptr)
+    {
+        return;
+    }
     // Set the world matrix in the vertex shader.
     auto location = glGetUniformLocation(program, "worldMatrix");
     if (location == -1)

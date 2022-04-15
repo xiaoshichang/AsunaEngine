@@ -20,7 +20,13 @@ void SceneManager::Initialize()
 {
     m_ConstantBufferPerScene = Renderer::Current->CreateConstantBuffer(ConstantBufferDataType::PerFrame, sizeof(ConstantBufferDataPerFrame));
     m_RenderItemQueue = Renderer::Current->CreateRenderItemQueue();
+    m_DebugRenderItemQueue = Renderer::Current->CreateRenderItemQueue();
     m_Root = std::make_shared<GameObject>("Root");
+
+    if (m_ShowCoordAxis)
+    {
+        CreateCoordAxisRenderItem();
+    }
 }
 
 void SceneManager::Finalize()
@@ -135,6 +141,82 @@ void SceneManager::Render(const std::shared_ptr<RenderTarget>& rt)
     Renderer::Current->SetRenderTarget(rt);
     Renderer::Current->ClearRenderTarget(rt, 0.1f, 0.2f, 0.3f, 1.0f);
     m_RenderItemQueue->Render();
+    m_DebugRenderItemQueue->Render();
+}
+
+void SceneManager::CreateCoordAxisRenderItem()
+{
+    Vector3f pointsLeftHand[12] =
+    {
+        {0, 0, 0}, {2000, 0, 0},
+        {0, 0, 0}, {-2000, 0, 0},
+        {0, 0, 0}, {0, 2000, 0},
+        {0, 0, 0}, {0, -2000, 0},
+        {0, 0, 0}, {0, 0, 2000},
+        {0, 0, 0}, {0, 0, -2000}
+    };
+
+    Vector3f pointsRightHand[12] =
+    {
+        {0, 0, 0}, {2000, 0, 0},
+        {0, 0, 0}, {-2000, 0, 0},
+        {0, 0, 0}, {0, 2000, 0},
+        {0, 0, 0}, {0, -2000, 0},
+        {0, 0, 0}, {0, 0, -2000},
+        {0, 0, 0}, {0, 0, 2000}
+    };
+
+    Vector4f colors[6] =
+    {
+            {1, 0, 0, 1},
+            {0.5, 0, 0, 1},
+            {0, 1, 0, 1},
+            {0, 0.5, 0, 1},
+            {0, 0, 1, 1},
+            {0, 0, 0.5, 1}
+    };
+
+    auto vbp = make_shared<VertexBufferCreateParam>();
+    vbp->m_Format = VertexBufferFormat::F3;
+    vbp->m_ElementCount = 12;
+
+    if (Renderer::Current->CheckLeftHandRenderAPI())
+    {
+        vbp->m_VertexData = pointsLeftHand;
+    }
+    else
+    {
+        vbp->m_VertexData = pointsRightHand;
+    }
+
+    unsigned int indices[12] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+
+    auto mp = make_shared<MeshCreateParam>();
+    for (int i = 0; i < 6; ++i)
+    {
+        auto ibp = make_shared<IndexBufferCreateParam>();
+        ibp->m_StartIndex = 0;
+        ibp->m_Format = IndexBufferFormat::UINT32;
+        ibp->m_ElementCount = 2;
+        ibp->m_IndexData = indices + 2 * i;
+        auto smp = make_shared<SubMeshCreateParam>();
+        smp->m_PositionCreateParam = vbp;
+        smp->m_IndexCreateParam = ibp;
+        smp->m_MaterialIndex = i;
+        smp->m_PrimitiveType = PrimitiveType::Line;
+        mp->m_SubMeshCreateParam.push_back(smp);
+    }
+    auto mesh = Renderer::Current->CreateMesh(mp);
+    auto item = Renderer::Current->CreateRenderItem(mesh, nullptr);
+    item->AllocateMaterials(6);
+    AddRenderItem(item);
+
+    for (int i = 0; i < 6; ++i)
+    {
+        auto material = Renderer::Current->CreateMaterial("Debug");
+        material->SetVector4("BaseColor", colors[i]);
+        item->SetMaterial(i, material);
+    }
 }
 
 
