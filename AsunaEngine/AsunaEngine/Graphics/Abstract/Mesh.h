@@ -4,6 +4,7 @@
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
 #include <assimp/scene.h>
+#include "../../Foundation/Math/AMath.h"
 #include "../../Foundation/Logger/Logger.h"
 
 
@@ -26,6 +27,7 @@ namespace asuna
 		std::shared_ptr<IndexBufferCreateParam> m_IndexCreateParam;
 		PrimitiveType m_PrimitiveType;
         int m_MaterialIndex;
+        Matrix4x4f m_ModelMatrix;
 
 		SubMeshCreateParam() : 
 			m_PositionCreateParam(nullptr),
@@ -33,7 +35,8 @@ namespace asuna
 			m_TexcoordCreateParam(nullptr),
 			m_IndexCreateParam(nullptr),
 			m_PrimitiveType(PrimitiveType::Unknown),
-            m_MaterialIndex(-1)
+            m_MaterialIndex(-1),
+            m_ModelMatrix()
 		{
 
 		}
@@ -70,15 +73,15 @@ namespace asuna
 			std::shared_ptr<VertexBuffer>& normal,
 			std::shared_ptr<VertexBuffer>& texcoord,
 			std::shared_ptr<IndexBuffer>& index,
-			PrimitiveType pt,
-            int materialIndex
+            const std::shared_ptr<SubMeshCreateParam>& param
             ):
 			m_PositionBuffer(position),
 			m_NormalBuffer(normal),
 			m_TexCoordBuffer(texcoord),
 			m_IndexBuffer(index),
-			m_PrimitiveType(pt),
-            m_MaterialIndex(materialIndex)
+			m_PrimitiveType(param->m_PrimitiveType),
+            m_MaterialIndex(param->m_MaterialIndex),
+            m_ModelMatrix(param->m_ModelMatrix)
 		{
 		}
 
@@ -110,6 +113,12 @@ namespace asuna
             return m_MaterialIndex;
         }
 
+        Matrix4x4f GetModelMatrix() const
+        {
+            return m_ModelMatrix;
+        }
+
+
         PrimitiveType GetPrimitiveType() const { return m_PrimitiveType;}
 
 	protected:
@@ -119,6 +128,7 @@ namespace asuna
 		std::shared_ptr<IndexBuffer> m_IndexBuffer = nullptr;
 		PrimitiveType m_PrimitiveType = PrimitiveType::Unknown;
         int m_MaterialIndex;
+        Matrix4x4f m_ModelMatrix;
 	};
 
 	class Mesh

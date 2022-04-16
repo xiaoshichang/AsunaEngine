@@ -16,7 +16,8 @@ namespace asuna
     {
         Unknown,
         Float,
-        Vector4
+        Vector4,
+        Matrix
     };
 
     struct MaterialParameter
@@ -39,6 +40,8 @@ namespace asuna
         float GetFloat(const std::string& name);
         void SetVector4(const std::string& name, Vector4f value);
         Vector4f GetVector4(const std::string& name);
+        void SetMatrix(const std::string& name, Matrix4x4f value);
+        Matrix4x4f GetMatrix(const std::string& name);
 
         std::shared_ptr<Shader> GetVertexShader()
         {
@@ -74,6 +77,8 @@ namespace asuna
         std::shared_ptr<DepthStencilState> m_DepthStencilState;
         std::unordered_map<std::string, float> m_FloatParams;
         std::unordered_map<std::string, Vector4f> m_Vector4Params;
+        std::unordered_map<std::string, Matrix4x4f> m_MatrixParams;
+
         std::unordered_map<std::string, MaterialParameter> m_ParamDefines;
 
     };

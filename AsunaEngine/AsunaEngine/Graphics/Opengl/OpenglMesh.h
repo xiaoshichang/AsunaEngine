@@ -17,14 +17,13 @@ namespace asuna
 			std::shared_ptr<VertexBuffer> normal,
 			std::shared_ptr<VertexBuffer> texcoord,
 			std::shared_ptr<IndexBuffer> index,
-			PrimitiveType pt,
-            int materialIndex) :
+            const std::shared_ptr<SubMeshCreateParam>& param) :
 			m_VAO(vao),
-			SubMesh(position, normal, texcoord, index, pt, materialIndex)
+			SubMesh(position, normal, texcoord, index, param)
 		{
 		}
 
-        ~OpenglSubMesh();
+        ~OpenglSubMesh() override;
 
 	public:
 		unsigned int GetGLPrimitive();
@@ -39,7 +38,7 @@ namespace asuna
 	class OpenglMesh : public Mesh
 	{
 	public:
-		OpenglMesh() {}
+		OpenglMesh() = default;
 	public:
 		
 	public:

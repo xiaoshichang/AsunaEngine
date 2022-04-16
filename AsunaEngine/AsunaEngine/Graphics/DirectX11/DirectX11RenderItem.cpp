@@ -21,6 +21,20 @@ void DirectX11RenderItem::DrawMesh(DirectX11RenderContext* context)
     auto mesh = GetMesh();
     for (const auto& subMesh : mesh->m_SubMeshes)
     {
+        // set up material for mesh
+        auto material = GetMaterial(subMesh->GetMaterialIndex());
+        if (material == nullptr)
+        {
+            // use default material
+            Logger::Warning("material not found!");
+        }
+        else
+        {
+            material->SetMatrix("ModelMatrix", subMesh->GetModelMatrix());
+            material->Apply();
+        }
+
+        // set up mesh data
         auto positionBuffer = subMesh->GetPositionBuffer();
         auto normalBuffer = subMesh->GetNormalBuffer();
         auto texcoordBuffer = subMesh->GetTexcoordBuffer();
@@ -67,17 +81,6 @@ void DirectX11RenderItem::DrawMesh(DirectX11RenderContext* context)
         auto ib = dynamic_pointer_cast<DirectX11IndexBuffer>(indexBuffer);
         // https://docs.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-iasetindexbuffer
         context->m_DeviceContext->IASetIndexBuffer(ib->GetBuffer(), ib->GetDXGIFormat(), 0);
-
-        auto material = GetMaterial(subMesh->GetMaterialIndex());
-        if (material == nullptr)
-        {
-            // use default material
-            Logger::Warning("material not found!");
-        }
-        else
-        {
-            material->Apply();
-        }
 
         // https://docs.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-drawindexed
         context->m_DeviceContext->DrawIndexed(ib->GetElementCount(), ib->GetStartIndex(), 0);

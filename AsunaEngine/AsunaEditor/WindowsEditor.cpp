@@ -29,8 +29,9 @@ void WindowsEditor::Initialize(std::shared_ptr<ApplicationInitParam> param)
     camera->AddComponent<CameraCmpt>();
 
     auto girl = SceneManager::Instance->CreateGameObject("girl", nullptr);
+    girl->GetTransform()->SetScale(0.1f, 0.1f, 0.1f);
     auto mesh = girl->AddComponent<MeshRenderCmpt>();
-    mesh->SetMesh("Assets\\Models\\keqin.fbx");
+    mesh->SetMesh("Assets\\Models\\asuna.fbx");
     for (int i = 0; i < 20; ++i)
     {
         mesh->SetMaterial(i, "BaseColor");

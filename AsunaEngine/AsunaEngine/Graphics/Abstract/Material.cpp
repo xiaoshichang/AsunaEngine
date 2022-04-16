@@ -130,6 +130,45 @@ Vector4f Material::GetVector4(const string &name)
     return m_Vector4Params[name];
 }
 
+void Material::SetMatrix(const string &name, Matrix4x4f value)
+{
+    auto pair = m_MatrixParams.find(name);
+    if (pair == m_MatrixParams.end())
+    {
+        m_MatrixParams.insert({name, value});
+    }
+    else
+    {
+        pair->second = value;
+    }
+
+    auto offset = GetParamOffset(name);
+    if (offset == -1)
+    {
+        Logger::Warning("%s not found in parameter defines", name.c_str());
+    }
+    else
+    {
+        char* buffer = (char*)m_PerMaterial->GetData();
+        char* address = buffer + offset;
+        memcpy(address, &value, sizeof(Matrix4x4f));
+    }
+}
+
+Matrix4x4f Material::GetMatrix(const string &name)
+{
+    auto pair = m_MatrixParams.find(name);
+    if (pair == m_MatrixParams.end())
+    {
+        return {};
+    }
+    else
+    {
+        return pair->second;
+    }
+}
+
+
 const string& Material::GetName()
 {
     return m_MaterialName;
@@ -158,4 +197,7 @@ MaterialParameterType Material::GetParamType(const string &name)
 void Material::BuildMaterialParametersLayout()
 {
     m_ParamDefines["BaseColor"] = {0, MaterialParameterType::Vector4};
+    m_ParamDefines["ModelMatrix"] = {16, MaterialParameterType::Matrix};
 }
+
+

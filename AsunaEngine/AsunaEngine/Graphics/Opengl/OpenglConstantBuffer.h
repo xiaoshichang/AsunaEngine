@@ -3,6 +3,7 @@
 //
 #pragma once
 #include <memory>
+#include "../Abstract/Material.h"
 #include "../Abstract/ConstantBuffer.h"
 
 namespace asuna
@@ -16,12 +17,7 @@ namespace asuna
 
     public:
         void Bind() override;
-        void Bind(unsigned int program);
-
-    private:
-        void BindPerFrameData(unsigned int program);
-        void BindPerObjectData(unsigned int program);
-        void BindPerMaterialData(unsigned int program);
+        void BindUniform(unsigned int, const std::string& name, int offset, MaterialParameterType mpt);
 
     };
 }

@@ -91,7 +91,7 @@ std::shared_ptr<OpenglSubMesh> OpenglSubMesh::Create(const std::shared_ptr<SubMe
 		}
 		glBindVertexArray(0);
 	}
-	return make_shared<OpenglSubMesh>(vao, position, normal, texcoord, index, param->m_PrimitiveType, param->m_MaterialIndex);
+	return make_shared<OpenglSubMesh>(vao, position, normal, texcoord, index, param);
 }
 
 

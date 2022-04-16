@@ -32,64 +32,24 @@ void OpenglConstantBuffer::Bind()
     }
 }
 
-void OpenglConstantBuffer::BindPerFrameData(unsigned int program)
+void OpenglConstantBuffer::BindUniform(unsigned int program, const std::string& name, int offset, MaterialParameterType mpt)
 {
-    auto renderer = (OpenglRenderer*)Renderer::Current;
-    auto data = renderer->GetConstantBufferDataPerFrame();
-    if (data == nullptr)
-    {
-        return;
-    }
-    // Set the view matrix in the vertex shader.
-    auto location = glGetUniformLocation(program, "viewMatrix");
+    auto location = glGetUniformLocation(program, name.c_str());
     if (location == -1)
     {
         return;
     }
-    // transpose matrix by setting 3rd parameter to true
-    glUniformMatrix4fv(location, 1, true, data->m_ViewMatrix);
-
-    // Set the projection matrix in the vertex shader.
-    location = glGetUniformLocation(program, "projectionMatrix");
-    if (location == -1)
+    if (mpt == MaterialParameterType::Vector4)
     {
-        return;
+        auto address = (char*)m_Data + offset;
+        glUniform4fv(location, 1, (float*)address);
     }
-    glUniformMatrix4fv(location, 1, true, data->m_ProjectionMatrix);
-}
-
-void OpenglConstantBuffer::BindPerObjectData(unsigned int program)
-{
-    auto renderer = (OpenglRenderer*)Renderer::Current;
-    auto data = renderer->GetConstantBufferDataPerObject();
-    if (data == nullptr)
+    else if (mpt == MaterialParameterType::Matrix)
     {
-        return;
+        auto address = (char*)m_Data + offset;
+        glUniformMatrix4fv(location, 1, true, (float*)address);
     }
-    // Set the world matrix in the vertex shader.
-    auto location = glGetUniformLocation(program, "worldMatrix");
-    if (location == -1)
-    {
-        return;
-    }
-    glUniformMatrix4fv(location, 1, true, data->m_WorldMatrix);
-}
 
-void OpenglConstantBuffer::BindPerMaterialData(unsigned int program)
-{
-    auto location = glGetUniformLocation(program, "BaseColor");
-    if (location == -1)
-    {
-        return;
-    }
-    glUniform4fv(location, 1, (float*)m_Data);
-}
-
-void OpenglConstantBuffer::Bind(unsigned int program)
-{
-    BindPerFrameData(program);
-    BindPerObjectData(program);
-    BindPerMaterialData(program);
 }
 
 

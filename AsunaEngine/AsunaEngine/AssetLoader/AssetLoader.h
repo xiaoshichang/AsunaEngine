@@ -11,8 +11,6 @@ namespace asuna
 	public:
 		static std::shared_ptr<MeshCreateParam> LoadMesh(const std::string& Path);
 	private:
-		static PrimitiveType ConvertPrimitiveType(unsigned int pt);
-	private:
 		static Assimp::Importer* MeshImporter;
 	};
 

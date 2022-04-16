@@ -28,16 +28,16 @@ using namespace std;
 	{
 		index = DirectX11IndexBuffer::Create(param->m_IndexCreateParam);
 	}
-	return make_shared<DirectX11SubMesh>(position, normal, texcoord, index, param->m_PrimitiveType, param->m_MaterialIndex);
+	return make_shared<DirectX11SubMesh>(position, normal, texcoord, index, param);
 }
 
-shared_ptr<DirectX11Mesh> DirectX11Mesh::Create(shared_ptr<MeshCreateParam> param)
+shared_ptr<DirectX11Mesh> DirectX11Mesh::Create(const shared_ptr<MeshCreateParam>& param)
 {
 	auto mesh = make_shared<DirectX11Mesh>();
 	for (size_t i = 0; i < param->GetSubMeshCunt(); i++)
 	{
-		auto submesh = DirectX11SubMesh::Create(param->m_SubMeshCreateParam[i]);
-		mesh->m_SubMeshes.push_back(submesh);
+		auto sub = DirectX11SubMesh::Create(param->m_SubMeshCreateParam[i]);
+		mesh->m_SubMeshes.push_back(sub);
 	}
 	return mesh;
 }

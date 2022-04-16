@@ -1,7 +1,7 @@
 //
 // Created by xiao on 2022/4/12.
 //
-
+#include "OpenglRenderer.h"
 #include "OpenglMaterial.h"
 #include "OpenglShader.h"
 #include "OpenglConstantBuffer.h"
@@ -26,11 +26,59 @@ std::shared_ptr<OpenglMaterial> OpenglMaterial::Create(const std::string &path)
     return std::make_shared<OpenglMaterial>(path);
 }
 
+void OpenglMaterial::BindPerFrameData(unsigned int program)
+{
+    auto renderer = (OpenglRenderer*)Renderer::Current;
+    auto data = renderer->GetConstantBufferDataPerFrame();
+    if (data == nullptr)
+    {
+        return;
+    }
+    // Set the view matrix in the vertex shader.
+    auto location = glGetUniformLocation(program, "viewMatrix");
+    if (location == -1)
+    {
+        return;
+    }
+    // transpose matrix by setting 3rd parameter to true
+    glUniformMatrix4fv(location, 1, true, data->m_ViewMatrix);
+
+    // Set the projection matrix in the vertex shader.
+    location = glGetUniformLocation(program, "projectionMatrix");
+    if (location == -1)
+    {
+        return;
+    }
+    glUniformMatrix4fv(location, 1, true, data->m_ProjectionMatrix);
+}
+
+void OpenglMaterial::BindPerObjectData(unsigned int program)
+{
+    auto renderer = (OpenglRenderer*)Renderer::Current;
+    auto data = renderer->GetConstantBufferDataPerObject();
+    if (data == nullptr)
+    {
+        return;
+    }
+    // Set the world matrix in the vertex shader.
+    auto location = glGetUniformLocation(program, "worldMatrix");
+    if (location == -1)
+    {
+        return;
+    }
+    glUniformMatrix4fv(location, 1, true, data->m_WorldMatrix);
+}
+
 void OpenglMaterial::Apply()
 {
     glUseProgram(m_Program);
-    auto openglMaterial = std::dynamic_pointer_cast<OpenglConstantBuffer>(m_PerMaterial);
-    openglMaterial->Bind(m_Program);
+    auto perMaterialConstant = std::dynamic_pointer_cast<OpenglConstantBuffer>(m_PerMaterial);
+    BindPerFrameData(m_Program);
+    BindPerObjectData(m_Program);
+    for (auto& pair : m_ParamDefines)
+    {
+        perMaterialConstant->BindUniform(m_Program, pair.first, pair.second.m_Offset, pair.second.m_Type);
+    }
     m_DepthStencilState->Bind();
 }
 

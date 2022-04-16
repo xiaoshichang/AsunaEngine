@@ -19,6 +19,7 @@ void OpenglRenderItem::Render()
         auto indexBuffer = dynamic_pointer_cast<OpenglIndexBuffer>(mesh->GetIndexBuffer());
         indexBuffer->Bind();
         auto material = GetMaterial(mesh->GetMaterialIndex());
+        material->SetMatrix("ModelMatrix", mesh->GetModelMatrix());
         material->Apply();
         int start = indexBuffer->GetStartIndex();
         int count = indexBuffer->GetElementCount();
