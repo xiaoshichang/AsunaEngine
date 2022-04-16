@@ -119,7 +119,6 @@ void VisitAssimpSceneNodeToLoadMesh(const aiScene* scene, const aiNode* node, ai
 shared_ptr<MeshCreateParam> AssetLoader::LoadMesh(const std::string& Path)
 {
 	auto param = make_shared<MeshCreateParam>();
-
 	auto readFlag = aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_SortByPType;
 	if (Renderer::Current->CheckLeftHandRenderAPI())
 	{
@@ -128,6 +127,7 @@ shared_ptr<MeshCreateParam> AssetLoader::LoadMesh(const std::string& Path)
 
 	auto sceneRoot = MeshImporter->ReadFile(Path, readFlag);
     param->m_RawResource = sceneRoot;
+    param->m_MaterialCount = sceneRoot->mNumMaterials;
 	ASUNA_ASSERT(sceneRoot);
     VisitAssimpSceneNodeToLoadMesh(sceneRoot, sceneRoot->mRootNode, aiMatrix4x4(), param);
 	return param;

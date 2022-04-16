@@ -97,7 +97,7 @@ std::shared_ptr<OpenglSubMesh> OpenglSubMesh::Create(const std::shared_ptr<SubMe
 
 shared_ptr<OpenglMesh> OpenglMesh::Create(const shared_ptr<MeshCreateParam>& param)
 {
-	auto mesh = make_shared<OpenglMesh>();
+	auto mesh = make_shared<OpenglMesh>(param);
 	for (size_t i = 0; i < param->GetSubMeshCunt(); i++)
 	{
 		auto subPram = param->m_SubMeshCreateParam[i];

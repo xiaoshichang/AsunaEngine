@@ -38,7 +38,12 @@ namespace asuna
 	class OpenglMesh : public Mesh
 	{
 	public:
-		OpenglMesh() = default;
+		OpenglMesh(const std::shared_ptr<MeshCreateParam>& param) :
+                Mesh(param->m_MaterialCount)
+        {}
+
+        ~OpenglMesh() override = default;
+
 	public:
 		
 	public:

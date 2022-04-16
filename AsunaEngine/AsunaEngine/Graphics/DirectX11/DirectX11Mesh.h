@@ -33,7 +33,12 @@ namespace asuna
 	class DirectX11Mesh : public Mesh
 	{
 	public:
-		DirectX11Mesh() = default;
+		explicit DirectX11Mesh(const std::shared_ptr<MeshCreateParam>& param) :
+                Mesh(param->m_MaterialCount)
+        {
+
+        }
+
 		~DirectX11Mesh() override = default;
 
 	public:

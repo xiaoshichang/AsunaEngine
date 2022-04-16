@@ -30,7 +30,6 @@ namespace asuna
 
     public:
         void SetMesh(const std::string& path);
-        void AllocateMaterials(int count);
         void SetMaterial(int index, const std::string& materialPath);
         int GetMaterialCount() const;
         std::shared_ptr<Material> GetMaterial(int index);

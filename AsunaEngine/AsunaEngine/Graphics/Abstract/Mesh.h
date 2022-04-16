@@ -45,9 +45,12 @@ namespace asuna
 	struct MeshCreateParam
 	{
         const aiScene* m_RawResource;
+        int m_MaterialCount;
 		std::vector<std::shared_ptr<SubMeshCreateParam>> m_SubMeshCreateParam;
+
 		MeshCreateParam() :
-            m_RawResource(nullptr)
+            m_RawResource(nullptr),
+            m_MaterialCount(0)
 		{
 		}
 
@@ -134,9 +137,15 @@ namespace asuna
 	class Mesh
 	{
 	public:
+        Mesh(int materialCount) :
+        m_MaterialCount(materialCount)
+        {}
+
 		virtual ~Mesh() = default;
+        int GetMaterialCount() const { return m_MaterialCount;}
 	public:
 		std::vector<std::shared_ptr<SubMesh>> m_SubMeshes;
+        int m_MaterialCount;
 	};
 
 

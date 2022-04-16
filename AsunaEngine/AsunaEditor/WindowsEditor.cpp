@@ -25,19 +25,13 @@ void WindowsEditor::Initialize(std::shared_ptr<ApplicationInitParam> param)
     WindowsApplication::Initialize(param);
 
     auto camera = SceneManager::Instance->CreateGameObject("Camera", nullptr);
-    camera->GetTransform()->SetPosition(0, 0, -60);
+    camera->GetTransform()->SetPosition(10, 10, -60);
     camera->AddComponent<CameraCmpt>();
 
     auto girl = SceneManager::Instance->CreateGameObject("girl", nullptr);
     girl->GetTransform()->SetScale(0.1f, 0.1f, 0.1f);
     auto mesh = girl->AddComponent<MeshRenderCmpt>();
     mesh->SetMesh("Assets\\Models\\asuna.fbx");
-    for (int i = 0; i < 20; ++i)
-    {
-        mesh->SetMaterial(i, "BaseColor");
-        auto material = mesh->GetMaterial(i);
-        material->SetVector4("BaseColor", {0.05f * i, 0.05f * i, 0.05f * i, 1.0f});
-    }
 
     m_HierarchyPanel.Initialize();
     m_LogPanel.Initialize();
