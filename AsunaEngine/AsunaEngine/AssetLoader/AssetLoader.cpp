@@ -5,6 +5,9 @@
 #include "../Foundation/Platform/Assert.h"
 #include "../Graphics/Abstract/Renderer.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "../3rd/stb/stb_image.h"
+
 using namespace asuna;
 using namespace Assimp;
 using namespace std;
@@ -131,6 +134,26 @@ shared_ptr<MeshCreateParam> AssetLoader::LoadMesh(const std::string& Path)
 	ASUNA_ASSERT(sceneRoot);
     VisitAssimpSceneNodeToLoadMesh(sceneRoot, sceneRoot->mRootNode, aiMatrix4x4(), param);
 	return param;
+}
+
+std::shared_ptr<RawTexture> AssetLoader::LoadRawTexture(const string &path)
+{
+    int iw, ih, n;
+    // 加载图片获取宽、高、颜色通道信息
+    unsigned char *data = stbi_load(path.c_str(), &iw, &ih, &n, 0);
+    if (n == 4)
+    {
+        return make_shared<RawTexture>(iw, ih, RawTextureFormat::R8G8B8A8, data);
+    }
+    else if (n == 3)
+    {
+        return make_shared<RawTexture>(iw, ih, RawTextureFormat::R8G8B8, data);
+    }
+    else
+    {
+        ASUNA_ASSERT(false);
+    }
+    return nullptr;
 }
 
 

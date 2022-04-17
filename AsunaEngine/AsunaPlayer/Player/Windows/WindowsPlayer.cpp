@@ -18,6 +18,8 @@ void WindowsPlayer::Initialize(std::shared_ptr<ApplicationInitParam> param)
     auto mesh = girl->AddComponent<MeshRenderCmpt>();
     girl->GetTransform()->SetScale(0.1f, 0.1f, 0.1f);
     mesh->SetMesh("Assets\\Models\\asuna.fbx");
+
+    auto tex = AssetLoader::LoadRawTexture("Assets\\Textures\\asuna_diffuse.jpg");
 }
 
 void WindowsPlayer::Render()
