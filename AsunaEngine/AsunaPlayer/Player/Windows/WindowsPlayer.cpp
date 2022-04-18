@@ -11,7 +11,7 @@ void WindowsPlayer::Initialize(std::shared_ptr<ApplicationInitParam> param)
 	WindowsApplication::Initialize(param);
 
     auto camera = SceneManager::Instance->CreateGameObject("Camera", nullptr);
-    camera->GetTransform()->SetPosition(10, 10, -60);
+    camera->GetTransform()->SetPosition(10, 10, -45);
     camera->AddComponent<CameraCmpt>();
 
     auto girl = SceneManager::Instance->CreateGameObject("girl", nullptr);
@@ -19,7 +19,9 @@ void WindowsPlayer::Initialize(std::shared_ptr<ApplicationInitParam> param)
     girl->GetTransform()->SetScale(0.1f, 0.1f, 0.1f);
     mesh->SetMesh("Assets\\Models\\asuna.fbx");
 
-    auto tex = AssetLoader::LoadRawTexture("Assets\\Textures\\asuna_diffuse.jpg");
+    auto tex = Renderer::Current->CreateTexture( "Assets\\Textures\\asuna_diffuse.jpg");
+    auto material = mesh->GetMaterial(0);
+    material->SetTexture("MainTex", tex);
 }
 
 void WindowsPlayer::Render()

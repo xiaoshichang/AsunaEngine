@@ -8,10 +8,10 @@
 #include "DirectX11VertexBuffer.h"
 #include "DirectX11Shader.h"
 #include "DirectX11RenderItem.h"
-#include "DirectX11RenderTarget.h"
-#include "DirectX11ConstantBuffer.h"
 #include "DirectX11RenderItemQueue.h"
 #include "DirectX11DepthStencilState.h"
+#include "DirectX11Texture.h"
+#include "DirectX11Material.h"
 
 
 using namespace asuna;
@@ -340,10 +340,23 @@ void DirectX11Renderer::SetViewPort(int x, int y, int width, int height)
     context->m_DeviceContext->RSSetViewports(1, &viewport);
 }
 
+shared_ptr<Material> DirectX11Renderer::CreateMaterial(const string &materialPath)
+{
+    return DirectX11Material::Create(materialPath);
+}
+
 shared_ptr<DepthStencilState> DirectX11Renderer::CreateDepthStencilState()
 {
     return make_shared<DirectX11DepthStencilState>();
 }
+
+shared_ptr<Texture> DirectX11Renderer::CreateTexture(const string &path)
+{
+    auto raw = AssetLoader::LoadRawTexture(path);
+    return DirectX11Texture::Create(raw);
+}
+
+
 
 
 

@@ -40,9 +40,60 @@ int RawTexture::GetPixelBytes()
     {
         return 3;
     }
+    else
+    {
+        ASUNA_ASSERT(false);
+        return -1;
+    }
 }
 
 void *RawTexture::GetData()
 {
     return m_Data;
+}
+
+RawTextureFormat RawTexture::GetFormat() const
+{
+    return m_Format;
+}
+
+
+Texture::Texture(const std::shared_ptr<RawTexture>& rawImage) :
+    m_Width(rawImage->GetWidth()),
+    m_Height(rawImage->GetHeight()),
+    m_Format(rawImage->GetFormat())
+{
+
+}
+
+int Texture::GetPixelBytes()
+{
+    if (m_Format == RawTextureFormat::R8G8B8A8)
+    {
+        return 4;
+    }
+    else if (m_Format == RawTextureFormat::R8G8B8)
+    {
+        return 3;
+    }
+    else
+    {
+        ASUNA_ASSERT(false);
+        return -1;
+    }
+}
+
+int Texture::GetHeight() const
+{
+    return m_Height;
+}
+
+int Texture::GetWidth() const
+{
+    return m_Width;
+}
+
+RawTextureFormat Texture::GetFormat() const
+{
+    return m_Format;
 }

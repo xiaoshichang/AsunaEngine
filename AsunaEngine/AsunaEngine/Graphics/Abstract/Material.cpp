@@ -43,19 +43,6 @@ Material::Material(const std::string& materialPath) :
     BuildMaterialParametersLayout();
 }
 
-shared_ptr<Material> Material::Create(const std::string& materialPath)
-{
-    return make_shared<Material>(materialPath);
-}
-
-void Material::Apply()
-{
-    m_VS->Bind();
-    m_PS->Bind();
-    m_PerMaterial->Bind();
-    m_DepthStencilState->Bind();
-}
-
 float Material::GetFloat(const string &name)
 {
     auto pair = m_FloatParams.find(name);
@@ -71,6 +58,11 @@ float Material::GetFloat(const string &name)
 
 void Material::SetFloat(const string &name, float value)
 {
+    if (!CheckParameterExist(name))
+    {
+        return;
+    }
+
     auto pair = m_FloatParams.find(name);
     if (pair == m_FloatParams.end())
     {
@@ -97,6 +89,11 @@ void Material::SetFloat(const string &name, float value)
 
 void Material::SetVector4(const string &name, Vector4f value)
 {
+    if (!CheckParameterExist(name))
+    {
+        return;
+    }
+
     auto pair = m_Vector4Params.find(name);
     if (pair == m_Vector4Params.end())
     {
@@ -132,6 +129,11 @@ Vector4f Material::GetVector4(const string &name)
 
 void Material::SetMatrix(const string &name, Matrix4x4f value)
 {
+    if (!CheckParameterExist(name))
+    {
+        return;
+    }
+
     auto pair = m_MatrixParams.find(name);
     if (pair == m_MatrixParams.end())
     {
@@ -184,6 +186,7 @@ int Material::GetParamOffset(const string &name)
     return -1;
 }
 
+
 MaterialParameterType Material::GetParamType(const string &name)
 {
     auto kv = m_ParamDefines.find(name);
@@ -194,10 +197,51 @@ MaterialParameterType Material::GetParamType(const string &name)
     return MaterialParameterType::Unknown;
 }
 
+bool Material::CheckParameterExist(const std::string &name) const
+{
+    if (m_ParamDefines.find(name) == m_ParamDefines.end())
+    {
+        return false;
+    }
+    return true;
+}
+
 void Material::BuildMaterialParametersLayout()
 {
-    m_ParamDefines["BaseColor"] = {0, MaterialParameterType::Vector4};
-    m_ParamDefines["ModelMatrix"] = {16, MaterialParameterType::Matrix};
+    m_ParamDefines["BaseColor"] = {MaterialParameterType::Vector4, 0, TextureShaderType::PS};
+    m_ParamDefines["ModelMatrix"] = {MaterialParameterType::Matrix, 16, TextureShaderType::VS};
+
+    m_ParamDefines["MainTex"] = {MaterialParameterType::Texture2D, 0, TextureShaderType::PS};
 }
+
+void Material::SetTexture(const string &name, const shared_ptr<Texture> &value)
+{
+    if (!CheckParameterExist(name))
+    {
+        return;
+    }
+
+    auto kv = m_TextureParams.find(name);
+    if (kv != m_TextureParams.end())
+    {
+        kv->second = value;
+    }
+    else
+    {
+        m_TextureParams.insert({name, value});
+    }
+}
+
+std::shared_ptr<Texture> Material::GetTexture(const string &name)
+{
+    auto kv = m_TextureParams.find(name);
+    if (kv != m_TextureParams.end())
+    {
+        return kv->second;
+    }
+    return nullptr;
+}
+
+
 
 

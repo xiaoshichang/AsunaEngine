@@ -1,7 +1,8 @@
 #pragma once
 #include <memory>
 #include <string>
-
+#include <utility>
+#include "MaterialParameter.h"
 
 namespace asuna
 {
@@ -19,6 +20,7 @@ namespace asuna
 
         int GetWidth() const;
         int GetHeight() const;
+        RawTextureFormat GetFormat() const;
         int GetPixelBytes();
         void* GetData();
 
@@ -33,13 +35,18 @@ namespace asuna
 	class Texture
 	{
 	public:
-		Texture()
-		{
-		}
+		explicit Texture(const std::shared_ptr<RawTexture>& rawImage);
+		virtual ~Texture() = default;
 
-		virtual ~Texture()
-		{
-		}
+        int GetWidth() const;
+        int GetHeight() const;
+        int GetPixelBytes();
+        RawTextureFormat GetFormat() const;
+
+    private:
+        int m_Width;
+        int m_Height;
+        RawTextureFormat m_Format;
 	};
 
 

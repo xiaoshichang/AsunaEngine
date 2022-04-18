@@ -28,7 +28,3 @@ bool Renderer::CheckLeftHandRenderAPI() const
     }
 }
 
-std::shared_ptr<Material> Renderer::CreateMaterial(const std::string& materialPath)
-{
-    return Material::Create(materialPath);
-}

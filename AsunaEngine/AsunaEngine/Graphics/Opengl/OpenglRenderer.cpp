@@ -318,6 +318,11 @@ void OpenglRenderer::MakeCurrentContext()
     ASUNA_ASSERT(result == 1);
 }
 
+std::shared_ptr<Texture> OpenglRenderer::CreateTexture(const string &path)
+{
+    return std::shared_ptr<Texture>();
+}
+
 
 
 

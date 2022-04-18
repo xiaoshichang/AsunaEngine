@@ -28,6 +28,7 @@ namespace asuna
          std::shared_ptr<Material> CreateMaterial(const std::string& materialPath) override;
          std::shared_ptr<DepthStencilState> CreateDepthStencilState() override;
          std::shared_ptr<RenderItemQueue> CreateRenderItemQueue() override;
+         std::shared_ptr<Texture> CreateTexture(const std::string& path) override;
 
     public:
         void MakeCurrentContext();

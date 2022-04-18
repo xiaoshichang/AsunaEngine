@@ -49,6 +49,21 @@ PrimitiveType ConvertPrimitiveType(unsigned int pt)
     }
 }
 
+void Convert3ChanelTo4Chanel(const unsigned char* origin, unsigned char* target, int width, int height)
+{
+    for (int r = 0; r < height; ++r)
+    {
+        for (int c = 0; c < width; ++c)
+        {
+            int pixelIndex = r * width + c;
+            target[pixelIndex * 4] = origin[pixelIndex * 3];
+            target[pixelIndex * 4 + 1] = origin[pixelIndex * 3 + 1];
+            target[pixelIndex * 4 + 2] = origin[pixelIndex * 3 + 2];
+            target[pixelIndex * 4 + 3] = 255;
+        }
+    }
+}
+
 void VisitAssimpSceneNodeToLoadMesh(const aiScene* scene, const aiNode* node, aiMatrix4x4 parentTransform, const std::shared_ptr<MeshCreateParam>& param)
 {
     for (int i = 0; i < node->mNumMeshes; ++i)
@@ -143,17 +158,25 @@ std::shared_ptr<RawTexture> AssetLoader::LoadRawTexture(const string &path)
     unsigned char *data = stbi_load(path.c_str(), &iw, &ih, &n, 0);
     if (n == 4)
     {
-        return make_shared<RawTexture>(iw, ih, RawTextureFormat::R8G8B8A8, data);
+        auto ret = make_shared<RawTexture>(iw, ih, RawTextureFormat::R8G8B8A8, data);
+        delete[] data;
+        return ret;
     }
     else if (n == 3)
     {
-        return make_shared<RawTexture>(iw, ih, RawTextureFormat::R8G8B8, data);
+        int textureSize = iw * ih * 4;
+        auto* textureData = new unsigned char[textureSize];
+        Convert3ChanelTo4Chanel(data, textureData, iw, ih);
+        auto ret = make_shared<RawTexture>(iw, ih, RawTextureFormat::R8G8B8A8, textureData);
+        delete[] data;
+        delete[] textureData;
+        return ret;
     }
     else
     {
         ASUNA_ASSERT(false);
+        return nullptr;
     }
-    return nullptr;
 }
 
 

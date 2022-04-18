@@ -9,22 +9,31 @@ namespace asuna
 	{
 	public:
 		DirectX11Texture() = delete;
-		DirectX11Texture(ID3D11Texture2D* texture):
-			m_Texture(texture)
+		DirectX11Texture(const std::shared_ptr<RawTexture> &rawImage, ID3D11Texture2D *texture, ID3D11ShaderResourceView* srv) :
+                Texture(rawImage),
+                m_Texture(texture),
+                m_SRV(srv)
 		{
 		}
 
-		virtual ~DirectX11Texture();
+		~DirectX11Texture() override;
 
 		ID3D11Texture2D* GetTexture()
 		{
 			return m_Texture;
 		}
 
-		static std::shared_ptr<DirectX11Texture> Create(int w, int h);
+        ID3D11ShaderResourceView* GetSRV()
+        {
+            return m_SRV;
+        }
+
+
+		static std::shared_ptr<DirectX11Texture> Create(const std::shared_ptr<RawTexture>& rawTexture);
 
 	private:
 		ID3D11Texture2D* m_Texture;
+        ID3D11ShaderResourceView* m_SRV;
 	};
 
 
