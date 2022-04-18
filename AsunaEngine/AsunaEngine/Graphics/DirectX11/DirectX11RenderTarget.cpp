@@ -167,6 +167,11 @@ void DirectX11RenderTarget::Resize(int width, int height)
         hr = context->m_Device->CreateRenderTargetView(pBuffer, nullptr, &m_RenderTargetView);
         ASUNA_ASSERT(SUCCEEDED(hr));
         pBuffer->Release();
+
+        RenderTargetDesc desc{};
+        desc.width = width;
+        desc.height = height;
+        CreateDepthStencilResource(desc, context->m_Device);
     }
     else
     {

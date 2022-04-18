@@ -48,8 +48,6 @@ void DirectX11Renderer::ResizeResolution(int width, int height)
 	{
         mainRT->Resize(width, height);
 	}
-    auto rtv = mainRT->GetRenderTargetView();
-    context->m_DeviceContext->OMSetRenderTargets(1, &rtv, nullptr);
 }
 
 
