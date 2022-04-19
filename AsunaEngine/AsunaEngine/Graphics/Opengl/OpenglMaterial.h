@@ -18,6 +18,9 @@ namespace asuna
         static std::shared_ptr<OpenglMaterial> Create(const std::string& path);
         void Apply() override;
 
+    protected:
+        void BindTextures() override;
+
     private:
         void BindPerFrameData(unsigned int program);
         void BindPerObjectData(unsigned int program);

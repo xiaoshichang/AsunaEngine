@@ -8,7 +8,7 @@
 // INPUT VARIABLES //
 /////////////////////
 in vec3 nw;
-
+in vec3 texcoord0;
 
 //////////////////////
 // OUTPUT VARIABLES //
@@ -16,13 +16,13 @@ in vec3 nw;
 out vec4 outputColor;
 
 uniform vec4 BaseColor;
-
+uniform sampler2D BaseTexture;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Pixel Shader
 ////////////////////////////////////////////////////////////////////////////////
 void main(void)
 {
-	outputColor = vec4(nw, 1.0f);
+	outputColor = texture(BaseTexture, texcoord0.xy);
 }
 

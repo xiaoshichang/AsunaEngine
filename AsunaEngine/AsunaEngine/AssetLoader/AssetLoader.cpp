@@ -142,6 +142,7 @@ shared_ptr<MeshCreateParam> AssetLoader::LoadMesh(const std::string& Path)
 	{
 		readFlag = readFlag | aiProcess_ConvertToLeftHanded;
 	}
+    readFlag |= aiProcess_FlipUVs;
 
 	auto sceneRoot = MeshImporter->ReadFile(Path, readFlag);
     param->m_RawResource = sceneRoot;
@@ -159,7 +160,7 @@ std::shared_ptr<RawTexture> AssetLoader::LoadRawTexture(const string &path)
     if (n == 4)
     {
         auto ret = make_shared<RawTexture>(iw, ih, RawTextureFormat::R8G8B8A8, data);
-        delete[] data;
+        stbi_image_free(data);
         return ret;
     }
     else if (n == 3)
@@ -168,7 +169,7 @@ std::shared_ptr<RawTexture> AssetLoader::LoadRawTexture(const string &path)
         auto* textureData = new unsigned char[textureSize];
         Convert3ChanelTo4Chanel(data, textureData, iw, ih);
         auto ret = make_shared<RawTexture>(iw, ih, RawTextureFormat::R8G8B8A8, textureData);
-        delete[] data;
+        stbi_image_free(data);
         delete[] textureData;
         return ret;
     }

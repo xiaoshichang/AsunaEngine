@@ -5,25 +5,28 @@
 #include "OpenglMaterial.h"
 #include "OpenglShader.h"
 #include "OpenglConstantBuffer.h"
+#include "OpenglTexture.h"
+
 #include "../../3rd/Glad/include/glad/glad.h"
 #include "../../Foundation/Logger/Logger.h"
 
 using namespace asuna;
+using namespace std;
 
-OpenglMaterial::OpenglMaterial(const std::string &path) :
+OpenglMaterial::OpenglMaterial(const string &path) :
         m_Program(0),
         Material(path)
 {
-    auto vs = std::dynamic_pointer_cast<OpenglShader>(m_VS);
-    auto ps = std::dynamic_pointer_cast<OpenglShader>(m_PS);
+    auto vs = dynamic_pointer_cast<OpenglShader>(m_VS);
+    auto ps = dynamic_pointer_cast<OpenglShader>(m_PS);
     InitProgram(vs->GetShader(), ps->GetShader());
 }
 
 OpenglMaterial::~OpenglMaterial() = default;
 
-std::shared_ptr<OpenglMaterial> OpenglMaterial::Create(const std::string &path)
+shared_ptr<OpenglMaterial> OpenglMaterial::Create(const string &path)
 {
-    return std::make_shared<OpenglMaterial>(path);
+    return make_shared<OpenglMaterial>(path);
 }
 
 void OpenglMaterial::BindPerFrameData(unsigned int program)
@@ -72,7 +75,7 @@ void OpenglMaterial::BindPerObjectData(unsigned int program)
 void OpenglMaterial::Apply()
 {
     glUseProgram(m_Program);
-    auto perMaterialConstant = std::dynamic_pointer_cast<OpenglConstantBuffer>(m_PerMaterial);
+    auto perMaterialConstant = dynamic_pointer_cast<OpenglConstantBuffer>(m_PerMaterial);
     BindPerFrameData(m_Program);
     BindPerObjectData(m_Program);
     for (auto& pair : m_ParamDefines)
@@ -80,6 +83,7 @@ void OpenglMaterial::Apply()
         perMaterialConstant->BindUniform(m_Program, pair.first, pair.second.m_Offset, pair.second.m_Type);
     }
     m_DepthStencilState->Bind();
+    BindTextures();
 }
 
 void OpenglMaterial::InitProgram(unsigned int vs, unsigned int ps)
@@ -110,6 +114,26 @@ void OpenglMaterial::InitProgram(unsigned int vs, unsigned int ps)
             free(infoLog);
         }
         ASUNA_ASSERT(false);
+    }
+}
+
+void OpenglMaterial::BindTextures()
+{
+    for(auto& pair : m_ParamDefines)
+    {
+        if (pair.second.m_Type == MaterialParameterType::Texture2D)
+        {
+            auto texture = dynamic_pointer_cast<OpenglTexture>(GetTexture(pair.first));
+            if (texture == nullptr)
+            {
+                continue;
+            }
+            auto loc = glGetUniformLocation(m_Program, pair.first.c_str());
+            glUniform1i(loc, pair.second.m_Offset);
+
+            glActiveTexture(GL_TEXTURE0 + pair.second.m_Offset);
+            glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
+        }
     }
 }
 

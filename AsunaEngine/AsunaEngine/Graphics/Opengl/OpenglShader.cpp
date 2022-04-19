@@ -47,6 +47,7 @@ std::shared_ptr<OpenglShader> asuna::OpenglShader::Create(const std::string& pat
             GLsizei log_length = 0;
             GLchar message[1024];
             glGetShaderInfoLog(shader, 1024, &log_length, message);
+            Logger::Error("OpenglShader Create:");
             Logger::Error(message);
 			ASUNA_ASSERT(false);
 		}

@@ -8,6 +8,8 @@
 #include "OpenglConstantBuffer.h"
 #include "OpenglDepthStencilState.h"
 #include "OpenglRenderTarget.h"
+#include "OpenglTexture.h"
+
 #include "../../3rd/Glad/include/glad/glad.h"
 #include "../../3rd/Glad/include/glad/glad_wgl.h"
 #include "../../Foundation/Platform/Assert.h"
@@ -320,7 +322,8 @@ void OpenglRenderer::MakeCurrentContext()
 
 std::shared_ptr<Texture> OpenglRenderer::CreateTexture(const string &path)
 {
-    return std::shared_ptr<Texture>();
+    auto raw = AssetLoader::LoadRawTexture(path);
+    return OpenglTexture::Create(raw);
 }
 
 

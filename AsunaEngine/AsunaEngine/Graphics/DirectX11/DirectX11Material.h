@@ -16,8 +16,8 @@ namespace asuna
         void Apply() override;
         static std::shared_ptr<DirectX11Material> Create(const std::string& path);
 
-    private:
-        void BindTextures();
+    protected:
+        void BindTextures() override;
 
     };
 

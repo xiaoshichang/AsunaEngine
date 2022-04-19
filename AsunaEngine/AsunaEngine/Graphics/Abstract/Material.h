@@ -54,6 +54,9 @@ namespace asuna
         int GetParamOffset(const std::string& name);
         MaterialParameterType GetParamType(const std::string& name);
 
+    protected:
+        virtual void BindTextures() = 0;
+
     private:
         bool CheckParameterExist(const std::string& name) const;
         void BuildMaterialParametersLayout();
