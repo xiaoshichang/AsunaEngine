@@ -88,7 +88,7 @@ namespace asuna {
 			}
 		}
 
-		Matrix<T, ROWS, COLS> Identity()
+		static Matrix<T, ROWS, COLS> Identity()
 		{
 			ASUNA_ASSERT(ROWS == COLS);
 			Matrix<T, ROWS, COLS> ret = { 0 };

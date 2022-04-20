@@ -27,6 +27,8 @@ namespace asuna
         void Tick();
         void Render(const std::shared_ptr<RenderTarget>& rt);
 
+        void LoadScene(const std::string& path);
+
         std::shared_ptr<GameObject> GetRoot();
         std::shared_ptr<GameObject> CreateGameObject(const std::string& name, const std::shared_ptr<GameObject>& parent);
 

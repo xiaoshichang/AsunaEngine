@@ -26,16 +26,10 @@ void MeshRenderCmpt::Tick()
     UpdateConstantBufferPerObject();
 }
 
-void MeshRenderCmpt::SetMesh(const std::string &path)
+void MeshRenderCmpt::SetMesh(const std::shared_ptr<Mesh>& mesh)
 {
-    m_MeshPath = path;
-    auto mesh = Renderer::Current->CreateMesh(path);
     m_RenderItem->SetMesh(mesh);
     m_RenderItem->AllocateMaterials(mesh->GetMaterialCount());
-    for (int i = 0; i < mesh->GetMaterialCount(); ++i)
-    {
-        SetMaterial(i, "Base");
-    }
 }
 
 int MeshRenderCmpt::GetMaterialCount() const
@@ -48,9 +42,8 @@ std::shared_ptr<Material> MeshRenderCmpt::GetMaterial(int index)
     return m_RenderItem->GetMaterial(index);
 }
 
-void MeshRenderCmpt::SetMaterial(int index, const std::string& materialPath)
+void MeshRenderCmpt::SetMaterial(int index, const std::shared_ptr<Material>& material)
 {
-    auto material = Renderer::Current->CreateMaterial(materialPath);
     m_RenderItem->SetMaterial(index, material);
 }
 

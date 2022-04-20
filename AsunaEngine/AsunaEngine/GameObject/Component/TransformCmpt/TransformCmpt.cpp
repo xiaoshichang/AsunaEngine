@@ -90,12 +90,12 @@ void TransformCmpt::CalculateRTSMatrix()
     if (Renderer::Current->CheckLeftHandRenderAPI())
     {
         auto t = BuildMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
-        m_RTSMatrix = s * t * r;
+        m_RTSMatrix = t * s * r;
     }
     else
     {
         auto t = BuildMatrixTranslation(m_Position.x, m_Position.y, -m_Position.z);
-        m_RTSMatrix = s * t * r;
+        m_RTSMatrix = t * s * r;
     }
     m_RTSMatrixDirty = false;
 }

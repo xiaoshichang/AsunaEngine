@@ -11,17 +11,30 @@ using namespace std;
 Material::Material(const std::string& materialPath) :
     m_MaterialName(materialPath)
 {
-    if (materialPath == "Debug")
+    if (materialPath == "Axis")
     {
         if (Renderer::Current->m_APIType == RenderAPIType::Directx11)
         {
-            m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\dx11_debug.vs", ShaderType::VertexShader);
-            m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\dx11_debug.ps", ShaderType::PixelShader);
+            m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\dx11_Axis.vs", ShaderType::VertexShader);
+            m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\dx11_Axis.ps", ShaderType::PixelShader);
         }
         else
         {
-            m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\gl_debug.vs", ShaderType::VertexShader);
-            m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\gl_debug.ps", ShaderType::PixelShader);
+            m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\gl_Axis.vs", ShaderType::VertexShader);
+            m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\gl_Axis.ps", ShaderType::PixelShader);
+        }
+    }
+    else if (materialPath == "Color")
+    {
+        if (Renderer::Current->m_APIType == RenderAPIType::Directx11)
+        {
+            m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\dx11_Color.vs", ShaderType::VertexShader);
+            m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\dx11_Color.ps", ShaderType::PixelShader);
+        }
+        else
+        {
+            m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\gl_Color.vs", ShaderType::VertexShader);
+            m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\gl_Color.ps", ShaderType::PixelShader);
         }
     }
     else

@@ -1,11 +1,7 @@
 
-Texture2D tBaseMap;
-SamplerState tBaseMapSamplerState;
 
 struct v2p {
 	float4 position : SV_POSITION;
-	float4 nw : NORMAL;
-	float4 texcoord : TEXCOORD;
 };
 
 cbuffer ConstantBufferPerFrame
@@ -28,7 +24,6 @@ cbuffer ConstantBufferPerMaterial
 
 float4 main(v2p input) : SV_TARGET
 {
-    float4 color = tBaseMap.Sample(tBaseMapSamplerState, input.texcoord.xy);
-    return color;
+    return mainColor;
 }
 

@@ -21,7 +21,7 @@ namespace asuna
         CameraCmpt(GameObject* owner) :
             m_ProjectionType(CameraProjectionType::Perspective),
             m_Near(0.1f),
-            m_Far(1000.0f),
+            m_Far(2000.0f),
             m_Fov(PI / 4.0f),
             m_AspectRatio(4.0f/3),
             m_ViewWidth(100),

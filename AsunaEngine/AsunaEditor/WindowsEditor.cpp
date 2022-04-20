@@ -23,20 +23,11 @@ static void ShowDockingDisabledMessage()
 void WindowsEditor::Initialize(std::shared_ptr<ApplicationInitParam> param)
 {
     WindowsApplication::Initialize(param);
-
-    auto camera = SceneManager::Instance->CreateGameObject("Camera", nullptr);
-    camera->GetTransform()->SetPosition(10, 10, -60);
-    camera->AddComponent<CameraCmpt>();
-
-    auto girl = SceneManager::Instance->CreateGameObject("girl", nullptr);
-    girl->GetTransform()->SetScale(0.1f, 0.1f, 0.1f);
-    auto mesh = girl->AddComponent<MeshRenderCmpt>();
-    mesh->SetMesh("Assets\\Models\\asuna.fbx");
-
     m_HierarchyPanel.Initialize();
     m_LogPanel.Initialize();
     m_GamePanel.Initialize();
     m_InspectorPanel.Initialize();
+    SceneManager::Instance->LoadScene("test");
     Logger::Info("Editor Init OK!");
 }
 

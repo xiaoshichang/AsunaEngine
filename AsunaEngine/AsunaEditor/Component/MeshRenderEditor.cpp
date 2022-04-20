@@ -15,7 +15,6 @@ void MeshRenderEditor::Render(asuna::MeshRenderCmpt *meshRender)
 
     ImGui::Separator();
     ImGui::Text("MeshRenderCmpt");
-    ImGui::Text("Mesh: %s", meshRender->GetMeshPath().c_str());
     ImGui::Text("Materials");
     for (int i = 0; i < meshRender->GetMaterialCount(); ++i)
     {

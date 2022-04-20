@@ -3,8 +3,11 @@
 //
 
 #include "SceneManager.h"
+#include "../AssetLoader/AssetLoader.h"
 #include "../Graphics/Abstract/Renderer.h"
 #include "../Foundation/Logger/Logger.h"
+#include "../GameObject/Component/MeshRenderCmpt/MeshRenderCmpt.h"
+#include "SimpleGeometryCreator.h"
 
 using namespace asuna;
 using namespace std;
@@ -213,10 +216,45 @@ void SceneManager::CreateCoordAxisRenderItem()
 
     for (int i = 0; i < 6; ++i)
     {
-        auto material = Renderer::Current->CreateMaterial("Debug");
+        auto material = Renderer::Current->CreateMaterial("Axis");
         material->SetVector4("BaseColor", colors[i]);
         item->SetMaterial(i, material);
     }
+}
+
+void SceneManager::LoadScene(const string &path)
+{
+    auto camera = SceneManager::Instance->CreateGameObject("Camera", nullptr);
+    camera->GetTransform()->SetPosition(10, 10, -45);
+    camera->AddComponent<CameraCmpt>();
+
+
+    auto girl = SceneManager::Instance->CreateGameObject("girl", nullptr);
+    girl->GetTransform()->SetScale(0.1f, 0.1f, 0.1f);
+
+    auto meshParam = AssetLoader::LoadMesh("Assets\\Models\\asuna.fbx");
+    auto mesh = Renderer::Current->CreateMesh(meshParam);
+    auto meshCmpt = girl->AddComponent<MeshRenderCmpt>();
+    meshCmpt->SetMesh(mesh);
+    for(int i = 0; i < meshParam->m_MaterialCount; i++)
+    {
+        auto material = Renderer::Current->CreateMaterial("Diffuse");
+        meshCmpt->SetMaterial(i, material);
+    }
+
+    auto tex = Renderer::Current->CreateTexture( "Assets\\Textures\\asuna_diffuse.jpg");
+    auto material = meshCmpt->GetMaterial(0);
+    material->SetTexture("MainTex", tex);
+
+    auto ground = SceneManager::Instance->CreateGameObject("ground", nullptr);
+    ground->GetTransform()->SetScale(1000, 1, 1000);
+    ground->GetTransform()->SetPosition(0, -0.1, 0);
+    auto groundMesh = SimpleGeometryCreator::CreatePlane();
+    auto groundMeshCmpt = ground->AddComponent<MeshRenderCmpt>();
+    groundMeshCmpt->SetMesh(groundMesh);
+    auto groundMaterial = Renderer::Current->CreateMaterial("Color");
+    groundMaterial->SetVector4("BaseColor", Vector4f(0.6f, 0.6f, 0.6f, 1.0f));
+    groundMeshCmpt->SetMaterial(0, groundMaterial);
 }
 
 

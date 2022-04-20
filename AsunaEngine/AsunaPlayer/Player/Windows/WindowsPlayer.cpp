@@ -9,19 +9,7 @@ using namespace asuna;
 void WindowsPlayer::Initialize(std::shared_ptr<ApplicationInitParam> param)
 {
 	WindowsApplication::Initialize(param);
-
-    auto camera = SceneManager::Instance->CreateGameObject("Camera", nullptr);
-    camera->GetTransform()->SetPosition(10, 10, -45);
-    camera->AddComponent<CameraCmpt>();
-
-    auto girl = SceneManager::Instance->CreateGameObject("girl", nullptr);
-    auto mesh = girl->AddComponent<MeshRenderCmpt>();
-    girl->GetTransform()->SetScale(0.1f, 0.1f, 0.1f);
-    mesh->SetMesh("Assets\\Models\\asuna.fbx");
-
-    auto tex = Renderer::Current->CreateTexture( "Assets\\Textures\\asuna_diffuse.jpg");
-    auto material = mesh->GetMaterial(0);
-    material->SetTexture("MainTex", tex);
+    SceneManager::Instance->LoadScene("test");
 }
 
 void WindowsPlayer::Render()
