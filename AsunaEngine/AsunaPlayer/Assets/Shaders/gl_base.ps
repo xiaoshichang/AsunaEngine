@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Filename: color.ps
 ////////////////////////////////////////////////////////////////////////////////
-#version 400
+#version 420
 
 
 /////////////////////
@@ -15,7 +15,24 @@ in vec3 texcoord0;
 //////////////////////
 out vec4 outputColor;
 
-uniform vec4 BaseColor;
+layout (std140, binding = 0) uniform ConstantBufferPerFrame
+{
+    mat4 viewMatrix;
+    mat4 projectionMatrix;
+    mat4 vp;
+};
+
+layout (std140, binding = 1) uniform ConstantBufferPerObject
+{
+    mat4 worldMatrix;
+};
+
+layout (std140, binding = 2) uniform ConstantBufferPerMaterial
+{
+    vec4 mainColor;
+    mat4 ModelMatrix;
+};
+
 uniform sampler2D BaseTexture;
 
 ////////////////////////////////////////////////////////////////////////////////

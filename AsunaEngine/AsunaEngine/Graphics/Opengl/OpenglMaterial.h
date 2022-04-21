@@ -22,10 +22,6 @@ namespace asuna
         void BindTextures() override;
 
     private:
-        void BindPerFrameData(unsigned int program);
-        void BindPerObjectData(unsigned int program);
-
-    private:
         void InitProgram(unsigned int vs, unsigned int ps);
         unsigned int m_Program;
 

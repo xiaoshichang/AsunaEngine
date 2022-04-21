@@ -3,6 +3,7 @@
 //
 #pragma once
 #include <memory>
+#include "../../3rd/Glad/include/glad/glad.h"
 #include "../Abstract/Material.h"
 #include "../Abstract/ConstantBuffer.h"
 
@@ -17,7 +18,9 @@ namespace asuna
 
     public:
         void Bind() override;
-        void BindUniform(unsigned int, const std::string& name, int offset, MaterialParameterType mpt);
+
+    private:
+        GLuint m_Buffer;
 
     };
 }

@@ -32,10 +32,6 @@ namespace asuna
 
     public:
         void MakeCurrentContext();
-        void SetConstantBufferDataPerFrame(ConstantBufferDataPerFrame* data) {m_ConstantBufferDataPerFrame = data;}
-        void SetConstantBufferDataPerObject(ConstantBufferDataPerObject* data) {m_ConstantBufferDataPerObject = data;}
-        ConstantBufferDataPerFrame* GetConstantBufferDataPerFrame() {return m_ConstantBufferDataPerFrame;}
-        ConstantBufferDataPerObject* GetConstantBufferDataPerObject() {return m_ConstantBufferDataPerObject;}
 
 	private:
 		 void ClearRenderTarget(std::shared_ptr<RenderTarget> rt, float r, float g, float b, float a) override;
@@ -49,8 +45,6 @@ namespace asuna
 	private:
 		HGLRC m_RenderContext = nullptr;
 		HDC   m_hDC = nullptr;
-        ConstantBufferDataPerFrame* m_ConstantBufferDataPerFrame = nullptr;
-        ConstantBufferDataPerObject* m_ConstantBufferDataPerObject = nullptr;
 
 		
 

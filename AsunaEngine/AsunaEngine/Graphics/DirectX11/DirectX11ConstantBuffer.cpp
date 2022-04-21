@@ -41,15 +41,17 @@ void DirectX11ConstantBuffer::Bind()
     if (GetDataType() == ConstantBufferDataType::PerFrame)
     {
         context->m_DeviceContext->VSSetConstantBuffers(0, 1, &m_ConstantBuffer);
+        context->m_DeviceContext->PSSetConstantBuffers(0, 1, &m_ConstantBuffer);
     }
     else if(GetDataType() == ConstantBufferDataType::PerObject)
     {
         context->m_DeviceContext->VSSetConstantBuffers(1, 1, &m_ConstantBuffer);
+        context->m_DeviceContext->PSSetConstantBuffers(1, 1, &m_ConstantBuffer);
     }
     else if(GetDataType() == ConstantBufferDataType::PerMaterial)
     {
         context->m_DeviceContext->VSSetConstantBuffers(2, 1, &m_ConstantBuffer);
-        context->m_DeviceContext->PSSetConstantBuffers(0, 1, &m_ConstantBuffer);
+        context->m_DeviceContext->PSSetConstantBuffers(2, 1, &m_ConstantBuffer);
     }
     else
     {

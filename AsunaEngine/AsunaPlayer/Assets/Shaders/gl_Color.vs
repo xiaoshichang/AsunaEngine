@@ -2,7 +2,7 @@
 // Filename: color.vs
 ////////////////////////////////////////////////////////////////////////////////
 
-#version 400
+#version 420
 
 /////////////////////
 // INPUT VARIABLES //
@@ -17,10 +17,23 @@ in vec3 inputNormal;
 ///////////////////////
 // UNIFORM VARIABLES //
 ///////////////////////
-uniform mat4 worldMatrix;
-uniform mat4 viewMatrix;
-uniform mat4 projectionMatrix;
-uniform mat4 ModelMatrix;
+layout (std140, binding = 0) uniform ConstantBufferPerFrame
+{
+    mat4 viewMatrix;
+    mat4 projectionMatrix;
+    mat4 vp;
+};
+
+layout (std140, binding = 1) uniform ConstantBufferPerObject
+{
+    mat4 worldMatrix;
+};
+
+layout (std140, binding = 2) uniform ConstantBufferPerMaterial
+{
+    vec4 mainColor;
+    mat4 ModelMatrix;
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 // Vertex Shader
@@ -28,10 +41,10 @@ uniform mat4 ModelMatrix;
 void main(void)
 {
 	// Calculate the position of the vertex against the world, view, and projection matrices.
-	gl_Position = ModelMatrix * vec4(inputPosition, 1.0f);
-	gl_Position = worldMatrix * gl_Position;
-	gl_Position = viewMatrix * gl_Position;
-	gl_Position = projectionMatrix * gl_Position;
+	gl_Position = vec4(inputPosition, 1.0f) * ModelMatrix;
+	gl_Position = gl_Position * worldMatrix;
+	gl_Position = gl_Position * viewMatrix;
+	gl_Position = gl_Position * projectionMatrix;
 
 
 }

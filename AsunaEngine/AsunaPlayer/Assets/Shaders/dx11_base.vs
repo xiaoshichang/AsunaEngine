@@ -11,19 +11,19 @@ struct v2p {
 	float4 texcoord : TEXCOORD;
 };
 
-cbuffer ConstantBufferPerFrame
+cbuffer ConstantBufferPerFrame : register(b0)
 {
     matrix viewMatrix;
     matrix projectionMatrix;
     matrix vp;
 };
 
-cbuffer ConstantBufferPerObject
+cbuffer ConstantBufferPerObject : register(b1)
 {
     matrix worldMatrix;
 }
 
-cbuffer ConstantBufferPerMaterial
+cbuffer ConstantBufferPerMaterial : register(b2)
 {
     float4 mainColor;
     matrix modelMatrix;
