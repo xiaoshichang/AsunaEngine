@@ -26,6 +26,7 @@ void InspectorPanel::Render()
         TransformCmptEditor::Render(m_TransformCmpt);
         CameraCmptEditor::Render(m_CameraCmpt);
         MeshRenderEditor::Render(m_MeshRenderCmpt);
+        LightCmptEditor::Render(m_LightRenderCmpt);
     }
     ImGui::End();
     ImGui::PopStyleVar();
@@ -43,6 +44,7 @@ void InspectorPanel::OnSelectNewGameObject(EditorEventType type, const void* par
     m_TransformCmpt = m_InspectingGameObject->GetTransform();
     m_CameraCmpt = m_InspectingGameObject->GetComponent<CameraCmpt>();
     m_MeshRenderCmpt = m_InspectingGameObject->GetComponent<MeshRenderCmpt>();
+    m_LightRenderCmpt = m_InspectingGameObject->GetComponent<LightCmpt>();
 }
 
 

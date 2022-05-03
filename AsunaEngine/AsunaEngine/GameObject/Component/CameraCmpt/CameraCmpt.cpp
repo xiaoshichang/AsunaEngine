@@ -10,12 +10,12 @@ using namespace asuna;
 
 void CameraCmpt::Initialize()
 {
-    SceneManager::Instance->AddCamera(this);
+    SceneManager::Instance->RegisterCamera(this);
 }
 
 void CameraCmpt::Finalize()
 {
-    SceneManager::Instance->RemoveCamera(this);
+    SceneManager::Instance->UnregisterCamera(this);
 }
 
 void CameraCmpt::Tick()

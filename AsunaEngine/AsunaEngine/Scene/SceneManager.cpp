@@ -5,8 +5,8 @@
 #include "SceneManager.h"
 #include "../AssetLoader/AssetLoader.h"
 #include "../Graphics/Abstract/Renderer.h"
-#include "../Foundation/Logger/Logger.h"
 #include "../GameObject/Component/MeshRenderCmpt/MeshRenderCmpt.h"
+#include "../GameObject/Component/LightCmpt/LightCmpt.h"
 #include "SimpleGeometryCreator.h"
 
 using namespace asuna;
@@ -84,14 +84,15 @@ std::shared_ptr<GameObject> SceneManager::CreateGameObject(const string &name, c
 void SceneManager::UpdateConstantBufferPerScene()
 {
     UpdateCameraMatrix();
+    UpdateLightData();
 }
 
-void SceneManager::AddCamera(CameraCmpt *camera)
+void SceneManager::RegisterCamera(CameraCmpt *camera)
 {
     m_Cameras.push_back(camera);
 }
 
-void SceneManager::RemoveCamera(CameraCmpt *camera)
+void SceneManager::UnregisterCamera(CameraCmpt *camera)
 {
     for(auto it = m_Cameras.begin(); it != m_Cameras.end(); it++)
     {
@@ -128,6 +129,62 @@ void SceneManager::UpdateCameraMatrix()
     data->m_ProjectionMatrix = projectionMatrix;
     data->m_VP = projectionMatrix * viewMatrix;
 }
+
+void SceneManager::UpdateLightData()
+{
+    auto data = (ConstantBufferDataPerFrame*)m_ConstantBufferPerScene->GetData();
+    int spotLightCount = 0;
+    for(auto light : m_Lights)
+    {
+        if(light->GetLightType() == LightType::Direction)
+        {
+            data->m_DirectionLight.m_Color = light->GetColor();
+            data->m_DirectionLight.m_Direction = light->GetOwner()->GetTransform()->GetForward();
+            data->m_DirectionLight.m_Intensity = light->GetIntensity();
+        }
+        else if (light->GetLightType() == LightType::Spot)
+        {
+            data->m_SpotLight[spotLightCount].m_Color = light->GetColor();
+            data->m_SpotLight[spotLightCount].m_Position = light->GetOwner()->GetTransform()->GetPosition();
+            data->m_SpotLight[spotLightCount].m_Intensity = light->GetIntensity();
+            spotLightCount += 1;
+        }
+        else
+        {
+            ASUNA_ASSERT(false);
+        }
+    }
+
+    for(int i = spotLightCount; i < 4; i++)
+    {
+        data->m_SpotLight[i].m_Intensity.x = 0;
+    }
+}
+
+
+void SceneManager::RegisterLight(LightCmpt *light)
+{
+    if (m_Lights.size() >= 5)
+    {
+        Logger::Warning("Light count must <= 5");
+        return;
+    }
+    m_Lights.push_back(light);
+}
+
+void SceneManager::UnregisterLight(LightCmpt *light)
+{
+    for(auto it = m_Lights.begin(); it != m_Lights.end(); it++)
+    {
+        auto element = *it;
+        if (element == light)
+        {
+            m_Lights.erase(it);
+            return;
+        }
+    }
+}
+
 
 void SceneManager::AddRenderItem(const shared_ptr<RenderItem>& item)
 {
@@ -255,14 +312,11 @@ void SceneManager::LoadScene(const string &path)
     auto groundMaterial = Renderer::Current->CreateMaterial("Color");
     groundMaterial->SetVector4("BaseColor", Vector4f(0.6f, 0.6f, 0.6f, 1.0f));
     groundMeshCmpt->SetMaterial(0, groundMaterial);
+
+    auto light = SceneManager::Instance->CreateGameObject("Light", nullptr);
+    auto lightCmpt = light->AddComponent<LightCmpt>();
+    lightCmpt->SetColor(Color(0.8, 0.8, 0.7, 1));
+    lightCmpt->SetIntensity(2);
+    lightCmpt->GetOwner()->GetTransform()->SetEuler(-PI/2 + 0.1, 0, 0);
 }
-
-
-
-
-
-
-
-
-
 

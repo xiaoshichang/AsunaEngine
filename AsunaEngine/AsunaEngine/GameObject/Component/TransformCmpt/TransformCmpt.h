@@ -38,6 +38,7 @@ namespace asuna
         Vector3f GetEuler();
         void SetEuler(float x, float y, float z);
         Matrix4x4f GetRTSMatrix();
+        Vector3f GetForward();
 
     private:
         void CalculateRTSMatrix();

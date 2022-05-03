@@ -11,11 +11,27 @@ struct v2p {
 	float4 texcoord : TEXCOORD;
 };
 
+struct DirectionLight
+{
+    float4 direction;
+    float4 color;
+    float4 intensity;
+};
+
+struct SpotLight
+{
+    float4 position;
+    float4 color;
+    float4 intensity;
+};
+
 cbuffer ConstantBufferPerFrame : register(b0)
 {
     matrix viewMatrix;
     matrix projectionMatrix;
     matrix vp;
+    DirectionLight directionLight;
+    SpotLight spotLights[4];
 };
 
 cbuffer ConstantBufferPerObject : register(b1)
@@ -38,7 +54,8 @@ v2p main(a2v input)
     output.position = mul(output.position, viewMatrix);
     output.position = mul(output.position, projectionMatrix);
     float4 HNormal = float4(input.normal, 0.0);
-    output.nw = normalize(mul(HNormal, worldMatrix));
+    output.nw = normalize(mul(HNormal, modelMatrix));
+    output.nw = normalize(mul(output.nw, worldMatrix));
     output.texcoord = float4(input.texcoord.xyz, 1);
 	return output;
 }

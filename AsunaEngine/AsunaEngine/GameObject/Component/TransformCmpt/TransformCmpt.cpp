@@ -99,3 +99,10 @@ void TransformCmpt::CalculateRTSMatrix()
     }
     m_RTSMatrixDirty = false;
 }
+
+Vector3f TransformCmpt::GetForward()
+{
+    auto r = BuildMatrixQuaternion(m_Rotation);
+    Vector3f f(0, 0, -1);
+    return r.TransformVector(f).NormalizeCopy();
+}

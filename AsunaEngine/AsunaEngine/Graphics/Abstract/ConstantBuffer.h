@@ -11,11 +11,27 @@ namespace asuna
         PerFrame
     };
 
+    struct ConstantBufferDataDirectionLight
+    {
+        Vector4f m_Direction;
+        Vector4f m_Color;
+        Vector4f m_Intensity;
+    };
+
+    struct ConstantBufferDataSpotLight
+    {
+        Vector4f m_Position;
+        Vector4f m_Color;
+        Vector4f m_Intensity;
+    };
+
     struct ConstantBufferDataPerFrame
     {
         Matrix4x4f m_ViewMatrix;
         Matrix4x4f m_ProjectionMatrix;
         Matrix4x4f m_VP;
+        ConstantBufferDataDirectionLight m_DirectionLight;
+        ConstantBufferDataSpotLight m_SpotLight[4];
     };
 
 

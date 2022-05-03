@@ -20,11 +20,27 @@ out vec3 texcoord0;
 ///////////////////////
 // UNIFORM VARIABLES //
 ///////////////////////
+
+struct ConstantBufferDirectionLight
+{
+    vec4 direction;
+    vec4 color;
+    vec4 intensity;
+};
+
+struct ConstantBufferSpotLight
+{
+    vec4 Position;
+    vec4 color;
+    vec4 intensity;
+};
 layout (std140, binding = 0) uniform ConstantBufferPerFrame
 {
     mat4 viewMatrix;
     mat4 projectionMatrix;
     mat4 vp;
+    ConstantBufferDirectionLight directionLight;
+    ConstantBufferSpotLight spotLights[4];
 };
 
 layout (std140, binding = 1) uniform ConstantBufferPerObject
@@ -51,7 +67,8 @@ void main(void)
 	gl_Position = gl_Position * projectionMatrix;
 
 	// Store the input color for the pixel shader to use.
-	nw = (vec4(inputNormal, 0.0f) * worldMatrix).xyz;
+	nw = (vec4(inputNormal, 0.0f) * ModelMatrix).xyz;
+	nw = (vec4(nw, 0.0f) * worldMatrix).xyz;
 	nw = normalize(nw);
 	texcoord0 = inputTexcoord0;
 }

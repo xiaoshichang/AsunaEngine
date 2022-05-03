@@ -11,6 +11,7 @@
 #include "../Component/TransformCmptEditor.h"
 #include "../Component/CameraCmptEditor.h"
 #include "../Component/MeshRenderEditor.h"
+#include "../Component/LightCmptEditor.h"
 
 namespace asuna
 {
@@ -29,6 +30,7 @@ namespace asuna
         TransformCmpt* m_TransformCmpt = nullptr;
         CameraCmpt* m_CameraCmpt = nullptr;
         MeshRenderCmpt* m_MeshRenderCmpt = nullptr;
+        LightCmpt* m_LightRenderCmpt = nullptr;
     };
 
 }
