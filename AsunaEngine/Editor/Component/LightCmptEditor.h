@@ -3,7 +3,7 @@
 //
 
 #pragma once
-#include "AsunaEngine/GameObject/Component/LightCmpt/LightCmpt.h"
+#include "Engine/GameObject/Component/LightCmpt/LightCmpt.h"
 
 namespace asuna
 {

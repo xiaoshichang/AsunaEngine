@@ -4,10 +4,10 @@
 
 #pragma once
 #include <memory>
-#include <AsunaEditor/Events/EditorEventType.h>
-#include "AsunaEngine/Graphics/Abstract/RenderTarget.h"
+#include <Editor/Events/EditorEventType.h>
+#include "Engine/Graphics/Abstract/RenderTarget.h"
 #include "BasePanel.h"
-#include "AsunaEngine/GameObject/GameObject.h"
+#include "Engine/GameObject/GameObject.h"
 
 namespace asuna
 {

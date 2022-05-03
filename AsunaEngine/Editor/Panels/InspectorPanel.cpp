@@ -4,8 +4,8 @@
 
 #include "InspectorPanel.h"
 #include <imgui.h>
-#include "AsunaEngine/GameObject/GameObject.h"
-#include "AsunaEngine/Foundation/Logger/Logger.h"
+#include "Engine/GameObject/GameObject.h"
+#include "Engine/Foundation/Logger/Logger.h"
 
 
 using namespace asuna;

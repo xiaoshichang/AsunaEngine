@@ -1,8 +1,8 @@
 #include "WindowsPlayer.h"
-#include "AsunaEngine/Graphics/Abstract/Renderer.h"
-#include "AsunaEngine/Scene/SceneManager.h"
-#include "AsunaEngine/AssetLoader/AssetLoader.h"
-#include "AsunaEngine/GameObject/Component/MeshRenderCmpt/MeshRenderCmpt.h"
+#include "Engine/Graphics/Abstract/Renderer.h"
+#include "Engine/Scene/SceneManager.h"
+#include "Engine/AssetLoader/AssetLoader.h"
+#include "Engine/GameObject/Component/MeshRenderCmpt/MeshRenderCmpt.h"
 
 using namespace asuna;
 

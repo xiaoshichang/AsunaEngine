@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include "BasePanel.h"
-#include "AsunaEngine/Scene/SceneManager.h"
+#include "Engine/Scene/SceneManager.h"
 
 namespace asuna
 {

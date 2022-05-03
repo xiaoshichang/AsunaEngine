@@ -105,7 +105,7 @@ void WindowsApplication::InitMainWindow(int width, int height)
 	windowClass.lpfnWndProc = WindowProc;
 	windowClass.hInstance = hInstance;
 	windowClass.hCursor = LoadCursor(NULL, IDC_ARROW);
-	windowClass.lpszClassName = "AsunaEngine";
+	windowClass.lpszClassName = "Engine";
 	RegisterClassEx(&windowClass);
 
 	RECT windowRect = { 0, 0, width, height };
@@ -115,7 +115,7 @@ void WindowsApplication::InitMainWindow(int width, int height)
 	m_HWND = CreateWindowEx(
 		NULL,
 		windowClass.lpszClassName,
-		"AsunaEngine",
+		"Engine",
 		WS_OVERLAPPEDWINDOW,
 		100,
 		100,
@@ -187,7 +187,7 @@ void WindowsApplication::SetupApplicationTitle(std::shared_ptr<ApplicationInitPa
     {
         render = "Opengl";
     }
-    sprintf(title, "AsunaEngine - [mode:%s] - [render:%s]", mode, render);
+    sprintf(title, "Engine - [mode:%s] - [render:%s]", mode, render);
     SetWindowTitle(title);
 }
 

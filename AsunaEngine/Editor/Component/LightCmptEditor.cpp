@@ -3,7 +3,7 @@
 //
 
 #include "LightCmptEditor.h"
-#include "AsunaEngine/GameObject/GameObject.h"
+#include "Engine/GameObject/GameObject.h"
 #include <imgui.h>
 
 const char* LightTypeName[] = {"Direction", "Spot"};

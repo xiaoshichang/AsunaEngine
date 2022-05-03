@@ -5,7 +5,7 @@
 
 #pragma once
 #include "BasePanel.h"
-#include "AsunaEngine/GameObject/GameObject.h"
+#include "Engine/GameObject/GameObject.h"
 #include "../Events/EditorEventManager.h"
 #include "../Events/EditorEventType.h"
 #include "../Component/TransformCmptEditor.h"

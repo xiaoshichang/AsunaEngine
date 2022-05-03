@@ -3,7 +3,7 @@
 //
 
 #pragma once
-#include "AsunaEngine/GameObject/Component/MeshRenderCmpt/MeshRenderCmpt.h"
+#include "Engine/GameObject/Component/MeshRenderCmpt/MeshRenderCmpt.h"
 
 namespace asuna
 {

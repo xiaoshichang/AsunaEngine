@@ -4,15 +4,15 @@
 #include <memory>
 #include <imgui.h>
 #include "GamePanel.h"
-#include "AsunaEngine/Graphics/Abstract/Renderer.h"
-#include "AsunaEngine/Graphics/Opengl/OpenglRenderTarget.h"
+#include "Engine/Graphics/Abstract/Renderer.h"
+#include "Engine/Graphics/Opengl/OpenglRenderTarget.h"
 
-#include "AsunaEngine/Scene/SceneManager.h"
-#include "AsunaEngine/Foundation/Platform/Assert.h"
-#include "AsunaEngine/Foundation/Platform/Platform.h"
+#include "Engine/Scene/SceneManager.h"
+#include "Engine/Foundation/Platform/Assert.h"
+#include "Engine/Foundation/Platform/Platform.h"
 #include "../Events/EditorEventManager.h"
 
-#include "AsunaEngine/Graphics/DirectX11/DirectX11RenderTarget.h"
+#include "Engine/Graphics/DirectX11/DirectX11RenderTarget.h"
 
 
 using namespace asuna;

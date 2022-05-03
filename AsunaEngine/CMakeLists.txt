@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(AsunaEngine)
+project(Engine)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -17,10 +17,10 @@ ELSE()
 ENDIF()
 
 
-add_subdirectory(AsunaEngine)
-add_subdirectory(AsunaPlayer)
-add_subdirectory(AsunaEditor)
+add_subdirectory(Engine)
+add_subdirectory(Player)
+add_subdirectory(Editor)
 
 
 include(CTest)
-add_subdirectory(AsunaEngineUnitTest)
+add_subdirectory(UnitTest)
