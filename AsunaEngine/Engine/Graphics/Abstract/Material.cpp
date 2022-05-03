@@ -15,8 +15,8 @@ Material::Material(const std::string& materialPath) :
     {
         if (Renderer::Current->m_APIType == RenderAPIType::Directx11)
         {
-            m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\dx11_Axis.vs", ShaderType::VertexShader);
-            m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\dx11_Axis.ps", ShaderType::PixelShader);
+            m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\Color_Axis_VS.hlsl", ShaderType::VertexShader);
+            m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\Color_Axis_PS.hlsl", ShaderType::PixelShader);
         }
         else
         {
@@ -28,8 +28,8 @@ Material::Material(const std::string& materialPath) :
     {
         if (Renderer::Current->m_APIType == RenderAPIType::Directx11)
         {
-            m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\dx11_Color.vs", ShaderType::VertexShader);
-            m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\dx11_Color.ps", ShaderType::PixelShader);
+            m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\Color_Mesh_VS.hlsl", ShaderType::VertexShader);
+            m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\Color_Mesh_PS.hlsl", ShaderType::PixelShader);
         }
         else
         {
@@ -41,8 +41,8 @@ Material::Material(const std::string& materialPath) :
     {
         if (Renderer::Current->m_APIType == RenderAPIType::Directx11)
         {
-            m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\dx11_base.vs", ShaderType::VertexShader);
-            m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\dx11_base.ps", ShaderType::PixelShader);
+            m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\Diffuse_Mesh_VS.hlsl", ShaderType::VertexShader);
+            m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\Diffuse_Mesh_PS.hlsl", ShaderType::PixelShader);
         }
         else
         {
