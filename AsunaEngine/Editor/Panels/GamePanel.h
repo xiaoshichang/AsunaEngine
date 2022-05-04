@@ -4,7 +4,6 @@
 
 #pragma once
 #include <memory>
-#include <Editor/Events/EditorEventType.h>
 #include "Engine/Graphics/Abstract/RenderTarget.h"
 #include "BasePanel.h"
 #include "Engine/GameObject/GameObject.h"

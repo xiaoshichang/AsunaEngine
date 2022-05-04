@@ -11,10 +11,17 @@ namespace asuna
 	class WindowsEditor : public WindowsApplication
 	{
 	public:
+        WindowsEditor();
         void Initialize(std::shared_ptr<ApplicationInitParam> param) override;
         void Tick() override;
 		void Render() override;
         void Finalize() override;
+
+        static WindowsEditor* Instance;
+        HierarchyPanel m_HierarchyPanel;
+        LogPanel m_LogPanel;
+        GamePanel m_GamePanel;
+        InspectorPanel m_InspectorPanel;
 
     protected:
         void OnWindowSizeChange(int width, int height) override;
@@ -22,13 +29,5 @@ namespace asuna
 	private:
 		void RenderEditorBegin();
         void RenderEditorEnd();
-
-
-    private:
-        HierarchyPanel m_HierarchyPanel;
-        LogPanel m_LogPanel;
-        GamePanel m_GamePanel;
-        InspectorPanel m_InspectorPanel;
-
 	};
 }

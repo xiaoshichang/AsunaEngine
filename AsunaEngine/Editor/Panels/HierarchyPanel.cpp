@@ -1,11 +1,10 @@
 
 #include "HierarchyPanel.h"
 #include <imgui.h>
-#include "../Events/EditorEventType.h"
-#include "../Events/EditorEventManager.h"
+#include "../WindowsEditor.h"
 #include "Engine/Foundation/Logger/Logger.h"
 
-using namespace  asuna;
+using namespace asuna;
 
 
 void HierarchyPanel::Initialize()
@@ -33,7 +32,7 @@ void HierarchyPanel::RenderGameObject(GameObject* gameObject)
         if (ImGui::IsItemClicked())
         {
             m_SelectedObject = gameObject;
-            EditorEventManager::Dispatch(EditorEventType::OnHierarchPanelSelectNewObject, gameObject);
+            WindowsEditor::Instance->m_InspectorPanel.OnSelectNewGameObject(gameObject);
         }
 
         auto children = gameObject->GetTransform()->GetChildren();

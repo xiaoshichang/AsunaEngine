@@ -6,8 +6,6 @@
 #pragma once
 #include "BasePanel.h"
 #include "Engine/GameObject/GameObject.h"
-#include "../Events/EditorEventManager.h"
-#include "../Events/EditorEventType.h"
 #include "../Component/TransformCmptEditor.h"
 #include "../Component/CameraCmptEditor.h"
 #include "../Component/MeshRenderEditor.h"
@@ -21,9 +19,7 @@ namespace asuna
         void Initialize() override;
         void Render() override;
         void Finalize() override;
-
-    private:
-        void OnSelectNewGameObject(EditorEventType type, const void* gameObject);
+        void OnSelectNewGameObject(GameObject* target);
 
     private:
         GameObject* m_InspectingGameObject = nullptr;

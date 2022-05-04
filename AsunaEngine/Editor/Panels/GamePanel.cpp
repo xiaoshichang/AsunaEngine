@@ -5,15 +5,17 @@
 #include <imgui.h>
 #include "GamePanel.h"
 #include "Engine/Graphics/Abstract/Renderer.h"
-#include "Engine/Graphics/Opengl/OpenglRenderTarget.h"
-
 #include "Engine/Scene/SceneManager.h"
 #include "Engine/Foundation/Platform/Assert.h"
 #include "Engine/Foundation/Platform/Platform.h"
-#include "../Events/EditorEventManager.h"
 
+#if defined(ASUNA_PLATFORM_WINDOWS)
 #include "Engine/Graphics/DirectX11/DirectX11RenderTarget.h"
+#endif
 
+#include "Engine/Graphics/Opengl/OpenglRenderTarget.h"
+
+#pragma warning(disable: 4312)
 
 using namespace asuna;
 
@@ -105,21 +107,23 @@ void GamePanel::RenderRTTOWindow()
     ImGui::SetCursorPosY((float)(vMax.y - vMin.y) / 2 - warpHeight / 2 + optionHeight * 2);
     ImVec2 winSize = {warpWidth, warpHeight};
 
-    if (Renderer::Current->m_APIType == RenderAPIType::Directx11)
-    {
-        auto rt = std::dynamic_pointer_cast<DirectX11RenderTarget>(m_RT);
-        auto tid = (ImTextureID)rt->GetSRV();
-        ImGui::Image(tid, winSize);
-    }
-    else if (Renderer::Current->m_APIType == RenderAPIType::Opengl)
+    if (Renderer::Current->m_APIType == RenderAPIType::Opengl)
     {
         auto rt = std::dynamic_pointer_cast<OpenglRenderTarget>(m_RT);
-        auto tid = (ImTextureID)rt->GetTexture();
+        auto tid = reinterpret_cast<ImTextureID>(rt->GetTexture());
         // https://github.com/cinder/Cinder/issues/2185
         ImVec2 uv0 = {0, 1};
         ImVec2 uv1 = {1, 0};
         ImGui::Image(tid, winSize, uv0, uv1);
     }
+#if defined(ASUNA_PLATFORM_WINDOWS)
+    else if (Renderer::Current->m_APIType == RenderAPIType::Directx11)
+    {
+        auto rt = std::dynamic_pointer_cast<DirectX11RenderTarget>(m_RT);
+        auto tid = (ImTextureID)rt->GetSRV();
+        ImGui::Image(tid, winSize);
+    }
+#endif
     else
     {
         ASUNA_ASSERT(false);

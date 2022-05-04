@@ -12,8 +12,6 @@ using namespace asuna;
 
 void InspectorPanel::Initialize()
 {
-    EditorEventCallback callback1 = std::bind(&InspectorPanel::OnSelectNewGameObject, this, std::placeholders::_1, std::placeholders::_2);
-    EditorEventManager::Register(EditorEventType::OnHierarchPanelSelectNewObject, this, callback1);
 }
 
 void InspectorPanel::Render()
@@ -34,13 +32,11 @@ void InspectorPanel::Render()
 
 void InspectorPanel::Finalize()
 {
-    EditorEventCallback callback2 = std::bind(&InspectorPanel::OnSelectNewGameObject, this, std::placeholders::_1, std::placeholders::_2);
-    EditorEventManager::Unregister(EditorEventType::OnHierarchPanelSelectNewObject, this, callback2);
 }
 
-void InspectorPanel::OnSelectNewGameObject(EditorEventType type, const void* param)
+void InspectorPanel::OnSelectNewGameObject(GameObject* target)
 {
-    m_InspectingGameObject = (GameObject*)param;
+    m_InspectingGameObject = target;
     m_TransformCmpt = m_InspectingGameObject->GetTransform();
     m_CameraCmpt = m_InspectingGameObject->GetComponent<CameraCmpt>();
     m_MeshRenderCmpt = m_InspectingGameObject->GetComponent<MeshRenderCmpt>();

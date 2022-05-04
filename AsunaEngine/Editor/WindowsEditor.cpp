@@ -4,7 +4,6 @@
 #include "Engine/Scene/SceneManager.h"
 #include <imgui.h>
 
-
 using namespace asuna;
 
 static void ShowDockingDisabledMessage()
@@ -19,6 +18,12 @@ static void ShowDockingDisabledMessage()
     }
 }
 
+WindowsEditor* WindowsEditor::Instance = nullptr;
+
+WindowsEditor::WindowsEditor()
+{
+    Instance = this;
+}
 
 void WindowsEditor::Initialize(std::shared_ptr<ApplicationInitParam> param)
 {
@@ -131,4 +136,6 @@ void WindowsEditor::OnWindowSizeChange(int width, int height)
 {
     WindowsApplication::OnWindowSizeChange(width, height);
 }
+
+
 
