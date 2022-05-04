@@ -17,7 +17,7 @@ namespace asuna
     class Material
     {
     public:
-        explicit Material(const std::string& materialPath);
+        explicit Material(const std::string& materialName);
         virtual ~Material() = default;
         virtual void Apply() = 0;
         const std::string& GetName();

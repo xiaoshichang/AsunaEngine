@@ -273,7 +273,7 @@ void SceneManager::CreateCoordAxisRenderItem()
 
     for (int i = 0; i < 6; ++i)
     {
-        auto material = Renderer::Current->CreateMaterial("Axis");
+        auto material = Renderer::Current->CreateMaterial("Color_Axis");
         material->SetVector4("BaseColor", colors[i]);
         item->SetMaterial(i, material);
     }
@@ -295,7 +295,7 @@ void SceneManager::LoadScene(const string &path)
     meshCmpt->SetMesh(mesh);
     for(int i = 0; i < meshParam->m_MaterialCount; i++)
     {
-        auto material = Renderer::Current->CreateMaterial("Diffuse");
+        auto material = Renderer::Current->CreateMaterial("Diffuse_Mesh");
         meshCmpt->SetMaterial(i, material);
     }
 
@@ -309,7 +309,7 @@ void SceneManager::LoadScene(const string &path)
     auto groundMesh = SimpleGeometryCreator::CreatePlane();
     auto groundMeshCmpt = ground->AddComponent<MeshRenderCmpt>();
     groundMeshCmpt->SetMesh(groundMesh);
-    auto groundMaterial = Renderer::Current->CreateMaterial("Color");
+    auto groundMaterial = Renderer::Current->CreateMaterial("Color_Mesh");
     groundMaterial->SetVector4("BaseColor", Vector4f(0.6f, 0.6f, 0.6f, 1.0f));
     groundMeshCmpt->SetMaterial(0, groundMaterial);
 

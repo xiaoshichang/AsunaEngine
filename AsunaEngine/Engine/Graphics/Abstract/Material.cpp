@@ -3,55 +3,34 @@
 //
 
 #include "Material.h"
+
+#include <utility>
 #include "Renderer.h"
 
 using namespace asuna;
 using namespace std;
 
-Material::Material(const std::string& materialPath) :
-    m_MaterialName(materialPath)
+Material::Material(const std::string& materialName) :
+    m_MaterialName(materialName)
 {
-    if (materialPath == "Axis")
+    if (Renderer::Current->m_APIType == RenderAPIType::Directx11)
     {
-        if (Renderer::Current->m_APIType == RenderAPIType::Directx11)
-        {
-            m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\Color_Axis_VS.hlsl", ShaderType::VertexShader);
-            m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\Color_Axis_PS.hlsl", ShaderType::PixelShader);
-        }
-        else
-        {
-            m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\gl_Axis.vs", ShaderType::VertexShader);
-            m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\gl_Axis.ps", ShaderType::PixelShader);
-        }
-    }
-    else if (materialPath == "Color")
-    {
-        if (Renderer::Current->m_APIType == RenderAPIType::Directx11)
-        {
-            m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\Color_Mesh_VS.hlsl", ShaderType::VertexShader);
-            m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\Color_Mesh_PS.hlsl", ShaderType::PixelShader);
-        }
-        else
-        {
-            m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\gl_Color.vs", ShaderType::VertexShader);
-            m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\gl_Color.ps", ShaderType::PixelShader);
-        }
+        string generated_dir(R"(Assets\Shaders\Generated\dx11\)");
+        string target = generated_dir + materialName + "_VS.hlsl";
+        m_VS = Renderer::Current->CreateShader(target, ShaderType::VertexShader);
+        target = generated_dir + materialName + "_PS.hlsl";
+        m_PS = Renderer::Current->CreateShader(target, ShaderType::PixelShader);
     }
     else
     {
-        if (Renderer::Current->m_APIType == RenderAPIType::Directx11)
-        {
-            m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\Diffuse_Mesh_VS.hlsl", ShaderType::VertexShader);
-            m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\Diffuse_Mesh_PS.hlsl", ShaderType::PixelShader);
-        }
-        else
-        {
-            m_VS = Renderer::Current->CreateShader("Assets\\Shaders\\gl_base.vs", ShaderType::VertexShader);
-            m_PS = Renderer::Current->CreateShader("Assets\\Shaders\\gl_base.ps", ShaderType::PixelShader);
-        }
+        string generated_dir(R"(Assets\Shaders\Generated\opengl\)");
+        string target = generated_dir + materialName + "_VS.glsl";
+        m_VS = Renderer::Current->CreateShader(target, ShaderType::VertexShader);
+        target = generated_dir + materialName + "_PS.glsl";
+        m_PS = Renderer::Current->CreateShader(target, ShaderType::PixelShader);
     }
 
-    m_PerMaterial = Renderer::Current->CreateConstantBuffer(ConstantBufferDataType::PerMaterial, 512);
+    m_PerMaterial = Renderer::Current->CreateConstantBuffer(ConstantBufferDataType::PerMaterial, 1024);
     m_DepthStencilState = Renderer::Current->CreateDepthStencilState();
     BuildMaterialParametersLayout();
 }
