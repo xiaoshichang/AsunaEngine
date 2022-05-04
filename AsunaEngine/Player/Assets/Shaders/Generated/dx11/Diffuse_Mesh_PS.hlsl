@@ -41,7 +41,7 @@ struct SPIRV_Cross_Output
 
 void frag_main()
 {
-    out_var_SV_TARGET = float4(tBaseMap.Sample(tBaseMapSamplerState, in_var_TEXCOORD.xy).xyz * (max(dot(in_var_NORMAL.xyz, -ConstantBufferPerFrame_directionLight.direction.xyz), 0.0f) + 0.4000000059604644775390625f), 1.0f);
+    out_var_SV_TARGET = float4(tBaseMap.Sample(tBaseMapSamplerState, in_var_TEXCOORD.xy).xyz * min(((ConstantBufferPerFrame_directionLight.color.xyz * max(dot(in_var_NORMAL.xyz, -ConstantBufferPerFrame_directionLight.direction.xyz), 0.0f)) * ConstantBufferPerFrame_directionLight.intensity.x) + 0.20000000298023223876953125f.xxx, 1.0f.xxx), 1.0f);
 }
 
 SPIRV_Cross_Output main(SPIRV_Cross_Input stage_input)

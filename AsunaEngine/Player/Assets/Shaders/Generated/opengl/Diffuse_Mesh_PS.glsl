@@ -31,6 +31,6 @@ layout(location = 0) out vec4 out_var_SV_TARGET;
 
 void main()
 {
-    out_var_SV_TARGET = vec4(texture(SPIRV_Cross_CombinedtBaseMaptBaseMapSamplerState, in_var_TEXCOORD.xy).xyz * (max(dot(in_var_NORMAL.xyz, -ConstantBufferPerFrame.directionLight.direction.xyz), 0.0) + 0.4000000059604644775390625), 1.0);
+    out_var_SV_TARGET = vec4(texture(SPIRV_Cross_CombinedtBaseMaptBaseMapSamplerState, in_var_TEXCOORD.xy).xyz * min(((ConstantBufferPerFrame.directionLight.color.xyz * max(dot(in_var_NORMAL.xyz, -ConstantBufferPerFrame.directionLight.direction.xyz), 0.0)) * ConstantBufferPerFrame.directionLight.intensity.x) + vec3(0.20000000298023223876953125), vec3(1.0)), 1.0);
 }
 
