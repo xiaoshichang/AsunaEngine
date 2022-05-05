@@ -9,6 +9,14 @@ struct DirectionLight
 
 struct SpotLight
 {
+    vec4 direction;
+    vec4 position;
+    vec4 color;
+    vec4 intensity;
+};
+
+struct PointLight
+{
     vec4 position;
     vec4 color;
     vec4 intensity;
@@ -21,6 +29,7 @@ layout(binding = 0, std140) uniform type_ConstantBufferPerFrame
     layout(row_major) mat4 vp;
     DirectionLight directionLight;
     SpotLight spotLights[4];
+    PointLight pointLights[4];
 } ConstantBufferPerFrame;
 
 layout(binding = 1, std140) uniform type_ConstantBufferPerObject

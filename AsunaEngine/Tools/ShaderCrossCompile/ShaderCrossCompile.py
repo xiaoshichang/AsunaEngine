@@ -111,8 +111,7 @@ def convert_spirv_to_hlsl_dx11(shaders):
     for name, item in shaders.items():
         source_file_path = os.path.join(generated_dir, get_generated_spirv_filename(name))
         target_file_path = os.path.join(generated_dx11_dir, name + ".hlsl")
-        cmd = [args.SpirvCrossPath, "--hlsl", "--shader-model", "50"]
-
+        cmd = [args.SpirvCrossPath, "--hlsl", "--shader-model", "50", "--remove-unused-variables"]
         for location, semantic in hlsl_vertex_semantic.items():
             cmd.append("--set-hlsl-vertex-input-semantic")
             cmd.append(str(location))
@@ -133,8 +132,12 @@ def convert_spirv_to_glsl_opengl(shaders):
         source_file_path = os.path.join(generated_dir, get_generated_spirv_filename(name))
         target_file_path = os.path.join(generated_opengl_dir, name + ".glsl")
         # version must greater than 420 to support binding semantic
-        p = subprocess.Popen([args.SpirvCrossPath, "--version", "420", "--no-420pack-extension", "--output",
-                              target_file_path, source_file_path])
+        p = subprocess.Popen([args.SpirvCrossPath,
+                              "--remove-unused-variables",
+                              "--version", "420",
+                              "--no-420pack-extension",
+                              "--output", target_file_path,
+                              source_file_path])
         p.wait()
         if p.returncode != 0:
             exit(p.returncode)

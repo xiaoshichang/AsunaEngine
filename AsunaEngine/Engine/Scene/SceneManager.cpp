@@ -131,6 +131,7 @@ void SceneManager::UpdateLightData()
 {
     auto data = (ConstantBufferDataPerFrame*)m_ConstantBufferPerScene->GetData();
     int spotLightCount = 0;
+    int pointLightCount = 0;
     for(auto light : m_Lights)
     {
         if(light->GetLightType() == LightType::Direction)
@@ -141,10 +142,16 @@ void SceneManager::UpdateLightData()
         }
         else if (light->GetLightType() == LightType::Spot)
         {
-            data->m_SpotLight[spotLightCount].m_Color = light->GetColor();
             data->m_SpotLight[spotLightCount].m_Position = light->GetOwner()->GetTransform()->GetPosition();
+            data->m_SpotLight[spotLightCount].m_Direction = light->GetOwner()->GetTransform()->GetForward();
+            data->m_SpotLight[spotLightCount].m_Color = light->GetColor();
             data->m_SpotLight[spotLightCount].m_Intensity = light->GetIntensity();
-            spotLightCount += 1;
+        }
+        else if (light->GetLightType() == LightType::Point)
+        {
+            data->m_PointLight[pointLightCount].m_Position = light->GetOwner()->GetTransform()->GetPosition();
+            data->m_PointLight[pointLightCount].m_Color = light->GetColor();
+            data->m_PointLight[pointLightCount].m_Intensity = light->GetIntensity();
         }
         else
         {
@@ -155,6 +162,10 @@ void SceneManager::UpdateLightData()
     for(int i = spotLightCount; i < 4; i++)
     {
         data->m_SpotLight[i].m_Intensity.x = 0;
+    }
+    for(int i = pointLightCount; i < 4; i++)
+    {
+        data->m_PointLight[i].m_Intensity.x = 0;
     }
 }
 

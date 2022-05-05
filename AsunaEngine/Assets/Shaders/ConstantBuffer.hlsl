@@ -7,6 +7,7 @@ cbuffer ConstantBufferPerFrame : register(b0)
     matrix vp;
     DirectionLight directionLight;
     SpotLight spotLights[4];
+    PointLight pointLights[4];
 };
 
 cbuffer ConstantBufferPerObject : register(b1)

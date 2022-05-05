@@ -7,6 +7,14 @@ struct DirectionLight
 
 struct SpotLight
 {
+    float4 direction;
+    float4 position;
+    float4 color;
+    float4 intensity;
+};
+
+struct PointLight
+{
     float4 position;
     float4 color;
     float4 intensity;
@@ -19,6 +27,7 @@ cbuffer type_ConstantBufferPerFrame : register(b0)
     column_major float4x4 ConstantBufferPerFrame_vp : packoffset(c8);
     DirectionLight ConstantBufferPerFrame_directionLight : packoffset(c12);
     SpotLight ConstantBufferPerFrame_spotLights[4] : packoffset(c15);
+    PointLight ConstantBufferPerFrame_pointLights[4] : packoffset(c31);
 };
 
 

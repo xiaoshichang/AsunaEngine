@@ -21,3 +21,13 @@ void LightCmpt::Tick()
 {
 
 }
+
+void LightCmpt::SetLightType(LightType lt)
+{
+    if (lt == LightType::Spot || lt == LightType::Point)
+    {
+        Logger::Error("Unsupported light type!");
+        return;
+    }
+    m_LightType = lt;
+}

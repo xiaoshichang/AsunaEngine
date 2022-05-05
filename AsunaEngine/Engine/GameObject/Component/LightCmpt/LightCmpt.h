@@ -10,7 +10,8 @@ namespace asuna
     enum class LightType
     {
         Direction,
-        Spot
+        Spot,
+        Point,
     };
 
 
@@ -36,7 +37,7 @@ namespace asuna
         Color& GetColor() {return m_LightColor;}
         void SetIntensity(float intensity) { m_Intensity = intensity;}
         float& GetIntensity() {return m_Intensity;}
-        void SetLightType(LightType lt) {m_LightType = lt;}
+        void SetLightType(LightType lt);
         LightType GetLightType() const {return m_LightType;}
 
     private:

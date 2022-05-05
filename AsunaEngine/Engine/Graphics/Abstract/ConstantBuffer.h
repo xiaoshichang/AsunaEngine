@@ -20,6 +20,14 @@ namespace asuna
 
     struct ConstantBufferDataSpotLight
     {
+        Vector4f m_Direction;
+        Vector4f m_Position;
+        Vector4f m_Color;
+        Vector4f m_Intensity;
+    };
+
+    struct ConstantBufferDataPointLight
+    {
         Vector4f m_Position;
         Vector4f m_Color;
         Vector4f m_Intensity;
@@ -32,6 +40,7 @@ namespace asuna
         Matrix4x4f m_VP;
         ConstantBufferDataDirectionLight m_DirectionLight;
         ConstantBufferDataSpotLight m_SpotLight[4];
+        ConstantBufferDataPointLight m_PointLight[4];
     };
 
 
