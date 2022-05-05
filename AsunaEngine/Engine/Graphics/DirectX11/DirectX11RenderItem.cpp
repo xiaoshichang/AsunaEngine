@@ -6,7 +6,7 @@ using namespace asuna;
 using namespace std;
 
 
-void DirectX11RenderItem::BindConstantBufferPerObject(DirectX11RenderContext* context)
+void DirectX11RenderItem::BindConstantBufferPerObject(DirectX11RenderContext* context) const
 {
     auto perObject = GetConstantBufferPerObject();
     if (perObject != nullptr)
@@ -16,7 +16,7 @@ void DirectX11RenderItem::BindConstantBufferPerObject(DirectX11RenderContext* co
 }
 
 
-void DirectX11RenderItem::DrawMesh(DirectX11RenderContext* context)
+void DirectX11RenderItem::DrawMesh(DirectX11RenderContext* context) const
 {
     auto mesh = GetMesh();
     for (const auto& subMesh : mesh->m_SubMeshes)
@@ -87,7 +87,7 @@ void DirectX11RenderItem::DrawMesh(DirectX11RenderContext* context)
     }
 }
 
-void DirectX11RenderItem::Render()
+void DirectX11RenderItem::Render() const
 {
     if (GetMesh() == nullptr || GetMaterial(0) == nullptr)
     {

@@ -36,7 +36,7 @@ namespace asuna
 
 		virtual ~RenderItem() = default;
 
-        std::shared_ptr<Mesh> GetMesh()
+        std::shared_ptr<Mesh> GetMesh() const
 		{
 			return m_Mesh;
 		}
@@ -46,7 +46,7 @@ namespace asuna
             m_Mesh = mesh;
         }
 
-        std::shared_ptr<ConstantBuffer> GetConstantBufferPerObject()
+        std::shared_ptr<ConstantBuffer> GetConstantBufferPerObject() const
 		{
 			return m_ConstantBufferPerObject;
 		}
@@ -62,7 +62,7 @@ namespace asuna
         int GetMaterialCount() const;
 
 	public:
-		virtual void Render() = 0;
+		virtual void Render() const = 0;
 
 
 	protected:

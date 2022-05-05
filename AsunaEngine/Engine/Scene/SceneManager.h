@@ -40,8 +40,6 @@ namespace asuna
         void UnregisterLight(LightCmpt* light);
 
         std::shared_ptr<ConstantBuffer> GetConstantBufferPerScene();
-        void AddRenderItem(const std::shared_ptr<RenderItem>& item);
-        void RemoveRenderItem(const std::shared_ptr<RenderItem>& item);
 
     private:
         void TickGameObject(GameObject* obj);
@@ -49,6 +47,8 @@ namespace asuna
         void UpdateCameraMatrix();
         void UpdateLightData();
         void CreateCoordAxisRenderItem();
+        void BuildRenderQueue();
+        void BuildRenderQueueVisitGameObject(GameObject *node);
 
     private:
         std::shared_ptr<GameObject> m_Root = nullptr;
@@ -61,8 +61,7 @@ namespace asuna
         std::shared_ptr<RenderItemQueue> m_RenderItemQueue;
 
         bool m_ShowCoordAxis = true;
-        std::shared_ptr<RenderItemQueue> m_DebugRenderItemQueue;
-
+        std::vector<std::shared_ptr<RenderItem>> m_AxisRenderItems;
     };
 
 }

@@ -5,6 +5,7 @@
 #include "SceneManager.h"
 #include "../AssetLoader/AssetLoader.h"
 #include "../Graphics/Abstract/Renderer.h"
+#include "../GameObject/GameObject.h"
 #include "../GameObject/Component/MeshRenderCmpt/MeshRenderCmpt.h"
 #include "../GameObject/Component/LightCmpt/LightCmpt.h"
 #include "SimpleGeometryCreator.h"
@@ -23,13 +24,9 @@ void SceneManager::Initialize()
 {
     m_ConstantBufferPerScene = Renderer::Current->CreateConstantBuffer(ConstantBufferDataType::PerFrame, sizeof(ConstantBufferDataPerFrame));
     m_RenderItemQueue = Renderer::Current->CreateRenderItemQueue();
-    m_DebugRenderItemQueue = Renderer::Current->CreateRenderItemQueue();
     m_Root = std::make_shared<GameObject>("Root");
 
-    if (m_ShowCoordAxis)
-    {
-        CreateCoordAxisRenderItem();
-    }
+    CreateCoordAxisRenderItem();
 }
 
 void SceneManager::Finalize()
@@ -185,23 +182,38 @@ void SceneManager::UnregisterLight(LightCmpt *light)
     }
 }
 
-
-void SceneManager::AddRenderItem(const shared_ptr<RenderItem>& item)
+void SceneManager::BuildRenderQueueVisitGameObject(GameObject *node)
 {
-    m_RenderItemQueue->AddRenderItem(item);
+    auto meshRender = node->GetComponent<MeshRenderCmpt>();
+    if (meshRender != nullptr)
+    {
+        m_RenderItemQueue->AddRenderItem(meshRender->GetRenderItem());
+    }
+    for(auto& child : node->GetTransform()->GetChildren())
+    {
+        BuildRenderQueueVisitGameObject(child->GetOwner());
+    }
 }
 
-void SceneManager::RemoveRenderItem(const shared_ptr<RenderItem>& item)
+void SceneManager::BuildRenderQueue()
 {
-    m_RenderItemQueue->RemoveRenderItem(item);
+    m_RenderItemQueue->Clear();
+    if (m_ShowCoordAxis)
+    {
+        for(const auto& item : m_AxisRenderItems)
+        {
+            m_RenderItemQueue->AddRenderItem(item.get());
+        }
+    }
+    BuildRenderQueueVisitGameObject(m_Root.get());
 }
 
 void SceneManager::Render(const std::shared_ptr<RenderTarget>& rt)
 {
+    BuildRenderQueue();
     Renderer::Current->SetRenderTarget(rt);
     Renderer::Current->ClearRenderTarget(rt, 0.1f, 0.2f, 0.3f, 1.0f);
     m_RenderItemQueue->Render();
-    m_DebugRenderItemQueue->Render();
 }
 
 void SceneManager::CreateCoordAxisRenderItem()
@@ -269,14 +281,14 @@ void SceneManager::CreateCoordAxisRenderItem()
     auto mesh = Renderer::Current->CreateMesh(mp);
     auto item = Renderer::Current->CreateRenderItem(mesh, nullptr);
     item->AllocateMaterials(6);
-    AddRenderItem(item);
-
     for (int i = 0; i < 6; ++i)
     {
         auto material = Renderer::Current->CreateMaterial("Color_Axis");
         material->SetVector4("BaseColor", colors[i]);
         item->SetMaterial(i, material);
     }
+
+    m_AxisRenderItems.push_back(item);
 }
 
 void SceneManager::LoadScene(const string &path)
@@ -319,4 +331,8 @@ void SceneManager::LoadScene(const string &path)
     lightCmpt->SetIntensity(2);
     lightCmpt->GetOwner()->GetTransform()->SetEuler(-PI/2 + 0.1, 0, 0);
 }
+
+
+
+
 

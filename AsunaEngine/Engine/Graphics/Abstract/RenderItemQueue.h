@@ -14,10 +14,10 @@ namespace asuna
 	public:
 		void Render();
         virtual void BindConstantBufferPerFrame() = 0;
-		void AddRenderItem(const std::shared_ptr<RenderItem>&);
-		void RemoveRenderItem(const std::shared_ptr<RenderItem>&);
+		void AddRenderItem(const RenderItem* item);
+        void Clear();
 	private:
-		std::list<std::shared_ptr<RenderItem>> m_RenderItems;
+		std::vector<RenderItem const*> m_RenderItems;
 	};
 }
 

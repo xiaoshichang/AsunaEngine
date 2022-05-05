@@ -29,6 +29,7 @@ namespace asuna
 
 
     public:
+        const RenderItem* GetRenderItem();
         void SetMesh(const std::shared_ptr<Mesh>& mesh);
         void SetMaterial(int index, const std::shared_ptr<Material>& material);
         int GetMaterialCount() const;

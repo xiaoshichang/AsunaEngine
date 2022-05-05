@@ -13,12 +13,10 @@ void MeshRenderCmpt::Initialize()
 {
     m_ConstantBufferPerObject = Renderer::Current->CreateConstantBuffer(ConstantBufferDataType::PerObject, sizeof(ConstantBufferDataPerObject));
     m_RenderItem = Renderer::Current->CreateRenderItem(nullptr, m_ConstantBufferPerObject);
-    SceneManager::Instance->AddRenderItem(m_RenderItem);
 }
 
 void MeshRenderCmpt::Finalize()
 {
-    SceneManager::Instance->RemoveRenderItem(m_RenderItem);
 }
 
 void MeshRenderCmpt::Tick()
@@ -51,6 +49,11 @@ void MeshRenderCmpt::UpdateConstantBufferPerObject()
 {
     auto perObject = (ConstantBufferDataPerObject*)m_ConstantBufferPerObject->GetData();
     perObject->m_WorldMatrix = GetOwner()->GetTransform()->GetRTSMatrix();
+}
+
+const RenderItem* MeshRenderCmpt::GetRenderItem()
+{
+    return m_RenderItem.get();
 }
 
 

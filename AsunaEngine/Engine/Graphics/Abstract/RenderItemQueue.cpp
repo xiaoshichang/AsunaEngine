@@ -5,18 +5,18 @@ using namespace asuna;
 void RenderItemQueue::Render()
 {
     BindConstantBufferPerFrame();
-	for (const auto& item : m_RenderItems)
+	for (RenderItem const *item : m_RenderItems)
 	{
 		item->Render();
 	}
 }
 
-void RenderItemQueue::AddRenderItem(const std::shared_ptr<RenderItem>& item)
+void RenderItemQueue::AddRenderItem(const RenderItem* item)
 {
 	m_RenderItems.push_back(item);
 }
 
-void RenderItemQueue::RemoveRenderItem(const std::shared_ptr<RenderItem>& item)
+void RenderItemQueue::Clear()
 {
-	m_RenderItems.remove(item);
+    m_RenderItems.clear();
 }

@@ -27,7 +27,7 @@ namespace asuna
 
 		~DirectX11RenderItem() override = default;
 
-		void Render() override;
+		void Render() const override;
 		static std::shared_ptr<DirectX11RenderItem> Create(
                 const std::shared_ptr<Mesh>& mesh,
                 const std::vector<std::shared_ptr<Material>>& materials,
@@ -38,8 +38,8 @@ namespace asuna
                 const std::shared_ptr<ConstantBuffer>& perObject);
 
     private:
-        void BindConstantBufferPerObject(DirectX11RenderContext* context);
-        void DrawMesh(DirectX11RenderContext* context);
+        void BindConstantBufferPerObject(DirectX11RenderContext* context) const;
+        void DrawMesh(DirectX11RenderContext* context) const;
 	};
 }
 

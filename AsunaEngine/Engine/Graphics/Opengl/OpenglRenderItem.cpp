@@ -6,7 +6,7 @@
 using namespace asuna;
 using namespace std;
 
-void OpenglRenderItem::Render()
+void OpenglRenderItem::Render() const
 {
     if (m_ConstantBufferPerObject != nullptr)
     {

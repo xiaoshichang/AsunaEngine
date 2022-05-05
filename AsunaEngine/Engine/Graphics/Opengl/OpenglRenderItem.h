@@ -25,7 +25,7 @@ namespace asuna
 
 		~OpenglRenderItem() override = default;
 
-		void Render() override;
+		void Render() const override;
 
 		static std::shared_ptr<OpenglRenderItem> Create(
                 const std::shared_ptr<Mesh>& mesh,
