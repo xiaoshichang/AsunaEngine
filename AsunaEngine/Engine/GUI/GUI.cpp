@@ -32,7 +32,7 @@ void GUI::Initialize(bool docking, bool multivp)
     {
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     }
-    if (multivp && Renderer::Current->m_APIType == RenderAPIType::Directx11)
+    if (multivp && Renderer::Instance->m_APIType == RenderAPIType::Directx11)
     {
         // ViewportsEnable is not supported when using opengl without glfw in imGui right now.
         io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
@@ -50,15 +50,15 @@ void GUI::Initialize(bool docking, bool multivp)
 
     // Setup Platform/Renderer backends
 #ifdef ASUNA_PLATFORM_WINDOWS
-    ImGui_ImplWin32_Init(Renderer::Current->m_HWND);
+    ImGui_ImplWin32_Init(Renderer::Instance->m_HWND);
 #endif
 
-    if (Renderer::Current->m_APIType == RenderAPIType::Directx11)
+    if (Renderer::Instance->m_APIType == RenderAPIType::Directx11)
     {
-        auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
+        auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Instance->GetContext());
         ImGui_ImplDX11_Init(context->m_Device, context->m_DeviceContext);
     }
-    else if (Renderer::Current->m_APIType == RenderAPIType::Opengl)
+    else if (Renderer::Instance->m_APIType == RenderAPIType::Opengl)
     {
         ImGui_ImplOpenGL3_Init("#version 420");
     }
@@ -72,11 +72,11 @@ void GUI::Initialize(bool docking, bool multivp)
 void GUI::Begin()
 {
     // Start the Dear ImGui frame
-    if (Renderer::Current->m_APIType == RenderAPIType::Directx11)
+    if (Renderer::Instance->m_APIType == RenderAPIType::Directx11)
     {
         ImGui_ImplDX11_NewFrame();
     }
-    else if(Renderer::Current->m_APIType == RenderAPIType::Opengl)
+    else if(Renderer::Instance->m_APIType == RenderAPIType::Opengl)
     {
         ImGui_ImplOpenGL3_NewFrame();
     }
@@ -96,15 +96,15 @@ void GUI::Begin()
 void GUI::End()
 {
     ImGui::Render();
-    Renderer::Current->SetViewPort(0, 0, -1, -1);
-    Renderer::Current->SetRenderTarget(nullptr);
-    Renderer::Current->ClearRenderTarget(nullptr, 0.1f, 0.2f, 0.3f, 1.0f);
+    Renderer::Instance->SetViewPort(0, 0, -1, -1);
+    Renderer::Instance->SetRenderTarget(nullptr);
+    Renderer::Instance->ClearRenderTarget(nullptr, 0.1f, 0.2f, 0.3f, 1.0f);
 
-    if (Renderer::Current->m_APIType == RenderAPIType::Directx11)
+    if (Renderer::Instance->m_APIType == RenderAPIType::Directx11)
     {
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
     }
-    else if (Renderer::Current->m_APIType == RenderAPIType::Opengl)
+    else if (Renderer::Instance->m_APIType == RenderAPIType::Opengl)
     {
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     }
@@ -119,9 +119,9 @@ void GUI::End()
         auto io = ImGui::GetPlatformIO();
         ImGui::UpdatePlatformWindows();
         ImGui::RenderPlatformWindowsDefault();
-        if (Renderer::Current->m_APIType == RenderAPIType::Opengl)
+        if (Renderer::Instance->m_APIType == RenderAPIType::Opengl)
         {
-            auto renderer = (OpenglRenderer*)Renderer::Current;
+            auto renderer = (OpenglRenderer*)Renderer::Instance;
             renderer->MakeCurrentContext();
         }
     }

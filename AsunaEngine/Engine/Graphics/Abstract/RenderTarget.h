@@ -3,8 +3,15 @@
 
 namespace asuna
 {
+    enum class RenderTargetUsage
+    {
+        Default,
+        ShadowMap
+    };
+
     struct RenderTargetDesc
     {
+        RenderTargetUsage usage;
         int width;
         int height;
     };

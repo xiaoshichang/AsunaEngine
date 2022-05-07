@@ -37,7 +37,7 @@ shared_ptr<Mesh> SimpleGeometryCreator::CreatePlane()
 
     param->m_SubMeshCreateParam.push_back(subParam);
     param->m_MaterialCount = 1;
-    auto mesh = Renderer::Current->CreateMesh(param);
+    auto mesh = Renderer::Instance->CreateMesh(param);
     return mesh;
 }
 

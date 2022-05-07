@@ -11,8 +11,8 @@ using namespace std;
 
 void MeshRenderCmpt::Initialize()
 {
-    m_ConstantBufferPerObject = Renderer::Current->CreateConstantBuffer(ConstantBufferDataType::PerObject, sizeof(ConstantBufferDataPerObject));
-    m_RenderItem = Renderer::Current->CreateRenderItem(nullptr, m_ConstantBufferPerObject);
+    m_ConstantBufferPerObject = Renderer::Instance->CreateConstantBuffer(ConstantBufferDataType::PerObject, sizeof(ConstantBufferDataPerObject));
+    m_RenderItem = Renderer::Instance->CreateRenderItem(nullptr, m_ConstantBufferPerObject);
 }
 
 void MeshRenderCmpt::Finalize()

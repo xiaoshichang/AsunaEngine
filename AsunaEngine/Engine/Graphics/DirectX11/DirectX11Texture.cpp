@@ -41,7 +41,7 @@ std::shared_ptr<DirectX11Texture> DirectX11Texture::Create(const std::shared_ptr
     desc.Usage = D3D11_USAGE_IMMUTABLE;
     desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 
-    auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
+    auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Instance->GetContext());
     auto hr = context->m_Device->CreateTexture2D( &desc, &initData, &texture);
     ASUNA_ASSERT(SUCCEEDED(hr));
 

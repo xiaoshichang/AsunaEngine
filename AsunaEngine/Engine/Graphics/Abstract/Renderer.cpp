@@ -5,7 +5,7 @@
 using namespace asuna;
 using namespace std;
 
-Renderer* Renderer::Current = nullptr;
+Renderer* Renderer::Instance = nullptr;
 
 
 shared_ptr<RenderContext> asuna::Renderer::GetContext()

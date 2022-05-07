@@ -10,7 +10,7 @@ shared_ptr<DirectX11VertexBuffer> DirectX11VertexBuffer::Create(shared_ptr<Verte
 	HRESULT result;
 	ID3D11Buffer* buffer;
 
-	auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
+	auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Instance->GetContext());
 	auto sizeInBytes = param->m_ElementCount * param->GetFormatStride();
 
 	// create the vertex buffer

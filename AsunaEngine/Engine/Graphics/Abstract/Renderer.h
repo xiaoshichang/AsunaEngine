@@ -78,6 +78,6 @@ namespace asuna
 #endif
 
 	public:
-		static Renderer* Current;
+		static Renderer* Instance;
 	};
 }

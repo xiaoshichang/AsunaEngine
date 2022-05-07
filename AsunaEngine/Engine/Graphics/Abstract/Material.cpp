@@ -13,25 +13,25 @@ using namespace std;
 Material::Material(const std::string& materialName) :
     m_MaterialName(materialName)
 {
-    if (Renderer::Current->m_APIType == RenderAPIType::Directx11)
+    if (Renderer::Instance->m_APIType == RenderAPIType::Directx11)
     {
         string generated_dir(R"(Assets\Shaders\Generated\dx11\)");
         string target = generated_dir + materialName + "_VS.hlsl";
-        m_VS = Renderer::Current->CreateShader(target, ShaderType::VertexShader);
+        m_VS = Renderer::Instance->CreateShader(target, ShaderType::VertexShader);
         target = generated_dir + materialName + "_PS.hlsl";
-        m_PS = Renderer::Current->CreateShader(target, ShaderType::PixelShader);
+        m_PS = Renderer::Instance->CreateShader(target, ShaderType::PixelShader);
     }
     else
     {
         string generated_dir(R"(Assets\Shaders\Generated\opengl\)");
         string target = generated_dir + materialName + "_VS.glsl";
-        m_VS = Renderer::Current->CreateShader(target, ShaderType::VertexShader);
+        m_VS = Renderer::Instance->CreateShader(target, ShaderType::VertexShader);
         target = generated_dir + materialName + "_PS.glsl";
-        m_PS = Renderer::Current->CreateShader(target, ShaderType::PixelShader);
+        m_PS = Renderer::Instance->CreateShader(target, ShaderType::PixelShader);
     }
 
-    m_PerMaterial = Renderer::Current->CreateConstantBuffer(ConstantBufferDataType::PerMaterial, 1024);
-    m_DepthStencilState = Renderer::Current->CreateDepthStencilState();
+    m_PerMaterial = Renderer::Instance->CreateConstantBuffer(ConstantBufferDataType::PerMaterial, 1024);
+    m_DepthStencilState = Renderer::Instance->CreateDepthStencilState();
     BuildMaterialParametersLayout();
 }
 

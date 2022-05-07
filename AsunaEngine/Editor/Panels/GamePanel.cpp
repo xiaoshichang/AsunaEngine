@@ -81,7 +81,7 @@ void GamePanel::RenderResolutionOptions()
 
 void GamePanel::RenderSceneToRT()
 {
-    Renderer::Current->SetViewPort(0, 0, m_TargetResolutionWidth, m_TargetResolutionHeight);
+    Renderer::Instance->SetViewPort(0, 0, m_TargetResolutionWidth, m_TargetResolutionHeight);
     SceneManager::Instance->Render(m_RT);
 }
 
@@ -107,7 +107,7 @@ void GamePanel::RenderRTTOWindow()
     ImGui::SetCursorPosY((float)(vMax.y - vMin.y) / 2 - warpHeight / 2 + optionHeight * 2);
     ImVec2 winSize = {warpWidth, warpHeight};
 
-    if (Renderer::Current->m_APIType == RenderAPIType::Opengl)
+    if (Renderer::Instance->m_APIType == RenderAPIType::Opengl)
     {
         auto rt = std::dynamic_pointer_cast<OpenglRenderTarget>(m_RT);
         auto tid = reinterpret_cast<ImTextureID>(rt->GetTexture());
@@ -117,7 +117,7 @@ void GamePanel::RenderRTTOWindow()
         ImGui::Image(tid, winSize, uv0, uv1);
     }
 #if defined(ASUNA_PLATFORM_WINDOWS)
-    else if (Renderer::Current->m_APIType == RenderAPIType::Directx11)
+    else if (Renderer::Instance->m_APIType == RenderAPIType::Directx11)
     {
         auto rt = std::dynamic_pointer_cast<DirectX11RenderTarget>(m_RT);
         auto tid = (ImTextureID)rt->GetSRV();
@@ -134,10 +134,11 @@ void GamePanel::ResizeRT()
 {
     if (m_RT == nullptr)
     {
-        RenderTargetDesc desc{0};
+        RenderTargetDesc desc{};
+        desc.usage = RenderTargetUsage::Default;
         desc.width = m_TargetResolutionWidth;
         desc.height = m_TargetResolutionHeight;
-        m_RT = Renderer::Current->CreateRenderTarget(desc);
+        m_RT = Renderer::Instance->CreateRenderTarget(desc);
     }
     else
     {

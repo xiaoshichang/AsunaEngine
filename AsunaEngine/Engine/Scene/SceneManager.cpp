@@ -22,8 +22,8 @@ SceneManager::SceneManager() :
 
 void SceneManager::Initialize()
 {
-    m_ConstantBufferPerScene = Renderer::Current->CreateConstantBuffer(ConstantBufferDataType::PerFrame, sizeof(ConstantBufferDataPerFrame));
-    m_RenderItemQueue = Renderer::Current->CreateRenderItemQueue();
+    m_ConstantBufferPerScene = Renderer::Instance->CreateConstantBuffer(ConstantBufferDataType::PerFrame, sizeof(ConstantBufferDataPerFrame));
+    m_RenderItemQueue = Renderer::Instance->CreateRenderItemQueue();
     m_Root = std::make_shared<GameObject>("Root");
 
     CreateCoordAxisRenderItem();
@@ -222,8 +222,8 @@ void SceneManager::BuildRenderQueue()
 void SceneManager::Render(const std::shared_ptr<RenderTarget>& rt)
 {
     BuildRenderQueue();
-    Renderer::Current->SetRenderTarget(rt);
-    Renderer::Current->ClearRenderTarget(rt, 0.1f, 0.2f, 0.3f, 1.0f);
+    Renderer::Instance->SetRenderTarget(rt);
+    Renderer::Instance->ClearRenderTarget(rt, 0.1f, 0.2f, 0.3f, 1.0f);
     m_RenderItemQueue->Render();
 }
 
@@ -263,7 +263,7 @@ void SceneManager::CreateCoordAxisRenderItem()
     vbp->m_Format = VertexBufferFormat::F3;
     vbp->m_ElementCount = 12;
 
-    if (Renderer::Current->CheckLeftHandRenderAPI())
+    if (Renderer::Instance->CheckLeftHandRenderAPI())
     {
         vbp->m_VertexData = pointsLeftHand;
     }
@@ -289,12 +289,12 @@ void SceneManager::CreateCoordAxisRenderItem()
         smp->m_PrimitiveType = PrimitiveType::Line;
         mp->m_SubMeshCreateParam.push_back(smp);
     }
-    auto mesh = Renderer::Current->CreateMesh(mp);
-    auto item = Renderer::Current->CreateRenderItem(mesh, nullptr);
+    auto mesh = Renderer::Instance->CreateMesh(mp);
+    auto item = Renderer::Instance->CreateRenderItem(mesh, nullptr);
     item->AllocateMaterials(6);
     for (int i = 0; i < 6; ++i)
     {
-        auto material = Renderer::Current->CreateMaterial("Color_Axis");
+        auto material = Renderer::Instance->CreateMaterial("Color_Axis");
         material->SetVector4("BaseColor", colors[i]);
         item->SetMaterial(i, material);
     }
@@ -313,16 +313,16 @@ void SceneManager::LoadScene(const string &path)
     girl->GetTransform()->SetScale(0.1f, 0.1f, 0.1f);
 
     auto meshParam = AssetLoader::LoadMesh("Assets\\Models\\asuna.fbx");
-    auto mesh = Renderer::Current->CreateMesh(meshParam);
+    auto mesh = Renderer::Instance->CreateMesh(meshParam);
     auto meshCmpt = girl->AddComponent<MeshRenderCmpt>();
     meshCmpt->SetMesh(mesh);
     for(int i = 0; i < meshParam->m_MaterialCount; i++)
     {
-        auto material = Renderer::Current->CreateMaterial("Diffuse_Mesh");
+        auto material = Renderer::Instance->CreateMaterial("Diffuse_Mesh");
         meshCmpt->SetMaterial(i, material);
     }
 
-    auto tex = Renderer::Current->CreateTexture( "Assets\\Textures\\asuna_diffuse.jpg");
+    auto tex = Renderer::Instance->CreateTexture("Assets\\Textures\\asuna_diffuse.jpg");
     auto material = meshCmpt->GetMaterial(0);
     material->SetTexture("MainTex", tex);
 
@@ -332,7 +332,7 @@ void SceneManager::LoadScene(const string &path)
     auto groundMesh = SimpleGeometryCreator::CreatePlane();
     auto groundMeshCmpt = ground->AddComponent<MeshRenderCmpt>();
     groundMeshCmpt->SetMesh(groundMesh);
-    auto groundMaterial = Renderer::Current->CreateMaterial("Color_Mesh");
+    auto groundMaterial = Renderer::Instance->CreateMaterial("Color_Mesh");
     groundMaterial->SetVector4("BaseColor", Vector4f(0.6f, 0.6f, 0.6f, 1.0f));
     groundMeshCmpt->SetMaterial(0, groundMaterial);
 

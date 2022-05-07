@@ -36,7 +36,7 @@ void WindowsApplication::Finalize()
 {
 	GUI::Finalize();
     SceneManager::Instance->Finalize();
-    Renderer::Current->Finalize();
+    Renderer::Instance->Finalize();
 }
 
 
@@ -132,14 +132,14 @@ void WindowsApplication::InitMainWindow(int width, int height)
 
 void WindowsApplication::InitRenderer(RenderAPIType api, int width, int height)
 {
-	ASUNA_ASSERT(Renderer::Current == nullptr);
+	ASUNA_ASSERT(Renderer::Instance == nullptr);
     if (api == RenderAPIType::Directx11)
 	{
-		Renderer::Current = new DirectX11Renderer();
+		Renderer::Instance = new DirectX11Renderer();
 	}
 	else if (api == RenderAPIType::Opengl)
 	{
-		Renderer::Current = new OpenglRenderer();
+		Renderer::Instance = new OpenglRenderer();
 	}
 	else
 	{
@@ -150,14 +150,14 @@ void WindowsApplication::InitRenderer(RenderAPIType api, int width, int height)
 	param.m_HWND = m_HWND;
 	param.m_ResolutionWith = width;
 	param.m_ResolutionHeight = height;
-	Renderer::Current->Initialize(param);
+	Renderer::Instance->Initialize(param);
 }
 
 void WindowsApplication::OnWindowSizeChange(int width, int height)
 {
-    if (Renderer::Current != nullptr)
+    if (Renderer::Instance != nullptr)
     {
-        Renderer::Current->ResizeResolution(width, height);
+        Renderer::Instance->ResizeResolution(width, height);
     }
 }
 

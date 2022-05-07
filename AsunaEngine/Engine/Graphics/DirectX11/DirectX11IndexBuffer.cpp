@@ -42,7 +42,7 @@ shared_ptr<DirectX11IndexBuffer> DirectX11IndexBuffer::Create(shared_ptr<IndexBu
 
 	// Create the index buffer.
 	HRESULT result;
-	auto context = dynamic_pointer_cast<DirectX11RenderContext>( Renderer::Current->GetContext());
+	auto context = dynamic_pointer_cast<DirectX11RenderContext>( Renderer::Instance->GetContext());
 	result = context->m_Device->CreateBuffer(&indexBufferDesc, &indexData, &buffer);
 	ASUNA_ASSERT(SUCCEEDED(result));
 

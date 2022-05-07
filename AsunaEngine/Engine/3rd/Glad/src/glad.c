@@ -689,7 +689,7 @@ int open_gl(void) {
         "../Frameworks/OpenGL.framework/OpenGL",
         "/Library/Frameworks/OpenGL.framework/OpenGL",
         "/System/Library/Frameworks/OpenGL.framework/OpenGL",
-        "/System/Library/Frameworks/OpenGL.framework/Versions/Current/OpenGL"
+        "/System/Library/Frameworks/OpenGL.framework/Versions/Instance/OpenGL"
     };
 #else
     static const char *NAMES[] = {"libGL.so.1", "libGL.so"};

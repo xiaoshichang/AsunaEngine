@@ -18,7 +18,7 @@ shared_ptr<DirectX11ConstantBuffer> DirectX11ConstantBuffer::Create(ConstantBuff
     constantBufferDesc.MiscFlags = 0;
     constantBufferDesc.StructureByteStride = 0;
 
-	auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
+	auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Instance->GetContext());
 	auto result = context->m_Device->CreateBuffer(&constantBufferDesc, nullptr, &cb);
 	ASUNA_ASSERT(SUCCEEDED(result));
 
@@ -27,7 +27,7 @@ shared_ptr<DirectX11ConstantBuffer> DirectX11ConstantBuffer::Create(ConstantBuff
 
 void DirectX11ConstantBuffer::Bind()
 {
-    auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext()).get();
+    auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Instance->GetContext()).get();
     // map data
     D3D11_MAPPED_SUBRESOURCE mappedResource;
     auto result = context->m_DeviceContext->Map(m_ConstantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);

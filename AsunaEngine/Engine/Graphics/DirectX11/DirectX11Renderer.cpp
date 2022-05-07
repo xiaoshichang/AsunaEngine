@@ -120,19 +120,24 @@ void DirectX11Renderer::ClearRenderTarget(shared_ptr<RenderTarget> rt, float r, 
 	{
         auto rtv = context->m_MainRT->GetRenderTargetView();
         auto dsv = context->m_MainRT->GetDepthStencilView();
-		context->m_DeviceContext->ClearRenderTargetView(rtv, color);
+        if (rtv != nullptr)
+        {
+            context->m_DeviceContext->ClearRenderTargetView(rtv, color);
+        }
         if (dsv != nullptr)
         {
             context->m_DeviceContext->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH, 1.0, 0);
         }
-
 	}
 	else
 	{
 		auto dx11rt = dynamic_pointer_cast<DirectX11RenderTarget>(rt);
 		auto rtv = dx11rt->GetRenderTargetView();
         auto dsv = dx11rt->GetDepthStencilView();
-		context->m_DeviceContext->ClearRenderTargetView(rtv, color);
+        if (rtv != nullptr)
+        {
+            context->m_DeviceContext->ClearRenderTargetView(rtv, color);
+        }
         if (dsv != nullptr)
         {
             context->m_DeviceContext->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH, 1.0, 0);
@@ -257,7 +262,8 @@ void DirectX11Renderer::CreateDeviceContext()
 	);
 	ASUNA_ASSERT(result >= 0);
 
-    RenderTargetDesc desc{0};
+    RenderTargetDesc desc{};
+    desc.usage = RenderTargetUsage::Default;
     desc.width = m_ResolutionWidth;
     desc.height = m_ResolutionHeight;
 	auto renderTarget = DirectX11RenderTarget::CreateFromSwapChain(desc, device, swapChain);

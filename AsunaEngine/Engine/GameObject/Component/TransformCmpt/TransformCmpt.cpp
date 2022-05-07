@@ -87,7 +87,7 @@ void TransformCmpt::CalculateRTSMatrix()
     auto s = BuildMatrixScale(m_Scale.x, m_Scale.y, m_Scale.z);
 
     // todo: more standard asset pipeline
-    if (Renderer::Current->CheckLeftHandRenderAPI())
+    if (Renderer::Instance->CheckLeftHandRenderAPI())
     {
         auto t = BuildMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
         m_RTSMatrix = t * s * r;

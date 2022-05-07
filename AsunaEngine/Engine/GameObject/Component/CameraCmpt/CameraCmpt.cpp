@@ -34,7 +34,7 @@ const Matrix4x4f &CameraCmpt::GetProjectionMatrix()
 
 void CameraCmpt::CalculateProjectionMatrix()
 {
-    if (Renderer::Current->CheckLeftHandRenderAPI())
+    if (Renderer::Instance->CheckLeftHandRenderAPI())
     {
         if (m_ProjectionType == CameraProjectionType::Perspective)
         {
@@ -66,7 +66,7 @@ const Matrix4x4f &CameraCmpt::GetViewMatrix()
     // todo: get correct up direction by rotation
     Vector3f up(0, 1, 0);
     Vector3f look(0, 0, 0);
-    if (Renderer::Current->CheckLeftHandRenderAPI())
+    if (Renderer::Instance->CheckLeftHandRenderAPI())
     {
         m_ViewMatrix = BuildMatrixViewLookatLH(eye, look, up);
     }

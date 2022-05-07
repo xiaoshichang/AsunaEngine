@@ -94,7 +94,7 @@ void DirectX11RenderItem::Render() const
         return;
     }
 
-	auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext()).get();
+	auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Instance->GetContext()).get();
     BindConstantBufferPerObject(context);
     DrawMesh(context);
 }

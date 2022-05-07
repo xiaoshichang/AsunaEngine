@@ -18,7 +18,8 @@ namespace asuna
 
         ID3D11RenderTargetView* GetRenderTargetView(){return m_RenderTargetView;}
         ID3D11DepthStencilView* GetDepthStencilView(){return m_DepthStencilView;}
-        ID3D11ShaderResourceView* GetSRV(){return m_ShaderResourceView;}
+        ID3D11ShaderResourceView* GetSRV() {return m_ShaderResourceView;}
+        ID3D11ShaderResourceView* GetDepthSRV() {return m_DepthStencilSRV;}
     private:
         void ClearRenderTarget();
         void ClearDepthStencilResource();
@@ -34,6 +35,7 @@ namespace asuna
         ID3D11ShaderResourceView* m_ShaderResourceView = nullptr;
         ID3D11Texture2D* m_DepthStencilTexture = nullptr;
         ID3D11DepthStencilView* m_DepthStencilView = nullptr;
+        ID3D11ShaderResourceView* m_DepthStencilSRV = nullptr;
 
 
 	public:

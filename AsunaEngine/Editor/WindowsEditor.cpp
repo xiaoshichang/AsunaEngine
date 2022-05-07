@@ -48,7 +48,7 @@ void asuna::WindowsEditor::Render()
     m_InspectorPanel.Render();
     RenderEditorEnd();
 	GUI::End();
-	Renderer::Current->Present();
+	Renderer::Instance->Present();
 }
 
 void WindowsEditor::RenderEditorEnd()

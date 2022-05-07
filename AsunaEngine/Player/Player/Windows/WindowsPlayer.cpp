@@ -14,9 +14,9 @@ void WindowsPlayer::Initialize(std::shared_ptr<ApplicationInitParam> param)
 
 void WindowsPlayer::Render()
 {
-    Renderer::Current->SetViewPort(0, 0, -1, -1);
+    Renderer::Instance->SetViewPort(0, 0, -1, -1);
     SceneManager::Instance->Render(nullptr);
-    Renderer::Current->Present();
+    Renderer::Instance->Present();
 }
 
 void WindowsPlayer::Tick()

@@ -47,7 +47,7 @@ void DirectX11Material::BindTextures()
                 continue;
             }
 
-            auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext());
+            auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Instance->GetContext());
             auto mp = pair.second;
             if (mp.m_ShaderType == TextureShaderType::VS)
             {

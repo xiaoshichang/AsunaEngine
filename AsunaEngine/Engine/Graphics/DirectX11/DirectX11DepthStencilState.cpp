@@ -30,7 +30,7 @@ void DirectX11DepthStencilState::Bind()
     {
         RebuildState();
     }
-    auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext()).get();
+    auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Instance->GetContext()).get();
     context->m_DeviceContext->OMSetDepthStencilState(m_State, 1);
 }
 
@@ -63,7 +63,7 @@ void DirectX11DepthStencilState::RebuildState()
     dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
     dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
     // Create depth stencil state
-    auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Current->GetContext()).get();
+    auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Instance->GetContext()).get();
     context->m_Device->CreateDepthStencilState(&dsDesc, &m_State);
     m_Dirty = false;
 }
