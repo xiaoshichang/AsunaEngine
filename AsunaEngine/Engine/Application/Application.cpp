@@ -1,6 +1,13 @@
 #include "Application.h"
 #include "../Foundation/Logger/Logger.h"
 
+
+asuna::Application::Application() : m_Quit(false)
+{
+}
+
+asuna::Application::~Application() = default;
+
 void asuna::Application::Run()
 {
 	while (true)

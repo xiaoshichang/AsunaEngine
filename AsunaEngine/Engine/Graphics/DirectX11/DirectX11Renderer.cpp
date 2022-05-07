@@ -8,7 +8,6 @@
 #include "DirectX11VertexBuffer.h"
 #include "DirectX11Shader.h"
 #include "DirectX11RenderItem.h"
-#include "DirectX11RenderItemQueue.h"
 #include "DirectX11DepthStencilState.h"
 #include "DirectX11Texture.h"
 #include "DirectX11Material.h"
@@ -323,11 +322,6 @@ void asuna::DirectX11Renderer::SetRenderTarget(shared_ptr<RenderTarget> rt)
         auto dsv = dx11rt->GetDepthStencilView();
 		context->m_DeviceContext->OMSetRenderTargets(1, &rtv, dsv);
 	}
-}
-
-shared_ptr<RenderItemQueue> DirectX11Renderer::CreateRenderItemQueue()
-{
-    return make_shared<DirectX11RenderItemQueue>();
 }
 
 void DirectX11Renderer::SetViewPort(int x, int y, int width, int height)

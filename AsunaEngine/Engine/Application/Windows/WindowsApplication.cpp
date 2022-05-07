@@ -8,6 +8,7 @@
 #include "../../Graphics/Opengl/OpenglRenderer.h"
 #include "../../GUI/GUI.h"
 #include "../../Scene/SceneManager.h"
+#include "../../Scene/RenderPass/RenderPassMgr.h"
 #include "../../AssetLoader/AssetLoader.h"
 
 
@@ -19,7 +20,10 @@ void WindowsApplication::Initialize(std::shared_ptr<ApplicationInitParam> param)
     Application::Initialize(param);
 	InitMainWindow(param->WindowWidth, param->WindowHeight);
 	InitRenderer(param->RenderAPIType, param->WindowWidth, param->WindowHeight);
+
+    SceneManager::Instance = new SceneManager();
     SceneManager::Instance->Initialize();
+
     if (param->EditorMode)
     {
         GUI::Initialize(true, true);
@@ -35,8 +39,17 @@ void WindowsApplication::Initialize(std::shared_ptr<ApplicationInitParam> param)
 void WindowsApplication::Finalize()
 {
 	GUI::Finalize();
+
     SceneManager::Instance->Finalize();
+    delete SceneManager::Instance;
+    SceneManager::Instance = nullptr;
+
+    delete RenderPassMgr::Instance;
+    RenderPassMgr::Instance = nullptr;
+
     Renderer::Instance->Finalize();
+    delete Renderer::Instance;
+    Renderer::Instance = nullptr;
 }
 
 
@@ -151,6 +164,9 @@ void WindowsApplication::InitRenderer(RenderAPIType api, int width, int height)
 	param.m_ResolutionWith = width;
 	param.m_ResolutionHeight = height;
 	Renderer::Instance->Initialize(param);
+
+    RenderPassMgr::Instance = new RenderPassMgr();
+    RenderPassMgr::Instance->Init(param);
 }
 
 void WindowsApplication::OnWindowSizeChange(int width, int height)
@@ -158,6 +174,7 @@ void WindowsApplication::OnWindowSizeChange(int width, int height)
     if (Renderer::Instance != nullptr)
     {
         Renderer::Instance->ResizeResolution(width, height);
+        RenderPassMgr::Instance->ResizeResolution(width, height);
     }
 }
 
@@ -170,7 +187,7 @@ void WindowsApplication::SetupApplicationTitle(std::shared_ptr<ApplicationInitPa
 {
     char title[128];
     char* mode;
-    char* render;
+    char *render = nullptr;
     if (param->EditorMode)
     {
         mode = "Editor";

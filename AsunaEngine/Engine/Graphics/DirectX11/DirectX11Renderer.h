@@ -38,7 +38,6 @@ namespace asuna
         shared_ptr<DepthStencilState> CreateDepthStencilState() override;
 		shared_ptr<RenderItem> CreateRenderItem(const std::shared_ptr<Mesh>& mesh, const vector<std::shared_ptr<Material>>& materials, const std::shared_ptr<ConstantBuffer>& perObject) override;
         shared_ptr<RenderItem> CreateRenderItem(const std::shared_ptr<Mesh>& mesh, const std::shared_ptr<ConstantBuffer>& perObject) override;
-        shared_ptr<RenderItemQueue> CreateRenderItemQueue() override;
         shared_ptr<Texture> CreateTexture(const std::string& path) override;
 
 	private:

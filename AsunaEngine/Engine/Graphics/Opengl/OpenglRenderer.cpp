@@ -4,7 +4,6 @@
 #include "OpenglMesh.h"
 #include "OpenglRenderItem.h"
 #include "OpenglMaterial.h"
-#include "OpenglRenderItemQueue.h"
 #include "OpenglConstantBuffer.h"
 #include "OpenglDepthStencilState.h"
 #include "OpenglRenderTarget.h"
@@ -290,11 +289,6 @@ void OpenglRenderer::SetRenderTarget(shared_ptr<RenderTarget> rt)
         auto openglRT = dynamic_pointer_cast<OpenglRenderTarget>(rt);
         glBindFramebuffer(GL_FRAMEBUFFER, openglRT->GetFrameBuffer());
     }
-}
-
-shared_ptr<RenderItemQueue> OpenglRenderer::CreateRenderItemQueue()
-{
-    return make_shared<OpenglRenderItemQueue>();
 }
 
 void OpenglRenderer::SetViewPort(int x, int y, int width, int height)

@@ -10,7 +10,6 @@
 #include "../Graphics/Abstract/ConstantBuffer.h"
 #include "../GameObject/Component/CameraCmpt/CameraCmpt.h"
 #include "../GameObject/Component/LightCmpt/LightCmpt.h"
-#include "../Graphics/Abstract/RenderItemQueue.h"
 #include "../Graphics/Abstract/RenderItem.h"
 #include "../Graphics/Abstract/RenderTarget.h"
 
@@ -46,9 +45,6 @@ namespace asuna
         void UpdateConstantBufferPerScene();
         void UpdateCameraMatrix();
         void UpdateLightData();
-        void CreateCoordAxisRenderItem();
-        void BuildRenderQueue();
-        void BuildRenderQueueVisitGameObject(GameObject *node);
 
     private:
         std::shared_ptr<GameObject> m_Root = nullptr;
@@ -58,10 +54,6 @@ namespace asuna
         std::vector<LightCmpt*> m_Lights;
         std::shared_ptr<ConstantBuffer> m_ConstantBufferPerScene = nullptr;
 
-        std::shared_ptr<RenderItemQueue> m_RenderItemQueue;
-
-        bool m_ShowCoordAxis = true;
-        std::vector<std::shared_ptr<RenderItem>> m_AxisRenderItems;
     };
 
 }

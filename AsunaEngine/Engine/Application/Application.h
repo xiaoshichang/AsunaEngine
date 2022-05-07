@@ -18,14 +18,9 @@ namespace asuna
 	class Application
 	{
 	public:
-		Application() :
-			m_Quit(false)
-		{
-		}
+		Application();
+		virtual ~Application();
 
-		virtual ~Application()
-		{
-		}
 
 	public:
 		virtual void Initialize(std::shared_ptr<ApplicationInitParam> param);

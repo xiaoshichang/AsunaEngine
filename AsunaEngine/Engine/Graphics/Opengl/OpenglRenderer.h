@@ -27,7 +27,6 @@ namespace asuna
 		 std::shared_ptr<ConstantBuffer> CreateConstantBuffer(ConstantBufferDataType dt, int size) override;
          std::shared_ptr<Material> CreateMaterial(const std::string& materialPath) override;
          std::shared_ptr<DepthStencilState> CreateDepthStencilState() override;
-         std::shared_ptr<RenderItemQueue> CreateRenderItemQueue() override;
          std::shared_ptr<Texture> CreateTexture(const std::string& path) override;
 
     public:

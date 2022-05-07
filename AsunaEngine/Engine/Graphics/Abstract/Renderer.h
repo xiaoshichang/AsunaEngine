@@ -5,7 +5,6 @@
 #include "RenderAPIType.h"
 #include "RenderContext.h"
 #include "RenderItem.h"
-#include "RenderItemQueue.h"
 #include "RenderTarget.h"
 #include "ConstantBuffer.h"
 #include "Shader.h"
@@ -32,13 +31,8 @@ namespace asuna
 	class Renderer
 	{
 	public:
-		Renderer() :
-			m_Context(nullptr)
-		{
-			m_APIType = RenderAPIType::None;
-		}
-
-		virtual ~Renderer() = default;
+		Renderer();
+		virtual ~Renderer();
 
 		virtual void Initialize(CreateRendererContextParam param) = 0;
 		virtual void Finalize() = 0;
@@ -58,7 +52,6 @@ namespace asuna
 		virtual std::shared_ptr<RenderItem> CreateRenderItem(const std::shared_ptr<Mesh>& mesh, const std::vector<std::shared_ptr<Material>>& materials, const std::shared_ptr<ConstantBuffer>& perObject) = 0;
         virtual std::shared_ptr<RenderItem> CreateRenderItem(const std::shared_ptr<Mesh>& mesh, const std::shared_ptr<ConstantBuffer>& perObject) = 0;
 		virtual std::shared_ptr<ConstantBuffer> CreateConstantBuffer(ConstantBufferDataType dt, int size) = 0;
-        virtual std::shared_ptr<RenderItemQueue> CreateRenderItemQueue() = 0;
         virtual std::shared_ptr<Texture> CreateTexture(const std::string& path) = 0;
 		std::shared_ptr<RenderContext> GetContext();
 
