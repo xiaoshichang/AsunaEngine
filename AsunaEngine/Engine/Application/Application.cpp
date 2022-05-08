@@ -23,5 +23,6 @@ void asuna::Application::Run()
 
 void asuna::Application::Initialize(std::shared_ptr<ApplicationInitParam> param)
 {
+    m_Config = param;
     Logger::InitLogger(param->LogDir, param->LogFile);
 }

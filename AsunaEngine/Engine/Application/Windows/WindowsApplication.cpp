@@ -174,7 +174,10 @@ void WindowsApplication::OnWindowSizeChange(int width, int height)
     if (Renderer::Instance != nullptr)
     {
         Renderer::Instance->ResizeResolution(width, height);
-        RenderPassMgr::Instance->ResizeResolution(width, height);
+        if (!m_Config->EditorMode)
+        {
+            RenderPassMgr::Instance->ResizeResolution(width, height);
+        }
     }
 }
 

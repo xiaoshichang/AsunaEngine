@@ -28,9 +28,11 @@ namespace asuna
 		virtual void Run();
 		virtual void Tick() = 0;
 		virtual void Render() = 0;
+        const std::shared_ptr<ApplicationInitParam>& GetConfig() const {return m_Config;}
 
 	public:
 		bool m_Quit;
+        std::shared_ptr<ApplicationInitParam> m_Config;
 	};
 }
 

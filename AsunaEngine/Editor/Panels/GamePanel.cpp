@@ -5,6 +5,7 @@
 #include <imgui.h>
 #include "GamePanel.h"
 #include "Engine/Graphics/Abstract/Renderer.h"
+#include "Engine/Scene/RenderPass/RenderPassMgr.h"
 #include "Engine/Scene/SceneManager.h"
 #include "Engine/Foundation/Platform/Assert.h"
 #include "Engine/Foundation/Platform/Platform.h"
@@ -144,5 +145,7 @@ void GamePanel::ResizeRT()
     {
         m_RT->Resize(m_TargetResolutionWidth, m_TargetResolutionHeight);
     }
+
+    RenderPassMgr::Instance->ResizeResolution(m_TargetResolutionWidth, m_TargetResolutionHeight);
 }
 
