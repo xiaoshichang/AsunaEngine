@@ -5,12 +5,12 @@
 
 namespace asuna
 {
-	class DirectX11Texture : public Texture
+	class DirectX11Texture : public ImageTexture
 	{
 	public:
 		DirectX11Texture() = delete;
 		DirectX11Texture(const std::shared_ptr<RawTexture> &rawImage, ID3D11Texture2D *texture, ID3D11ShaderResourceView* srv) :
-                Texture(rawImage),
+                ImageTexture(rawImage),
                 m_Texture(texture),
                 m_SRV(srv)
 		{

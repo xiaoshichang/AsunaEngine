@@ -10,13 +10,11 @@
 using namespace asuna;
 using namespace std;
 
-DirectX11Material::DirectX11Material(const string &path) : Material(path)
+DirectX11Material::DirectX11Material(const string &path, MaterialType mt) : Material(path, mt)
 {
 }
 
-DirectX11Material::~DirectX11Material()
-{
-}
+DirectX11Material::~DirectX11Material() = default;
 
 void asuna::DirectX11Material::Apply()
 {
@@ -25,11 +23,6 @@ void asuna::DirectX11Material::Apply()
     m_PerMaterial->Bind();
     m_DepthStencilState->Bind();
     BindTextures();
-}
-
-shared_ptr<DirectX11Material> DirectX11Material::Create(const string &path)
-{
-    return make_shared<DirectX11Material>(path);
 }
 
 void DirectX11Material::BindTextures()
@@ -41,25 +34,23 @@ void DirectX11Material::BindTextures()
     {
         if (pair.second.m_Type == MaterialParameterType::Texture2D)
         {
-            auto texture = dynamic_pointer_cast<DirectX11Texture>(GetTexture(pair.first));
+            auto texture = GetTexture(pair.first);
             if (texture == nullptr)
             {
                 continue;
             }
-
-            auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Instance->GetContext());
             auto mp = pair.second;
-            if (mp.m_ShaderType == TextureShaderType::VS)
+            if (texture->GetTextureType() == TextureType::ImageTexture)
             {
-                auto srv = texture->GetSRV();
-                context->m_DeviceContext->VSSetShaderResources(mp.m_Offset, 1, &srv);
-                context->m_DeviceContext->VSSetSamplers(mp.m_Offset, 1, &state);
+                auto imageTexture = dynamic_pointer_cast<DirectX11Texture>(texture);
+                auto srv = imageTexture->GetSRV();
+                BindTexture(mp.m_ShaderType, mp.m_Offset, state, srv);
             }
-            else if (mp.m_ShaderType == TextureShaderType::PS)
+            else if(texture->GetTextureType() == TextureType::RTTexture)
             {
-                auto srv = texture->GetSRV();
-                context->m_DeviceContext->PSSetShaderResources(mp.m_Offset, 1, &srv);
-                context->m_DeviceContext->PSSetSamplers( mp.m_Offset, 1, &state);
+                auto rt = dynamic_pointer_cast<DirectX11RenderTarget>(texture);
+                auto srv = rt->GetSRV();
+                BindTexture(mp.m_ShaderType, mp.m_Offset, state, srv);
             }
             else
             {
@@ -67,8 +58,26 @@ void DirectX11Material::BindTextures()
             }
         }
     }
+}
 
+void DirectX11Material::BindTexture(TextureShaderType tst, int offset, ID3D11SamplerState* state, ID3D11ShaderResourceView* srv)
+{
+    auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Instance->GetContext());
 
+    if (tst == TextureShaderType::VS)
+    {
+        context->m_DeviceContext->VSSetShaderResources(offset, 1, &srv);
+        context->m_DeviceContext->VSSetSamplers(offset, 1, &state);
+    }
+    else if (tst == TextureShaderType::PS)
+    {
+        context->m_DeviceContext->PSSetShaderResources(offset, 1, &srv);
+        context->m_DeviceContext->PSSetSamplers(offset, 1, &state);
+    }
+    else
+    {
+        ASUNA_ASSERT(false);
+    }
 }
 
 

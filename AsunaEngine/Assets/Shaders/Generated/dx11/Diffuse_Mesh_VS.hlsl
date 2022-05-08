@@ -53,7 +53,7 @@ struct SPIRV_Cross_Input
 {
     float3 in_var_POSITION : POSITION;
     float3 in_var_NORMAL : NORMAL;
-    float3 in_var_TEXCOORD : TEXCOORD0;
+    float3 in_var_TEXCOORD : TEXCOORD;
 };
 
 struct SPIRV_Cross_Output

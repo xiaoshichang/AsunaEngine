@@ -303,9 +303,9 @@ shared_ptr<DepthStencilState> OpenglRenderer::CreateDepthStencilState()
     return make_shared<OpenglDepthStencilState>();
 }
 
-std::shared_ptr<Material> OpenglRenderer::CreateMaterial(const string &materialPath)
+std::shared_ptr<Material> OpenglRenderer::CreateMaterial(const string &materialPath, MaterialType mt)
 {
-    return OpenglMaterial::Create(materialPath);
+    return make_shared<OpenglMaterial>(materialPath, mt);
 }
 
 void OpenglRenderer::MakeCurrentContext()

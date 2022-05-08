@@ -13,9 +13,8 @@ namespace asuna
     {
 
     public:
-        explicit OpenglMaterial(const std::string& path);
+        explicit OpenglMaterial(const std::string &path, MaterialType mt);
         ~OpenglMaterial() override;
-        static std::shared_ptr<OpenglMaterial> Create(const std::string& path);
         void Apply() override;
 
     protected:

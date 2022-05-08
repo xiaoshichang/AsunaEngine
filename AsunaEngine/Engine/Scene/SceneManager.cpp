@@ -191,7 +191,7 @@ void SceneManager::UnregisterLight(LightCmpt *light)
 void SceneManager::Render(const std::shared_ptr<RenderTarget>& rt)
 {
     RenderPassMgr::Instance->RenderShadowMap();
-    RenderPassMgr::Instance->RenderMeshMaterials(rt);
+    RenderPassMgr::Instance->RenderMeshMaterials();
     RenderPassMgr::Instance->RenderPostProcess(rt);
 }
 
@@ -212,7 +212,7 @@ void SceneManager::LoadScene(const string &path)
     meshCmpt->SetMesh(mesh);
     for(int i = 0; i < meshParam->m_MaterialCount; i++)
     {
-        auto material = Renderer::Instance->CreateMaterial("Diffuse_Mesh");
+        auto material = Renderer::Instance->CreateMaterial("Diffuse_Mesh", MaterialType::MeshRender);
         meshCmpt->SetMaterial(i, material);
     }
 
@@ -226,7 +226,7 @@ void SceneManager::LoadScene(const string &path)
     auto groundMesh = SimpleGeometryCreator::CreatePlane();
     auto groundMeshCmpt = ground->AddComponent<MeshRenderCmpt>();
     groundMeshCmpt->SetMesh(groundMesh);
-    auto groundMaterial = Renderer::Instance->CreateMaterial("Color_Mesh");
+    auto groundMaterial = Renderer::Instance->CreateMaterial("Color_Mesh", MaterialType::MeshRender);
     groundMaterial->SetVector4("BaseColor", Vector4f(0.6f, 0.6f, 0.6f, 1.0f));
     groundMeshCmpt->SetMaterial(0, groundMaterial);
 

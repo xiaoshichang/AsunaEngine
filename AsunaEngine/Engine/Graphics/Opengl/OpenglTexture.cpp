@@ -8,7 +8,7 @@ using namespace asuna;
 using namespace std;
 
 OpenglTexture::OpenglTexture(const shared_ptr<RawTexture> &rawImage, GLuint texture) :
-    Texture(rawImage),
+    ImageTexture(rawImage),
     m_Texture(texture)
 {
 }

@@ -338,9 +338,9 @@ void DirectX11Renderer::SetViewPort(int x, int y, int width, int height)
     context->m_DeviceContext->RSSetViewports(1, &viewport);
 }
 
-shared_ptr<Material> DirectX11Renderer::CreateMaterial(const string &materialPath)
+shared_ptr<Material> DirectX11Renderer::CreateMaterial(const string &materialPath, MaterialType mt)
 {
-    return DirectX11Material::Create(materialPath);
+    return std::make_shared<DirectX11Material>(materialPath, mt);
 }
 
 shared_ptr<DepthStencilState> DirectX11Renderer::CreateDepthStencilState()

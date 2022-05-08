@@ -47,7 +47,7 @@ namespace asuna
         virtual std::shared_ptr<Mesh> CreateMesh(const std::shared_ptr<MeshCreateParam>& param) = 0;
 		virtual std::shared_ptr<RenderTarget> CreateRenderTarget(RenderTargetDesc desc) = 0;
 		virtual std::shared_ptr<Shader> CreateShader(const std::string& path, ShaderType shaderType) = 0;
-        virtual std::shared_ptr<Material> CreateMaterial(const std::string& materialPath) = 0;
+        virtual std::shared_ptr<Material> CreateMaterial(const std::string& materialPath, MaterialType mt) = 0;
         virtual std::shared_ptr<DepthStencilState> CreateDepthStencilState() = 0;
 		virtual std::shared_ptr<RenderItem> CreateRenderItem(const std::shared_ptr<Mesh>& mesh, const std::vector<std::shared_ptr<Material>>& materials, const std::shared_ptr<ConstantBuffer>& perObject) = 0;
         virtual std::shared_ptr<RenderItem> CreateRenderItem(const std::shared_ptr<Mesh>& mesh, const std::shared_ptr<ConstantBuffer>& perObject) = 0;

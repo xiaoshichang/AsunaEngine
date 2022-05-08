@@ -10,7 +10,8 @@
 using namespace asuna;
 using namespace std;
 
-Material::Material(const std::string& materialName) :
+Material::Material(const std::string& materialName, MaterialType mt) :
+    m_MaterialType(mt),
     m_MaterialName(materialName)
 {
     if (Renderer::Instance->m_APIType == RenderAPIType::Directx11)
@@ -232,6 +233,11 @@ std::shared_ptr<Texture> Material::GetTexture(const string &name)
         return kv->second;
     }
     return nullptr;
+}
+
+const MaterialType Material::GetMaterialType()
+{
+    return m_MaterialType;
 }
 
 

@@ -11,7 +11,7 @@
 namespace asuna
 {
 
-    class OpenglTexture : public Texture
+    class OpenglTexture : public ImageTexture
     {
     public:
         explicit OpenglTexture(const std::shared_ptr <RawTexture> &rawImage, GLuint texture);

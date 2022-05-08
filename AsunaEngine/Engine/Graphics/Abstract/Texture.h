@@ -12,6 +12,12 @@ namespace asuna
         R8G8B8
     };
 
+    enum class TextureType
+    {
+        ImageTexture,
+        RTTexture
+    };
+
     class RawTexture
     {
     public:
@@ -35,19 +41,32 @@ namespace asuna
 	class Texture
 	{
 	public:
-		explicit Texture(const std::shared_ptr<RawTexture>& rawImage);
+        Texture(TextureType tt);
+        TextureType GetTextureType();
 		virtual ~Texture() = default;
+    private:
+        TextureType m_TextureType;
+	};
 
+    class ImageTexture : public Texture
+    {
+    public:
+        ImageTexture(const std::shared_ptr<RawTexture>& rawImage);
         int GetWidth() const;
         int GetHeight() const;
         int GetPixelBytes();
         RawTextureFormat GetFormat() const;
-
     private:
         int m_Width;
         int m_Height;
         RawTextureFormat m_Format;
-	};
+    };
+
+    class RTTexture : public Texture
+    {
+    public:
+        RTTexture() : Texture(TextureType::RTTexture) {}
+    };
 
 
 }

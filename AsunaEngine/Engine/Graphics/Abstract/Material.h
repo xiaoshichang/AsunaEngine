@@ -14,13 +14,21 @@
 
 namespace asuna
 {
+    enum class MaterialType
+    {
+        MeshRender,
+        PostProcess
+    };
+
+
     class Material
     {
     public:
-        explicit Material(const std::string& materialName);
+        explicit Material(const std::string& materialName, MaterialType mt);
         virtual ~Material() = default;
         virtual void Apply() = 0;
         const std::string& GetName();
+        const MaterialType GetMaterialType();
 
         void SetFloat(const std::string& name, float value);
         float GetFloat(const std::string& name);
@@ -62,6 +70,7 @@ namespace asuna
         void BuildMaterialParametersLayout();
 
     protected:
+        MaterialType m_MaterialType;
         std::string m_MaterialName;
         std::shared_ptr<Shader> m_VS;
         std::shared_ptr<Shader> m_PS;

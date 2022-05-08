@@ -29,6 +29,26 @@ void OpenglRenderItem::Render() const
 	
 }
 
+void OpenglRenderItem::Render(const shared_ptr<asuna::Material> &material) const
+{
+    if (m_ConstantBufferPerObject != nullptr)
+    {
+        m_ConstantBufferPerObject->Bind();
+    }
+    for (auto & element : m_Mesh->m_SubMeshes)
+    {
+        auto mesh = dynamic_pointer_cast<OpenglSubMesh>(element);
+        glBindVertexArray(mesh->m_VAO);
+        auto indexBuffer = dynamic_pointer_cast<OpenglIndexBuffer>(mesh->GetIndexBuffer());
+        indexBuffer->Bind();
+        material->Apply();
+        int start = indexBuffer->GetStartIndex();
+        int count = indexBuffer->GetElementCount();
+        int end = start + count - 1;
+        glDrawRangeElements(mesh->GetGLPrimitive(), start, end, count, indexBuffer->GetGLIndexType(), nullptr);
+    }
+}
+
 shared_ptr<OpenglRenderItem> asuna::OpenglRenderItem::Create(
         const shared_ptr<Mesh>& mesh,
         const vector<shared_ptr<Material>>& materials,
@@ -43,3 +63,5 @@ std::shared_ptr<OpenglRenderItem> OpenglRenderItem::Create(
 {
     return make_shared<OpenglRenderItem>(mesh, perObject);
 }
+
+

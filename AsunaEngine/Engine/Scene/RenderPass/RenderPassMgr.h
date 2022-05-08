@@ -22,12 +22,11 @@ namespace asuna
 
     public:
         void RenderShadowMap();
-        void RenderMeshMaterials(const std::shared_ptr<RenderTarget>& rt);
+        void RenderMeshMaterials();
         void RenderPostProcess(const std::shared_ptr<RenderTarget>& rt);
         void ResizeResolution(int width, int height);
 
     private:
-        std::shared_ptr<RenderTarget> m_MainRT = nullptr;
         std::shared_ptr<RenderTarget> m_ShadowMap = nullptr;
 
         RenderPassMeshMaterial* m_RenderPassMeshMaterial = nullptr;

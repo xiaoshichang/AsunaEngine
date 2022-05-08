@@ -9,15 +9,17 @@
 #include "../../GameObject/GameObject.h"
 #include "../../Graphics/Abstract/RenderItem.h"
 #include "../../Graphics/Abstract/RenderTarget.h"
+#include "../../Graphics/Abstract/Renderer.h"
 
 namespace asuna
 {
     class RenderPassMeshMaterial : public RenderPassBase
     {
     public:
-        RenderPassMeshMaterial();
-        void Render(const std::shared_ptr<RenderTarget>& rt);
-
+        explicit RenderPassMeshMaterial(CreateRendererContextParam param);
+        void Render();
+        void ResizeResolution(int width, int height) override;
+        const std::shared_ptr<RenderTarget>& GetMainRT();
     private:
         void CollectRenderItems();
         void BuildRenderQueueVisitGameObject(GameObject* node);
@@ -27,6 +29,7 @@ namespace asuna
         std::vector<RenderItem const*> m_Items;
         bool m_ShowCoordAxis = true;
         std::vector<std::shared_ptr<RenderItem>> m_AxisRenderItems;
+        std::shared_ptr<RenderTarget> m_MainRT = nullptr;
     };
 
 }

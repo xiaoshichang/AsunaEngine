@@ -26,6 +26,7 @@ namespace asuna
 		~OpenglRenderItem() override = default;
 
 		void Render() const override;
+        void Render(const std::shared_ptr<asuna::Material> & material) const override;
 
 		static std::shared_ptr<OpenglRenderItem> Create(
                 const std::shared_ptr<Mesh>& mesh,

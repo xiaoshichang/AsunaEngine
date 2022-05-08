@@ -9,12 +9,7 @@ using namespace asuna;
 
 RenderPassMgr* RenderPassMgr::Instance = nullptr;
 
-RenderPassMgr::RenderPassMgr()
-{
-    m_RenderPassMeshMaterial = new RenderPassMeshMaterial();
-    m_RenderPassShadowMap = new RenderPassShadowMap();
-    m_RenderPassPostProcess = new RenderPassPostProcess();
-}
+RenderPassMgr::RenderPassMgr() = default;
 
 RenderPassMgr::~RenderPassMgr()
 {
@@ -30,17 +25,15 @@ RenderPassMgr::~RenderPassMgr()
 
 void RenderPassMgr::Init(CreateRendererContextParam param)
 {
-    RenderTargetDesc desc{};
-    desc.usage = RenderTargetUsage::Default;
-    desc.width = param.m_ResolutionWith;
-    desc.height = param.m_ResolutionHeight;
-    m_MainRT = Renderer::Instance->CreateRenderTarget(desc);
+    m_RenderPassMeshMaterial = new RenderPassMeshMaterial(param);
+    m_RenderPassShadowMap = new RenderPassShadowMap();
+    m_RenderPassPostProcess = new RenderPassPostProcess();
 }
 
-void RenderPassMgr::RenderMeshMaterials( const std::shared_ptr<RenderTarget>& rt)
+void RenderPassMgr::RenderMeshMaterials()
 {
     ASUNA_ASSERT(m_RenderPassMeshMaterial != nullptr);
-    m_RenderPassMeshMaterial->Render(rt);
+    m_RenderPassMeshMaterial->Render();
 }
 
 void RenderPassMgr::RenderShadowMap()
@@ -50,12 +43,14 @@ void RenderPassMgr::RenderShadowMap()
 
 void RenderPassMgr::RenderPostProcess(const std::shared_ptr<RenderTarget>& rt)
 {
-    // todo
+    auto input = m_RenderPassMeshMaterial->GetMainRT();
+    m_RenderPassPostProcess->Render(input, rt);
 }
 
 void RenderPassMgr::ResizeResolution(int width, int height)
 {
-    m_MainRT->Resize(width, height);
+    m_RenderPassMeshMaterial->ResizeResolution(width, height);
+    m_RenderPassPostProcess->ResizeResolution(width, height);
 }
 
 

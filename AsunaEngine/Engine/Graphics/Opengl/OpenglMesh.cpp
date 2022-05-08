@@ -69,20 +69,24 @@ std::shared_ptr<OpenglSubMesh> OpenglSubMesh::Create(const std::shared_ptr<SubMe
 		glGenVertexArrays(1, &vao);
 		// Bind the vertex array object to store all the buffers and vertex attributes we create here.
 		glBindVertexArray(vao);
+        int available = 0;
 		if (position != nullptr)
 		{
 			auto vb = dynamic_pointer_cast<OpenglVertexBuffer>(position);
-			vb->Bind(0);
+			vb->Bind(available);
+            available++;
 		}
 		if (normal != nullptr)
 		{
 			auto vb = dynamic_pointer_cast<OpenglVertexBuffer>(normal);
-			vb->Bind(1);
+            vb->Bind(available);
+            available++;
 		}
 		if (texcoord != nullptr)
 		{
 			auto vb = dynamic_pointer_cast<OpenglVertexBuffer>(texcoord);
-			vb->Bind(2);
+            vb->Bind(available);
+            available++;
 		}
 		if (index != nullptr)
 		{

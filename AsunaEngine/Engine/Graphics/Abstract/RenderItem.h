@@ -63,7 +63,7 @@ namespace asuna
 
 	public:
 		virtual void Render() const = 0;
-
+        virtual void Render(const std::shared_ptr<Material>& material) const = 0;
 
 	protected:
         std::shared_ptr<Mesh> m_Mesh;

@@ -221,10 +221,10 @@ void DirectX11RenderTarget::Resize(int width, int height)
     if (m_Desc.usage == RenderTargetUsage::Default)
     {
         RenderTarget::Resize(width, height);
-        ClearRenderTarget();
-        ClearDepthStencilResource();
         if (m_RenderTargetTexture == nullptr)
         {
+            ClearRenderTarget();
+            ClearDepthStencilResource();
             auto hr = context->m_swapChain->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
             ASUNA_ASSERT(SUCCEEDED(hr));
             ID3D11Texture2D* pBuffer;
@@ -239,6 +239,8 @@ void DirectX11RenderTarget::Resize(int width, int height)
         }
         else
         {
+            ClearRenderTarget();
+            ClearDepthStencilResource();
             m_Desc.width = width;
             m_Desc.height = height;
             CreateRenderTarget(m_Desc, context->m_Device);

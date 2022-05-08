@@ -6,6 +6,7 @@
 #include "OpenglShader.h"
 #include "OpenglConstantBuffer.h"
 #include "OpenglTexture.h"
+#include "OpenglRenderTarget.h"
 
 #include "../../3rd/Glad/include/glad/glad.h"
 #include "../../Foundation/Logger/Logger.h"
@@ -13,9 +14,9 @@
 using namespace asuna;
 using namespace std;
 
-OpenglMaterial::OpenglMaterial(const string &path) :
+OpenglMaterial::OpenglMaterial(const string &path, MaterialType mt) :
         m_Program(0),
-        Material(path)
+        Material(path, mt)
 {
     auto vs = dynamic_pointer_cast<OpenglShader>(m_VS);
     auto ps = dynamic_pointer_cast<OpenglShader>(m_PS);
@@ -23,11 +24,6 @@ OpenglMaterial::OpenglMaterial(const string &path) :
 }
 
 OpenglMaterial::~OpenglMaterial() = default;
-
-shared_ptr<OpenglMaterial> OpenglMaterial::Create(const string &path)
-{
-    return make_shared<OpenglMaterial>(path);
-}
 
 void OpenglMaterial::Apply()
 {
@@ -44,9 +40,6 @@ void OpenglMaterial::InitProgram(unsigned int vs, unsigned int ps)
     // Attach the vertex and fragment shader to the program object.
     glAttachShader(m_Program, vs);
     glAttachShader(m_Program, ps);
-    // Bind the shader input variables.
-    glBindAttribLocation(m_Program, 0, "inputPosition");
-    glBindAttribLocation(m_Program, 1, "inputColor");
     // Link the shader program.
     glLinkProgram(m_Program);
     // Check the status of the link.
@@ -74,16 +67,27 @@ void OpenglMaterial::BindTextures()
     {
         if (pair.second.m_Type == MaterialParameterType::Texture2D)
         {
-            auto texture = dynamic_pointer_cast<OpenglTexture>(GetTexture(pair.first));
+            auto texture = GetTexture(pair.first);
             if (texture == nullptr)
             {
                 continue;
             }
-            auto loc = glGetUniformLocation(m_Program, pair.first.c_str());
-            glUniform1i(loc, pair.second.m_Offset);
-
-            glActiveTexture(GL_TEXTURE0 + pair.second.m_Offset);
-            glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
+            if (texture->GetTextureType() == TextureType::ImageTexture)
+            {
+                auto imageTexture = dynamic_pointer_cast<OpenglTexture>(texture);
+                auto loc = glGetUniformLocation(m_Program, pair.first.c_str());
+                glUniform1i(loc, pair.second.m_Offset);
+                glActiveTexture(GL_TEXTURE0 + pair.second.m_Offset);
+                glBindTexture(GL_TEXTURE_2D, imageTexture->GetTexture());
+            }
+            else
+            {
+                auto rt = dynamic_pointer_cast<OpenglRenderTarget>(texture);
+                auto loc = glGetUniformLocation(m_Program, pair.first.c_str());
+                glUniform1i(loc, pair.second.m_Offset);
+                glActiveTexture(GL_TEXTURE0 + pair.second.m_Offset);
+                glBindTexture(GL_TEXTURE_2D, rt->GetTexture());
+            }
         }
     }
 }

@@ -85,6 +85,15 @@ def get_generated_spirv_filename(name):
     return name + ".spirv"
 
 
+def get_material_name(shader_name):
+    if "_VS" in shader_name:
+        return shader_name.split("_VS")[0]
+    elif "_PS" in shader_name:
+        return shader_name.split("_PS")[0]
+    else:
+        exit(1)
+
+
 def convert_source_to_spirv_format(shaders):
     flags = "-Fo"
     for name, item in shaders.items():
@@ -99,20 +108,37 @@ def convert_source_to_spirv_format(shaders):
     print("convert_source_to_spirv_format OK!")
 
 
-hlsl_vertex_semantic =\
-    {
-        0: "POSITION",
-        1: "NORMAL",
-        2: "TEXCOORD0"
-    }
+def analyze_input_layout(item):
+    fp = open(item.path, "r")
+    for line in fp.readlines():
+        if "main" in line:
+            if "VertexInput_P3N3T3" in line:
+                return {0: "POSITION", 1: "NORMAL", 2: "TEXCOORD"}
+            elif "VertexInput_P3T3" in line:
+                return {0: "POSITION", 1: "TEXCOORD"}
+            elif "VertexInput_P3" in line:
+                return {0: "POSITION"}
+            else:
+                exit(1)
 
 
-def convert_spirv_to_hlsl_dx11(shaders):
+def collect_all_input_layouts(shaders):
+    input_layouts = {}
+    for name, item in shaders.items():
+        if "_VS" in name:
+            material_name = get_material_name(name)
+            layout = analyze_input_layout(item)
+            input_layouts[material_name] = layout
+    return input_layouts
+
+
+def convert_spirv_to_hlsl_dx11(shaders, input_layouts):
     for name, item in shaders.items():
         source_file_path = os.path.join(generated_dir, get_generated_spirv_filename(name))
         target_file_path = os.path.join(generated_dx11_dir, name + ".hlsl")
         cmd = [args.SpirvCrossPath, "--hlsl", "--shader-model", "50", "--remove-unused-variables"]
-        for location, semantic in hlsl_vertex_semantic.items():
+        input_layout = input_layouts[get_material_name(name)]
+        for location, semantic in input_layout.items():
             cmd.append("--set-hlsl-vertex-input-semantic")
             cmd.append(str(location))
             cmd.append(semantic)
@@ -147,8 +173,9 @@ def convert_spirv_to_glsl_opengl(shaders):
 def main():
     create_generated_dirs()
     shaders = collect_all_shaders()
+    input_layouts = collect_all_input_layouts(shaders)
     convert_source_to_spirv_format(shaders)
-    convert_spirv_to_hlsl_dx11(shaders)
+    convert_spirv_to_hlsl_dx11(shaders, input_layouts)
     convert_spirv_to_glsl_opengl(shaders)
 
 

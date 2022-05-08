@@ -16,22 +16,32 @@ void DirectX11RenderItem::BindConstantBufferPerObject(DirectX11RenderContext* co
 }
 
 
-void DirectX11RenderItem::DrawMesh(DirectX11RenderContext* context) const
+void DirectX11RenderItem::DrawMesh(DirectX11RenderContext* context, const std::shared_ptr<Material>& overrideMaterial) const
 {
     auto mesh = GetMesh();
     for (const auto& subMesh : mesh->m_SubMeshes)
     {
         // set up material for mesh
-        auto material = GetMaterial(subMesh->GetMaterialIndex());
-        if (material == nullptr)
+        if (overrideMaterial == nullptr)
         {
-            // use default material
-            Logger::Warning("material not found!");
+            auto material = GetMaterial(subMesh->GetMaterialIndex());
+            if (material == nullptr)
+            {
+                // use default material
+                Logger::Warning("material not found!");
+            }
+            else
+            {
+                if (material->GetMaterialType() == MaterialType::MeshRender)
+                {
+                    material->SetMatrix("ModelMatrix", subMesh->GetModelMatrix());
+                }
+                material->Apply();
+            }
         }
         else
         {
-            material->SetMatrix("ModelMatrix", subMesh->GetModelMatrix());
-            material->Apply();
+            overrideMaterial->Apply();
         }
 
         // set up mesh data
@@ -96,7 +106,14 @@ void DirectX11RenderItem::Render() const
 
 	auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Instance->GetContext()).get();
     BindConstantBufferPerObject(context);
-    DrawMesh(context);
+    DrawMesh(context, nullptr);
+}
+
+void DirectX11RenderItem::Render(const shared_ptr<Material> &overrideMaterial) const
+{
+    auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Instance->GetContext()).get();
+    BindConstantBufferPerObject(context);
+    DrawMesh(context, overrideMaterial);
 }
 
 shared_ptr<DirectX11RenderItem> DirectX11RenderItem::Create(
@@ -113,9 +130,3 @@ shared_ptr<DirectX11RenderItem> DirectX11RenderItem::Create(
 {
     return make_shared<DirectX11RenderItem>(mesh, perObject);
 }
-
-
-
-
-
-

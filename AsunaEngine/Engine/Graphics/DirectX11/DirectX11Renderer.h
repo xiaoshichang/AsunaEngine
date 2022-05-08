@@ -34,7 +34,7 @@ namespace asuna
 		shared_ptr<RenderTarget> CreateRenderTarget(RenderTargetDesc desc) override;
 		shared_ptr<Shader> CreateShader(const string& scenePath, ShaderType shaderType) override;
 		shared_ptr<ConstantBuffer> CreateConstantBuffer(ConstantBufferDataType dt, int size) override;
-        shared_ptr<Material> CreateMaterial(const std::string& materialPath) override;
+        shared_ptr<Material> CreateMaterial(const std::string& materialPath, MaterialType mt) override;
         shared_ptr<DepthStencilState> CreateDepthStencilState() override;
 		shared_ptr<RenderItem> CreateRenderItem(const std::shared_ptr<Mesh>& mesh, const vector<std::shared_ptr<Material>>& materials, const std::shared_ptr<ConstantBuffer>& perObject) override;
         shared_ptr<RenderItem> CreateRenderItem(const std::shared_ptr<Mesh>& mesh, const std::shared_ptr<ConstantBuffer>& perObject) override;

@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Texture.h"
 
 namespace asuna
 {
@@ -17,16 +17,17 @@ namespace asuna
     };
 
 
-	class RenderTarget
+    class RenderTarget : public RTTexture
 	{
 	public:
         RenderTarget() = delete;
-		explicit RenderTarget(RenderTargetDesc desc)
-            : m_Desc(desc)
+		explicit RenderTarget(RenderTargetDesc desc) :
+            RTTexture(),
+            m_Desc(desc)
 		{
 		}
 
-		virtual ~RenderTarget() = default;
+		~RenderTarget() override = default;
         virtual void Resize(int width, int height);
 
     protected:

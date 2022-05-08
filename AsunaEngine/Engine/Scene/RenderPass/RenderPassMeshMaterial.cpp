@@ -10,17 +10,22 @@
 using namespace asuna;
 using namespace std;
 
-RenderPassMeshMaterial::RenderPassMeshMaterial()
+RenderPassMeshMaterial::RenderPassMeshMaterial(CreateRendererContextParam param)
 {
+    RenderTargetDesc desc{};
+    desc.usage = RenderTargetUsage::Default;
+    desc.width = param.m_ResolutionWith;
+    desc.height = param.m_ResolutionHeight;
+    m_MainRT = Renderer::Instance->CreateRenderTarget(desc);
     CreateCoordAxisRenderItem();
 }
 
-void RenderPassMeshMaterial::Render(const std::shared_ptr<RenderTarget>& rt)
+void RenderPassMeshMaterial::Render()
 {
     SceneManager::Instance->GetConstantBufferPerScene()->Bind();
 
-    Renderer::Instance->SetRenderTarget(rt);
-    Renderer::Instance->ClearRenderTarget(rt, 0.1f, 0.2f, 0.3f, 1.0f);
+    Renderer::Instance->SetRenderTarget(m_MainRT);
+    Renderer::Instance->ClearRenderTarget(m_MainRT, 0.1f, 0.2f, 0.3f, 1.0f);
     CollectRenderItems();
 
     for(auto item : m_Items)
@@ -30,7 +35,7 @@ void RenderPassMeshMaterial::Render(const std::shared_ptr<RenderTarget>& rt)
 
     if (m_ShowCoordAxis)
     {
-        for(auto item : m_AxisRenderItems)
+        for(const auto& item : m_AxisRenderItems)
         {
             item->Render();
         }
@@ -124,11 +129,21 @@ void RenderPassMeshMaterial::CreateCoordAxisRenderItem()
     item->AllocateMaterials(6);
     for (int i = 0; i < 6; ++i)
     {
-        auto material = Renderer::Instance->CreateMaterial("Color_Axis");
+        auto material = Renderer::Instance->CreateMaterial("Color_Axis", MaterialType::MeshRender);
         material->SetVector4("BaseColor", colors[i]);
         item->SetMaterial(i, material);
     }
 
     m_AxisRenderItems.push_back(item);
+}
+
+void RenderPassMeshMaterial::ResizeResolution(int width, int height)
+{
+    m_MainRT->Resize(width, height);
+}
+
+const std::shared_ptr<RenderTarget> &RenderPassMeshMaterial::GetMainRT()
+{
+    return m_MainRT;
 }
 

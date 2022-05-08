@@ -8,7 +8,8 @@ namespace asuna
 {
     class RenderPassBase
     {
-
+    public:
+        virtual void ResizeResolution(int width, int height) {}
     };
 }
 

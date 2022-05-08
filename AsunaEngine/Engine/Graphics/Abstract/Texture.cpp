@@ -58,7 +58,18 @@ RawTextureFormat RawTexture::GetFormat() const
 }
 
 
-Texture::Texture(const std::shared_ptr<RawTexture>& rawImage) :
+Texture::Texture(TextureType tt) : m_TextureType(tt)
+{
+}
+
+TextureType Texture::GetTextureType()
+{
+    return m_TextureType;
+}
+
+
+ImageTexture::ImageTexture(const std::shared_ptr<RawTexture>& rawImage) :
+    Texture(TextureType::ImageTexture),
     m_Width(rawImage->GetWidth()),
     m_Height(rawImage->GetHeight()),
     m_Format(rawImage->GetFormat())
@@ -66,7 +77,7 @@ Texture::Texture(const std::shared_ptr<RawTexture>& rawImage) :
 
 }
 
-int Texture::GetPixelBytes()
+int ImageTexture::GetPixelBytes()
 {
     if (m_Format == RawTextureFormat::R8G8B8A8)
     {
@@ -83,17 +94,17 @@ int Texture::GetPixelBytes()
     }
 }
 
-int Texture::GetHeight() const
+int ImageTexture::GetHeight() const
 {
     return m_Height;
 }
 
-int Texture::GetWidth() const
+int ImageTexture::GetWidth() const
 {
     return m_Width;
 }
 
-RawTextureFormat Texture::GetFormat() const
+RawTextureFormat ImageTexture::GetFormat() const
 {
     return m_Format;
 }

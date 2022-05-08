@@ -22,3 +22,15 @@ struct VertexOutput_P4
 {
 	float4 position : SV_POSITION;
 };
+
+struct VertexInput_P3T3
+{
+    float3 position : POSITION;
+	float3 texcoord : TEXCOORD;
+};
+
+struct VertexOutput_P4T4
+{
+	float4 position : SV_POSITION;
+    float4 texcoord : TEXCOORD;
+};
