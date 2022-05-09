@@ -20,14 +20,12 @@ RenderPassMeshMaterial::RenderPassMeshMaterial(CreateRendererContextParam param)
     CreateCoordAxisRenderItem();
 }
 
-void RenderPassMeshMaterial::Render()
+void RenderPassMeshMaterial::Render(const std::shared_ptr<RenderTarget>& outputRT)
 {
     SceneManager::Instance->GetConstantBufferPerScene()->Bind();
-
-    Renderer::Instance->SetRenderTarget(m_MainRT);
-    Renderer::Instance->ClearRenderTarget(m_MainRT, 0.1f, 0.2f, 0.3f, 1.0f);
+    Renderer::Instance->SetRenderTarget(outputRT);
+    Renderer::Instance->ClearRenderTarget(outputRT, 0.1f, 0.2f, 0.3f, 1.0f);
     CollectRenderItems();
-
     for(auto item : m_Items)
     {
         item->Render();
@@ -40,6 +38,11 @@ void RenderPassMeshMaterial::Render()
             item->Render();
         }
     }
+}
+
+void RenderPassMeshMaterial::Render()
+{
+    Render(m_MainRT);
 }
 
 void RenderPassMeshMaterial::CollectRenderItems()
@@ -146,4 +149,6 @@ const std::shared_ptr<RenderTarget> &RenderPassMeshMaterial::GetMainRT()
 {
     return m_MainRT;
 }
+
+
 

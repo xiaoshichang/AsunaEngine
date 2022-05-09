@@ -191,8 +191,8 @@ void SceneManager::UnregisterLight(LightCmpt *light)
 void SceneManager::Render(const std::shared_ptr<RenderTarget>& rt)
 {
     RenderPassMgr::Instance->RenderShadowMap();
-    RenderPassMgr::Instance->RenderMeshMaterials();
-    RenderPassMgr::Instance->RenderPostProcess(rt);
+    RenderPassMgr::Instance->RenderMeshMaterials(rt);
+    //RenderPassMgr::Instance->RenderPostProcess(rt);
 }
 
 

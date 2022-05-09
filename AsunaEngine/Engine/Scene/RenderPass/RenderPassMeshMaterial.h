@@ -17,6 +17,7 @@ namespace asuna
     {
     public:
         explicit RenderPassMeshMaterial(CreateRendererContextParam param);
+        void Render(const std::shared_ptr<RenderTarget>& outputRT);
         void Render();
         void ResizeResolution(int width, int height) override;
         const std::shared_ptr<RenderTarget>& GetMainRT();

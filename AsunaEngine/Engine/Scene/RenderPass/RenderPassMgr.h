@@ -22,7 +22,7 @@ namespace asuna
 
     public:
         void RenderShadowMap();
-        void RenderMeshMaterials();
+        void RenderMeshMaterials(const std::shared_ptr<RenderTarget>& outputRT);
         void RenderPostProcess(const std::shared_ptr<RenderTarget>& rt);
         void ResizeResolution(int width, int height);
 

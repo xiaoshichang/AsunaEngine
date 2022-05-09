@@ -36,6 +36,7 @@ std::shared_ptr<OpenglShader> asuna::OpenglShader::Create(const std::string& pat
 	// Copy the shader source code strings into the vertex and fragment shader objects.
 	{
 		glShaderSource(shader, 1, &sourceString, nullptr);
+        // or use glShaderSourceARB https://stackoverflow.com/questions/2378448/externally-define-preprocessor-macros-in-glsl
 		glCompileShader(shader);
 	}
 	// Check to see if the vertex shader compiled successfully.
@@ -45,7 +46,7 @@ std::shared_ptr<OpenglShader> asuna::OpenglShader::Create(const std::string& pat
 		if (status != 1)
 		{
             GLsizei log_length = 0;
-            GLchar message[1024];
+            static GLchar message[1024];
             glGetShaderInfoLog(shader, 1024, &log_length, message);
             Logger::Error("OpenglShader Create:");
             Logger::Error(message);
