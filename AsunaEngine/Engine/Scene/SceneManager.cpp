@@ -220,6 +220,7 @@ void SceneManager::LoadScene(const string &path)
     auto material = meshCmpt->GetMaterial(0);
     material->SetTexture("MainTex", tex);
 
+    // ground
     auto ground = SceneManager::Instance->CreateGameObject("ground", nullptr);
     ground->GetTransform()->SetScale(1000, 1, 1000);
     ground->GetTransform()->SetPosition(0, -0.1, 0);
@@ -227,14 +228,25 @@ void SceneManager::LoadScene(const string &path)
     auto groundMeshCmpt = ground->AddComponent<MeshRenderCmpt>();
     groundMeshCmpt->SetMesh(groundMesh);
     auto groundMaterial = Renderer::Instance->CreateMaterial("Color_Mesh", MaterialType::MeshRender);
-    groundMaterial->SetVector4("BaseColor", Vector4f(0.6f, 0.6f, 0.6f, 1.0f));
+    groundMaterial->SetVector4("BaseColor", Vector4f(0.4f, 0.4f, 0.4f, 1.0f));
     groundMeshCmpt->SetMaterial(0, groundMaterial);
+
+    // cube
+    auto cube = SceneManager::Instance->CreateGameObject("cube", nullptr);
+    cube->GetTransform()->SetScale(2, 2, 2);
+    cube->GetTransform()->SetPosition(0, 5, -10);
+    auto cubeMesh = SimpleGeometryCreator::CreateCube();
+    auto cubeMeshCmpt = cube->AddComponent<MeshRenderCmpt>();
+    cubeMeshCmpt->SetMesh(cubeMesh);
+    auto cubeMaterial = Renderer::Instance->CreateMaterial("Color_Mesh", MaterialType::MeshRender);
+    cubeMaterial->SetVector4("BaseColor", Vector4f(0.4f, 0.6f, 0.4f, 1.0f));
+    cubeMeshCmpt->SetMaterial(0, cubeMaterial);
 
     auto light = SceneManager::Instance->CreateGameObject("Light", nullptr);
     auto lightCmpt = light->AddComponent<LightCmpt>();
-    lightCmpt->SetColor(Color(0.8, 0.8, 0.7, 1));
+    lightCmpt->SetColor(Color(0.8, 0.8, 0.6, 1));
     lightCmpt->SetIntensity(2);
-    lightCmpt->GetOwner()->GetTransform()->SetEuler(-PI/2 + 0.1, 0, 0);
+    lightCmpt->GetOwner()->GetTransform()->SetEuler(-0.87, 1.8, 0);
 }
 
 

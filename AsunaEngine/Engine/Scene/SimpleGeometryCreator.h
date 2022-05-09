@@ -12,6 +12,7 @@ namespace asuna
     {
     public:
         static std::shared_ptr<Mesh> CreatePlane();
+        static std::shared_ptr<Mesh> CreateCube();
     };
 }
 

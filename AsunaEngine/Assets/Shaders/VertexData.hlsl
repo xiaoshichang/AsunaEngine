@@ -23,6 +23,18 @@ struct VertexOutput_P4
 	float4 position : SV_POSITION;
 };
 
+struct VertexInput_P3N3
+{
+    float3 position : POSITION;
+	float3 normal : NORMAL;
+};
+
+struct VertexOutput_P4N4
+{
+    float4 position : SV_POSITION;
+	float4 nw : NORMAL;
+};
+
 struct VertexInput_P3T3
 {
     float3 position : POSITION;

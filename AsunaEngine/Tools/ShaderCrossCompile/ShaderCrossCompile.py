@@ -116,6 +116,8 @@ def analyze_input_layout(item):
                 return {0: "POSITION", 1: "NORMAL", 2: "TEXCOORD"}
             elif "VertexInput_P3T3" in line:
                 return {0: "POSITION", 1: "TEXCOORD"}
+            elif "VertexInput_P3N3" in line:
+                return {0: "POSITION", 1: "NORMAL"}
             elif "VertexInput_P3" in line:
                 return {0: "POSITION"}
             else:
