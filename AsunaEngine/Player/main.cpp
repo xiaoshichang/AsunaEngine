@@ -8,7 +8,7 @@ using namespace asuna;
 int main()
 {
     auto param = make_shared<ApplicationInitParam>();
-    param->RenderAPIType = RenderAPIType::Directx11;
+    param->RenderAPIType = RenderAPIType::Opengl;
     param->WindowWidth = 1200;
     param->WindowHeight = 800;
     param->LogFile = (char*)"Player";

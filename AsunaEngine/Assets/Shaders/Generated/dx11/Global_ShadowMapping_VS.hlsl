@@ -31,6 +31,11 @@ cbuffer type_ConstantBufferPerFrame : register(b0)
     column_major float4x4 ConstantBufferPerFrame_lightViewProj : packoffset(c43);
 };
 
+cbuffer type_ConstantBufferPerObject : register(b1)
+{
+    column_major float4x4 ConstantBufferPerObject_worldMatrix : packoffset(c0);
+};
+
 cbuffer type_ConstantBufferPerMaterial : register(b2)
 {
     float4 ConstantBufferPerMaterial_mainColor : packoffset(c0);
@@ -38,29 +43,29 @@ cbuffer type_ConstantBufferPerMaterial : register(b2)
 };
 
 
-static float4 in_var_NORMAL;
-static float4 out_var_SV_TARGET;
+static float4 gl_Position;
+static float3 in_var_POSITION;
 
 struct SPIRV_Cross_Input
 {
-    float4 in_var_NORMAL : TEXCOORD0;
+    float3 in_var_POSITION : POSITION;
 };
 
 struct SPIRV_Cross_Output
 {
-    float4 out_var_SV_TARGET : SV_Target0;
+    float4 gl_Position : SV_Position;
 };
 
-void frag_main()
+void vert_main()
 {
-    out_var_SV_TARGET = float4(((ConstantBufferPerFrame_directionLight.color.xyz * max(dot(in_var_NORMAL.xyz, -ConstantBufferPerFrame_directionLight.direction.xyz), 0.0f)) * ConstantBufferPerFrame_directionLight.intensity.x) * ConstantBufferPerMaterial_mainColor.xyz, 1.0f);
+    gl_Position = mul(mul(mul(float4(in_var_POSITION, 1.0f), ConstantBufferPerMaterial_modelMatrix), ConstantBufferPerObject_worldMatrix), ConstantBufferPerFrame_lightViewProj);
 }
 
 SPIRV_Cross_Output main(SPIRV_Cross_Input stage_input)
 {
-    in_var_NORMAL = stage_input.in_var_NORMAL;
-    frag_main();
+    in_var_POSITION = stage_input.in_var_POSITION;
+    vert_main();
     SPIRV_Cross_Output stage_output;
-    stage_output.out_var_SV_TARGET = out_var_SV_TARGET;
+    stage_output.gl_Position = gl_Position;
     return stage_output;
 }

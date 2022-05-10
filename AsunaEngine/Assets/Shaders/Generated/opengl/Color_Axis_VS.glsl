@@ -30,6 +30,7 @@ layout(binding = 0, std140) uniform type_ConstantBufferPerFrame
     DirectionLight directionLight;
     SpotLight spotLights[4];
     PointLight pointLights[4];
+    layout(row_major) mat4 lightViewProj;
 } ConstantBufferPerFrame;
 
 layout(location = 0) in vec3 in_var_POSITION;

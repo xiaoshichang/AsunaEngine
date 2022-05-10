@@ -19,7 +19,10 @@ void OpenglRenderItem::Render() const
         auto indexBuffer = dynamic_pointer_cast<OpenglIndexBuffer>(mesh->GetIndexBuffer());
         indexBuffer->Bind();
         auto material = GetMaterial(mesh->GetMaterialIndex());
-        material->SetMatrix("ModelMatrix", mesh->GetModelMatrix());
+        if (material->GetMaterialType() == MaterialType::MeshRender)
+        {
+            material->SetMatrix("ModelMatrix", mesh->GetModelMatrix());
+        }
         material->Apply();
         int start = indexBuffer->GetStartIndex();
         int count = indexBuffer->GetElementCount();
@@ -41,6 +44,10 @@ void OpenglRenderItem::Render(const shared_ptr<asuna::Material> &material) const
         glBindVertexArray(mesh->m_VAO);
         auto indexBuffer = dynamic_pointer_cast<OpenglIndexBuffer>(mesh->GetIndexBuffer());
         indexBuffer->Bind();
+        if (material->GetMaterialType() == MaterialType::ShadowMapping)
+        {
+            material->SetMatrix("ModelMatrix", mesh->GetModelMatrix());
+        }
         material->Apply();
         int start = indexBuffer->GetStartIndex();
         int count = indexBuffer->GetElementCount();

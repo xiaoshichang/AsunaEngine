@@ -41,6 +41,10 @@ void DirectX11RenderItem::DrawMesh(DirectX11RenderContext* context, const std::s
         }
         else
         {
+            if (overrideMaterial->GetMaterialType() == MaterialType::ShadowMapping)
+            {
+                overrideMaterial->SetMatrix("ModelMatrix", subMesh->GetModelMatrix());
+            }
             overrideMaterial->Apply();
         }
 

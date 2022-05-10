@@ -243,13 +243,18 @@ void DirectX11Renderer::CreateDeviceContext()
 	swapChainDesc.Flags = 0;
 	// Set the feature level to DirectX 11.
 	featureLevel = D3D_FEATURE_LEVEL_11_0;
-	
+
+    UINT creationFlags = 0;
+#ifdef ASUNA_BUILD_DEBUG
+    creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
+
 	// Create the swap chain, Direct3D device, and Direct3D device context.
 	result = D3D11CreateDeviceAndSwapChain(
 		NULL, 
 		D3D_DRIVER_TYPE_HARDWARE, 
-		NULL, 
-		0, 
+		NULL,
+        creationFlags,
 		&featureLevel, 
 		1,
 		D3D11_SDK_VERSION, 

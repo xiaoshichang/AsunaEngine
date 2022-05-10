@@ -17,7 +17,8 @@ namespace asuna
     enum class MaterialType
     {
         MeshRender,
-        PostProcess
+        PostProcess,
+        ShadowMapping
     };
 
 

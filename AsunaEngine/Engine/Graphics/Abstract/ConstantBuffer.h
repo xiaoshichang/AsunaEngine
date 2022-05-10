@@ -41,6 +41,7 @@ namespace asuna
         ConstantBufferDataDirectionLight m_DirectionLight;
         ConstantBufferDataSpotLight m_SpotLight[4];
         ConstantBufferDataPointLight m_PointLight[4];
+        Matrix4x4f m_LightViewProj;
     };
 
 

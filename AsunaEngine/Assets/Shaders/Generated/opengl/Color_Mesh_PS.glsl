@@ -30,6 +30,7 @@ layout(binding = 0, std140) uniform type_ConstantBufferPerFrame
     DirectionLight directionLight;
     SpotLight spotLights[4];
     PointLight pointLights[4];
+    layout(row_major) mat4 lightViewProj;
 } ConstantBufferPerFrame;
 
 layout(binding = 2, std140) uniform type_ConstantBufferPerMaterial

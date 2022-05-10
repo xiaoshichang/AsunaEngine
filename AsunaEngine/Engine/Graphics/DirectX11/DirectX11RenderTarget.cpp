@@ -194,19 +194,19 @@ void DirectX11RenderTarget::CreateDepthStencilResource(RenderTargetDesc desc, ID
         ASUNA_ASSERT(SUCCEEDED(hr));
         //  depth stencil view
         D3D11_DEPTH_STENCIL_VIEW_DESC descDSV{};
-        descDSV.Format = DXGI_FORMAT_R32_TYPELESS;
+        descDSV.Format = DXGI_FORMAT_D32_FLOAT;
         descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
         descDSV.Texture2D.MipSlice = 0;
         hr = device->CreateDepthStencilView(m_DepthStencilTexture, &descDSV, &m_DepthStencilView);
         ASUNA_ASSERT(SUCCEEDED(hr));
         // shader resource view
-        D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
+        D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc{};
         // https://takinginitiative.wordpress.com/2011/05/15/directx10-tutorial-10-shadow-mapping/
         shaderResourceViewDesc.Format = DXGI_FORMAT_R32_FLOAT;
         shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
         shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
         shaderResourceViewDesc.Texture2D.MipLevels = 1;
-        hr = device->CreateShaderResourceView(m_RenderTargetTexture, &shaderResourceViewDesc, &m_ShaderResourceView);
+        hr = device->CreateShaderResourceView(m_DepthStencilTexture, &shaderResourceViewDesc, &m_ShaderResourceView);
         ASUNA_ASSERT(SUCCEEDED(hr));
     }
     else

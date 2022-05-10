@@ -23,14 +23,16 @@ namespace asuna
         void GenFrameBuffer();
         void GenTexture();
         void GenDepthBuffer();
+        void GenDepthTexture();
         void BindTextureToFrameBuffer() const;
         void Check() const;
         void ReleaseResources();
 
     private:
         GLuint m_FrameBuffer = 0;
-        GLuint m_DepthBuffer = 0;
         GLuint m_Texture = 0;
+        GLuint m_DepthBuffer = 0;
+        GLuint m_DepthTexture = 0;
     };
 }
 

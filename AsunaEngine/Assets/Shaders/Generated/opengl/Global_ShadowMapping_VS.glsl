@@ -33,14 +33,23 @@ layout(binding = 0, std140) uniform type_ConstantBufferPerFrame
     layout(row_major) mat4 lightViewProj;
 } ConstantBufferPerFrame;
 
-uniform sampler2D SPIRV_Cross_CombinedtBaseMaptBaseMapSamplerState;
+layout(binding = 1, std140) uniform type_ConstantBufferPerObject
+{
+    layout(row_major) mat4 worldMatrix;
+} ConstantBufferPerObject;
 
-layout(location = 0) in vec4 in_var_NORMAL;
-layout(location = 1) in vec4 in_var_TEXCOORD;
-layout(location = 0) out vec4 out_var_SV_TARGET;
+layout(binding = 2, std140) uniform type_ConstantBufferPerMaterial
+{
+    vec4 mainColor;
+    layout(row_major) mat4 modelMatrix;
+} ConstantBufferPerMaterial;
+
+layout(location = 0) in vec3 in_var_POSITION;
+
+mat4 spvWorkaroundRowMajor(mat4 wrap) { return wrap; }
 
 void main()
 {
-    out_var_SV_TARGET = vec4(texture(SPIRV_Cross_CombinedtBaseMaptBaseMapSamplerState, in_var_TEXCOORD.xy).xyz * min(((ConstantBufferPerFrame.directionLight.color.xyz * max(dot(in_var_NORMAL.xyz, -ConstantBufferPerFrame.directionLight.direction.xyz), 0.0)) * ConstantBufferPerFrame.directionLight.intensity.x) + vec3(0.20000000298023223876953125), vec3(1.0)), 1.0);
+    gl_Position = spvWorkaroundRowMajor(ConstantBufferPerFrame.lightViewProj) * (spvWorkaroundRowMajor(ConstantBufferPerObject.worldMatrix) * (spvWorkaroundRowMajor(ConstantBufferPerMaterial.modelMatrix) * vec4(in_var_POSITION, 1.0)));
 }
 

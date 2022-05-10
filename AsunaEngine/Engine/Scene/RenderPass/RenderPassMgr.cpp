@@ -38,7 +38,7 @@ void RenderPassMgr::RenderMeshMaterials(const std::shared_ptr<RenderTarget>& out
 
 void RenderPassMgr::RenderShadowMap()
 {
-    // todo
+    m_RenderPassShadowMap->Render();
 }
 
 void RenderPassMgr::RenderPostProcess(const std::shared_ptr<RenderTarget>& rt)

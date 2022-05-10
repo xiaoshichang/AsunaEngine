@@ -19,7 +19,14 @@ void RenderPassPostProcess::Render(const shared_ptr<RenderTarget> &inputRT, cons
 {
     Renderer::Instance->SetRenderTarget(outputRT);
     Renderer::Instance->ClearRenderTarget(outputRT, 0.1f, 0.2f, 0.3f, 1.0f);
-
+    if (outputRT != nullptr)
+    {
+        Renderer::Instance->SetViewPort(0, 0, outputRT->GetWidth(), outputRT->GetHeight());
+    }
+    else
+    {
+        Renderer::Instance->SetViewPort(0, 0, -1, -1);
+    }
     m_Material->SetTexture("MainTex", inputRT);
     m_RenderItem->Render(m_Material);
 }

@@ -77,6 +77,7 @@ void SceneManager::UpdateConstantBufferPerScene()
 {
     UpdateCameraMatrix();
     UpdateLightData();
+    UpdateShadowData();
 }
 
 void SceneManager::RegisterCamera(CameraCmpt *camera)
@@ -164,6 +165,18 @@ void SceneManager::UpdateLightData()
     }
 }
 
+void SceneManager::UpdateShadowData()
+{
+    auto data = (ConstantBufferDataPerFrame*)m_ConstantBufferPerScene->GetData();
+    for(auto light : m_Lights)
+    {
+        if(light->GetLightType() == LightType::Direction)
+        {
+            data->m_LightViewProj = light->GetLightViewProjMatrix();
+        }
+    }
+}
+
 
 void SceneManager::RegisterLight(LightCmpt *light)
 {
@@ -244,12 +257,7 @@ void SceneManager::LoadScene(const string &path)
 
     auto light = SceneManager::Instance->CreateGameObject("Light", nullptr);
     auto lightCmpt = light->AddComponent<LightCmpt>();
-    lightCmpt->SetColor(Color(0.8, 0.8, 0.6, 1));
+    lightCmpt->SetColor(Color(0.8, 0.8, 0.8, 1));
     lightCmpt->SetIntensity(2);
     lightCmpt->GetOwner()->GetTransform()->SetEuler(-0.87, 1.8, 0);
 }
-
-
-
-
-

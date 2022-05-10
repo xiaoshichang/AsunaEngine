@@ -39,6 +39,7 @@ namespace asuna
         float& GetIntensity() {return m_Intensity;}
         void SetLightType(LightType lt);
         LightType GetLightType() const {return m_LightType;}
+        Matrix4x4f GetLightViewProjMatrix();
 
     private:
         Color m_LightColor;

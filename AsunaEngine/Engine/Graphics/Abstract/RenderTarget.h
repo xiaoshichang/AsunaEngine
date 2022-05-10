@@ -29,6 +29,8 @@ namespace asuna
 
 		~RenderTarget() override = default;
         virtual void Resize(int width, int height);
+        int GetWidth() {return m_Desc.width;}
+        int GetHeight() {return m_Desc.height;}
 
     protected:
         RenderTargetDesc m_Desc;

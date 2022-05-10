@@ -45,6 +45,7 @@ namespace asuna
         void UpdateConstantBufferPerScene();
         void UpdateCameraMatrix();
         void UpdateLightData();
+        void UpdateShadowData();
 
     private:
         std::shared_ptr<GameObject> m_Root = nullptr;

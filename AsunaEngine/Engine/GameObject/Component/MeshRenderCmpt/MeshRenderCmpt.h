@@ -34,6 +34,8 @@ namespace asuna
         void SetMaterial(int index, const std::shared_ptr<Material>& material);
         int GetMaterialCount() const;
         std::shared_ptr<Material> GetMaterial(int index);
+        bool GetCastShadowFlag() {return m_CastShadow;}
+        void SetCastShadowFlag(bool flag) { m_CastShadow = flag;}
 
     private:
         void UpdateConstantBufferPerObject();
@@ -41,5 +43,6 @@ namespace asuna
     private:
         std::shared_ptr<RenderItem> m_RenderItem = nullptr;
         std::shared_ptr<ConstantBuffer> m_ConstantBufferPerObject = nullptr;
+        bool m_CastShadow = true;
     };
 }

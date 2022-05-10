@@ -7,12 +7,18 @@
 
 using namespace asuna;
 
-OpenglRenderTarget::OpenglRenderTarget(RenderTargetDesc desc) :
-    RenderTarget(desc)
+OpenglRenderTarget::OpenglRenderTarget(RenderTargetDesc desc) : RenderTarget(desc)
 {
     GenFrameBuffer();
-    GenTexture();
-    GenDepthBuffer();
+    if (desc.usage == RenderTargetUsage::Default)
+    {
+        GenTexture();
+        GenDepthBuffer();
+    }
+    else if (desc.usage == RenderTargetUsage::ShadowMap)
+    {
+        GenDepthTexture();
+    }
     BindTextureToFrameBuffer();
     Check();
 }
@@ -27,8 +33,15 @@ void OpenglRenderTarget::Resize(int width, int height)
     RenderTarget::Resize(width, height);
     ReleaseResources();
     GenFrameBuffer();
-    GenTexture();
-    GenDepthBuffer();
+    if (m_Desc.usage == RenderTargetUsage::Default)
+    {
+        GenTexture();
+        GenDepthBuffer();
+    }
+    else if (m_Desc.usage == RenderTargetUsage::ShadowMap)
+    {
+        GenDepthTexture();
+    }
     BindTextureToFrameBuffer();
     Check();
 }
@@ -55,15 +68,37 @@ void OpenglRenderTarget::GenDepthBuffer()
     glGenRenderbuffers(1, &m_DepthBuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, m_DepthBuffer);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, m_Desc.width, m_Desc.height);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_DepthBuffer);
+}
+
+
+// Depth texture. Slower than a depth buffer, but you can sample it later in your shader
+void OpenglRenderTarget::GenDepthTexture()
+{
+    //http://www.opengl-tutorial.org/cn/intermediate-tutorials/tutorial-16-shadow-mapping/
+    glGenTextures(1, &m_DepthTexture);
+    glBindTexture(GL_TEXTURE_2D, m_DepthTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32F, 1024, 1024, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
 
 void OpenglRenderTarget::BindTextureToFrameBuffer() const
 {
-    glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_Texture, 0);
-    // Set the list of draw buffers.
-    GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
-    glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
+    if (m_Desc.usage == RenderTargetUsage::Default)
+    {
+        glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_Texture, 0);
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_DepthBuffer);
+        // Set the list of draw buffers.
+        GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
+        glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
+    }
+    else if(m_Desc.usage == RenderTargetUsage::ShadowMap)
+    {
+        glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, m_DepthTexture, 0);
+        glDrawBuffer(GL_NONE); // No color buffer is drawn to.
+    }
 }
 
 void OpenglRenderTarget::Check() const
@@ -90,6 +125,11 @@ void OpenglRenderTarget::ReleaseResources()
     {
         glDeleteFramebuffers(1, &m_FrameBuffer);
         m_FrameBuffer = 0;
+    }
+    if (m_DepthTexture != 0)
+    {
+        glDeleteTextures(1, &m_DepthTexture);
+        m_DepthTexture = 0;
     }
 }
 

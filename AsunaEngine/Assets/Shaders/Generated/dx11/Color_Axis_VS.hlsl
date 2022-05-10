@@ -28,6 +28,7 @@ cbuffer type_ConstantBufferPerFrame : register(b0)
     DirectionLight ConstantBufferPerFrame_directionLight : packoffset(c12);
     SpotLight ConstantBufferPerFrame_spotLights[4] : packoffset(c15);
     PointLight ConstantBufferPerFrame_pointLights[4] : packoffset(c31);
+    column_major float4x4 ConstantBufferPerFrame_lightViewProj : packoffset(c43);
 };
 
 
