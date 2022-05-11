@@ -472,70 +472,64 @@ namespace asuna {
 		return __BuildMatrixViewLookatLH(EyePosition, EyeDirection, UpDirection);
 	}
 
-
 	/// <summary>
-	/// Builds a left-handed perspective projection matrix based on a field of view.
+	/// https://github.com/g-truc/glm/blob/b3f87720261d623986f164b2a7f6a0a938430271/glm/ext/matrix_clip_space.inl
+	/// left hand eye space -> left hand clip space.
+	/// z range map to [0, 1]
 	/// </summary>
-	/// <param name="FovAngleY"> Top-down field-of-view angle in radians. </param>
-	/// <param name="AspectRatio"> Aspect ratio of view-space X:Y. </param>
-	/// <param name="NearZ"> Distance to the near clipping plane. Must be greater than zero. </param>
-	/// <param name="FarZ"> Distance to the far clipping plane. Must be greater than zero. </param>
-	inline Matrix4x4f BuildMatrixPerspectiveFovLH(const float FovAngleY, const float AspectRatio, const float NearZ, const float FarZ) {
-		float    SinFov = sinf(FovAngleY * 0.5f);
-		float    CosFov = cosf(FovAngleY * 0.5f);
-		
-		float Height = CosFov / SinFov;
-		float Width = Height / AspectRatio;
-		float fRange = FarZ / (FarZ - NearZ);
-
-		Matrix4x4f matrix = { {{
-		{ Width,		0.0f,				0.0f,				0.0f },
-		{ 0.0f,			Height,				0.0f,				0.0f },
-		{ 0.0f,			0.0f,				fRange,				-fRange * NearZ},
-		{ 0.0f,			0.0f,				1.0f,				0.0f }
-		}} };
+	inline Matrix4x4f BuildMatrixPerspectiveFovDX(const float FovAngleY, const float AspectRatio, const float NearZ, const float FarZ) {
+        float tanHalfFovY = tanf(FovAngleY / 2.0f);
+        Matrix4x4f matrix{};
+        matrix[0][0] = 1.0f / (AspectRatio * tanHalfFovY);
+        matrix[1][1] = 1.0f / tanHalfFovY;
+        matrix[2][2] = FarZ / (FarZ - NearZ);
+        matrix[3][2] = 1.0f;
+        matrix[2][3] = - (FarZ * NearZ) / (FarZ - NearZ);
 		return matrix;
 	}
 
 	/// <summary>
-	/// Right hand version
+	/// left hand eye space -> left hand clip space
+	/// z range map to [-1, 1]
 	/// </summary>
-	inline Matrix4x4f BuildMatrixPerspectiveFovRH(const float FovAngleY, const float AspectRatio, const float NearZ, const float FarZ) {
-		float    SinFov = sinf(FovAngleY * 0.5f);
-		float    CosFov = cosf(FovAngleY * 0.5f);
-
-		float Height = CosFov / SinFov;
-		float Width = Height / AspectRatio;
-		float fRange = FarZ / (NearZ - FarZ);
-
-		Matrix4x4f matrix = { {{
-		{ Width,		0.0f,				0.0f,				0.0f },
-		{ 0.0f,			Height,				0.0f,				0.0f },
-		{ 0.0f,			0.0f,				fRange,				fRange * NearZ},
-		{ 0.0f,			0.0f,				-1.0f,				0.0f }
-		}} };
+	inline Matrix4x4f BuildMatrixPerspectiveFovGL(const float FovAngleY, const float AspectRatio, const float NearZ, const float FarZ) {
+        float tanHalfFovY = tanf(FovAngleY / 2.0f);
+		Matrix4x4f matrix{};
+        matrix[0][0] = 1.0f / (AspectRatio * tanHalfFovY);
+        matrix[1][1] = 1.0f / tanHalfFovY;
+        matrix[2][2] = FarZ / (FarZ - NearZ);
+        matrix[3][2] = 1.0f;
+        matrix[2][3] = - (2 * FarZ * NearZ) / (FarZ - NearZ);
 		return matrix;
 	}
 
 
-	
-	inline Matrix4x4f BuildMatrixOrthographicLH(const float ViewWidth, const float ViewHeight, const float NearZ, const float FarZ) {
+    /// <summary>
+    /// left hand eye space -> left hand clip space.
+    /// z range map to [0, 1]
+    /// </summary>
+	inline Matrix4x4f BuildMatrixOrthographicDX(const float ViewWidth, const float ViewHeight, const float NearZ, const float FarZ) {
+
 		float fRange = 1.0f / (FarZ - NearZ);
 		Matrix4x4f matrix = { {{
 		{ 2.0f / ViewWidth,	0.0f,				0.0f,				0.0f },
 		{ 0.0f,				2.0f / ViewHeight,	0.0f,				0.0f },
-		{ 0.0f,				0.0f,				fRange,				-fRange * NearZ},
+		{ 0.0f,				0.0f,				fRange,				-NearZ * fRange},
 		{ 0.0f,				0.0f,				0.0f,				1.0f }
 		}} };
 		return matrix;
 	}
 
-	inline Matrix4x4f BuildMatrixOrthographicRH(const float ViewWidth, const float ViewHeight, const float NearZ, const float FarZ) {
-		float fRange = 1.0f / (NearZ - FarZ);
+    /// <summary>
+    /// left hand eye space -> left hand clip space
+    /// z range map to [-1, 1]
+    /// </summary>
+	inline Matrix4x4f BuildMatrixOrthographicGL(const float ViewWidth, const float ViewHeight, const float NearZ, const float FarZ) {
+        float fRange = 1.0f / (FarZ - NearZ);
 		Matrix4x4f matrix = { {{
 		{ 2.0f / ViewWidth,	0.0f,				0.0f,				0.0f },
 		{ 0.0f,				2.0f / ViewHeight,	0.0f,				0.0f },
-		{ 0.0f,				0.0f,				fRange,				fRange * NearZ},
+		{ 0.0f,				0.0f,				fRange,				-(FarZ + NearZ) * fRange},
 		{ 0.0f,				0.0f,				0.0f,				1.0f }
 		}} };
 		return matrix;

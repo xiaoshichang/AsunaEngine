@@ -138,11 +138,7 @@ shared_ptr<MeshCreateParam> AssetLoader::LoadMesh(const std::string& Path)
 {
 	auto param = make_shared<MeshCreateParam>();
 	auto readFlag = aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_SortByPType;
-	if (Renderer::Instance->CheckLeftHandRenderAPI())
-	{
-		readFlag = readFlag | aiProcess_ConvertToLeftHanded;
-	}
-    readFlag |= aiProcess_FlipUVs;
+    readFlag = readFlag | aiProcess_ConvertToLeftHanded;
 
 	auto sceneRoot = MeshImporter->ReadFile(Path, readFlag);
     param->m_RawResource = sceneRoot;

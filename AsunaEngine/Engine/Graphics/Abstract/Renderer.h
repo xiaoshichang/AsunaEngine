@@ -56,7 +56,7 @@ namespace asuna
 		std::shared_ptr<RenderContext> GetContext();
 
     public:
-        bool CheckLeftHandRenderAPI() const;
+        RenderAPIType GetRenderAPIType() const;
 
 
 	protected:

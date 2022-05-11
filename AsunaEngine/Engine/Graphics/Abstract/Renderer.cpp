@@ -19,18 +19,8 @@ shared_ptr<RenderContext> asuna::Renderer::GetContext()
 	return m_Context;
 }
 
-
-bool Renderer::CheckLeftHandRenderAPI() const
+RenderAPIType Renderer::GetRenderAPIType() const
 {
-    switch (m_APIType)
-    {
-        case RenderAPIType::Directx11:
-            return true;
-        case RenderAPIType::Opengl:
-            return false;
-        default:
-            ASUNA_ASSERT(false);
-            return false;
-    }
+    return m_APIType;
 }
 

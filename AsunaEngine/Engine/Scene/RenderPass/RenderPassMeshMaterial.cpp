@@ -77,47 +77,29 @@ void RenderPassMeshMaterial::BuildRenderQueueVisitGameObject(GameObject* node)
 void RenderPassMeshMaterial::CreateCoordAxisRenderItem()
 {
     Vector3f pointsLeftHand[12] =
-            {
-                    {0, 0, 0}, {2000, 0, 0},
-                    {0, 0, 0}, {-2000, 0, 0},
-                    {0, 0, 0}, {0, 2000, 0},
-                    {0, 0, 0}, {0, -2000, 0},
-                    {0, 0, 0}, {0, 0, 2000},
-                    {0, 0, 0}, {0, 0, -2000}
-            };
-
-    Vector3f pointsRightHand[12] =
-            {
-                    {0, 0, 0}, {2000, 0, 0},
-                    {0, 0, 0}, {-2000, 0, 0},
-                    {0, 0, 0}, {0, 2000, 0},
-                    {0, 0, 0}, {0, -2000, 0},
-                    {0, 0, 0}, {0, 0, -2000},
-                    {0, 0, 0}, {0, 0, 2000}
-            };
+    {
+            {0, 0, 0}, {2000, 0, 0},
+            {0, 0, 0}, {-2000, 0, 0},
+            {0, 0, 0}, {0, 2000, 0},
+            {0, 0, 0}, {0, -2000, 0},
+            {0, 0, 0}, {0, 0, 2000},
+            {0, 0, 0}, {0, 0, -2000}
+    };
 
     Vector4f colors[6] =
-            {
-                    {1, 0, 0, 1},
-                    {0.5, 0, 0, 1},
-                    {0, 1, 0, 1},
-                    {0, 0.5, 0, 1},
-                    {0, 0, 1, 1},
-                    {0, 0, 0.5, 1}
-            };
+    {
+            {1, 0, 0, 1},
+            {0.5, 0, 0, 1},
+            {0, 1, 0, 1},
+            {0, 0.5, 0, 1},
+            {0, 0, 1, 1},
+            {0, 0, 0.5, 1}
+    };
 
     auto vbp = make_shared<VertexBufferCreateParam>();
     vbp->m_Format = VertexBufferFormat::F3;
     vbp->m_ElementCount = 12;
-
-    if (Renderer::Instance->CheckLeftHandRenderAPI())
-    {
-        vbp->m_VertexData = pointsLeftHand;
-    }
-    else
-    {
-        vbp->m_VertexData = pointsRightHand;
-    }
+    vbp->m_VertexData = pointsLeftHand;
 
     unsigned int indices[12] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 

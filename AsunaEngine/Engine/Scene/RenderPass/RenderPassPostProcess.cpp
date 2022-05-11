@@ -72,7 +72,6 @@ void RenderPassPostProcess::CreateRenderItem() {
     };
 
     unsigned int indexDataLeft[6] = {0, 1, 2, 2, 1, 3};
-    unsigned int indexDataRight[6] = {2, 1, 0, 3, 1, 2};
 
     auto param = make_shared<MeshCreateParam>();
     auto subParam = make_shared<SubMeshCreateParam>();
@@ -88,16 +87,14 @@ void RenderPassPostProcess::CreateRenderItem() {
     subParam->m_IndexCreateParam = make_shared<IndexBufferCreateParam>();
     subParam->m_IndexCreateParam->m_Format = IndexBufferFormat::UINT32;
     subParam->m_IndexCreateParam->m_ElementCount = 6;
+    subParam->m_IndexCreateParam->m_IndexData = indexDataLeft;
 
-    if (Renderer::Instance->CheckLeftHandRenderAPI())
+    if (Renderer::Instance->GetRenderAPIType() == RenderAPIType::Directx11)
     {
-        subParam->m_IndexCreateParam->m_IndexData = indexDataLeft;
         subParam->m_TexcoordCreateParam->m_VertexData = TexcoordDataLeft;
-
     }
     else
     {
-        subParam->m_IndexCreateParam->m_IndexData = indexDataRight;
         subParam->m_TexcoordCreateParam->m_VertexData = TexcoordDataRight;
     }
 

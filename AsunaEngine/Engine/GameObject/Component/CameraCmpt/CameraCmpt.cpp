@@ -34,27 +34,15 @@ const Matrix4x4f &CameraCmpt::GetProjectionMatrix()
 
 void CameraCmpt::CalculateProjectionMatrix()
 {
-    if (Renderer::Instance->CheckLeftHandRenderAPI())
+    //https://stackoverflow.com/questions/47856866/opengl-glmortho-glm-coordinate-system-weird
+    //https://stackoverflow.com/questions/21841598/when-does-the-transition-from-clip-space-to-screen-coordinates-happen
+    if (m_ProjectionType == CameraProjectionType::Perspective)
     {
-        if (m_ProjectionType == CameraProjectionType::Perspective)
-        {
-            m_ProjectionMatrix = BuildMatrixPerspectiveFovLH(m_Fov, m_AspectRatio, m_Near, m_Far);
-        }
-        else
-        {
-            m_ProjectionMatrix = BuildMatrixOrthographicLH(m_ViewWidth, m_ViewHeight, m_Near, m_Far);
-        }
+        m_ProjectionMatrix = BuildMatrixPerspectiveFovDX(m_Fov, m_AspectRatio, m_Near, m_Far);
     }
     else
     {
-        if (m_ProjectionType == CameraProjectionType::Perspective)
-        {
-            m_ProjectionMatrix = BuildMatrixPerspectiveFovRH(m_Fov, m_AspectRatio, m_Near, m_Far);
-        }
-        else
-        {
-            m_ProjectionMatrix = BuildMatrixOrthographicRH(m_ViewWidth, m_ViewHeight, m_Near, m_Far);
-        }
+        m_ProjectionMatrix = BuildMatrixOrthographicDX(m_ViewWidth, m_ViewHeight, m_Near, m_Far);
     }
     m_ProjectionMatrixDirty = false;
 }
@@ -66,16 +54,7 @@ const Matrix4x4f &CameraCmpt::GetViewMatrix()
     // todo: get correct up direction by rotation
     Vector3f up(0, 1, 0);
     Vector3f look(0, 0, 0);
-    if (Renderer::Instance->CheckLeftHandRenderAPI())
-    {
-        m_ViewMatrix = BuildMatrixViewLookatLH(eye, look, up);
-    }
-    else
-    {
-        Vector3f rightHandEye(eye.x, eye.y, -eye.z);
-        Vector3f rightLook(look.x, look.y, -look.z);
-        m_ViewMatrix = BuildMatrixViewLookatRH(rightHandEye, rightLook, up);
-    }
+    m_ViewMatrix = BuildMatrixViewLookatLH(eye, look, up);
     return m_ViewMatrix;
 }
 

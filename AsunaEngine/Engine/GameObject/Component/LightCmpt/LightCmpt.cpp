@@ -43,25 +43,13 @@ Matrix4x4f LightCmpt::GetLightViewProjMatrix()
     Matrix4x4f ret;
     if (m_LightType == LightType::Direction)
     {
-        if (Renderer::Instance->CheckLeftHandRenderAPI())
-        {
-            // todo: how to correctly set these parameters?
-            auto proj = BuildMatrixOrthographicLH(50, 50, 1, 50);
-            auto view = BuildMatrixViewLookatLH(eye, focus, up);
-            ret = proj * view;
-        }
-        else
-        {
-            auto proj = BuildMatrixOrthographicRH(50, 50, 1, 50);
-            Vector3f rightEye(eye.x, eye.y, -eye.z);
-            Vector3f rightFocus(focus.x, focus.y, -focus.z);
-            auto view = BuildMatrixViewLookatRH(rightEye, rightFocus, up);
-            ret = proj * view;
-        }
+        // todo: how to correctly set these parameters?
+        auto view = BuildMatrixViewLookatLH(eye, focus, up);
+        auto proj = BuildMatrixOrthographicDX(50, 50, 1, 50);
+        ret = proj * view;
     }
     else
     {
-        Logger::Error("Unsupported light type for shadow mapping");
         ASUNA_ASSERT(false);
     }
     return ret;

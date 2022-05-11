@@ -200,35 +200,11 @@ public:
         }
     }
 
-    TEST_METHOD(TestMatrixCameraPerspectiveFovRH) {
-        auto angle = PI / 2;
-        auto aspect = 1024.0f / 768;
-        auto p1 = XMMatrixPerspectiveFovRH(angle, aspect, 0.1f, 1000.0f);
-        auto p2 = BuildMatrixPerspectiveFovRH(angle, aspect, 0.1f, 1000.0f);
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                _ASSERTE(comparison_traits<float>::equal(p1.r[j].m128_f32[i], p2[i][j]));
-            }
-        }
-        _ASSERTE(true);
-    }
-
     TEST_METHOD(TestMatrixCameraPerspectiveFovLH) {
         auto angle = PI / 2;
         auto aspect = 1024.0f / 768;
         auto p1 = XMMatrixPerspectiveFovLH(angle, aspect, 0.1f, 1000.0f);
-        auto p2 = BuildMatrixPerspectiveFovLH(angle, aspect, 0.1f, 1000.0f);
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                _ASSERTE(comparison_traits<float>::equal(p1.r[j].m128_f32[i], p2[i][j]));
-            }
-        }
-        _ASSERTE(true);
-    }
-
-    TEST_METHOD(TestMatrixCameraOrthographicRH) {
-        auto p1 = XMMatrixOrthographicRH(1024.0f, 768.0f, 0.1f, 1000.0f);
-        auto p2 = BuildMatrixOrthographicRH(1024.0f, 768.0f, 0.1f, 1000.0f);
+        auto p2 = BuildMatrixPerspectiveFovDX(angle, aspect, 0.1f, 1000.0f);
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 _ASSERTE(comparison_traits<float>::equal(p1.r[j].m128_f32[i], p2[i][j]));
@@ -239,7 +215,7 @@ public:
 
     TEST_METHOD(TestMatrixCameraOrthographicLH) {
         auto p1 = XMMatrixOrthographicLH(1024.0f, 768.0f, 0.1f, 1000.0f);
-        auto p2 = BuildMatrixOrthographicLH(1024.0f, 768.0f, 0.1f, 1000.0f);
+        auto p2 = BuildMatrixOrthographicDX(1024.0f, 768.0f, 0.1f, 1000.0f);
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 _ASSERTE(comparison_traits<float>::equal(p1.r[j].m128_f32[i], p2[i][j]));
@@ -327,9 +303,7 @@ int main()
     AsunaEngineMathTest::TestMatrixCameraViewLookatLH();
     AsunaEngineMathTest::TestMatrixCameraViewLookatRH();
     AsunaEngineMathTest::TestMatrixCameraPerspectiveFovLH();
-    AsunaEngineMathTest::TestMatrixCameraPerspectiveFovRH();
     AsunaEngineMathTest::TestMatrixCameraOrthographicLH();
-    AsunaEngineMathTest::TestMatrixCameraOrthographicRH();
     AsunaEngineMathTest::TestMatrixQuaternion();
     AsunaEngineMathTest::TestQuaternionPitchYawRoll();
     AsunaEngineMathTest::TestQuaternionMatrixTransform();

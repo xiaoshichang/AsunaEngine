@@ -164,6 +164,7 @@ void WindowsApplication::InitRenderer(RenderAPIType api, int width, int height)
 	param.m_ResolutionWith = width;
 	param.m_ResolutionHeight = height;
 	Renderer::Instance->Initialize(param);
+    Renderer::Instance->SetViewPort(0, 0, width, height);
 
     RenderPassMgr::Instance = new RenderPassMgr();
     RenderPassMgr::Instance->Init(param);

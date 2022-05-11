@@ -91,12 +91,14 @@ void OpenglRenderer::CreateDeviceContext()
 		// Enable depth testing.
 		glEnable(GL_DEPTH_TEST);
 	}
-	glFrontFace(GL_CCW);
+    // https://stackoverflow.com/questions/21841598/when-does-the-transition-from-clip-space-to-screen-coordinates-happen
+    glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
+    // dx use cw as front by default.
+	glFrontFace(GL_CW);
 	// Enable back face culling.
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	SetViewPort(0, 0, m_ResolutionWidth, m_ResolutionHeight);
-	wglSwapIntervalEXT(1); // disable vertical sync to get high fps.
+    glDisable(GL_CULL_FACE);
+    // set 1 to enable vertical sync, set 0 to disable to get higher fps.
+	wglSwapIntervalEXT(1);
 }
 
 void OpenglRenderer::ReleaseDeviceContext()

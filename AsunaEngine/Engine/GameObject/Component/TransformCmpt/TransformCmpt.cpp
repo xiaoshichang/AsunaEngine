@@ -85,18 +85,8 @@ void TransformCmpt::CalculateRTSMatrix()
 {
     auto r = BuildMatrixQuaternion(m_Rotation);
     auto s = BuildMatrixScale(m_Scale.x, m_Scale.y, m_Scale.z);
-
-    // todo: more standard asset pipeline
-    if (Renderer::Instance->CheckLeftHandRenderAPI())
-    {
-        auto t = BuildMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
-        m_RTSMatrix = t * s * r;
-    }
-    else
-    {
-        auto t = BuildMatrixTranslation(m_Position.x, m_Position.y, -m_Position.z);
-        m_RTSMatrix = t * s * r;
-    }
+    auto t = BuildMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
+    m_RTSMatrix = t * s * r;
     m_RTSMatrixDirty = false;
 }
 
