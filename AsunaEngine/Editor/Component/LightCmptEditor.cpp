@@ -8,7 +8,7 @@
 
 const char* LightTypeName[] = {"Direction", "Spot"};
 
-void asuna::LightCmptEditor::Render(asuna::LightCmpt *light)
+void asuna::LightCmptEditor::Render(const std::shared_ptr<LightCmpt>& light)
 {
     if (light == nullptr)
     {

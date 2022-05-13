@@ -18,6 +18,15 @@ namespace asuna
             m_ElementCount(0)
         {}
 
+		~IndexBufferCreateParam()
+		{
+			if (m_IndexData != nullptr)
+			{
+				delete[] m_IndexData;
+				m_IndexData = nullptr;
+			}
+		}
+
 		void* m_IndexData;
 		int m_ElementCount;
 		IndexBufferFormat m_Format;

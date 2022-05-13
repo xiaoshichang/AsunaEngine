@@ -20,20 +20,23 @@ namespace asuna
     public:
 
         template<typename T, typename = std::enable_if_t<std::is_base_of_v<Component, T>>>
-        T* AddComponent()
+        std::shared_ptr<T> AddComponent()
         {
-            auto cmpt = (Component*)new T(this);
-            auto pair = std::make_pair(std::type_index(typeid(T)), cmpt);
-            cmpt->Initialize();
-            return dynamic_cast<T*>(m_Components.insert(pair)->second);
+            auto cmpt = make_shared<T>(this);
+			cmpt->Initialize();
+
+            auto base = std::dynamic_pointer_cast<Component>(cmpt);
+            auto pair = std::make_pair(std::type_index(typeid(T)), base);
+            m_Components.insert(pair);
+            return cmpt;
         }
 
         template<typename T, typename = std::enable_if_t<std::is_base_of_v<Component, T>>>
-        T* GetComponent()
+        std::shared_ptr<T> GetComponent()
         {
             auto it = m_Components.find(std::type_index(typeid(T)));
             if (it == m_Components.end()) return nullptr;
-            return dynamic_cast<T*>(it->second);
+            return std::dynamic_pointer_cast<T>(it->second);
         }
 
         template<typename T, typename = std::enable_if_t<std::is_base_of_v<Component, T>>>
@@ -44,11 +47,9 @@ namespace asuna
             {
                 return;
             }
-            auto cmpt = (Component*)it->second;
-
+            auto cmpt = std::dynamic_pointer_cast<T>(it->second);
+			cmpt->Finalize();
             m_Components.erase(std::type_index(typeid(T)));
-            cmpt->Finalize();
-            delete cmpt;
         }
 
         void Tick()
@@ -71,7 +72,7 @@ namespace asuna
     private:
         std::string m_Name;
         TransformCmpt* m_TransformCmpt;
-        std::multimap<std::type_index, Component*> m_Components;
+        std::multimap<std::type_index, std::shared_ptr<Component>> m_Components;
     };
 }
 

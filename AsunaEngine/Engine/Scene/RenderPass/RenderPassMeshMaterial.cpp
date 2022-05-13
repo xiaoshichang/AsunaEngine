@@ -101,16 +101,20 @@ void RenderPassMeshMaterial::CreateCoordAxisRenderItem()
     vbp->m_ElementCount = 12;
     vbp->m_VertexData = pointsLeftHand;
 
-    unsigned int indices[12] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+    unsigned int** indices = new unsigned int* [6];
 
     auto mp = make_shared<MeshCreateParam>();
     for (int i = 0; i < 6; ++i)
     {
+        indices[i] = new unsigned int[2];
+        indices[i][0] = i * 2;
+        indices[i][1] = i * 2 + 1;
         auto ibp = make_shared<IndexBufferCreateParam>();
         ibp->m_StartIndex = 0;
         ibp->m_Format = IndexBufferFormat::UINT32;
         ibp->m_ElementCount = 2;
-        ibp->m_IndexData = indices + 2 * i;
+        ibp->m_IndexData = indices[i];
+
         auto smp = make_shared<SubMeshCreateParam>();
         smp->m_PositionCreateParam = vbp;
         smp->m_IndexCreateParam = ibp;
@@ -129,6 +133,7 @@ void RenderPassMeshMaterial::CreateCoordAxisRenderItem()
     }
 
     m_AxisRenderItems.push_back(item);
+    delete[] indices;
 }
 
 void RenderPassMeshMaterial::ResizeResolution(int width, int height)

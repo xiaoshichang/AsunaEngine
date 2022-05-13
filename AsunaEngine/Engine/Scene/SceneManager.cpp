@@ -27,8 +27,8 @@ void SceneManager::Initialize()
 
 void SceneManager::Finalize()
 {
-    m_Root = nullptr;
-    m_ConstantBufferPerScene = nullptr;
+    m_Root.reset();
+    m_ConstantBufferPerScene.reset();
 }
 
 void SceneManager::Tick()

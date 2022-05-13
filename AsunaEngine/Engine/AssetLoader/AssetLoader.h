@@ -11,9 +11,10 @@ namespace asuna
 	class AssetLoader
 	{
 	public:
+		static void Init();
+		static void Finalize();
 		static std::shared_ptr<MeshCreateParam> LoadMesh(const std::string& Path);
         static std::shared_ptr<RawTexture> LoadRawTexture(const std::string& path);
-	private:
 		static Assimp::Importer* MeshImporter;
 	};
 

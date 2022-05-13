@@ -71,7 +71,7 @@ void RenderPassPostProcess::CreateRenderItem() {
             {1, 1, 0}
     };
 
-    unsigned int indexDataLeft[6] = {0, 1, 2, 2, 1, 3};
+    unsigned int* indexDataLeft = new unsigned int[6] {0, 1, 2, 2, 1, 3};
 
     auto param = make_shared<MeshCreateParam>();
     auto subParam = make_shared<SubMeshCreateParam>();

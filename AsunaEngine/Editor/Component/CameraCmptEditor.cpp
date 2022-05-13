@@ -3,8 +3,10 @@
 //
 #include <imgui.h>
 #include "CameraCmptEditor.h"
+using namespace asuna;
+using namespace std;
 
-void asuna::CameraCmptEditor::Render(asuna::CameraCmpt *camera)
+void asuna::CameraCmptEditor::Render(const shared_ptr<CameraCmpt>& camera)
 {
     if (camera == nullptr)
     {
@@ -15,17 +17,17 @@ void asuna::CameraCmptEditor::Render(asuna::CameraCmpt *camera)
     float far = camera->GetFar();
     float near = camera->GetNear();
 
-    const char* CameraProjectionType[] = {"Perspective", "Orthographic"};
+    const char* CameraProjectionType[] = {"perspective", "orthographic"};
 
     ImGui::Separator();
-    ImGui::Text("Camera");
-    ImGui::Combo("Projection", &selectedType, CameraProjectionType, IM_ARRAYSIZE(CameraProjectionType), IM_ARRAYSIZE(CameraProjectionType));
+    ImGui::Text("camera");
+    ImGui::Combo("projection", &selectedType, CameraProjectionType, IM_ARRAYSIZE(CameraProjectionType), IM_ARRAYSIZE(CameraProjectionType));
     if (selectedType == 0)
     {
         float fov = camera->GetFov();
         float aspectRatio = camera->GetAspectRatio();
-        ImGui::DragFloat("Fov", &fov, 0.001, 0.001, PI/2);
-        ImGui::DragFloat("Aspect Ratio", &aspectRatio, 0.001, 0.001, 10);
+        ImGui::DragFloat("fov", &fov, 0.001, 0.001, PI/2);
+        ImGui::DragFloat("aspect ratio", &aspectRatio, 0.001, 0.001, 10);
         camera->SetFov(fov);
         camera->SetAspectRatio(aspectRatio);
         camera->SetProjectionType(CameraProjectionType::Perspective);

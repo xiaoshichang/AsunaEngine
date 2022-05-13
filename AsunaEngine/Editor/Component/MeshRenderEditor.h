@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include <memory>
 #include "Engine/GameObject/Component/MeshRenderCmpt/MeshRenderCmpt.h"
 
 namespace asuna
@@ -10,7 +11,7 @@ namespace asuna
     class MeshRenderEditor
     {
     public:
-        static void Render(MeshRenderCmpt* meshRender);
+        static void Render(const std::shared_ptr<MeshRenderCmpt>& meshRender);
     };
 }
 

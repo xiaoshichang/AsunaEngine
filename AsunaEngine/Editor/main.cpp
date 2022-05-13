@@ -7,7 +7,6 @@ using namespace asuna;
 
 int main()
 {
-	auto app = new WindowsEditor();
     auto param = make_shared<ApplicationInitParam>();
     param->RenderAPIType = RenderAPIType::Directx11;
     param->WindowWidth = 1920;
@@ -16,8 +15,11 @@ int main()
     param->LogDir = (char*)"Logs";
     param->EditorMode = true;
 
+	auto app = new WindowsEditor();
 	app->Initialize(param);
 	app->Run();
 	app->Finalize();
-	exit(0);
+    delete app;
+
+    return 0;
 }

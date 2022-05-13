@@ -24,9 +24,9 @@ namespace asuna
     private:
         GameObject* m_InspectingGameObject = nullptr;
         TransformCmpt* m_TransformCmpt = nullptr;
-        CameraCmpt* m_CameraCmpt = nullptr;
-        MeshRenderCmpt* m_MeshRenderCmpt = nullptr;
-        LightCmpt* m_LightRenderCmpt = nullptr;
+        std::shared_ptr<CameraCmpt> m_CameraCmpt = nullptr;
+        std::shared_ptr<MeshRenderCmpt> m_MeshRenderCmpt = nullptr;
+        std::shared_ptr<LightCmpt> m_LightRenderCmpt = nullptr;
     };
 
 }

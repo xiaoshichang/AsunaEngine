@@ -100,11 +100,11 @@ void GUI::End()
     Renderer::Instance->SetRenderTarget(nullptr);
     Renderer::Instance->ClearRenderTarget(nullptr, 0.1f, 0.2f, 0.3f, 1.0f);
 
-    if (Renderer::Instance->m_APIType == RenderAPIType::Directx11)
+    if (Renderer::Instance->GetRenderAPIType() == RenderAPIType::Directx11)
     {
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
     }
-    else if (Renderer::Instance->m_APIType == RenderAPIType::Opengl)
+    else if (Renderer::Instance->GetRenderAPIType() == RenderAPIType::Opengl)
     {
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     }
@@ -129,7 +129,22 @@ void GUI::End()
 
 void GUI::Finalize()
 {
+	ImGui_ImplWin32_Shutdown();
+
     // Cleanup
+    if (Renderer::Instance->GetRenderAPIType() == RenderAPIType::Directx11)
+    {
+        ImGui_ImplDX11_Shutdown();
+    }
+    else if (Renderer::Instance->GetRenderAPIType() == RenderAPIType::Opengl)
+    {
+        ImGui_ImplOpenGL3_Shutdown();
+    }
+    else
+    {
+        ASUNA_ASSERT(false);
+    }
+
     ImGui::DestroyContext();
 }
 

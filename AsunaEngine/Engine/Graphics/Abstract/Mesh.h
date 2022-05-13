@@ -56,7 +56,8 @@ namespace asuna
 
 		~MeshCreateParam()
         {
-            delete m_RawResource;
+			// m_RawResource is manager by importer.
+			// don't need to delete here.
         }
 
         int GetSubMeshCunt() const

@@ -12,7 +12,17 @@ using namespace asuna;
 using namespace Assimp;
 using namespace std;
 
-Assimp::Importer* AssetLoader::MeshImporter = new Assimp::Importer();
+Assimp::Importer* AssetLoader::MeshImporter = nullptr;
+
+void AssetLoader::Init()
+{
+    MeshImporter = new Assimp::Importer();
+}
+
+void AssetLoader::Finalize()
+{
+    delete MeshImporter;
+}
 
 
 Matrix4x4f ConvertMatrix(const aiMatrix4x4& matrix)

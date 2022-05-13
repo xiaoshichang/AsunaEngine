@@ -6,7 +6,7 @@
 
 using namespace asuna;
 
-void MeshRenderEditor::Render(asuna::MeshRenderCmpt *meshRender)
+void MeshRenderEditor::Render(const std::shared_ptr<MeshRenderCmpt>& meshRender)
 {
     if (meshRender == nullptr)
     {
