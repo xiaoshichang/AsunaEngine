@@ -1,6 +1,6 @@
 #version 420
 
-uniform sampler2D SPIRV_Cross_CombinedtBaseMaptBaseMapSamplerState;
+layout(binding = 0) uniform sampler2D SPIRV_Cross_CombinedtBaseMaptBaseMapSamplerState;
 
 layout(location = 0) in vec4 in_var_TEXCOORD;
 layout(location = 0) out vec4 out_var_SV_TARGET;

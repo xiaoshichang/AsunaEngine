@@ -15,6 +15,7 @@ namespace asuna
         explicit DirectX11RenderTarget(RenderTargetDesc desc, ID3D11Device* device, IDXGISwapChain* swapChain);
 		~DirectX11RenderTarget() override;
         void Resize(int width, int height) override;
+        void Bind() override;
 
         ID3D11RenderTargetView* GetRenderTargetView(){return m_RenderTargetView;}
         ID3D11DepthStencilView* GetDepthStencilView(){return m_DepthStencilView;}

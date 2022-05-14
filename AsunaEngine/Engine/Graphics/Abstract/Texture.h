@@ -66,6 +66,7 @@ namespace asuna
     {
     public:
         RTTexture() : Texture(TextureType::RTTexture) {}
+        virtual void Bind() = 0;
     };
 
 

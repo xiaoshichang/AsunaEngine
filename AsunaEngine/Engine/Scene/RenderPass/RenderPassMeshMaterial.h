@@ -20,6 +20,7 @@ namespace asuna
         void Render(const std::shared_ptr<RenderTarget>& outputRT);
         void Render();
         void ResizeResolution(int width, int height) override;
+        void SetShadowMap(const std::shared_ptr<RenderTarget>& shadowMap);
         const std::shared_ptr<RenderTarget>& GetMainRT();
     private:
         void CollectRenderItems();
@@ -31,6 +32,7 @@ namespace asuna
         bool m_ShowCoordAxis = true;
         std::vector<std::shared_ptr<RenderItem>> m_AxisRenderItems;
         std::shared_ptr<RenderTarget> m_MainRT = nullptr;
+        std::shared_ptr<RenderTarget> m_ShadowMap = nullptr;
     };
 
 }

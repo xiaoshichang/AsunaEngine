@@ -75,16 +75,12 @@ void OpenglMaterial::BindTextures()
             if (texture->GetTextureType() == TextureType::ImageTexture)
             {
                 auto imageTexture = dynamic_pointer_cast<OpenglTexture>(texture);
-                auto loc = glGetUniformLocation(m_Program, pair.first.c_str());
-                glUniform1i(loc, pair.second.m_Offset);
                 glActiveTexture(GL_TEXTURE0 + pair.second.m_Offset);
                 glBindTexture(GL_TEXTURE_2D, imageTexture->GetTexture());
             }
             else
             {
                 auto rt = dynamic_pointer_cast<OpenglRenderTarget>(texture);
-                auto loc = glGetUniformLocation(m_Program, pair.first.c_str());
-                glUniform1i(loc, pair.second.m_Offset);
                 glActiveTexture(GL_TEXTURE0 + pair.second.m_Offset);
                 glBindTexture(GL_TEXTURE_2D, rt->GetTexture());
             }

@@ -18,6 +18,7 @@ namespace asuna
     public:
         RenderPassShadowMap();
         void Render();
+        const std::shared_ptr<RenderTarget>& GetShadowMap() { return m_ShadowMap; }
 
     private:
         void InitShadowMapRT();

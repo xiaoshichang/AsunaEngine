@@ -206,7 +206,7 @@ void DirectX11RenderTarget::CreateDepthStencilResource(RenderTargetDesc desc, ID
         shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
         shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
         shaderResourceViewDesc.Texture2D.MipLevels = 1;
-        hr = device->CreateShaderResourceView(m_DepthStencilTexture, &shaderResourceViewDesc, &m_ShaderResourceView);
+        hr = device->CreateShaderResourceView(m_DepthStencilTexture, &shaderResourceViewDesc, &m_DepthStencilSRV);
         ASUNA_ASSERT(SUCCEEDED(hr));
     }
     else
@@ -248,6 +248,22 @@ void DirectX11RenderTarget::Resize(int width, int height)
         }
     }
     else if (m_Desc.usage == RenderTargetUsage::ShadowMap)
+    {
+        ASUNA_ASSERT(false);
+    }
+}
+
+void DirectX11RenderTarget::Bind()
+{
+    auto context = dynamic_pointer_cast<DirectX11RenderContext>(Renderer::Instance->GetContext());
+    ID3D11SamplerState* state = nullptr;
+    if (m_Desc.usage == RenderTargetUsage::ShadowMap)
+    {
+        // shadow map bind slot 1 in our engine
+        context->m_DeviceContext->PSSetShaderResources(1, 1, &m_DepthStencilSRV);
+        context->m_DeviceContext->PSSetSamplers(1, 1, &state);
+    }
+    else
     {
         ASUNA_ASSERT(false);
     }

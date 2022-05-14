@@ -17,6 +17,7 @@ args = parser.parse_args()
 generated_dir = os.path.join(args.ShaderRoot, "Generated")
 generated_dx11_dir = os.path.join(generated_dir, "dx11")
 generated_opengl_dir = os.path.join(generated_dir, "opengl")
+generated_spirv_dir = os.path.join(generated_dir, "spirv")
 
 
 def create_generated_dirs():
@@ -31,7 +32,14 @@ def create_generated_dirs():
     if os.path.exists(generated_opengl_dir):
         shutil.rmtree(generated_opengl_dir)
     os.mkdir(generated_opengl_dir)
+
     print("create_generated_dirs ok!")
+
+
+def clear_generated_spirv_files():
+    if os.path.exists(generated_spirv_dir):
+        shutil.rmtree(generated_spirv_dir)
+    os.mkdir(generated_spirv_dir)
 
 
 Shader_Type_None = 0
@@ -94,18 +102,35 @@ def get_material_name(shader_name):
         exit(1)
 
 
-def convert_source_to_spirv_format(shaders):
+def convert_source_to_spirv_format(shaders, defines):
     flags = "-Fo"
     for name, item in shaders.items():
         model = get_shader_model(item.shader_type)
-        generated_file_name = get_generated_spirv_filename(name)
-        generated_path = os.path.join(generated_dir, generated_file_name)
-        p = subprocess.Popen([args.DxcPath, "-spirv", "-T", model, "-E", "main", item.path, flags, generated_path])
+        generated_path = os.path.join(generated_spirv_dir, get_generated_spirv_filename(name))
+        cmd = [args.DxcPath, "-spirv", "-T", model, "-E", "main"]
+        for d in defines:
+            cmd.append("-D")
+            cmd.append(d)
+        cmd.append(item.path)
+        cmd.append(flags)
+        cmd.append(generated_path)
+        p = subprocess.Popen(cmd)
         p.wait()
         if p.returncode != 0:
             exit(p.returncode)
 
     print("convert_source_to_spirv_format OK!")
+
+
+# def convert_spirv_to_reflection_meta(shaders):
+#     for name, item in shaders.items():
+#         source_file_path = os.path.join(generated_dir, get_generated_spirv_filename(name))
+#         target_file_path = os.path.join(generated_dir, name + ".json")
+#         cmd = [args.SpirvCrossPath, "--reflect", "--output", target_file_path, source_file_path]
+#         p = subprocess.Popen(cmd)
+#         p.wait()
+#         if p.returncode != 0:
+#             exit(p.returncode)
 
 
 def analyze_input_layout(item):
@@ -134,9 +159,13 @@ def collect_all_input_layouts(shaders):
     return input_layouts
 
 
-def convert_spirv_to_hlsl_dx11(shaders, input_layouts):
+def convert_source_to_hlsl_dx11(shaders, input_layouts):
+    clear_generated_spirv_files()
+    defines = ["_HLSL_"]
+    convert_source_to_spirv_format(shaders, defines)
+
     for name, item in shaders.items():
-        source_file_path = os.path.join(generated_dir, get_generated_spirv_filename(name))
+        source_file_path = os.path.join(generated_spirv_dir, get_generated_spirv_filename(name))
         target_file_path = os.path.join(generated_dx11_dir, name + ".hlsl")
         cmd = [args.SpirvCrossPath, "--hlsl", "--shader-model", "50", "--remove-unused-variables"]
         input_layout = input_layouts[get_material_name(name)]
@@ -155,15 +184,20 @@ def convert_spirv_to_hlsl_dx11(shaders, input_layouts):
     print("convert_spirv_to_hlsl_dx11 ok!")
 
 
-def convert_spirv_to_glsl_opengl(shaders):
+def convert_source_to_glsl_opengl(shaders):
+    clear_generated_spirv_files()
+    defines = ["_GLSL_"]
+    convert_source_to_spirv_format(shaders, defines)
+
     for name, item in shaders.items():
-        source_file_path = os.path.join(generated_dir, get_generated_spirv_filename(name))
+        source_file_path = os.path.join(generated_spirv_dir, get_generated_spirv_filename(name))
         target_file_path = os.path.join(generated_opengl_dir, name + ".glsl")
         # version must greater than 420 to support binding semantic
         p = subprocess.Popen([args.SpirvCrossPath,
                               "--remove-unused-variables",
                               "--version", "420",
                               "--no-420pack-extension",
+                              "--combined-samplers-inherit-bindings",
                               "--output", target_file_path,
                               source_file_path])
         p.wait()
@@ -176,9 +210,8 @@ def main():
     create_generated_dirs()
     shaders = collect_all_shaders()
     input_layouts = collect_all_input_layouts(shaders)
-    convert_source_to_spirv_format(shaders)
-    convert_spirv_to_hlsl_dx11(shaders, input_layouts)
-    convert_spirv_to_glsl_opengl(shaders)
+    convert_source_to_hlsl_dx11(shaders, input_layouts)
+    convert_source_to_glsl_opengl(shaders)
 
 
 if __name__ == "__main__":

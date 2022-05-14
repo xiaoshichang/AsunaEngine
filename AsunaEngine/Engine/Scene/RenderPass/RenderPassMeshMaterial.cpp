@@ -54,6 +54,15 @@ void RenderPassMeshMaterial::Render()
     Render(m_MainRT);
 }
 
+void RenderPassMeshMaterial::SetShadowMap(const shared_ptr<RenderTarget> &shadowMap)
+{
+    m_ShadowMap = shadowMap;
+    if (m_ShadowMap != nullptr)
+    {
+        m_ShadowMap->Bind();
+    }
+}
+
 void RenderPassMeshMaterial::CollectRenderItems()
 {
     m_Items.clear();
@@ -145,6 +154,8 @@ const std::shared_ptr<RenderTarget> &RenderPassMeshMaterial::GetMainRT()
 {
     return m_MainRT;
 }
+
+
 
 
 

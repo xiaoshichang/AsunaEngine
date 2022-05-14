@@ -1,9 +1,9 @@
 #include "VertexData.hlsl"
 #include "ConstantBuffer.hlsl"
 
-VertexOutput_P4N4 main(VertexInput_P3N3 input)
+VertexOutput_P4N4L4 main(VertexInput_P3N3 input)
 {
-	VertexOutput_P4N4 output;
+	VertexOutput_P4N4L4 output;
 	float4 HPos = float4(input.position, 1.0);
 	output.position = mul(HPos, modelMatrix);
 	output.position = mul(output.position, worldMatrix);
@@ -14,5 +14,9 @@ VertexOutput_P4N4 main(VertexInput_P3N3 input)
     output.nw = normalize(mul(HNormal, modelMatrix));
     output.nw = normalize(mul(output.nw, worldMatrix));
 
+    // lightPosition
+    output.lightPosition = mul(HPos, modelMatrix);
+    output.lightPosition = mul(output.lightPosition, worldMatrix);
+    output.lightPosition = mul(output.lightPosition, lightViewProj);
 	return output;
 }

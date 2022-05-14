@@ -27,8 +27,6 @@ namespace asuna
         void ResizeResolution(int width, int height);
 
     private:
-        std::shared_ptr<RenderTarget> m_ShadowMap = nullptr;
-
         RenderPassMeshMaterial* m_RenderPassMeshMaterial = nullptr;
         RenderPassShadowMap* m_RenderPassShadowMap = nullptr;
         RenderPassPostProcess* m_RenderPassPostProcess = nullptr;

@@ -133,4 +133,18 @@ void OpenglRenderTarget::ReleaseResources()
     }
 }
 
+void OpenglRenderTarget::Bind()
+{
+    if (m_Desc.usage == RenderTargetUsage::ShadowMap)
+    {
+        // shadow map bind slot 1 in our engine
+        glActiveTexture(GL_TEXTURE0 + 1);
+        glBindTexture(GL_TEXTURE_2D, m_DepthTexture);
+    }
+    else
+    {
+        ASUNA_ASSERT(false);
+    }
+}
+
 

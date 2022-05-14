@@ -44,6 +44,8 @@ void RenderPassShadowMap::Render()
     {
         item->Render(m_ShadowMapMaterial);
     }
+    // unbind shadow map so next render pass can use it as input texture.
+    Renderer::Instance->SetRenderTarget(nullptr);
 }
 
 void RenderPassShadowMap::CollectRenderItems()

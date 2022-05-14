@@ -25,14 +25,16 @@ RenderPassMgr::~RenderPassMgr()
 
 void RenderPassMgr::Init(CreateRendererContextParam param)
 {
-    m_RenderPassMeshMaterial = new RenderPassMeshMaterial(param);
     m_RenderPassShadowMap = new RenderPassShadowMap();
+    m_RenderPassMeshMaterial = new RenderPassMeshMaterial(param);
     m_RenderPassPostProcess = new RenderPassPostProcess();
 }
 
 void RenderPassMgr::RenderMeshMaterials(const std::shared_ptr<RenderTarget>& outputRT)
 {
     ASUNA_ASSERT(m_RenderPassMeshMaterial != nullptr);
+    auto shadowMap = m_RenderPassShadowMap->GetShadowMap();
+    m_RenderPassMeshMaterial->SetShadowMap(shadowMap);
     m_RenderPassMeshMaterial->Render(outputRT);
 }
 

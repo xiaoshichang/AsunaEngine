@@ -17,6 +17,7 @@ namespace asuna
 
         GLuint GetFrameBuffer() const {return m_FrameBuffer;}
         GLuint GetTexture() const {return  m_Texture;}
+        void Bind() override;
 
     private:
         // http://www.opengl-tutorial.org/cn/intermediate-tutorials/tutorial-14-render-to-texture/
