@@ -256,8 +256,10 @@ void SceneManager::LoadScene(const string &path)
     cubeMeshCmpt->SetMaterial(0, cubeMaterial);
 
     auto light = SceneManager::Instance->CreateGameObject("Light", nullptr);
+    light->GetTransform()->SetPosition(0, 40, 25);
+    light->GetTransform()->SetEuler(-0.87, 1.8, 0);
+
     auto lightCmpt = light->AddComponent<LightCmpt>();
     lightCmpt->SetColor(Color(0.8, 0.8, 0.8, 1));
     lightCmpt->SetIntensity(2);
-    lightCmpt->GetOwner()->GetTransform()->SetEuler(-0.87, 1.8, 0);
 }

@@ -35,7 +35,7 @@ void LightCmpt::SetLightType(LightType lt)
 
 Matrix4x4f LightCmpt::GetLightViewProjMatrix()
 {
-    Vector3f eye(0, 20, 0);
+    Vector3f eye = GetOwner()->GetTransform()->GetPosition();
     Vector3f up(0, 1, 0);
     Vector3f direction = GetOwner()->GetTransform()->GetForward();
     Vector3f focus = eye + direction;
@@ -45,7 +45,7 @@ Matrix4x4f LightCmpt::GetLightViewProjMatrix()
     {
         // todo: how to correctly set these parameters?
         auto view = BuildMatrixViewLookatLH(eye, focus, up);
-        auto proj = BuildMatrixOrthographicDX(50, 50, 1, 50);
+        auto proj = BuildMatrixOrthographicDX(100, 100, 1, 200);
         ret = proj * view;
     }
     else
