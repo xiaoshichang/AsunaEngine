@@ -51,6 +51,8 @@ void OpenglRenderer::Finalize()
 
 void OpenglRenderer::ResizeResolution(int width, int height)
 {
+    m_ResolutionWidth = width;
+    m_ResolutionHeight = height;
 	glViewport(0, 0, width, height);
 }
 

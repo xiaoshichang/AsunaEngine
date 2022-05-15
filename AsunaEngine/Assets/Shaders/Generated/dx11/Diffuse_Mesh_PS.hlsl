@@ -53,36 +53,58 @@ struct SPIRV_Cross_Output
     float4 out_var_SV_TARGET : SV_Target0;
 };
 
-static float4 _52;
+static float4 _59;
+
+uint2 spvTextureSize(Texture2D<float4> Tex, uint Level, out uint Param)
+{
+    uint2 ret;
+    Tex.GetDimensions(Level, ret.x, ret.y, Param);
+    return ret;
+}
 
 void frag_main()
 {
-    float4 _61 = tBaseMap.Sample(tBaseMapSamplerState, in_var_TEXCOORD0.xy);
-    float _99;
+    float _70 = max(dot(in_var_NORMAL.xyz, -ConstantBufferPerFrame_directionLight.direction.xyz), 0.0f);
+    float4 _75 = tBaseMap.Sample(tBaseMapSamplerState, in_var_TEXCOORD0.xy);
+    float _145;
     do
     {
-        float3 _69 = in_var_TEXCOORD1.xyz / in_var_TEXCOORD1.w.xxx;
-        float _70 = _69.x;
-        float _74 = _69.y;
-        float _79 = _69.z;
-        if ((((((_70 < (-1.0f)) || (_70 > 1.0f)) || (_74 < (-1.0f))) || (_74 > 1.0f)) || (_79 < 0.0f)) || (_79 > 1.0f))
+        float3 _83 = in_var_TEXCOORD1.xyz / in_var_TEXCOORD1.w.xxx;
+        float _84 = _83.x;
+        float _88 = _83.y;
+        float _93 = _83.z;
+        if ((((((_84 < (-1.0f)) || (_84 > 1.0f)) || (_88 < (-1.0f))) || (_88 > 1.0f)) || (_93 < 0.0f)) || (_93 > 1.0f))
         {
-            _99 = 0.0f;
+            _145 = 0.0f;
             break;
         }
-        float4 _88 = _52;
-        _88.x = (_70 * 0.5f) + 0.5f;
-        float4 _91 = _88;
-        _91.y = (_74 * (-0.5f)) + 0.5f;
-        if (_79 > tShadowMap.Sample(tShadowMapSamplerState, _91.xy).x)
+        float4 _102 = _59;
+        _102.x = (_84 * 0.5f) + 0.5f;
+        float4 _105 = _102;
+        _105.y = (_88 * (-0.5f)) + 0.5f;
+        float _108 = max(0.0500000007450580596923828125f * (1.0f - _70), 0.004999999888241291046142578125f);
+        uint _109_dummy_parameter;
+        uint2 _109 = spvTextureSize(tShadowMap, 0u, _109_dummy_parameter);
+        float2 _115 = 1.0f.xx / float2(float(_109.x), float(_109.y));
+        float _117;
+        int _120;
+        _117 = 0.0f;
+        _120 = -1;
+        float _118;
+        for (; _120 <= 1; _117 = _118, _120++)
         {
-            _99 = 0.5f;
-            break;
+            _118 = _117;
+            for (int _128 = -1; _128 <= 1; )
+            {
+                _118 += (((_93 - _108) > tShadowMap.Sample(tShadowMapSamplerState, _105.xy + (float2(float(_120), float(_128)) * _115)).x) ? 0.199999988079071044921875f : 1.0f);
+                _128++;
+                continue;
+            }
         }
-        _99 = 1.0f;
+        _145 = _117 * 0.111111111938953399658203125f;
         break;
     } while(false);
-    out_var_SV_TARGET = float4((_61.xyz * min(((ConstantBufferPerFrame_directionLight.color.xyz * max(dot(in_var_NORMAL.xyz, -ConstantBufferPerFrame_directionLight.direction.xyz), 0.0f)) * ConstantBufferPerFrame_directionLight.intensity.x) + 0.20000000298023223876953125f.xxx, 1.0f.xxx)) * _99, 1.0f);
+    out_var_SV_TARGET = float4((_75.xyz * min(((ConstantBufferPerFrame_directionLight.color.xyz * _70) * ConstantBufferPerFrame_directionLight.intensity.x) + 0.20000000298023223876953125f.xxx, 1.0f.xxx)) * _145, 1.0f);
 }
 
 SPIRV_Cross_Output main(SPIRV_Cross_Input stage_input)

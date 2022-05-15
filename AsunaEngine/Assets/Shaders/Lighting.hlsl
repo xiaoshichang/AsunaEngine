@@ -21,7 +21,35 @@ struct PointLight
     float4 intensity;
 };
 
-float CalculationShadow(Texture2D shadowMap, SamplerState sampler, float4 lightPosition)
+
+
+float PercentageCloserFilteringSoftShadow(Texture2D shadowMap, SamplerState sampler, float4 lightPosition, float NDotL)
+{
+    float bias = max(0.05 * (1.0 - NDotL), 0.005);
+    float sw, sh, sl;
+    shadowMap.GetDimensions(0, sw, sh, sl);
+    float2 texelSize = 1.0f / float2(sw, sh);
+    float shadow = 0.0;
+    for(int x = -1; x <= 1; ++x)
+    {
+        for(int y = -1; y <= 1; ++y)
+        {
+            float depth = shadowMap.Sample(sampler, lightPosition.xy + float2(x, y) * texelSize).r;
+            // lightPosition.z - bias > depth means current pixel in shadow
+            shadow += lightPosition.z - bias > depth ? 0.2 : 1.0;
+        }
+    }
+    return shadow /= 9.0;
+}
+
+float HardShadow(Texture2D shadowMap, SamplerState sampler, float4 lightPosition, float NDotL)
+{
+    float bias = max(0.05 * (1.0 - NDotL), 0.005);
+    float depth = shadowMap.Sample(sampler, lightPosition.xy).r;
+    return lightPosition.z - bias > depth ? 0.2 : 1.0;
+}
+
+float CalculationShadow(Texture2D shadowMap, SamplerState sampler, float4 lightPosition, float NDotL)
 {
     lightPosition.xyz /= lightPosition.w;
 
@@ -41,10 +69,9 @@ float CalculationShadow(Texture2D shadowMap, SamplerState sampler, float4 lightP
     lightPosition.y = lightPosition.y / 2 + 0.5;
 #endif
 
-    float depth = shadowMap.Sample(sampler, lightPosition.xy).r;
-    if (lightPosition.z > depth)
-    {
-        return 0.5;
-    }
-    return 1.0f;
+    // 0.0 -> in shadow
+    // 1.0 -> in light
+    // float shadow = HardShadow(shadowMap, sampler, lightPosition, NDotL);
+    float shadow = PercentageCloserFilteringSoftShadow(shadowMap, sampler, lightPosition, NDotL);
+    return shadow;
 }
