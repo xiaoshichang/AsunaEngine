@@ -9,8 +9,8 @@
 
 using namespace asuna;
 
-const int SHADOW_MAP_WIDTH = 1024;
-const int SHADOW_MAP_HEIGHT = 1024;
+const int SHADOW_MAP_WIDTH = 2048;
+const int SHADOW_MAP_HEIGHT = 2048;
 
 
 void RenderPassShadowMap::InitShadowMapRT()

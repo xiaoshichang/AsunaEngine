@@ -42,49 +42,47 @@ layout(location = 1) in vec4 in_var_TEXCOORD0;
 layout(location = 2) in vec4 in_var_TEXCOORD1;
 layout(location = 0) out vec4 out_var_SV_TARGET;
 
-vec4 _58;
+vec4 _56;
 
 void main()
 {
-    float _69 = max(dot(in_var_NORMAL.xyz, -ConstantBufferPerFrame.directionLight.direction.xyz), 0.0);
-    vec4 _74 = texture(SPIRV_Cross_CombinedtBaseMaptBaseMapSamplerState, in_var_TEXCOORD0.xy);
-    float _144;
+    vec4 _65 = texture(SPIRV_Cross_CombinedtBaseMaptBaseMapSamplerState, in_var_TEXCOORD0.xy);
+    float _132;
     do
     {
-        vec3 _82 = in_var_TEXCOORD1.xyz / vec3(in_var_TEXCOORD1.w);
-        float _83 = _82.x;
-        float _87 = _82.y;
-        float _92 = _82.z;
-        if ((((((_83 < (-1.0)) || (_83 > 1.0)) || (_87 < (-1.0))) || (_87 > 1.0)) || (_92 < 0.0)) || (_92 > 1.0))
+        vec3 _73 = in_var_TEXCOORD1.xyz / vec3(in_var_TEXCOORD1.w);
+        float _74 = _73.x;
+        float _78 = _73.y;
+        float _83 = _73.z;
+        if ((((((_74 < (-1.0)) || (_74 > 1.0)) || (_78 < (-1.0))) || (_78 > 1.0)) || (_83 < 0.0)) || (_83 > 1.0))
         {
-            _144 = 0.0;
+            _132 = 0.0;
             break;
         }
-        vec4 _101 = _58;
-        _101.x = (_83 * 0.5) + 0.5;
-        vec4 _104 = _101;
-        _104.y = (_87 * 0.5) + 0.5;
-        float _107 = max(0.0500000007450580596923828125 * (1.0 - _69), 0.004999999888241291046142578125);
-        uvec2 _108 = uvec2(textureSize(SPIRV_Cross_CombinedtShadowMapSPIRV_Cross_DummySampler, int(0u)));
-        vec2 _114 = vec2(1.0) / vec2(float(_108.x), float(_108.y));
-        float _116;
-        int _119;
-        _116 = 0.0;
-        _119 = -1;
-        float _117;
-        for (; _119 <= 1; _116 = _117, _119++)
+        vec4 _92 = _56;
+        _92.x = (_74 * 0.5) + 0.5;
+        vec4 _95 = _92;
+        _95.y = (_78 * 0.5) + 0.5;
+        uvec2 _96 = uvec2(textureSize(SPIRV_Cross_CombinedtShadowMapSPIRV_Cross_DummySampler, int(0u)));
+        vec2 _102 = vec2(1.0) / vec2(float(_96.x), float(_96.y));
+        float _104;
+        int _107;
+        _104 = 0.0;
+        _107 = -1;
+        float _105;
+        for (; _107 <= 1; _104 = _105, _107++)
         {
-            _117 = _116;
-            for (int _127 = -1; _127 <= 1; )
+            _105 = _104;
+            for (int _115 = -1; _115 <= 1; )
             {
-                _117 += (((_92 - _107) > texture(SPIRV_Cross_CombinedtShadowMaptShadowMapSamplerState, _104.xy + (vec2(float(_119), float(_127)) * _114)).x) ? 0.199999988079071044921875 : 1.0);
-                _127++;
+                _105 += (((_83 - 0.004999999888241291046142578125) > texture(SPIRV_Cross_CombinedtShadowMaptShadowMapSamplerState, _95.xy + (vec2(float(_107), float(_115)) * _102)).x) ? 0.0 : 1.0);
+                _115++;
                 continue;
             }
         }
-        _144 = _116 * 0.111111111938953399658203125;
+        _132 = _104 * 0.111111111938953399658203125;
         break;
     } while(false);
-    out_var_SV_TARGET = vec4((_74.xyz * min(((ConstantBufferPerFrame.directionLight.color.xyz * _69) * ConstantBufferPerFrame.directionLight.intensity.x) + vec3(0.20000000298023223876953125), vec3(1.0))) * _144, 1.0);
+    out_var_SV_TARGET = vec4(min(vec3(0.20000000298023223876953125) + (((ConstantBufferPerFrame.directionLight.color.xyz * max(dot(in_var_NORMAL.xyz, -ConstantBufferPerFrame.directionLight.direction.xyz), 0.0)) * ConstantBufferPerFrame.directionLight.intensity.x) * _132), vec3(1.0)) * _65.xyz, 1.0);
 }
 

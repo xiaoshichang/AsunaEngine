@@ -55,7 +55,7 @@ struct SPIRV_Cross_Output
     float4 out_var_SV_TARGET : SV_Target0;
 };
 
-static float4 _56;
+static float4 _57;
 
 uint2 spvTextureSize(Texture2D<float4> Tex, uint Level, out uint Param)
 {
@@ -66,46 +66,44 @@ uint2 spvTextureSize(Texture2D<float4> Tex, uint Level, out uint Param)
 
 void frag_main()
 {
-    float _66 = max(dot(in_var_NORMAL.xyz, -ConstantBufferPerFrame_directionLight.direction.xyz), 0.0f);
-    float _136;
+    float _127;
     do
     {
-        float3 _74 = in_var_TEXCOORD0.xyz / in_var_TEXCOORD0.w.xxx;
-        float _75 = _74.x;
-        float _79 = _74.y;
-        float _84 = _74.z;
-        if ((((((_75 < (-1.0f)) || (_75 > 1.0f)) || (_79 < (-1.0f))) || (_79 > 1.0f)) || (_84 < 0.0f)) || (_84 > 1.0f))
+        float3 _68 = in_var_TEXCOORD0.xyz / in_var_TEXCOORD0.w.xxx;
+        float _69 = _68.x;
+        float _73 = _68.y;
+        float _78 = _68.z;
+        if ((((((_69 < (-1.0f)) || (_69 > 1.0f)) || (_73 < (-1.0f))) || (_73 > 1.0f)) || (_78 < 0.0f)) || (_78 > 1.0f))
         {
-            _136 = 0.0f;
+            _127 = 0.0f;
             break;
         }
-        float4 _93 = _56;
-        _93.x = (_75 * 0.5f) + 0.5f;
-        float4 _96 = _93;
-        _96.y = (_79 * (-0.5f)) + 0.5f;
-        float _99 = max(0.0500000007450580596923828125f * (1.0f - _66), 0.004999999888241291046142578125f);
-        uint _100_dummy_parameter;
-        uint2 _100 = spvTextureSize(tShadowMap, 0u, _100_dummy_parameter);
-        float2 _106 = 1.0f.xx / float2(float(_100.x), float(_100.y));
-        float _108;
-        int _111;
-        _108 = 0.0f;
-        _111 = -1;
-        float _109;
-        for (; _111 <= 1; _108 = _109, _111++)
+        float4 _87 = _57;
+        _87.x = (_69 * 0.5f) + 0.5f;
+        float4 _90 = _87;
+        _90.y = (_73 * (-0.5f)) + 0.5f;
+        uint _91_dummy_parameter;
+        uint2 _91 = spvTextureSize(tShadowMap, 0u, _91_dummy_parameter);
+        float2 _97 = 1.0f.xx / float2(float(_91.x), float(_91.y));
+        float _99;
+        int _102;
+        _99 = 0.0f;
+        _102 = -1;
+        float _100;
+        for (; _102 <= 1; _99 = _100, _102++)
         {
-            _109 = _108;
-            for (int _119 = -1; _119 <= 1; )
+            _100 = _99;
+            for (int _110 = -1; _110 <= 1; )
             {
-                _109 += (((_84 - _99) > tShadowMap.Sample(tShadowMapSamplerState, _96.xy + (float2(float(_111), float(_119)) * _106)).x) ? 0.199999988079071044921875f : 1.0f);
-                _119++;
+                _100 += (((_78 - 0.004999999888241291046142578125f) > tShadowMap.Sample(tShadowMapSamplerState, _90.xy + (float2(float(_102), float(_110)) * _97)).x) ? 0.0f : 1.0f);
+                _110++;
                 continue;
             }
         }
-        _136 = _108 * 0.111111111938953399658203125f;
+        _127 = _99 * 0.111111111938953399658203125f;
         break;
     } while(false);
-    out_var_SV_TARGET = float4((((ConstantBufferPerFrame_directionLight.color.xyz * _66) * ConstantBufferPerFrame_directionLight.intensity.x) * ConstantBufferPerMaterial_mainColor.xyz) * _136, 1.0f);
+    out_var_SV_TARGET = float4(min(0.20000000298023223876953125f.xxx + (((ConstantBufferPerFrame_directionLight.color.xyz * max(dot(in_var_NORMAL.xyz, -ConstantBufferPerFrame_directionLight.direction.xyz), 0.0f)) * ConstantBufferPerFrame_directionLight.intensity.x) * _127), 1.0f.xxx) * ConstantBufferPerMaterial_mainColor.xyz, 1.0f);
 }
 
 SPIRV_Cross_Output main(SPIRV_Cross_Input stage_input)

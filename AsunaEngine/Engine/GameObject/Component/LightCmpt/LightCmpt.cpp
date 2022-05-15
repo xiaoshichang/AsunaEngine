@@ -45,7 +45,7 @@ Matrix4x4f LightCmpt::GetLightViewProjMatrix()
     {
         // todo: how to correctly set these parameters?
         auto view = BuildMatrixViewLookatLH(eye, focus, up);
-        auto proj = BuildMatrixOrthographicDX(100, 100, 1, 200);
+        auto proj = BuildMatrixOrthographicDX(64, 64, 10, 50);
         ret = proj * view;
     }
     else

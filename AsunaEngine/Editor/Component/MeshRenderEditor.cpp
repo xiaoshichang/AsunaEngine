@@ -22,5 +22,7 @@ void MeshRenderEditor::Render(const std::shared_ptr<MeshRenderCmpt>& meshRender)
         auto& name = material->GetName();
         ImGui::Text("%d : %s", i, name.c_str());
     }
+    bool& castShadow = meshRender->GetCastShadowFlag();
+    ImGui::Checkbox("cast shadow", &castShadow);
 
 }

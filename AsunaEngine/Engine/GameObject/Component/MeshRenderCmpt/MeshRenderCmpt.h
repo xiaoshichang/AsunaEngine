@@ -34,7 +34,7 @@ namespace asuna
         void SetMaterial(int index, const std::shared_ptr<Material>& material);
         int GetMaterialCount() const;
         std::shared_ptr<Material> GetMaterial(int index);
-        bool GetCastShadowFlag() {return m_CastShadow;}
+        bool& GetCastShadowFlag() {return m_CastShadow;}
         void SetCastShadowFlag(bool flag) { m_CastShadow = flag;}
 
     private:

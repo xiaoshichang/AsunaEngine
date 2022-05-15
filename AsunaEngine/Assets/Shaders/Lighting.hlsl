@@ -22,10 +22,14 @@ struct PointLight
 };
 
 
-
-float PercentageCloserFilteringSoftShadow(Texture2D shadowMap, SamplerState sampler, float4 lightPosition, float NDotL)
+float3 GetEnvLight()
 {
-    float bias = max(0.05 * (1.0 - NDotL), 0.005);
+    return float3(0.2, 0.2, 0.2);
+}
+
+float PercentageCloserFilteringSoftShadow(Texture2D shadowMap, SamplerState sampler, float4 lightPosition)
+{
+    float bias = 0.005;
     float sw, sh, sl;
     shadowMap.GetDimensions(0, sw, sh, sl);
     float2 texelSize = 1.0f / float2(sw, sh);
@@ -36,20 +40,20 @@ float PercentageCloserFilteringSoftShadow(Texture2D shadowMap, SamplerState samp
         {
             float depth = shadowMap.Sample(sampler, lightPosition.xy + float2(x, y) * texelSize).r;
             // lightPosition.z - bias > depth means current pixel in shadow
-            shadow += lightPosition.z - bias > depth ? 0.2 : 1.0;
+            shadow += lightPosition.z - bias > depth ? 0.0 : 1.0;
         }
     }
     return shadow /= 9.0;
 }
 
-float HardShadow(Texture2D shadowMap, SamplerState sampler, float4 lightPosition, float NDotL)
+float HardShadow(Texture2D shadowMap, SamplerState sampler, float4 lightPosition)
 {
-    float bias = max(0.05 * (1.0 - NDotL), 0.005);
+    float bias = 0.005;
     float depth = shadowMap.Sample(sampler, lightPosition.xy).r;
-    return lightPosition.z - bias > depth ? 0.2 : 1.0;
+    return lightPosition.z - bias > depth ? 0.0 : 1.0;
 }
 
-float CalculationShadow(Texture2D shadowMap, SamplerState sampler, float4 lightPosition, float NDotL)
+float CalculationShadow(Texture2D shadowMap, SamplerState sampler, float4 lightPosition)
 {
     lightPosition.xyz /= lightPosition.w;
 
@@ -71,7 +75,7 @@ float CalculationShadow(Texture2D shadowMap, SamplerState sampler, float4 lightP
 
     // 0.0 -> in shadow
     // 1.0 -> in light
-    // float shadow = HardShadow(shadowMap, sampler, lightPosition, NDotL);
-    float shadow = PercentageCloserFilteringSoftShadow(shadowMap, sampler, lightPosition, NDotL);
+    // float shadow = HardShadow(shadowMap, sampler, lightPosition);
+    float shadow = PercentageCloserFilteringSoftShadow(shadowMap, sampler, lightPosition);
     return shadow;
 }

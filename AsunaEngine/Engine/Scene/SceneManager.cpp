@@ -218,6 +218,7 @@ void SceneManager::LoadScene(const string &path)
 
     auto girl = SceneManager::Instance->CreateGameObject("girl", nullptr);
     girl->GetTransform()->SetScale(0.1f, 0.1f, 0.1f);
+    girl->GetTransform()->SetEuler(0.0f, 0.2f, 0.0f);
 
     auto meshParam = AssetLoader::LoadMesh("Assets\\Models\\asuna.fbx");
     auto mesh = Renderer::Instance->CreateMesh(meshParam);
@@ -256,7 +257,7 @@ void SceneManager::LoadScene(const string &path)
     cubeMeshCmpt->SetMaterial(0, cubeMaterial);
 
     auto light = SceneManager::Instance->CreateGameObject("Light", nullptr);
-    light->GetTransform()->SetPosition(0, 40, 25);
+    light->GetTransform()->SetPosition(0, 35, 0);
     light->GetTransform()->SetEuler(-0.87, 1.8, 0);
 
     auto lightCmpt = light->AddComponent<LightCmpt>();
