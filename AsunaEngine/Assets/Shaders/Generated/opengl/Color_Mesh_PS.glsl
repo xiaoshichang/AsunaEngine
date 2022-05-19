@@ -78,7 +78,7 @@ void main()
             _99 = _98;
             for (int _109 = -1; _109 <= 1; )
             {
-                _99 += (((_77 - 0.004999999888241291046142578125) > texture(SPIRV_Cross_CombinedtShadowMaptShadowMapSamplerState, _89.xy + (vec2(float(_101), float(_109)) * _96)).x) ? 0.0 : 1.0);
+                _99 += (((_77 - 0.00999999977648258209228515625) > texture(SPIRV_Cross_CombinedtShadowMaptShadowMapSamplerState, _89.xy + (vec2(float(_101), float(_109)) * _96)).x) ? 0.0 : 1.0);
                 _109++;
                 continue;
             }

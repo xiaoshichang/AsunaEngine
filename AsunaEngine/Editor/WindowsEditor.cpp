@@ -22,6 +22,7 @@ WindowsEditor* WindowsEditor::Instance = nullptr;
 
 WindowsEditor::WindowsEditor()
 {
+    ASUNA_ASSERT(Instance == nullptr);
     Instance = this;
 }
 

@@ -10,8 +10,7 @@ namespace asuna
 	class DirectX11Renderer : public Renderer
 	{
 	public:
-		DirectX11Renderer():
-			m_rasterState(nullptr)
+		DirectX11Renderer()
 		{
 		}
 
@@ -26,7 +25,8 @@ namespace asuna
 		void ResizeResolution(int width, int height) override;
 		void Present() override;
 		void ClearRenderTarget(shared_ptr<RenderTarget> rt, float r, float g, float b, float a) override;
-		void SetRenderTarget(shared_ptr<RenderTarget> rt) override;
+		void SetRenderTarget(const shared_ptr<RenderTarget>& rt) override;
+		void SetRasterizationState(const std::shared_ptr<RasterizationState>& rs) override;
         void SetViewPort(int x, int y, int width, int height) override;
 
 		shared_ptr<Mesh> CreateMesh(const string& scenePath) override;
@@ -39,13 +39,7 @@ namespace asuna
 		shared_ptr<RenderItem> CreateRenderItem(const std::shared_ptr<Mesh>& mesh, const vector<std::shared_ptr<Material>>& materials, const std::shared_ptr<ConstantBuffer>& perObject) override;
         shared_ptr<RenderItem> CreateRenderItem(const std::shared_ptr<Mesh>& mesh, const std::shared_ptr<ConstantBuffer>& perObject) override;
         shared_ptr<Texture> CreateTexture(const std::string& path) override;
-
-	private:
-		void SetRasterizerState(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
-
-
-	private:
-		ID3D11RasterizerState* m_rasterState;
+		shared_ptr<RasterizationState> CreateRasterizationState(const RasterizationStateDesc& desc) override;
 
 	};
 }

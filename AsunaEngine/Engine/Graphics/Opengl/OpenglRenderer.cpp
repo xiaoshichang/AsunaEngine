@@ -8,6 +8,7 @@
 #include "OpenglDepthStencilState.h"
 #include "OpenglRenderTarget.h"
 #include "OpenglTexture.h"
+#include "OpenglRasterizationState.h"
 
 #include "../../3rd/Glad/include/glad/glad.h"
 #include "../../3rd/Glad/include/glad/glad_wgl.h"
@@ -43,6 +44,7 @@ void OpenglRenderer::Initialize(CreateRendererContextParam param)
 	m_HWND = param.m_HWND;
 
 	CreateDeviceContext();
+	CreateDefaultRasterizationState();
 }
 
 void OpenglRenderer::Finalize()
@@ -95,10 +97,6 @@ void OpenglRenderer::CreateDeviceContext()
 	}
     // https://stackoverflow.com/questions/21841598/when-does-the-transition-from-clip-space-to-screen-coordinates-happen
     glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
-    // dx use cw as front by default.
-	glFrontFace(GL_CW);
-	// Enable back face culling.
-    glDisable(GL_CULL_FACE);
     // set 1 to enable vertical sync, set 0 to disable to get higher fps.
 	wglSwapIntervalEXT(1);
 }
@@ -282,7 +280,7 @@ shared_ptr<RenderTarget> OpenglRenderer::CreateRenderTarget(RenderTargetDesc des
 	return make_shared<OpenglRenderTarget>(desc);
 }
 
-void OpenglRenderer::SetRenderTarget(shared_ptr<RenderTarget> rt)
+void OpenglRenderer::SetRenderTarget(const shared_ptr<RenderTarget>& rt)
 {
     if (rt == nullptr)
     {
@@ -324,6 +322,23 @@ std::shared_ptr<Texture> OpenglRenderer::CreateTexture(const string &path)
     return OpenglTexture::Create(raw);
 }
 
+void OpenglRenderer::SetRasterizationState(const std::shared_ptr<RasterizationState>& rs)
+{
+	if (rs == nullptr)
+	{
+		auto state = dynamic_pointer_cast<OpenglRasterizationState>(m_DefaultRasterizationState);
+		state->Bind();
+	}
+	else
+	{
+		auto state = dynamic_pointer_cast<OpenglRasterizationState>(rs);
+		state->Bind();
+	}
+}
 
+std::shared_ptr<asuna::RasterizationState> OpenglRenderer::CreateRasterizationState(const RasterizationStateDesc& desc)
+{
+	return make_shared<OpenglRasterizationState>(desc);
+}
 
 

@@ -12,6 +12,7 @@
 #include "Material.h"
 #include "DepthStencilState.h"
 #include "Texture.h"
+#include "RasterizationState.h"
 
 #include "../../Foundation/Interface/IModule.h"
 #include "../../Foundation/Platform/Platform.h"
@@ -33,7 +34,10 @@ namespace asuna
 	public:
 		Renderer();
 		virtual ~Renderer();
+		std::shared_ptr<RenderContext> GetContext();
+		RenderAPIType GetRenderAPIType() const;
 
+	public:
 		virtual void Initialize(CreateRendererContextParam param) = 0;
 		virtual void Finalize() = 0;
 		virtual void ResizeResolution(int width, int height) = 0;
@@ -42,7 +46,8 @@ namespace asuna
 		virtual void ClearRenderTarget(std::shared_ptr<RenderTarget> rt, float r, float g, float b, float a) = 0;
 		virtual void CreateDeviceContext() = 0;
 		virtual void ReleaseDeviceContext() = 0;
-		virtual void SetRenderTarget(std::shared_ptr<RenderTarget> rt) = 0;
+		virtual void SetRenderTarget(const std::shared_ptr<RenderTarget>& rt) = 0;
+		virtual void SetRasterizationState(const std::shared_ptr<RasterizationState>& rs) = 0;
 		virtual std::shared_ptr<Mesh> CreateMesh(const std::string& path) = 0;
         virtual std::shared_ptr<Mesh> CreateMesh(const std::shared_ptr<MeshCreateParam>& param) = 0;
 		virtual std::shared_ptr<RenderTarget> CreateRenderTarget(RenderTargetDesc desc) = 0;
@@ -53,14 +58,14 @@ namespace asuna
         virtual std::shared_ptr<RenderItem> CreateRenderItem(const std::shared_ptr<Mesh>& mesh, const std::shared_ptr<ConstantBuffer>& perObject) = 0;
 		virtual std::shared_ptr<ConstantBuffer> CreateConstantBuffer(ConstantBufferDataType dt, int size) = 0;
         virtual std::shared_ptr<Texture> CreateTexture(const std::string& path) = 0;
-		std::shared_ptr<RenderContext> GetContext();
-
-    public:
-        RenderAPIType GetRenderAPIType() const;
-
+		virtual std::shared_ptr<RasterizationState> CreateRasterizationState(const RasterizationStateDesc& desc) = 0;
 
 	protected:
-		std::shared_ptr<RenderContext> m_Context;
+		void CreateDefaultRasterizationState();
+
+	protected:
+		std::shared_ptr<RenderContext> m_Context = nullptr;
+		std::shared_ptr<RasterizationState> m_DefaultRasterizationState = nullptr;
 
 	public:
 		RenderAPIType m_APIType;

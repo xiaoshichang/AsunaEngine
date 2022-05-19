@@ -201,11 +201,11 @@ void SceneManager::UnregisterLight(LightCmpt *light)
     }
 }
 
-void SceneManager::Render(const std::shared_ptr<RenderTarget>& rt)
+void SceneManager::Render(const std::shared_ptr<RenderTarget>& rt, const std::shared_ptr<RasterizationState>& rs)
 {
     RenderPassMgr::Instance->RenderShadowMap();
-    RenderPassMgr::Instance->RenderMeshMaterials(rt);
-    //RenderPassMgr::Instance->RenderPostProcess(rt);
+    RenderPassMgr::Instance->RenderMeshMaterials(rs);
+    RenderPassMgr::Instance->RenderPostProcess(rt);
 }
 
 
@@ -237,7 +237,7 @@ void SceneManager::LoadScene(const string &path)
     // ground
     auto ground = SceneManager::Instance->CreateGameObject("ground", nullptr);
     ground->GetTransform()->SetScale(1000, 1, 1000);
-    ground->GetTransform()->SetPosition(0, -0.1, 0);
+    ground->GetTransform()->SetPosition(0, 0, 0);
     auto groundMesh = SimpleGeometryCreator::CreatePlane();
     auto groundMeshCmpt = ground->AddComponent<MeshRenderCmpt>();
     groundMeshCmpt->SetMesh(groundMesh);
@@ -248,7 +248,7 @@ void SceneManager::LoadScene(const string &path)
     // cube
     auto cube = SceneManager::Instance->CreateGameObject("cube", nullptr);
     cube->GetTransform()->SetScale(2, 2, 2);
-    cube->GetTransform()->SetPosition(0, 5, -10);
+    cube->GetTransform()->SetPosition(0, 1, -10);
     auto cubeMesh = SimpleGeometryCreator::CreateCube();
     auto cubeMeshCmpt = cube->AddComponent<MeshRenderCmpt>();
     cubeMeshCmpt->SetMesh(cubeMesh);

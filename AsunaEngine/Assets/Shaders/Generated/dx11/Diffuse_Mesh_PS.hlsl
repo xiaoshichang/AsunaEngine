@@ -94,7 +94,7 @@ void frag_main()
             _106 = _105;
             for (int _116 = -1; _116 <= 1; )
             {
-                _106 += (((_84 - 0.004999999888241291046142578125f) > tShadowMap.Sample(tShadowMapSamplerState, _96.xy + (float2(float(_108), float(_116)) * _103)).x) ? 0.0f : 1.0f);
+                _106 += (((_84 - 0.00999999977648258209228515625f) > tShadowMap.Sample(tShadowMapSamplerState, _96.xy + (float2(float(_108), float(_116)) * _103)).x) ? 0.0f : 1.0f);
                 _116++;
                 continue;
             }

@@ -29,7 +29,7 @@ float3 GetEnvLight()
 
 float PercentageCloserFilteringSoftShadow(Texture2D shadowMap, SamplerState sampler, float4 lightPosition)
 {
-    float bias = 0.005;
+    float bias = 0.01;
     float sw, sh, sl;
     shadowMap.GetDimensions(0, sw, sh, sl);
     float2 texelSize = 1.0f / float2(sw, sh);
@@ -48,7 +48,7 @@ float PercentageCloserFilteringSoftShadow(Texture2D shadowMap, SamplerState samp
 
 float HardShadow(Texture2D shadowMap, SamplerState sampler, float4 lightPosition)
 {
-    float bias = 0.005;
+    float bias = 0.01;
     float depth = shadowMap.Sample(sampler, lightPosition.xy).r;
     return lightPosition.z - bias > depth ? 0.0 : 1.0;
 }

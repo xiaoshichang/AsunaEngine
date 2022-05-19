@@ -20,19 +20,13 @@ RenderPassMeshMaterial::RenderPassMeshMaterial(CreateRendererContextParam param)
     CreateCoordAxisRenderItem();
 }
 
-void RenderPassMeshMaterial::Render(const std::shared_ptr<RenderTarget>& outputRT)
+void RenderPassMeshMaterial::Render(const std::shared_ptr<RasterizationState>& rs)
 {
     SceneManager::Instance->GetConstantBufferPerScene()->Bind();
-    Renderer::Instance->SetRenderTarget(outputRT);
-    Renderer::Instance->ClearRenderTarget(outputRT, 0.1f, 0.2f, 0.3f, 1.0f);
-    if (outputRT != nullptr)
-    {
-        Renderer::Instance->SetViewPort(0, 0, outputRT->GetWidth(), outputRT->GetHeight());
-    }
-    else
-    {
-        Renderer::Instance->SetViewPort(0, 0, -1, -1);
-    }
+    Renderer::Instance->SetRenderTarget(m_MainRT);
+    Renderer::Instance->ClearRenderTarget(m_MainRT, 0.1f, 0.2f, 0.3f, 1.0f);
+    Renderer::Instance->SetRasterizationState(rs);
+	Renderer::Instance->SetViewPort(0, 0, m_MainRT->GetWidth(), m_MainRT->GetHeight());
 
     CollectRenderItems();
     for(auto item : m_Items)
@@ -47,11 +41,6 @@ void RenderPassMeshMaterial::Render(const std::shared_ptr<RenderTarget>& outputR
             item->Render();
         }
     }
-}
-
-void RenderPassMeshMaterial::Render()
-{
-    Render(m_MainRT);
 }
 
 void RenderPassMeshMaterial::SetShadowMap(const shared_ptr<RenderTarget> &shadowMap)

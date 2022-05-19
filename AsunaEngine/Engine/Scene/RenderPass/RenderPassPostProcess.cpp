@@ -8,7 +8,8 @@
 using namespace asuna;
 using namespace std;
 
-RenderPassPostProcess::RenderPassPostProcess()
+RenderPassPostProcess::RenderPassPostProcess() :
+    m_Effect(PostProcessEffect::None)
 {
     CreateMaterial();
     CreateRenderItem();
@@ -19,6 +20,7 @@ void RenderPassPostProcess::Render(const shared_ptr<RenderTarget> &inputRT, cons
 {
     Renderer::Instance->SetRenderTarget(outputRT);
     Renderer::Instance->ClearRenderTarget(outputRT, 0.1f, 0.2f, 0.3f, 1.0f);
+    Renderer::Instance->SetRasterizationState(nullptr);
     if (outputRT != nullptr)
     {
         Renderer::Instance->SetViewPort(0, 0, outputRT->GetWidth(), outputRT->GetHeight());
@@ -27,8 +29,17 @@ void RenderPassPostProcess::Render(const shared_ptr<RenderTarget> &inputRT, cons
     {
         Renderer::Instance->SetViewPort(0, 0, -1, -1);
     }
-    m_Material->SetTexture("MainTex", inputRT);
-    m_RenderItem->Render(m_Material);
+
+    if (m_Effect == PostProcessEffect::None)
+    {
+        m_MaterialNone->SetTexture("MainTex", inputRT);
+        m_RenderItem->Render(m_MaterialNone);
+    }
+    else
+    {
+        m_MaterialGray->SetTexture("MainTex", inputRT);
+        m_RenderItem->Render(m_MaterialGray);
+    }
 }
 
 void RenderPassPostProcess::CreateRenderItem() {
@@ -41,7 +52,7 @@ void RenderPassPostProcess::CreateRenderItem() {
         {1, 1, 0}
     };
 
-    // directx texture coord
+    // directX texture coordinate
     // (0, 0)
     // |------------|
     // |            |
@@ -56,7 +67,7 @@ void RenderPassPostProcess::CreateRenderItem() {
         {1, 0, 0}
     };
 
-    // opengl texture coord
+    // OpenGL texture coordinate
     // |------------| (1, 1)
     // |            |
     // |            |
@@ -108,7 +119,18 @@ void RenderPassPostProcess::CreateRenderItem() {
 
 void RenderPassPostProcess::CreateMaterial()
 {
-    m_Material = Renderer::Instance->CreateMaterial("Global_PostProcess", MaterialType::PostProcess);
+    m_MaterialNone = Renderer::Instance->CreateMaterial("Global_PostProcessNone", MaterialType::PostProcess);
+    m_MaterialGray = Renderer::Instance->CreateMaterial("Global_PostProcessGray", MaterialType::PostProcess);
+}
+
+void RenderPassPostProcess::SetPostProcessEffect(PostProcessEffect effect)
+{
+    m_Effect = effect;
+}
+
+PostProcessEffect RenderPassPostProcess::GetPostProcessEffect()
+{
+    return m_Effect;
 }
 
 

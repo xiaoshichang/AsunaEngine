@@ -30,12 +30,12 @@ void RenderPassMgr::Init(CreateRendererContextParam param)
     m_RenderPassPostProcess = new RenderPassPostProcess();
 }
 
-void RenderPassMgr::RenderMeshMaterials(const std::shared_ptr<RenderTarget>& outputRT)
+void RenderPassMgr::RenderMeshMaterials(const std::shared_ptr<RasterizationState>& rs)
 {
     ASUNA_ASSERT(m_RenderPassMeshMaterial != nullptr);
     auto shadowMap = m_RenderPassShadowMap->GetShadowMap();
     m_RenderPassMeshMaterial->SetShadowMap(shadowMap);
-    m_RenderPassMeshMaterial->Render(outputRT);
+    m_RenderPassMeshMaterial->Render(rs);
 }
 
 void RenderPassMgr::RenderShadowMap()
@@ -43,10 +43,10 @@ void RenderPassMgr::RenderShadowMap()
     m_RenderPassShadowMap->Render();
 }
 
-void RenderPassMgr::RenderPostProcess(const std::shared_ptr<RenderTarget>& rt)
+void RenderPassMgr::RenderPostProcess(const std::shared_ptr<RenderTarget>& output)
 {
     auto input = m_RenderPassMeshMaterial->GetMainRT();
-    m_RenderPassPostProcess->Render(input, rt);
+    m_RenderPassPostProcess->Render(input, output);
 }
 
 void RenderPassMgr::ResizeResolution(int width, int height)
@@ -54,5 +54,17 @@ void RenderPassMgr::ResizeResolution(int width, int height)
     m_RenderPassMeshMaterial->ResizeResolution(width, height);
     m_RenderPassPostProcess->ResizeResolution(width, height);
 }
+
+void RenderPassMgr::SetPostProcessEffect(PostProcessEffect effect)
+{
+    m_RenderPassPostProcess->SetPostProcessEffect(effect);
+}
+
+PostProcessEffect RenderPassMgr::GetPostProcessEffect()
+{
+    return m_RenderPassPostProcess->GetPostProcessEffect();
+}
+
+
 
 

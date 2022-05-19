@@ -12,6 +12,7 @@
 #include "../GameObject/Component/LightCmpt/LightCmpt.h"
 #include "../Graphics/Abstract/RenderItem.h"
 #include "../Graphics/Abstract/RenderTarget.h"
+#include "../Graphics/Abstract/RasterizationState.h"
 
 
 namespace asuna
@@ -25,7 +26,7 @@ namespace asuna
         void Initialize();
         void Finalize();
         void Tick();
-        void Render(const std::shared_ptr<RenderTarget>& rt);
+        void Render(const std::shared_ptr<RenderTarget>& rt, const std::shared_ptr<RasterizationState>& rs);
 
         void LoadScene(const std::string& path);
 

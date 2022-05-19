@@ -1,5 +1,5 @@
 #pragma once
-
+#include <memory>
 #include "../Foundation/Platform/Platform.h"
 #ifdef ASUNA_PLATFORM_WINDOWS
 #include <Windows.h>

@@ -10,6 +10,8 @@
 #include "../../Graphics/Abstract/RenderItem.h"
 #include "../../Graphics/Abstract/RenderTarget.h"
 #include "../../Graphics/Abstract/Renderer.h"
+#include "../../Graphics/Abstract/RasterizationState.h"
+
 
 namespace asuna
 {
@@ -17,8 +19,7 @@ namespace asuna
     {
     public:
         explicit RenderPassMeshMaterial(CreateRendererContextParam param);
-        void Render(const std::shared_ptr<RenderTarget>& outputRT);
-        void Render();
+        void Render(const std::shared_ptr<RasterizationState>& rs);
         void ResizeResolution(int width, int height) override;
         void SetShadowMap(const std::shared_ptr<RenderTarget>& shadowMap);
         const std::shared_ptr<RenderTarget>& GetMainRT();

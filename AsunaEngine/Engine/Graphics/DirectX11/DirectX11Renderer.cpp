@@ -11,6 +11,7 @@
 #include "DirectX11DepthStencilState.h"
 #include "DirectX11Texture.h"
 #include "DirectX11Material.h"
+#include "DirectX11RasterizationState.h"
 
 
 using namespace asuna;
@@ -24,6 +25,7 @@ void DirectX11Renderer::Initialize(CreateRendererContextParam param)
 	m_ResolutionHeight = param.m_ResolutionHeight;
 	m_HWND = param.m_HWND;
 	CreateDeviceContext();
+	CreateDefaultRasterizationState();
 }
 
 void DirectX11Renderer::Finalize()
@@ -49,29 +51,6 @@ void DirectX11Renderer::ResizeResolution(int width, int height)
 	}
 }
 
-
-void asuna::DirectX11Renderer::SetRasterizerState(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
-{
-	D3D11_RASTERIZER_DESC rasterDesc;
-	// Setup the raster description which will determine how and what polygons will be drawn.
-	rasterDesc.AntialiasedLineEnable = false;
-	rasterDesc.CullMode = D3D11_CULL_NONE;
-	rasterDesc.DepthBias = 0;
-	rasterDesc.DepthBiasClamp = 0.0f;
-	rasterDesc.DepthClipEnable = true;
-	rasterDesc.FillMode = D3D11_FILL_SOLID;
-	rasterDesc.FrontCounterClockwise = false;
-	rasterDesc.MultisampleEnable = false;
-	rasterDesc.ScissorEnable = false;
-	rasterDesc.SlopeScaledDepthBias = 0.0f;
-
-	// Create the rasterizer state from the description we just filled out.
-	auto result = device->CreateRasterizerState(&rasterDesc, &m_rasterState);
-	ASUNA_ASSERT(result >= 0);
-	// Now set the rasterizer state.
-	deviceContext->RSSetState(m_rasterState);
-}
-
 shared_ptr<Shader> asuna::DirectX11Renderer::CreateShader(const string& path, ShaderType shaderType)
 {
 	if (shaderType == ShaderType::VertexShader)
@@ -95,12 +74,17 @@ shared_ptr<ConstantBuffer> DirectX11Renderer::CreateConstantBuffer(ConstantBuffe
 	return cb;
 }
 
-shared_ptr<RenderItem> asuna::DirectX11Renderer::CreateRenderItem(
+shared_ptr<RenderItem> DirectX11Renderer::CreateRenderItem(
         const std::shared_ptr<Mesh>& mesh,
         const vector<std::shared_ptr<Material>>& materials,
         const std::shared_ptr<ConstantBuffer>& perObject)
 {
 	return DirectX11RenderItem::Create(mesh, materials, perObject);
+}
+
+shared_ptr<RasterizationState> DirectX11Renderer::CreateRasterizationState(const RasterizationStateDesc& desc)
+{
+	return make_shared<DirectX11RasterizationState>(desc);
 }
 
 shared_ptr<RenderItem>
@@ -229,7 +213,7 @@ void DirectX11Renderer::CreateDeviceContext()
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	// Set the handle for the window to render to.
 	swapChainDesc.OutputWindow = m_HWND;
-	// Turn multisampling off.
+	// Turn multi sampling off.
 	swapChainDesc.SampleDesc.Count = 1;
 	swapChainDesc.SampleDesc.Quality = 0;
 	// Set to full screen or windowed mode.
@@ -271,7 +255,6 @@ void DirectX11Renderer::CreateDeviceContext()
     desc.width = m_ResolutionWidth;
     desc.height = m_ResolutionHeight;
 	auto renderTarget = DirectX11RenderTarget::CreateFromSwapChain(desc, device, swapChain);
-	SetRasterizerState(device, deviceContext);
 	m_Context = make_shared<DirectX11RenderContext>(device, deviceContext, swapChain, renderTarget);
 }
 
@@ -282,13 +265,6 @@ void DirectX11Renderer::ReleaseDeviceContext()
 		m_Context.reset();
 		m_Context = nullptr;
 	}
-
-	if (m_rasterState != nullptr)
-	{
-		m_rasterState->Release();
-		m_rasterState = nullptr;
-	}
-
 }
 
 shared_ptr<Mesh> asuna::DirectX11Renderer::CreateMesh(const string& scenePath)
@@ -309,7 +285,7 @@ shared_ptr<RenderTarget> asuna::DirectX11Renderer::CreateRenderTarget(RenderTarg
 	return DirectX11RenderTarget::Create(desc, context->m_Device);
 }
 
-void asuna::DirectX11Renderer::SetRenderTarget(shared_ptr<RenderTarget> rt)
+void asuna::DirectX11Renderer::SetRenderTarget(const shared_ptr<RenderTarget>& rt)
 {
 	auto context = dynamic_pointer_cast<DirectX11RenderContext>(m_Context);
 	
@@ -326,6 +302,21 @@ void asuna::DirectX11Renderer::SetRenderTarget(shared_ptr<RenderTarget> rt)
 		auto rtv = dx11rt->GetRenderTargetView();
         auto dsv = dx11rt->GetDepthStencilView();
 		context->m_DeviceContext->OMSetRenderTargets(1, &rtv, dsv);
+	}
+}
+
+void DirectX11Renderer::SetRasterizationState(const std::shared_ptr<RasterizationState>& rs)
+{
+	auto context = dynamic_pointer_cast<DirectX11RenderContext>(m_Context);
+	if (rs == nullptr)
+	{
+		auto state = dynamic_pointer_cast<DirectX11RasterizationState>(m_DefaultRasterizationState)->GetInternalState();
+		context->m_DeviceContext->RSSetState(state);
+	}
+	else
+	{
+		auto state = dynamic_pointer_cast<DirectX11RasterizationState>(rs)->GetInternalState();
+		context->m_DeviceContext->RSSetState(state);
 	}
 }
 

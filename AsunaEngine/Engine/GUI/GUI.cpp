@@ -99,6 +99,7 @@ void GUI::End()
     Renderer::Instance->SetViewPort(0, 0, -1, -1);
     Renderer::Instance->SetRenderTarget(nullptr);
     Renderer::Instance->ClearRenderTarget(nullptr, 0.1f, 0.2f, 0.3f, 1.0f);
+    Renderer::Instance->SetRasterizationState(nullptr);
 
     if (Renderer::Instance->GetRenderAPIType() == RenderAPIType::Directx11)
     {

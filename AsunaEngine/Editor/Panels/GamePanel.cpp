@@ -22,8 +22,17 @@ using namespace asuna;
 
 static bool first = true;
 
+const char* Resolutions[] = {"1600x1200", "1200x960", "1200x800"};
+const char* PostProcessEffects[] = {"None", "Gray"};
+const char* RasterizationEffect[] = {"Default", "WireFrame"};
+
 void GamePanel::Initialize()
 {
+    RasterizationStateDesc desc{};
+    desc.CullMode = RasterizationCullMode::Back;
+    desc.FillMode = RasterizationFillMode::WireFrame;
+    desc.FrontCounterClockWise = false;
+    m_WireFrameRS = Renderer::Instance->CreateRasterizationState(desc);
 }
 
 void GamePanel::Render()
@@ -34,7 +43,13 @@ void GamePanel::Render()
         return;
     }
     ImGui::Begin("Game Window", &m_Showing);
+    ImGui::PushItemWidth(100);
     RenderResolutionOptions();
+    ImGui::SameLine();
+    RenderPostProcessOptions();
+    ImGui::SameLine();
+    RenderRasterizationStateOptions();
+    ImGui::PopItemWidth();
     RenderSceneToRT();
     RenderRTTOWindow();
     ImGui::End();
@@ -48,9 +63,7 @@ void GamePanel::Finalize()
 
 void GamePanel::RenderResolutionOptions()
 {
-    const char* Resolutions[] = {"1600x1200", "1200x960", "1200x800"};
     ImGui::Combo("Resolution", &m_SelectedResolution, Resolutions, IM_ARRAYSIZE(Resolutions), IM_ARRAYSIZE(Resolutions));
-    int targetWidth, targetHeight;
     if (m_SelectedResolution == 0)
     {
         m_TargetResolutionWidth = 1600;
@@ -83,7 +96,19 @@ void GamePanel::RenderResolutionOptions()
 void GamePanel::RenderSceneToRT()
 {
     Renderer::Instance->SetViewPort(0, 0, m_TargetResolutionWidth, m_TargetResolutionHeight);
-    SceneManager::Instance->Render(m_RT);
+    if (m_LastRasterization == 0)
+    {
+        SceneManager::Instance->Render(m_RT, nullptr);
+    }
+    else if (m_LastRasterization == 1)
+    {
+        SceneManager::Instance->Render(m_RT, m_WireFrameRS);
+    }
+    else
+    {
+        ASUNA_ASSERT(false);
+    }
+
 }
 
 void GamePanel::RenderRTTOWindow()
@@ -147,5 +172,17 @@ void GamePanel::ResizeRT()
     }
 
     RenderPassMgr::Instance->ResizeResolution(m_TargetResolutionWidth, m_TargetResolutionHeight);
+}
+
+void GamePanel::RenderPostProcessOptions()
+{
+    int cur = (int)RenderPassMgr::Instance->GetPostProcessEffect();
+    ImGui::Combo("PostProcess", &cur, PostProcessEffects, IM_ARRAYSIZE(PostProcessEffects), IM_ARRAYSIZE(PostProcessEffects));
+    RenderPassMgr::Instance->SetPostProcessEffect((PostProcessEffect)cur);
+}
+
+void GamePanel::RenderRasterizationStateOptions()
+{
+    ImGui::Combo("Rasterization", &m_LastRasterization, RasterizationEffect, IM_ARRAYSIZE(RasterizationEffect), IM_ARRAYSIZE(RasterizationEffect));
 }
 
