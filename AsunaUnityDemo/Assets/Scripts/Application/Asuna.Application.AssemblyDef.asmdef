@@ -1,0 +1,19 @@
+{
+    "name": "Asuna.Application",
+    "rootNamespace": "",
+    "references": [
+        "Asuna.Foundation",
+        "Asuna.GamePlayCore",
+        "Asuna.GamePlay",
+        "Asuna.UI"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

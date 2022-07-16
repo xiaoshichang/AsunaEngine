@@ -1,12 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsunaServer", "AsunaServer\AsunaServer.csproj", "{92617946-E191-4BED-9153-2FFDDB176EB4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asuna.Application", "Asuna.Application\Asuna.Application.csproj", "{92617946-E191-4BED-9153-2FFDDB176EB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsunaEntity", "AsunaEntity\AsunaEntity.csproj", "{50970A5A-EBE7-41FE-B86D-1E27AB334D28}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asuna.GamePlayCore", "Asuna.GamePlayCore\Asuna.GamePlayCore.csproj", "{50970A5A-EBE7-41FE-B86D-1E27AB334D28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsunaFoundation", "AsunaFoundation\AsunaFoundation.csproj", "{54263C58-4C79-4182-8F68-DC109E3E798B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asuna.Foundation", "Asuna.Foundation\Asuna.Foundation.csproj", "{54263C58-4C79-4182-8F68-DC109E3E798B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsunaGamePlay", "AsunaGamePlay\AsunaGamePlay.csproj", "{5820BFDB-9CBC-46D9-AC36-49017CCFFE65}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asuan.GamePlay", "Asuan.GamePlay\Asuan.GamePlay.csproj", "{5820BFDB-9CBC-46D9-AC36-49017CCFFE65}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

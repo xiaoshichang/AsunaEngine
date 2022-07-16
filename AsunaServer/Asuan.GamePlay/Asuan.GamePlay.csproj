@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>AsunaGamePlay</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="..\..\AsunaUnityDemo\Assets\Scripts\Gameplay\BothSide\**\*.*" Exclude="..\..\AsunaUnityDemo\Assets\Scripts\Gameplay\BothSide\**\*.meta">
+            <Link>BothSide\%(RecursiveDir)%(Filename)%(Extension)</Link>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Asuna.GamePlayCore\Asuna.GamePlayCore.csproj" />
+      <ProjectReference Include="..\Asuna.Foundation\Asuna.Foundation.csproj" />
+    </ItemGroup>
+
+</Project>

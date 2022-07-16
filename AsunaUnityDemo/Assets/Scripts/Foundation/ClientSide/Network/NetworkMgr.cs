@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 using UnityEngine;
+using Asuna.Foundation;
 
-namespace AsunaFoundation
+namespace Asuna.Foundation
 {
 
     public enum NetState

@@ -7,7 +7,7 @@ import time
 
 all_pid = []
 all_handlers = []
-
+serverExecutable = "Asuna.Application.exe"
 
 if os.name == "nt":
     user32 = ctypes.windll.user32
@@ -68,7 +68,7 @@ def start_server_group(args):
 
 
 def stop_server_group_windows(args):
-    os.system("taskkill /f /im  AsunaServer.exe")
+    os.system("taskkill /f /im  " + serverExecutable)
 
 
 def stop_server_group(args):
