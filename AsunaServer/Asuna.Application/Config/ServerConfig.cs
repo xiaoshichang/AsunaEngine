@@ -12,8 +12,8 @@ namespace Asuna.Application
     
     public class ServerConfigBase
     {
-        public string? Name { get; set; }
-        public string? InternalIP { get; set; }
+        public string Name { get; set; }
+        public string InternalIP { get; set; }
         public int InternalPort { get; set; }
     }
     
@@ -74,6 +74,11 @@ namespace Asuna.Application
             string context = File.ReadAllText(configPath);
             var groupConfig = JsonSerializer.Deserialize<ServerGroupConfig>(context);
             return groupConfig;
+        }
+
+        public int GetServerGroupNodesCount()
+        {
+            return 2 + GameServers.Count + GateServers.Count;
         }
     }
 }

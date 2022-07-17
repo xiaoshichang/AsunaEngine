@@ -6,6 +6,7 @@ using System.Net.Sockets;
 
 #pragma warning disable CS8600
 #pragma warning disable CS8604
+#pragma warning disable CS8602
 
 namespace Asuna.Foundation
 {
@@ -33,7 +34,48 @@ namespace Asuna.Foundation
         }
 
         /// <summary>
-        /// note that is callback is called by other thread than main thread
+        /// this is called from main thread
+        /// </summary>
+        public override void ConnectTo(string ip, int port)
+        {
+            Logger.LogInfo($"ConnectTo {ip}:{port}");
+            var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            IPEndPoint lep = new IPEndPoint(IPAddress.Parse(ip), port);
+            socket.BeginConnect(lep, OnAsyncConnectTo, socket);
+        }
+
+        
+        /// <summary>
+        /// this is called from network thread
+        /// </summary>
+        private void OnAsyncConnectTo(IAsyncResult ar)
+        {
+            var socket = ar.AsyncState as Socket;
+            socket.EndConnect(ar);
+            var connectEvent = new NetworkEvent()
+            {
+                ConnectedSocket = socket,
+                EventType = NetworkEventType.OnConnect
+            };
+            lock (_EventQueue)
+            {
+                _EventQueue.Enqueue(connectEvent);
+            }
+        }
+
+        /// <summary>
+        /// this is called from main thread
+        /// </summary>
+        private void OnConnectTo(NetworkEvent e)
+        {
+            var session = new TcpSession(e.ConnectedSocket, AddEvent);
+            e.Session = session;
+            _AllSessions.Add(session);
+            OnConnectToCallback?.Invoke(e);
+        }
+
+        /// <summary>
+        /// this callback is called by network thread
         /// </summary>
         private void OnAsyncAccept(IAsyncResult ar)
         {
@@ -51,30 +93,36 @@ namespace Asuna.Foundation
         }
 
         /// <summary>
-        /// this callback is called by main thread
+        /// this is called from main thread
         /// </summary>
         private void OnAcceptConnection(NetworkEvent evt)
         {
             Logger.LogInfo($"accept new connection {evt.AcceptSocket.RemoteEndPoint}");
             var session = new TcpSession(evt.AcceptSocket, AddEvent);
-            _AllSessions.Add(session.SessionID, session);
+            _AllSessions.Add(session);
             OnAcceptConnectionCallback?.Invoke(evt);
             session.StartReceiving();
         }
 
+        /// <summary>
+        /// this is called from main thread
+        /// </summary>
         private void OnDisconnect(NetworkEvent evt)
         {
             evt.Session.DoDisconnect();
-            _AllSessions.Remove(evt.Session.SessionID);
+            _AllSessions.Remove(evt.Session);
             OnDisconnectCallback?.Invoke(evt);
         }
 
-        private void OnReceiveMessage(NetworkEvent evt)
+        /// <summary>
+        /// this is called from main thread
+        /// </summary>
+        private void OnReceivePackage(NetworkEvent evt)
         {
-            OnReceiveMessageCallback?.Invoke(evt);
+            OnReceivePackageCallback?.Invoke(evt);
         }
 
-        private void OnSendMessage(NetworkEvent evt)
+        private void OnSendPackage(NetworkEvent evt)
         {
         }
 
@@ -89,6 +137,11 @@ namespace Asuna.Foundation
                         var evt = _EventQueue.Dequeue();
                         switch (evt.EventType)
                         {
+                            case NetworkEventType.OnConnect:
+                            {
+                                OnConnectTo(evt);
+                                break;
+                            }
                             case NetworkEventType.Accept:
                             {
                                 OnAcceptConnection(evt);
@@ -101,12 +154,12 @@ namespace Asuna.Foundation
                             }
                             case NetworkEventType.OnReceive:
                             {
-                                OnReceiveMessage(evt);
+                                OnReceivePackage(evt);
                                 break;
                             }
                             case NetworkEventType.OnSend:
                             {
-                                OnSendMessage(evt);
+                                OnSendPackage(evt);
                                 break;
                             }
                         }
@@ -133,8 +186,11 @@ namespace Asuna.Foundation
         private IPEndPoint? _ListenEndPoint;
         private readonly Socket _ListenSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         private readonly Queue<NetworkEvent> _EventQueue = new Queue<NetworkEvent>();
-        private readonly Dictionary<uint, TcpSession> _AllSessions = new Dictionary<uint, TcpSession>();
-
+        
+        /// <summary>
+        /// maintains all exist sessions
+        /// </summary>
+        private readonly HashSet<TcpSession> _AllSessions = new HashSet<TcpSession>();
     }
 }
 

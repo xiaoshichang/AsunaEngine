@@ -2,10 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>Asuna</RootNamespace>
-        <PackageId>Asuna.GamePlayCore</PackageId>
     </PropertyGroup>
 
     <ItemGroup>

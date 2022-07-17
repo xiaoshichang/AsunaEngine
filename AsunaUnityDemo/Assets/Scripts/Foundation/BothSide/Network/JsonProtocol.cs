@@ -1,28 +1,48 @@
-
+using System;
 
 #pragma warning disable CS8618
+#nullable enable
 
 namespace Asuna.Foundation
 {
-
-    public class MsgJson : MsgBase
+    /// <summary>
+    /// ++++++++++++++++++++++++++++++++++++++++++++
+    /// |  MsgType (4Byte)     |        body       |
+    /// ++++++++++++++++++++++++++++++++++++++++++++
+    /// </summary>
+    public class PackageJson : PackageBase
     {
-        public MsgJson()
+        public PackageJson()
         {
-            Header = new MsgHeader(){MsgType = MsgType.Json};
+            Header = new PackageHeader(){PackageType = PackageType.Json};
         }
-        public object obj;
+        public MsgBase obj;
         
         public override void DumpToBuffer()
         {
             var bodyBuffer = Serializer.SerializeToJson(obj);
-            Header.MsgSize = (uint)bodyBuffer.Length;
-            Buffer = new byte[Header.MsgSize + MsgHeader.MsgHeaderSize];
+            Header.MsgSize = (uint)bodyBuffer.Length + 4;
+            Buffer = new byte[Header.MsgSize + PackageHeader.MsgHeaderSize];
             BufferOffset = 0;
-            var headerBuffer = MsgHeader.DumpHeader(Header);
+            var headerBuffer = PackageHeader.DumpHeader(Header);
+            var msgTypeBuffer = BitConverter.GetBytes((int)obj.MsgType);
             headerBuffer.CopyTo(Buffer, 0);
-            bodyBuffer.CopyTo(Buffer, MsgHeader.MsgHeaderSize);
+            msgTypeBuffer.CopyTo(Buffer, PackageHeader.MsgHeaderSize);
+            bodyBuffer.CopyTo(Buffer, PackageHeader.MsgHeaderSize + 4);
         }
+
+        public int GetMsgType()
+        {
+            return BitConverter.ToInt32(Buffer, 0);
+        }
+
+        public MsgBase? GetMsg(Type t)
+        {
+            var o = Serializer.DeserializeFromJson(Buffer, t, 4);
+            var msg = o as MsgBase;
+            return msg;
+        }
+        
     }
 
 }

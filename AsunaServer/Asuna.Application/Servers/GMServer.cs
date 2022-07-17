@@ -1,4 +1,6 @@
-﻿using Asuna.Foundation;
+﻿using System.Collections.Generic;
+using Asuna.Foundation;
+using Newtonsoft.Json.Serialization;
 
 namespace Asuna.Application
 {
@@ -6,29 +8,38 @@ namespace Asuna.Application
     {
         public GMServer(ServerGroupConfig groupConfig, GMServerConfig serverConfig) : base(groupConfig, serverConfig)
         {
-            TimerMgr.RegisterTimer(true,2000, TimeoutTest3);
-            tid = TimerMgr.RegisterTimer(3000, TimeoutTest1);
-            TimerMgr.RegisterTimer(1000, TimeoutTest2);
+            TimerMgr.RegisterTimer(2000, TryConnectAllNodes);
         }
-
-        public void TimeoutTest1()
+        
+        private void TryConnectAllNodes()
         {
-            Logger.LogInfo("Time out1!");
+            _InternalNetwork.ConnectTo(_ServerGroupConfig.DBServer.InternalIP, _ServerGroupConfig.DBServer.InternalPort);
+            foreach (var config in _ServerGroupConfig.GameServers)
+            {
+                _InternalNetwork.ConnectTo(config.InternalIP, config.InternalPort);
+            }
+            foreach (var config in _ServerGroupConfig.GateServers)
+            {
+                _InternalNetwork.ConnectTo(config.InternalIP, config.InternalPort);
+            }
         }
-    
-        public void TimeoutTest2()
+        
+        protected override void OnInternalConnectTo(NetworkEvent evt)
         {
-            Logger.LogInfo("Time out2!");
+            var msg = new ControlMsgHandShakeReq(_ServerGroupConfig.GMServer.Name);
+            evt.Session.StartReceiving();
+            evt.Session.SendMsg(msg);
         }
-    
-        public void TimeoutTest3()
+        
+        protected override void OnControlMsgHandShakeRsp(TcpSession session, MsgBase msg)
         {
-            Logger.LogInfo("Time out3!");
-            TimerMgr.UnregisterTimer(tid);
+            base.OnControlMsgHandShakeRsp(session, msg);
+            if (_ServerToSession.Count >= _ServerGroupConfig.GetServerGroupNodesCount() - 1)
+            {
+                Logger.LogInfo("all nodes connected!");
+            }
         }
-
-        private ulong tid = 0;
-
+        
 
     }
 }

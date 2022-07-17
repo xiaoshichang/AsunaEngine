@@ -1,57 +1,15 @@
 ﻿
-using System;
-
-#pragma warning disable CS8618
+using System.Runtime.Serialization;
 
 namespace Asuna.Foundation
 {
-    public enum MsgType
-    {
-        Json = 1,
-    }
     
-    /// <summary>
-    /// 
-    ///     +-------------------------------------------------------------------------------------------+
-    ///     +   msgType(4 bytes)     |    data_size(4 bytes)        |   data (data_size bytes)          +
-    ///     +-------------------------------------------------------------------------------------------+
-    /// 
-    /// </summary>
-    public class MsgHeader
+    [DataContract]
+    public class MsgBase
     {
-        public MsgType MsgType;
-        public uint MsgSize;
-
-        public static void ParseHeader(byte[] buffer, out MsgHeader header)
-        {
-            header = new MsgHeader
-            {
-                MsgType = (MsgType)BitConverter.ToUInt32(buffer, 0),
-                MsgSize = BitConverter.ToUInt32(buffer, 4)
-            };
-        }
-
-        public static byte[] DumpHeader(MsgHeader header)
-        {
-            var ret = new byte[MsgHeaderSize];
-            var mt = BitConverter.GetBytes((uint) header.MsgType);
-            var ms = BitConverter.GetBytes(header.MsgSize);
-            Array.Copy(mt, 0, ret, 0, 4);
-            Array.Copy(ms, 0, ret, 4, 4);
-            return ret;
-        }
-        
-        public const int MsgHeaderSize = 8;
+        [DataMember]
+        public int MsgType;
     }
-
-    public abstract class MsgBase
-    {
-        public MsgHeader Header;
-        public byte[] Buffer;
-        public int BufferOffset;
-
-        public abstract void DumpToBuffer();
-    }
-    
     
 }
+

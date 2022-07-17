@@ -30,7 +30,7 @@ namespace Asuna.Foundation
     {
         public NetworkEventType EventType;
         public Exception OnConnectException;
-        public MsgBase RecvMsg;
+        public PackageBase RecvPackage;
         public Exception OnDisconnectByRemoteException;
     }
 
@@ -92,16 +92,16 @@ namespace Asuna.Foundation
             }
         }
 
-        private bool ReceiveHeader(out MsgHeader header)
+        private bool ReceiveHeader(out PackageHeader header)
         {
             header = null;
-            var headerBuffer = new byte[MsgHeader.MsgHeaderSize];
+            var headerBuffer = new byte[PackageHeader.MsgHeaderSize];
             var bytesReceived = 0;
-            while (bytesReceived != MsgHeader.MsgHeaderSize)
+            while (bytesReceived != PackageHeader.MsgHeaderSize)
             {
                 try
                 {
-                    bytesReceived += _Socket.Receive(headerBuffer, bytesReceived, MsgHeader.MsgHeaderSize - bytesReceived, SocketFlags.None);
+                    bytesReceived += _Socket.Receive(headerBuffer, bytesReceived, PackageHeader.MsgHeaderSize - bytesReceived, SocketFlags.None);
                     if (bytesReceived == 0)
                     {
                         DisconnectByException(new EndOfStreamException());
@@ -114,29 +114,29 @@ namespace Asuna.Foundation
                     return false;
                 }
             }
-            MsgHeader.ParseHeader(headerBuffer, out header);
+            PackageHeader.ParseHeader(headerBuffer, out header);
             return true;
         }
 
-        private MsgJson ReceiveJson(int dataSize)
+        private PackageJson ReceiveJson(int dataSize)
         {
-            MsgJson msg = new MsgJson()
+            PackageJson package = new PackageJson()
             {
                 Buffer = new byte[dataSize],
                 BufferOffset = 0
             };
             
-            while (msg.BufferOffset != dataSize)
+            while (package.BufferOffset != dataSize)
             {
                 try
                 {
-                    var bytesReceived = _Socket.Receive(msg.Buffer, msg.BufferOffset, dataSize - msg.BufferOffset, SocketFlags.None);
+                    var bytesReceived = _Socket.Receive(package.Buffer, package.BufferOffset, dataSize - package.BufferOffset, SocketFlags.None);
                     if (bytesReceived == 0)
                     {
                         DisconnectByException(new EndOfStreamException());
                         break;
                     }
-                    msg.BufferOffset += bytesReceived;
+                    package.BufferOffset += bytesReceived;
                 }
                 catch(Exception exception)
                 {
@@ -144,19 +144,19 @@ namespace Asuna.Foundation
                     break;
                 }
             }
-            return msg;
+            return package;
         }
 
-        private bool ReceiveBody(MsgHeader header, out MsgBase msg)
+        private bool ReceiveBody(PackageHeader header, out PackageBase package)
         {
-            msg = null;
-            if (header.MsgType == MsgType.Json)
+            package = null;
+            if (header.PackageType == PackageType.Json)
             {
-                msg = ReceiveJson((int)header.MsgSize);
+                package = ReceiveJson((int)header.MsgSize);
             }
             else
             {
-                Debug.Log($"unknown msg type {header.MsgType}");
+                Debug.Log($"unknown msg type {header.PackageType}");
                 _Socket.Close();
                 return false;
             }
@@ -169,18 +169,18 @@ namespace Asuna.Foundation
                 
             while(true)
             {
-                if (!ReceiveHeader(out MsgHeader header))
+                if (!ReceiveHeader(out PackageHeader header))
                 {
                     break;
                 }
-                if (!ReceiveBody(header, out MsgBase msg))
+                if (!ReceiveBody(header, out PackageBase msg))
                 {
                     break;
                 }
                 NetworkEvent e = new NetworkEvent()
                 {
                     EventType = NetworkEventType.OnRecvMsg,
-                    RecvMsg = msg
+                    RecvPackage = msg
                 };
                 lock(_Events)
                 {
@@ -190,29 +190,29 @@ namespace Asuna.Foundation
             }
         }
 
-        public void Send(MsgBase msg)
+        public void Send(PackageBase package)
         {
             lock(_SendQueue)
             {
-                _SendQueue.Enqueue(msg);
+                _SendQueue.Enqueue(package);
             }
             _SendEvent.Set();
         }
 
-        private void SendJson(MsgBase msg)
+        private void SendJson(PackageBase package)
         {
             // prepare
-            var json = msg as MsgJson;
+            var json = package as PackageJson;
             var dataBuffer = Serializer.SerializeToJson(json.obj);
             var jsonSize = dataBuffer.Length;
-            msg.Header.MsgSize = (uint)jsonSize;
-            var headerBuffer = MsgHeader.DumpHeader(msg.Header);
-            var bufferSize = jsonSize + MsgHeader.MsgHeaderSize;
+            package.Header.MsgSize = (uint)jsonSize;
+            var headerBuffer = PackageHeader.DumpHeader(package.Header);
+            var bufferSize = jsonSize + PackageHeader.MsgHeaderSize;
             
             // copy to buffer
             var buffer = new byte[bufferSize];
             headerBuffer.CopyTo(buffer, 0);
-            dataBuffer.CopyTo(buffer, MsgHeader.MsgHeaderSize);
+            dataBuffer.CopyTo(buffer, PackageHeader.MsgHeaderSize);
             
             // send buffer
             int bytesSent = 0;
@@ -226,22 +226,22 @@ namespace Asuna.Foundation
         {
             while(true)
             {
-                MsgBase msg;
+                PackageBase package;
                 lock(_SendQueue)
                 {
-                    msg = _SendQueue.Count == 0 ? null : _SendQueue.Dequeue();
+                    package = _SendQueue.Count == 0 ? null : _SendQueue.Dequeue();
                 }
 
-                if (msg == null)
+                if (package == null)
                 {
                     _SendEvent.Reset();
                     _SendEvent.WaitOne();
                 }
                 else
                 {
-                    if (msg.Header.MsgType == MsgType.Json)
+                    if (package.Header.PackageType == PackageType.Json)
                     {
-                        SendJson(msg);
+                        SendJson(package);
                     }
                     else
                     {
@@ -262,9 +262,9 @@ namespace Asuna.Foundation
         }
 
 
-        private void ProcessRecvMsg(MsgBase msg)
+        private void ProcessRecvMsg(PackageBase package)
         {
-            OnReceiveMsg?.Invoke(msg);
+            OnReceiveMsg?.Invoke(package);
         }
 
         private void ProcessNetworkEvents()
@@ -284,7 +284,7 @@ namespace Asuna.Foundation
                 {
                     case NetworkEventType.OnRecvMsg:
                     {
-                        ProcessRecvMsg(e.RecvMsg);
+                        ProcessRecvMsg(e.RecvPackage);
                         break;
                     }
                     case NetworkEventType.OnDisconnectByRemote:
@@ -314,9 +314,9 @@ namespace Asuna.Foundation
         private Thread _ReceiveThread;
         private Thread _SendThread;
         private readonly Queue<NetworkEvent> _Events = new Queue<NetworkEvent>();
-        private readonly Queue<MsgBase> _SendQueue = new Queue<MsgBase>();
+        private readonly Queue<PackageBase> _SendQueue = new Queue<PackageBase>();
         private readonly ManualResetEvent _SendEvent = new ManualResetEvent(false);
-        public Action<MsgBase> OnReceiveMsg;
+        public Action<PackageBase> OnReceiveMsg;
 
 
     }

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+﻿using System;
+using System.Collections.Generic;
+
+#nullable enable
 
 namespace Asuna.Foundation
 {
@@ -31,7 +33,7 @@ namespace Asuna.Foundation
             _Callback.Invoke();
         }
 
-        public ulong NextTimerID()
+        public static ulong NextTimerID()
         {
             GlobalTimerID += 1;
             if (GlobalTimerID == ulong.MaxValue)
@@ -64,9 +66,11 @@ namespace Asuna.Foundation
     {
         public int Compare(ATimer? x, ATimer? y)
         {
-            ulong xv = x?.NextTimeout ?? 0;
-            ulong yv = y?.NextTimeout ?? 0;
-            return xv.CompareTo(yv);
+            if (x == null || y == null)
+            {
+                throw new NullReferenceException();
+            }
+            return x.NextTimeout.CompareTo(y.NextTimeout);
         }
     }
     

@@ -6,6 +6,7 @@ namespace Asuna.Foundation
 {
     public enum NetworkEventType
     {
+        OnConnect,
         Accept,
         OnReceive,
         OnSend,
@@ -35,6 +36,11 @@ namespace Asuna.Foundation
         /// indicate the accepted socket when event type is Accept
         /// </summary>
         public Socket AcceptSocket;
+
+        /// <summary>
+        /// indicate the connected socket when event type is OnConnect
+        /// </summary>
+        public Socket ConnectedSocket;
     
         /// <summary>
         /// indicate the reason why a session is disconnected when event type is Disconnect
@@ -42,9 +48,9 @@ namespace Asuna.Foundation
         public DisconnectReason DisconnectReason;
     
         /// <summary>
-        /// indicate the received message when event type is OnReceive
+        /// indicate the received package when event type is OnReceive
         /// </summary>
-        public MsgBase ReceiveMsg;
+        public PackageBase ReceivedPackage;
     }
 
     public delegate void NetworkEventHandler(NetworkEvent evt);
