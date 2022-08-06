@@ -75,7 +75,7 @@ namespace Asuna.Application
             ServerBase server = CreateServerByServerConfig(groupConfig, serverConfig);
             server.Init();
             server.Run();
-            server.Uninit();
+            server.Release();
         }
     }
 }

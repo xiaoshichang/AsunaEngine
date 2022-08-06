@@ -8,10 +8,10 @@ namespace Asuna.Application
     {
         public GMServer(ServerGroupConfig groupConfig, GMServerConfig serverConfig) : base(groupConfig, serverConfig)
         {
-            TimerMgr.RegisterTimer(2000, TryConnectAllNodes);
+            TimerMgr.RegisterTimer(2000, _TryConnectAllNodes);
         }
         
-        private void TryConnectAllNodes()
+        private void _TryConnectAllNodes()
         {
             _InternalNetwork.ConnectTo(_ServerGroupConfig.DBServer.InternalIP, _ServerGroupConfig.DBServer.InternalPort);
             foreach (var config in _ServerGroupConfig.GameServers)
@@ -37,6 +37,7 @@ namespace Asuna.Application
             if (_ServerToSession.Count >= _ServerGroupConfig.GetServerGroupNodesCount() - 1)
             {
                 Logger.LogInfo("all nodes connected!");
+                
             }
         }
         
